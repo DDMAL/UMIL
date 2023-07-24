@@ -1,0 +1,21 @@
+VIM 7/24/23
+- max & taz: the mockup on the github for faceted search 
+- drafting a logo as well
+- backend discussion in github
+	- what data we are going to pull from wikidata
+	- where to host audio/visual
+- pulling images from wikimedia for orchestral suit instruments etc
+- other nav bar entities 
+	- browse by grouping
+	- contributors page 
+- contributors power
+	- should their stuff be approved first -even musicbrainz have editors 
+	- what happens if facts are contested 
+- having the orchestral suite available when the site launches 
+	- being tested by languages known in the lab
+- translate widget 
+- zhanna finishing docker, postgres next
+- models implemented roughly after
+- musicbrainz translation feature 
+- musicbrainz instrument list
+- what we need in the footer
