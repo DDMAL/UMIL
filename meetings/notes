@@ -15,6 +15,9 @@ VIM 7/24/23
 	- being tested by languages known in the lab
 - translate widget 
 - zhanna finishing docker, postgres next
+	- docker is working more or less
+	- adding nginx and gunicorn
+- private docker repo? 
 - models implemented roughly after
 - musicbrainz translation feature 
 - musicbrainz instrument list
