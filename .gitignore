@@ -104,3 +104,6 @@ venv
 # in case you're working on importing data from a database dump
 *.sql
 
+# npm
+*/node_modules/
+```

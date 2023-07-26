@@ -1,0 +1,35 @@
+{
+    "name": "vim",
+    "version": "1.0.0",
+    "description": "virtual instrument museum",
+    "main": "index.js",
+    "scripts": {
+        "dev": "webpack-dev-server --mode development --open",
+        "build": "webpack --mode production",
+        "start": "webpack-dev-server --open",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DDMAL/VIM.git"
+    },
+    "keywords": [
+        "ddmal",
+        "mcgill",
+        "world",
+        "music",
+        "language",
+        "instrument",
+        "crowdsource"
+    ],
+    "author": "DDMAL",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/DDMAL/VIM/issues"
+    },
+    "homepage": "https://github.com/DDMAL/VIM#readme",
+    "devDependencies": {
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4"
+    }
+}
