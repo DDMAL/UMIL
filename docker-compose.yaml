@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  nginx:
+    container_name: "VIM-nginx"
+    build:
+      context: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - django
+  django:
+    container_name: "VIM-django"
+    build:
+      context: ./django
+    ports:
+      - 8002:8002
+    command: gunicorn VIM.wsgi --bind 0.0.0.0:8002
+  # db:
+  #   container_name: "db" # change this to postgres
+  #   build:
+  #     context: ./db
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=name
+  #     - MYSQL_DATABASE=test # creates a db called test everyt ime hte servie is started
+
