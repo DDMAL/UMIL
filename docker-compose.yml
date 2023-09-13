@@ -1,0 +1,36 @@
+# Uses Compose Specification (https://github.com/compose-spec/compose-spec/blob/master/spec.md)
+services:
+  app:
+    build: ./web-app
+    container_name: vim-app
+    volumes:
+      - ./web-app/django/:/vim-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "8000:8000"
+
+  postgres:
+    image: postgres:15.4
+    container_name: vim-db
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+networks:
+  vim-net:
