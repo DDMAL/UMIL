@@ -4,7 +4,7 @@ services:
     build: ./web-app
     container_name: vim-app
     volumes:
-      - ./web-app/django/:/vim-app
+      - ./web-app/django:/virtual-instrument-museum/vim-app
     depends_on:
       postgres:
         condition: service_healthy
@@ -14,6 +14,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "8000:8000"
+    command: /virtual-instrument-museum/django-startup.sh
 
   postgres:
     image: postgres:15.4
@@ -26,7 +27,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
       test: "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
-      interval: 30s
+      interval: 15s
       timeout: 30s
       retries: 5
       start_period: 30s
