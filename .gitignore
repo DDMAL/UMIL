@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io
 
+data
+
 ### OSX ###
 .DS_Store
 .AppleDouble
