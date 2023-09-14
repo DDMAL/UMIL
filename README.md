@@ -12,7 +12,7 @@ NOTE: VIM is not yet ready for deployment to a remote server. Use these steps fo
 
 VIM requires Docker Engine with Compose V2. VIM's Docker Compose configuration is written according to the Compose Specification. 
 
-After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRESP_PASSWORD`. 
+After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. 
 
 ```bash
 > docker compose build
