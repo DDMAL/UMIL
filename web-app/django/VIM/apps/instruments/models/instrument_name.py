@@ -21,4 +21,5 @@ class InstrumentName(models.Model):
         on_delete=models.PROTECT,
         blank=True,
         help_text="What language is Source Description written in?",
+        related_name = "instrument_name_description_language",
     )
