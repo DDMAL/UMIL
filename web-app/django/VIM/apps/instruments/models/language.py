@@ -2,13 +2,11 @@ from django.db import models
 
 
 class Language(models.Model):
-    wikidata_code = models.CharField(
-        unique=True, blank=False, help_text="Language code in Wikidata"
+    wikidata_code = models.CharField(max_length=10, unique=True, blank=False)
+    wikidata_id = models.IntegerField(unique=True, primary_key=True)
+    en_label = models.CharField(
+        max_length=50, blank=False, help_text="Language label in English"
     )
-    wikidata_id = models.CharField(
-        unique=True, blank=False, help_text="Language ID (Q number) in Wikidata"
-    )
-    en_label = models.CharField(blank=False, help_text="Language label in English")
     autonym = models.CharField(
-        blank=False, help_text="Language label in the language itself"
+        max_length=50, blank=False, help_text="Language label in the language itself"
     )
