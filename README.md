@@ -14,9 +14,29 @@ VIM requires Docker Engine with Compose V2. VIM's Docker Compose configuration i
 
 After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. 
 
-```bash
+```console
 > docker compose build
 > docker compose up
 ```
 
 The django development server should now be available at `localhost:8000`.
+
+## Managing Database Migrations
+
+Django automates changes to the database schema with migrations.
+
+If your development changes any application models, be sure to make and commit migrations along with those changes. To create migrations, enter the application container and run the `makemigrations` command:
+
+```console
+> user@machine:~/dev-directory$ docker compose exec -it app bash
+> root@container-id:/virtual-instrument-museum/vim-app$ python manage.py makemigrations
+```
+
+Commit the resulting migrations files with the model changes.
+
+If changes you make require migrations, or you merge migrations made by others into you development branch, you will need to apply those migrations to your local copy of the database:
+
+```console
+> user@machine:~/dev-directory$ docker compose exec -it app bash
+> root@container-id:/virtual-instrument-museum/vim-app$ python manage.py migrate
+```
