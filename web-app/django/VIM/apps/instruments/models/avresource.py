@@ -18,9 +18,9 @@ class AVResource(models.Model):
     format = models.CharField(
         max_length=50, blank=False
     )  # This should be a choice field with supported formats
-    uri = models.URLField(max_length=250, blank=False)
+    uri = models.URLField(max_length=500, blank=False)
     instrument_date = models.DateField(
-        blank=True, help_text="When was this instrument made?"
+        blank=True, null = True, help_text="When was this instrument made?"
     )
     instrument_maker = models.CharField(
         max_length=50, blank=True, help_text="Who made this instrument?"
@@ -33,5 +33,6 @@ class AVResource(models.Model):
         "Language",
         on_delete=models.PROTECT,
         blank=True,
+        null=True,
         help_text="What language is Instrument Description written in?",
     )
