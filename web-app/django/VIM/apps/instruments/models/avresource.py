@@ -13,19 +13,19 @@ class AVResource(models.Model):
         max_length=5,
         choices=RESOURCE_TYPE_CHOICES,
         blank=False,
-        help_text="What type of audiovisual resource is this?",
+        help_text="What type of resource is this?",
     )
     format = models.CharField(
-        blank=False
-    )  # This should eventually be a choice field with supported formats
-    url = models.URLField(blank=False, max_length=1000)
+        max_length=50, blank=False
+    )  # This should be a choice field with supported formats
+    uri = models.URLField(max_length=500, blank=False)
     instrument_date = models.DateField(
         blank=True, null=True, help_text="When was this instrument made?"
     )
     instrument_maker = models.CharField(
-        blank=True, help_text="Who made this instrument?"
+        max_length=50, blank=True, help_text="Who made this instrument?"
     )
-    # instrument_location; TBD how to manage location data
+    # instrument_location
     instrument_description = models.TextField(
         blank=True, help_text="Additional information about the instrument."
     )
@@ -36,6 +36,3 @@ class AVResource(models.Model):
         null=True,
         help_text="What language is Instrument Description written in?",
     )
-    source_name = models.CharField(
-        blank=False, help_text="What is the name of the source of this AVResource?"
-    )  # Stand-in for source data; format TBD

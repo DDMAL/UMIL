@@ -3,14 +3,7 @@ from VIM.apps.instruments.models import Language
 
 
 class Command(BaseCommand):
-    """
-    The import_languages command populates the database with languages in which instrument
-    names can be provided in VIM.
-
-    NOTE: For now, this script only imports English and French.
-    """
-
-    help = "Imports possible languages for instrument names from Wikidata."
+    help = "Imports language objects"
 
     def handle(self, *args, **options):
         Language.objects.create(
