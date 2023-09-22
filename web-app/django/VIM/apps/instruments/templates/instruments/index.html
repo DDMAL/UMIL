@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
     Instrument List
+{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static "instruments/index.css" %}">
 {% endblock %}
 
 {% block content %}
