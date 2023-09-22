@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Instrument List
+{% endblock %}
+
+{% block content %}
+    {% for instrument in instruments %}
+        <li>{{ instrument.id }}, 
+            {% for instrumentname in instrument.instrumentname_set.all %}
+                {{ instrumentname.language.en_label }}:{{ instrumentname.name }}
+            {% endfor %}
+            <img src="{{ instrument.avresource_set.first.uri }}">
+        </li>
+    {% endfor %}
+
+{% endblock %}
