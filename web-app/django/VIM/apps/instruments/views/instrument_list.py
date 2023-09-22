@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from VIM.apps.instruments.models import Instrument
 
+
 class InstrumentList(ListView):
     """
     Provides a paginated list of all instruments in the database.
@@ -8,7 +9,8 @@ class InstrumentList(ListView):
     Pass `page` and `paginate_by` as query parameters to control pagination.
     Defaults to 20 instruments per page.
     """
-    template_name = "instrument_list.html"
+
+    template_name = "instruments/index.html"
     context_object_name = "instruments"
     model = Instrument
 
