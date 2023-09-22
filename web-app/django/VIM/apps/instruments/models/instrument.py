@@ -10,5 +10,5 @@ class Instrument(models.Model):
         null=False,
         related_name="default_image_of",
     )
-    hornbostel_sachs_class = models.CharField(max_length=50, blank=True)
-    mimo_class = models.CharField(max_length=50, blank=True)
+    hornbostel_sachs_class = models.CharField(max_length=50, blank=True, help_text = "Hornbostel-Sachs classification")
+    mimo_class = models.CharField(max_length=50, blank=True, help_text = "Musical Instrument Museums Online classification")
