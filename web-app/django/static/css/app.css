@@ -26,6 +26,12 @@ header {
     background-color: #FAF1E4;
 }
 
+.search-input:focus {
+    background-color: #FAF1E4;
+    outline: none; /* Remove the outline */
+    border: 1px solid #FAF1E4;
+}
+
 .login-btn {
     color: #FAF1E4;
     border: 1px solid #FAF1E4;
@@ -41,6 +47,21 @@ header {
     color: #435334;
 }
 
+.language-btn {
+    color:#435334;
+}
+
+.language-btn:focus {
+    border-color:#435334;
+}
+
+.dropdown-menu {
+    background-color: #FAF1E4;
+}
+
+.dropdown-item:hover {
+    background-color: #CEDEBD;
+}
 /* main */
 main {
     background-color: #FAF1E4;
