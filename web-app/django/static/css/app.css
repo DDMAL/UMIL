@@ -24,6 +24,11 @@ header {
 
 .search-input {
     background-color: #FAF1E4;
+    color: #435334;
+}
+
+.search-input::placeholder{
+    color: #435334;
 }
 
 .search-input:focus {
@@ -62,7 +67,13 @@ header {
 .dropdown-item:hover {
     background-color: #CEDEBD;
 }
+
 /* main */
 main {
+    background-color: #FAF1E4;
+}
+
+/* footer */
+footer {
     background-color: #FAF1E4;
 }
