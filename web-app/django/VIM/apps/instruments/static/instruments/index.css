@@ -1,0 +1,43 @@
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
+h4 {
+    color: #435334;
+    font-size: 20px;
+}
+
+hr {
+    border: 1.5px solid #435334;
+    margin-top: 0;
+}
+
+.content-container {
+    background-color: white;
+    border: 3px solid #9EB384;
+    border-radius: 30px;
+}
+
+/* sidebar */
+.sidebar-container {
+    border-right: 3px solid #9EB384;
+}
+
+.sidebar-block {
+    background-color: #FAF1E4;
+    border: 1.5px solid #CEDEBD;
+    border-radius: 10px;
+}
+
+.list-group-item {
+    border: none !important;
+    background-color: transparent !important;
+    color: #9EB384;
+}
+
+.toggle-more{
+    color: #435334;
+}
+
+.toggle-more:hover {
+    cursor: pointer;
+}
