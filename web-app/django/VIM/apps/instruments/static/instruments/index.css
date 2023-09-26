@@ -42,4 +42,8 @@ hr {
     cursor: pointer;
 }
 
-/*  */
+/* content */
+
+.card {
+    background-color: #FAF1E4;
+}
