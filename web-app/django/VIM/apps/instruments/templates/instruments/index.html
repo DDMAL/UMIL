@@ -10,13 +10,61 @@
 {% endblock %}
 
 {% block content %}
-    {% for instrument in instruments %}
-        <li>{{ instrument.id }}, 
-            {% for instrumentname in instrument.instrumentname_set.all %}
-                {{ instrumentname.language.en_label }}:{{ instrumentname.name }}
-            {% endfor %}
-            <img src="{{ instrument.avresource_set.first.uri }}">
-        </li>
-    {% endfor %}
+    <div class="container pt-5 sidebar-container">
+        <div class="row content">
+            <div class="col-sm-3 sidenav">
+                <h4>Sidebar</h4>
+            </div>
+        
+            <div class="col-sm-9">
+                <h4><small>INSTRUMENT LIST</small></h4>
+                <hr>
+                <div class="container mt-5">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3" id="masonry-grid">
+                        {% for instrument in instruments|slice:":20" %}
+                        <div class="col mb-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="card">
+                                    <img src="{{ instrument.avresource_set.first.uri }}" class="card-img-top" alt="instrument image">
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            {{ instrument.id }}.
+                                            {% for instrumentname in instrument.instrumentname_set.all %}
+                                                {{ instrumentname.language.en_label }}:{{ instrumentname.name }}
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
 
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+
+<script>
+    function initMasonry() {
+        var masonryGrid = document.getElementById('masonry-grid');
+
+        var masonry = new Masonry(masonryGrid, {
+            itemSelector: '.col',
+            columnWidth: '.col',
+            percentPosition: true,
+        });
+    }
+
+    var masonryGrid = document.getElementById('masonry-grid');
+    imagesLoaded(masonryGrid, initMasonry);
+
+    window.addEventListener('resize', initMasonry);
+</script>
 {% endblock %}
