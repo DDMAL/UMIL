@@ -22,7 +22,7 @@ hr {
     border-right: 3px solid #9EB384;
 }
 
-.sidebar-block {
+.info-block {
     background-color: #FAF1E4;
     border: 1.5px solid #CEDEBD;
     border-radius: 10px;
@@ -41,3 +41,5 @@ hr {
 .toggle-more:hover {
     cursor: pointer;
 }
+
+/*  */
