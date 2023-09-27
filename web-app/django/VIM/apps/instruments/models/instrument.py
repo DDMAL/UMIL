@@ -6,8 +6,8 @@ class Instrument(models.Model):
     default_image = models.ForeignKey(
         "AVResource",
         on_delete=models.PROTECT,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         related_name="default_image_of",
     )
     hornbostel_sachs_class = models.CharField(max_length=50, blank=True, help_text = "Hornbostel-Sachs classification")

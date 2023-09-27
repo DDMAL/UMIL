@@ -18,7 +18,7 @@ class AVResource(models.Model):
     format = models.CharField(
         blank=False
     )  # This should eventually be a choice field with supported formats
-    url = models.URLField(blank=False)
+    url = models.URLField(blank=False, max_length=1000)
     instrument_date = models.DateField(
         blank=True, null=True, help_text="When was this instrument made?"
     )
