@@ -11,21 +11,19 @@ hr {
     margin-top: 0;
 }
 
-.content-container {
+/* sidebar */
+.sidebar-container {
     background-color: white;
     border: 3px solid #9EB384;
     border-radius: 30px;
-}
-
-/* sidebar */
-.sidebar-container {
-    border-right: 3px solid #9EB384;
+    height: auto !important;
 }
 
 .info-block {
     background-color: #FAF1E4;
     border: 1.5px solid #CEDEBD;
     border-radius: 10px;
+    height: auto !important;
 }
 
 .list-group-item {
@@ -43,6 +41,11 @@ hr {
 }
 
 /* content */
+.content-container {
+    background-color: white;
+    border: 3px solid #9EB384;
+    border-radius: 30px;
+}
 
 .card {
     background-color: #FAF1E4;
