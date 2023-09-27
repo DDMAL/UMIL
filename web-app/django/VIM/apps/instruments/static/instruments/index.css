@@ -4,6 +4,7 @@
 h4 {
     color: #435334;
     font-size: 20px;
+    font-weight: 700;
 }
 
 hr {
@@ -38,6 +39,7 @@ hr {
 
 .toggle-more:hover {
     cursor: pointer;
+    color: #9EB384;
 }
 
 /* content */
@@ -49,4 +51,8 @@ hr {
 
 .card {
     background-color: #FAF1E4;
+}
+
+.card-text {
+    color: #435334;
 }
