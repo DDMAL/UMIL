@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static "instruments/index.css" %}">
+    <link rel="stylesheet" href="{% static "instruments/css/index.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -127,21 +127,5 @@
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
-
-<script>
-    function initMasonry() {
-        var masonryGrid = document.getElementById('masonry-grid');
-
-        var masonry = new Masonry(masonryGrid, {
-            itemSelector: '.col',
-            columnWidth: '.col',
-            percentPosition: true,
-        });
-    }
-
-    var masonryGrid = document.getElementById('masonry-grid');
-    imagesLoaded(masonryGrid, initMasonry);
-
-    window.addEventListener('resize', initMasonry);
-</script>
+<script src="{% static "instruments/js/masonry.js" %}"></script>
 {% endblock %}
