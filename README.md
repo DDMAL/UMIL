@@ -40,3 +40,15 @@ If changes you make require migrations, or you merge migrations made by others i
 > user@machine:~/dev-directory$ docker compose exec -it app bash
 > root@container-id:/virtual-instrument-museum/vim-app$ python manage.py migrate
 ```
+
+## Loading data
+
+At present, VIM supports an initial list of 262 instruments curated from Wikidata, and their names in English and French. These instruments can be found in `web-app/django/startup_data/vim_instruments_with_images-15Sept.csv`.
+
+Two django management commands are provided to load these initial instruments. These should be run from within the app Docker container.
+
+```bash
+> user@machine:~/dev-directory$ docker compose exec -it app bash
+> root@container-id:/virtual-instrument-museum/vim-app$ python manage.py import_languages
+> root@container-id:/virtual-instrument-museum/vim-app$ python manage.py import_instruments
+```
