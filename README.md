@@ -28,7 +28,7 @@ Django automates changes to the database schema with migrations.
 If your development changes any application models, be sure to make and commit migrations along with those changes. To create migrations, enter the application container and run the `makemigrations` command:
 
 ```console
-> user@machine:~/dev-directory$ docker compose exec -it app bash
+> user@machine:~/dev-directory$ docker exec -it vim-app bash
 > root@container-id:/virtual-instrument-museum/vim-app$ python manage.py makemigrations
 ```
 
@@ -37,6 +37,6 @@ Commit the resulting migrations files with the model changes.
 If changes you make require migrations, or you merge migrations made by others into you development branch, you will need to apply those migrations to your local copy of the database:
 
 ```console
-> user@machine:~/dev-directory$ docker compose exec -it app bash
+> user@machine:~/dev-directory$ docker exec -it vim-app bash
 > root@container-id:/virtual-instrument-museum/vim-app$ python manage.py migrate
 ```
