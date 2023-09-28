@@ -49,6 +49,16 @@ hr {
     border-radius: 30px;
 }
 
+.display-btn {
+    font-weight: bold;
+    color: #435334;
+    font-size: 20px;
+}
+
+.display-btn:focus {
+    border-color:#435334;
+}
+
 .card {
     background-color: #FAF1E4;
 }
