@@ -57,10 +57,15 @@ hr {
     color: #435334;
 }
 
+.pagination-container {
+    color: #435334;
+}
+
 .page-link {
     color: #435334;
 }
 
+.page-number,
 .page-link:hover {
     color: #9EB384;
 }
