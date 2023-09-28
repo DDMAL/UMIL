@@ -1,14 +1,16 @@
-function initMasonry() {
-    var masonryGrid = document.getElementById('masonry-grid');
-
+// Wait for the DOM to be fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+    // Initialize Masonry
+    var masonryGrid = document.getElementById("masonry-grid");
     var masonry = new Masonry(masonryGrid, {
-        itemSelector: '.col',
-        columnWidth: '.col',
-        percentPosition: true,
+        percentPosition: true, 
     });
-}
 
-var masonryGrid = document.getElementById('masonry-grid');
-imagesLoaded(masonryGrid, initMasonry);
+    // Initialize ImagesLoaded
+    var imgLoad = imagesLoaded(masonryGrid);
 
-window.addEventListener('resize', initMasonry);
+    // When all images are loaded, relayout Masonry
+    imgLoad.on("always", function () {
+        masonry.layout();
+    });
+});
