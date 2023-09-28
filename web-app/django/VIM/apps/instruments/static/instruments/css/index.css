@@ -42,8 +42,8 @@ hr {
     color: #9EB384;
 }
 
-/* content */
-.content-container {
+/* body */
+.body-container {
     background-color: white;
     border: 3px solid #9EB384;
     border-radius: 30px;
