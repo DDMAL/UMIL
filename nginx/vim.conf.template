@@ -1,0 +1,25 @@
+  upstream vim-app {
+    # define the vim-app upstream server
+    server vim-app:8001 fail_timeout=0;
+  }
+
+  server {
+    # if no host match, close connection
+    listen 80 default_server;
+    return 444;
+  }
+
+
+server {
+  listen 80;
+  client_max_body_size 4G;
+  server_name ${HOST_NAME};
+
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # pass client address to upstream server
+    proxy_set_header X-Forwarded-Proto $scheme; # pass scheme to upstream server
+    proxy_set_header Host $http_host; # pass host to upstream server
+
+    proxy_pass http://vim-app; # proxy request to vim-app upstream server
+  }
+}

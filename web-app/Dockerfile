@@ -5,4 +5,4 @@ RUN mkdir /virtual-instrument-museum
 COPY ./django-startup.sh /virtual-instrument-museum/django-startup.sh
 RUN chmod u+x /virtual-instrument-museum/django-startup.sh
 WORKDIR /virtual-instrument-museum/vim-app
-EXPOSE 8000
+EXPOSE 8001

@@ -12,8 +12,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    ports:
-      - "8000:8000"
+      - DEVELOPMENT=${DEVELOPMENT}
+      - HOST_NAME=${HOST_NAME}
     command: /virtual-instrument-museum/django-startup.sh
 
   postgres:
@@ -32,6 +32,17 @@ services:
       retries: 5
       start_period: 30s
     restart: unless-stopped
+
+  nginx:
+    build: ./nginx
+    container_name: vim-nginx
+    restart: unless-stopped
+    environment:
+      - HOST_NAME=${HOST_NAME}
+    ports:
+      - "8000:80"
+    depends_on:
+      - app
 
 networks:
   vim-net:

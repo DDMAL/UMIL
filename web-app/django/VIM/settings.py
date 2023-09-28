@@ -19,10 +19,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-0imv3dwuz0%pg13g72upze7k#ap^^8=ra=uj#i@ejpxqf@gk@0"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+IS_DEVELOPMENT = os.environ.get("DEVELOPMENT", False)
+IS_PRODUCTION = not IS_DEVELOPMENT
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = IS_DEVELOPMENT
+
+ALLOWED_HOSTS = [os.environ.get("HOST_NAME")]
 
 
 # Application definition
@@ -124,3 +127,9 @@ STATICFILES_DIRS = [BASE_DIR / "VIM" / "static"]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# DEPLOYMENT SETTINGS
+
+CSRF_COOKIE_SECURE = IS_PRODUCTION
+CSRF_TRUSTED_ORIGINS = [os.environ.get("HOST_NAME")]
+SESSION_COOKIE_SECURE = IS_PRODUCTION
