@@ -60,3 +60,7 @@ hr {
 .page-link {
     color: #435334;
 }
+
+.page-link:hover {
+    color: #9EB384;
+}
