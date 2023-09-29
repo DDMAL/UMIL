@@ -84,13 +84,40 @@ class Command(BaseCommand):
         ]
         return instrument_data
 
+    def create_database_objects(self, instrument_attrs: dict, ins_img_url: str) -> None:
+        """
+        Given a dictionary of instrument attributes and a url to an instrument image, 
+        create the corresponding database objects.
+
+        instrument_attrs [dict]: Dictionary of instrument attributes. See
+            parse_instrument_data for details.
+        ins_img_url [str]: URL of instrument image
+        """
+        ins_names = instrument_attrs.pop("ins_names")
+        instrument = Instrument.objects.create(**instrument_attrs)
+        for lang, name in ins_names.items():
+            InstrumentName.objects.create(
+                instrument=instrument,
+                language=self.language_map[lang],
+                name=name,
+                source_name="Wikidata",
+            )
+        img_obj = AVResource.objects.create(
+            instrument=instrument,
+            type="image",
+            format=ins_img_url.split(".")[-1],
+            url=ins_img_url,
+        )
+        instrument.default_image = img_obj
+        instrument.save()
+
     def handle(self, *args, **options) -> None:
         with open(
             "startup_data/vim_instruments_with_images-15sept.csv", encoding="utf-8-sig"
         ) as csvfile:
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
-        language_map = Language.objects.in_bulk(field_name="wikidata_code")
+        self.language_map = Language.objects.in_bulk(field_name="wikidata_code")
         with transaction.atomic():
             for ins_i in range(0, len(instrument_list), 50):
                 ins_ids_subset: list[str] = [
@@ -101,22 +128,5 @@ class Command(BaseCommand):
                 ins_imgs_subset: list[str] = [
                     ins["image"] for ins in instrument_list[ins_i : ins_i + 50]
                 ]
-                for idx, ins in enumerate(ins_data):
-                    ins_names = ins.pop("ins_names")
-                    instrument = Instrument.objects.create(**ins)
-                    for lang, name in ins_names.items():
-                        InstrumentName.objects.create(
-                            instrument=instrument,
-                            language=language_map[lang],
-                            name=name,
-                            source_name="Wikidata",
-                        )
-                    ins_img = ins_imgs_subset[idx]
-                    img_obj = AVResource.objects.create(
-                        instrument=instrument,
-                        type="image",
-                        format=ins_img.split(".")[-1],
-                        url=ins_img,
-                    )
-                    instrument.default_image = img_obj
-                    instrument.save()
+                for instrument_attrs, ins_img_url in zip(ins_data, ins_imgs_subset):
+                    self.create_database_objects(instrument_attrs, ins_img_url)
