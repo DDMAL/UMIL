@@ -1,0 +1,10 @@
+name: python-format
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  format-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: psf/black@stable
