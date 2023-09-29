@@ -98,6 +98,12 @@
                     <button type="button" class="btn px-1 py-0 square-btn justify-content-center display-btn" id="masonry-btn">
                         <i class="bi bi-columns-gap"></i>
                     </button>
+                    <button type="button" class="btn px-1 py-0 square-btn justify-content-center display-btn" id="list-btn" style="display:none;">
+                        <i class="bi bi-view-list"></i>
+                    </button>
+                    <button type="button" class="btn px-1 py-0 square-btn justify-content-center display-btn" id="std-btn" style="display:none;">
+                        <i class="bi bi-grid"></i>
+                    </button>
                 </div>
                 <hr>
                 <div class="container py-3">
@@ -171,4 +177,5 @@
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="{% static "instruments/js/masonry.js" %}"></script>
+<script src="{% static "instruments/js/display.js" %}"></script>
 {% endblock %}
