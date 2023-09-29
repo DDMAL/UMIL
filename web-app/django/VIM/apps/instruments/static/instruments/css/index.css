@@ -7,6 +7,10 @@ h4 {
     font-weight: 700;
 }
 
+h5 {
+    color: #435334;
+}
+
 hr {
     border: 1.5px solid #435334;
     margin-top: 0;
@@ -63,7 +67,7 @@ hr {
     background-color: #FAF1E4;
 }
 
-.card-text {
+.card-title {
     color: #435334;
 }
 
@@ -78,4 +82,28 @@ hr {
 .page-number,
 .page-link:hover {
     color: #9EB384;
+}
+
+/* list view */
+.list-item-container {
+    min-height: 200px; 
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.square-image-container img {
+    width: 100%;
+    height: auto;
+}
+
+.card-title h5:hover {
+    color: #9EB384;
+}
+
+.more-info {
+    color: #435334;
+}
+
+.more-info:hover {
+    border: 1px solid #435334;
 }
