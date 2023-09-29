@@ -106,27 +106,10 @@
                     </button>
                 </div>
                 <hr>
-                <div class="container py-3">
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" id="masonry-grid">
-                        {% for instrument in instruments %}
-                        <div class="col">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card mb-3">
-                                    <img src="{{ instrument.avresource_set.first.uri }}" class="card-img-top p-2" alt="instrument image">
-                                    <div class="card-body pb-2 pt-0">
-                                        <p class="card-text text-center">
-                                            {% for instrumentname in instrument.instrumentname_set.all %}
-                                                {% if instrumentname.language.en_label == "english" %}
-                                                    {{ instrumentname.name|title }}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        {% endfor %}
-                    </div>
+                <div class="container py-3" id="body-content">
+                    {% include "instruments/masonryView.html" %}
+                    {% include "instruments/listView.html" %}
+                    {% include "instruments/stdView.html" %}
                 </div>
 
                 <div class="pagination-container">

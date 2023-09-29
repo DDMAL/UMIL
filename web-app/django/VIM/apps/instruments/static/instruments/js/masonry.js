@@ -1,7 +1,7 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Masonry
-    var masonryGrid = document.getElementById("masonry-grid");
+    var masonryGrid = document.getElementById("masonry-view");
     var masonry = new Masonry(masonryGrid, {
         percentPosition: true, 
     });
