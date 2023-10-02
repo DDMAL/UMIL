@@ -91,11 +91,6 @@ hr {
     overflow: hidden;
 }
 
-.square-image-container img {
-    width: 100%;
-    height: auto;
-}
-
 .card-title h5:hover {
     color: #9EB384;
 }
@@ -106,4 +101,20 @@ hr {
 
 .more-info:hover {
     border: 1px solid #435334;
+}
+
+/* standard view */
+.square-box {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+}
+
+.square-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
