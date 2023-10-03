@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from VIM.apps.main.views import home
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 
 urlpatterns = [
+    path("", home, name="home"),
     path("admin/", admin.site.urls),
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
 ]
