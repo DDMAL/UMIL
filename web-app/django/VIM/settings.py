@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "VIM.apps.main",
     "VIM.apps.instruments",
 ]
 
@@ -70,14 +71,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "VIM.wsgi.application"
 
 DATABASES = {
-   "default": {
-       "ENGINE": "django.db.backends.postgresql",
-       "NAME": os.environ.get("POSTGRES_DB"),
-       "USER": os.environ.get("POSTGRES_USER"),
-       "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-       "HOST": "vim-db",
-       "PORT": "5432",
-   }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": "vim-db",
+        "PORT": "5432",
+    }
 }
 
 
@@ -117,9 +118,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
