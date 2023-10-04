@@ -20,16 +20,20 @@
   <header class="p-3 sticky-top">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0">
-          <img src="{% static "images/logo.svg" %}" alt="vim icon">
-          <a href="/" class="nav-link px-2 nav-home">VIM</a>
-        </a>
-
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/instruments/" class="px-2 text-decoration-none nav-opt">Instruments</a></li>
-          <li><a href="#" class="px-2 text-decoration-none nav-opt">placeholder</a></li>
-          <li><a href="#" class="px-2 text-decoration-none nav-opt">placeholder</a></li>
-          <li><a href="/about/" class="px-2 text-decoration-none nav-opt">About</a></li>
+        <ul class="nav nav-underline col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li class="nav-item">
+            <a href="/" class="nav-link nav-home px-2">
+              <img src="{% static "images/logo.svg" %}" alt="vim icon">
+              VIM
+            </a>
+          </li>
+          <li class="nav-item"><a href="/" class="nav-link px-2 text-decoration-none
+            {% if active_tab == 'home' %}active{% endif %}">Home</a></li>
+          <li class="nav-item"><a href="/instruments/" class="nav-link px-2 text-decoration-none
+            {% if active_tab == 'instruments' %}active{% endif %}">Instruments</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-decoration-none">Search</a></li>
+          <li class="nav-item"><a href="/about/" class="nav-link px-2 text-decoration-none
+            {% if active_tab == 'about' %}active{% endif %}">About</a></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
