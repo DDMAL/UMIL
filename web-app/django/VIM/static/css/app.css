@@ -9,17 +9,27 @@ header {
     background-color: #9EB384;
 }
 
-.nav-home {
-    color:#435334;
-}
-
-.nav-opt {
+.nav-link {
     color: #FAF1E4;
 }
 
-.nav-opt:hover,
-.nav-opt:active {
+.nav-link:hover,
+.nav-link:focus {
     color: #435334;
+}
+
+.active {
+    color: #435334 !important;
+    font-weight: 400 !important;
+    border-color: #435334 !important;
+}
+
+.nav-home,
+.nav-home:hover,
+.nav-home:not(:hover) { /* on mouse leave */
+    text-decoration: none;
+    color:#435334;
+    border-bottom: 0;
 }
 
 .search-input {
