@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "vim"
+version = "0.1.0"
+description = ""
+authors = ["DDMAL Lab"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "4.2.5"
+psycopg = "3.1.10"
+requests = "2.31.0"
+gunicorn = "21.2.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+mypy = "^1.5.1"
+pylint = "^2.17.6"
+
+
+[tool.poetry.group.debug.dependencies]
+django-debug-toolbar = "^4.2.0"
+django-extensions = "3.2.3"
+werkzeug = "3.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

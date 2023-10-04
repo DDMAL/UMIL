@@ -1,7 +1,11 @@
 # Uses Compose Specification (https://github.com/compose-spec/compose-spec/blob/master/spec.md)
 services:
   app:
-    build: ./web-app
+    build:
+      context: .
+      dockerfile: ./web-app/Dockerfile
+      args:
+        - DEVELOPMENT=$DEVELOPMENT
     container_name: vim-app
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
@@ -12,7 +16,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - DEVELOPMENT=${DEVELOPMENT}
       - HOST_NAME=${HOST_NAME}
     command: /virtual-instrument-museum/django-startup.sh
 

@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-0imv3dwuz0%pg13g72upze7k#ap^^8=ra=uj#i@ejpxqf@gk@0"
 
-IS_DEVELOPMENT = os.environ.get("DEVELOPMENT", False)
+IS_DEVELOPMENT = bool(os.environ.get("DEVELOPMENT") == "true")
 IS_PRODUCTION = not IS_DEVELOPMENT
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -27,6 +27,15 @@ DEBUG = IS_DEVELOPMENT
 
 ALLOWED_HOSTS = [os.environ.get("HOST_NAME")]
 
+if DEBUG:
+    import socket  # only if you haven't already imported this
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [
+        "127.0.0.1",
+        "10.0.2.2",
+        "172.20.0.4",
+    ]
 
 # Application definition
 
@@ -41,6 +50,9 @@ INSTALLED_APPS = [
     "VIM.apps.instruments",
 ]
 
+if IS_DEVELOPMENT:
+    INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -50,6 +62,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if IS_DEVELOPMENT:
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = "VIM.urls"
 
@@ -131,5 +146,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # DEPLOYMENT SETTINGS
 
 CSRF_COOKIE_SECURE = IS_PRODUCTION
-CSRF_TRUSTED_ORIGINS = [os.environ.get("HOST_NAME")]
+CSRF_TRUSTED_ORIGINS = [
+    f'http{"s" if IS_PRODUCTION else ""}://{os.environ.get("HOST_NAME")}'
+]
 SESSION_COOKIE_SECURE = IS_PRODUCTION
