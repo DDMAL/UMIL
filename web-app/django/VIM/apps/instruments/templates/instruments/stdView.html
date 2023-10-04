@@ -4,14 +4,15 @@
         <a href="#" class="text-decoration-none">
             <div class="card mb-3">
                 <div class="square-box">
-                    <img src="{{ instrument.avresource_set.first.uri }}" class="card-img-top rounded p-2 img-fluid" alt="instrument image">
+                    <img src="{{ instrument.avresource_set.first.url }}" class="card-img-top rounded p-2 img-fluid"
+                        alt="instrument image">
                 </div>
                 <div class="card-body pb-0 pt-0">
                     <p class="card-title text-center">
                         {% for instrumentname in instrument.instrumentname_set.all %}
-                            {% if instrumentname.language.en_label == "english" %}
-                                {{ instrumentname.name|title }}
-                            {% endif %}
+                        {% if instrumentname.language.en_label == "english" %}
+                        {{ instrumentname.name|title }}
+                        {% endif %}
                         {% endfor %}
                     </p>
                 </div>
