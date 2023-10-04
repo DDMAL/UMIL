@@ -13,3 +13,8 @@ class InstrumentList(ListView):
         if paginate_by is not None:
             return paginate_by
         return 20
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["active_tab"] = "instruments"
+        return context
