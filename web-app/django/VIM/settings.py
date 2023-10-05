@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [os.environ.get("HOST_NAME")]
 
 if DEBUG:
     import socket
+
     INTERNAL_IPS = [
         socket.gethostbyname("vim-nginx"),
     ]
