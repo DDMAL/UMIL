@@ -68,20 +68,17 @@ stdBtn.addEventListener("click", () => {
 
 
 function setMasonryView() {
-    // Wait for the DOM to be fully loaded
-    document.addEventListener("DOMContentLoaded", function () {
-        // Initialize Masonry
-        var masonryGrid = document.getElementById("masonry-view");
-        var masonry = new Masonry(masonryGrid, {
-            percentPosition: true, 
-        });
-    
-        // Initialize ImagesLoaded
-        var imgLoad = imagesLoaded(masonryGrid);
-    
-        // When all images are loaded, relayout Masonry
-        imgLoad.on("always", function () {
-            masonry.layout();
-        });
+    // Initialize Masonry
+    var masonryGrid = document.getElementById("masonry-view");
+    var masonry = new Masonry(masonryGrid, {
+        percentPosition: true, 
+    });
+
+    // Initialize ImagesLoaded
+    var imgLoad = imagesLoaded(masonryGrid);
+
+    // When all images are loaded, relayout Masonry
+    imgLoad.on("always", function () {
+        masonry.layout();
     });
 }
