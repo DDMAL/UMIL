@@ -1,9 +1,12 @@
+{% load static %}
+
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" id="masonry-view">
     {% for instrument in instruments %}
     <div class="col">
         <a href="#" class="text-decoration-none">
             <div class="card mb-3">
-                <img src="{{ instrument.avresource_set.first.url }}" class="card-img-top rounded p-2" alt="instrument image">
+                <img src="{{ instrument.avresource_set.first.url }}" class="card-img-top rounded p-2" alt="instrument image"
+                    onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';">
                 <div class="card-body pb-0 pt-0">
                     <p class="card-title text-center">
                         {% for instrumentname in instrument.instrumentname_set.all %}
