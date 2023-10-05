@@ -21,6 +21,20 @@ After cloning this repository, set up a local `.env` file. Copy or rename the `.
 
 The django development server should now be available at `localhost:8000`.
 
+### Debugging
+
+When installed with `DEVELOPMENT=true` in the `.env` file, some additional modules are included in the application container that provide debugging tools: `django-extensions` and `django-debug-toolbar`. The development installation runs the `runserver_plus` (provided by `django-extensions`) command automatically, which provides an in-browser debug console when errors are raised in the application. `django-extensions` also provides additional tools potentitally useful for development; see the [module documentation](https://django-extensions.readthedocs.io/en/latest/command_extensions.html) for more. The debugging toolbar provided by `django-debug-toolbar` is shown when viewing the development server in the browser.
+
+### Tools for Python Development
+
+VIM uses `poetry` to manage python dependencies and a `poetry.lock` file to ensure reproducible builds in development and production. Dependencies can be found in the `pyproject.toml` file and are divided into three groups: 
+
+1. `main` - the core dependencies required by the application
+2. `debug` - dependencies that provide tools for debugging, and that are installed in the application Docker container only during local development
+3. `dev` - optional dependencies (eg. for code formatting, linting, type checking) that can be useful in the development environment, but are never used in the application container
+
+It is not generally necessary to use `poetry` for development, except when adding additional dependencies. 
+
 ## Installation for Deployment
 
 VIM requires Docker Engine with Compose V2. Ensure that the remote server has these installed. 
