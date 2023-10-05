@@ -86,7 +86,7 @@ class Command(BaseCommand):
 
     def create_database_objects(self, instrument_attrs: dict, ins_img_url: str) -> None:
         """
-        Given a dictionary of instrument attributes and a url to an instrument image, 
+        Given a dictionary of instrument attributes and a url to an instrument image,
         create the corresponding database objects.
 
         instrument_attrs [dict]: Dictionary of instrument attributes. See
