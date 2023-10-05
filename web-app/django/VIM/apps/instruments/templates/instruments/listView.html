@@ -1,3 +1,5 @@
+{% load static %}
+
 <div class="row" id="list-view" style="display:none;">
     {% for instrument in instruments %}
     
@@ -5,7 +7,8 @@
         <div class="row g-0 p-2">
             <div class="col-md-2 align-items-center list-img-container">
                 <a href="#" class="text-decoration-none">
-                    <img src="{{ instrument.avresource_set.first.url }}" class="img-fluid rounded" alt="instrument image">
+                    <img src="{{ instrument.avresource_set.first.uri }}" class="img-fluid rounded" alt="instrument image"
+                        onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';">
                 </a>
             </div>
             <div class="col-md-10 card-body pb-2 pt-0">
