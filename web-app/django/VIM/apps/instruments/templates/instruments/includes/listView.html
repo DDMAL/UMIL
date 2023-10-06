@@ -1,0 +1,35 @@
+{% load static %}
+
+<div class="row" id="list-view" style="display:none;">
+    {% for instrument in instruments %}
+    
+    <div class="card mb-3 px-0 list-item-container">
+        <div class="row g-0 p-2">
+            <div class="col-md-2 align-items-center list-img-container">
+                <a href="#" class="text-decoration-none">
+                    <img src="{{ instrument.avresource_set.first.uri }}" class="img-fluid rounded" alt="instrument image"
+                        onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';">
+                </a>
+            </div>
+            <div class="col-md-10 card-body pb-2 pt-0">
+                <a href="#" class="text-decoration-none">
+                    <h5 class="card-title">
+                        {% for instrumentname in instrument.instrumentname_set.all %}
+                            {% if instrumentname.language.en_label == "english" %}
+                                {{ instrumentname.name|title }}
+                            {% endif %}
+                        {% endfor %}
+                    </h5>
+                </a>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta neque et eleifend congue. Nunc pellentesque, quam nec porttitor commodo, lectus ipsum efficitur neque, et convallis nisi ipsum at orci. Ut mattis ultrices purus et pellentesque. Vivamus suscipit est non tortor blandit, vitae varius lectus tempor. Quisque ullamcorper turpis non erat luctus, ut luctus nibh ultrices. Aenean a nunc libero. In vestibulum eros ex, non tristique elit placerat quis. Etiam ornare neque est. Integer sed orci lorem. Suspendisse potenti. Integer venenatis tempus auctor. Duis in tincidunt nulla. Nulla metus dui, congue nec facilisis rhoncus, porta nec magna.
+                </p>
+                <a class="more-info btn btn-sm btn-warning"  href="#" role="button">
+                    <i class="bi bi-info-circle"></i>
+                    <span>More information</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
