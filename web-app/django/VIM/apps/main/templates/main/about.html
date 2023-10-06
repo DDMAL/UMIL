@@ -6,10 +6,42 @@ About
 {% endblock %}
 
 {% block css_files %}
-<link rel="stylesheet" href="{% static "main/css/index.css" %}">
+<link rel="stylesheet" href="{% static "main/css/about.css" %}">
 {% endblock %}
 
 {% block content %}
+<div class="container content-container">
+  <div class="row pt-4 d-flex flex-column align-items-start justify-content-center h-100">
+    <div class="col">
+      <h4 class="mb-4">About Us</h4>
+      <p class="my-4">
+        As part of the 
+        <a href="https://linkedmusic.ca/">
+          LinkedMusic
+        </a> Project, we will also create an online Virtual Instruments Museum (VIM), which will crowd-source names and pictures of instruments through history and in different languages, improving multilingual coverage for linked data.
+      </p>
+      <p class="my-4">
+        Building on projects like 
+        <a href="https://mimo-international.com/MIMO/accueil-ermes.aspx">
+          MIMO (Musical Instruments Museum Online)
+        </a>
+        , VIM will build a special website to crowd-source the names of instruments, where pictures of instruments are displayed, and people can submit the name of the instruments in their own language. While this will be a significant undertaking, this should greatly aid in the mapping of instrument names and in searching for the same instrument across sources from different times and places. The multilingual search will be accomplished via a concept similar to a thesaurus, and each instrument will be represented by a URI. This URI will link all the names of the instrument together, and this system will also be used to display the search results in the user’s preferred language when using SESEMMI (Search Engine System for Enhancing Music Metadata Interoperability).
+      </p>
+      <p class="my-4">
+        A list of online databases either about musical instruments or with musical instrument sections can be found 
+        <a href="https://linkedmusic.ca/omid/">
+          here
+        </a>
+      </p>
+      <p class="my-4">
+        Potential VIM Website Templates (based on photography, museum and shopping websites) can be found 
+        <a href="https://linkedmusic.ca/pdfs/VIM%20Potential%20Templates.pdf">
+          here
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
