@@ -96,9 +96,10 @@ Instrument List
     <div class="navigation d-flex justify-content-between align-items-center">
         <h4 class="ms-3 my-auto"><small>INSTRUMENT LIST</small></h4>
         <div class="d-flex">
-          <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn">
+          <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn" data-bs-toggle="modal" data-bs-target="#paginationModal">
             <i class="bi bi-gear"></i>
           </button>
+          {% include "instruments/includes/pageSetting.html" %}
           <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
             <i class="bi bi-columns-gap"></i>
           </button>
@@ -164,4 +165,5 @@ Instrument List
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="{% static "instruments/js/DisplayMode.js" %}"></script>
+<script src="{% static "instruments/js/pagination.js" %}"></script>
 {% endblock %}
