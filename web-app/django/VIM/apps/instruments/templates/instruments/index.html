@@ -2,162 +2,161 @@
 {% load static %}
 
 {% block title %}
-    Instrument List
+Instrument List
 {% endblock %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static "instruments/css/index.css" %}">
+<link rel="stylesheet" href="{% static "instruments/css/index.css" %}">
 {% endblock %}
 
 {% block content %}
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="px-3 pt-3 me-1 sidebar-container">
-                    <div class="info-block p-2 mb-3">
-                        <h4>#####</h4>
-                        <hr>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <div class="collapse" id="sidebar-more-0">
-                                <li class="list-group-item d-flex justify-content-between p-0">
-                                    <span class="text-start">###</span>
-                                    <span class="text-end">###</span>
-                                </li>
-                            </div>
-                            <div class="toggle-more d-flex justify-content-center" data-bs-toggle="collapse" data-bs-target="#sidebar-more-0" aria-expanded="false">
-                                <i class="bi bi-chevron-double-down ps-1"></i>
-                            </div>
-                        </ul>
-                    </div>
-                    <div class="info-block p-2 mb-3">
-                        <h4>#####</h4>
-                        <hr>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="info-block p-2 mb-3">
-                        <h4>#####</h4>
-                        <hr>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between p-0">
-                                <span class="text-start">###</span>
-                                <span class="text-end">###</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="px-3 pt-3 me-1 sidebar-container">
+        <div class="info-block p-2 mb-3">
+          <h4>#####</h4>
+          <hr>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <div class="collapse" id="sidebar-more-0">
+              <li class="list-group-item d-flex justify-content-between p-0">
+                <span class="text-start">###</span>
+                <span class="text-end">###</span>
+              </li>
             </div>
-        
-            <div class="col-lg-9 pt-3 body-container">
-                <div class="navigation d-flex justify-content-between align-items-center">
-                    <h4 class="ms-3 my-auto"><small>INSTRUMENT LIST</small></h4>
-                    <div class="d-flex">
-                        <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn">
-                            <i class="bi bi-gear"></i>
-                        </button>
-                        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
-                            <i class="bi bi-columns-gap"></i>
-                        </button>
-                        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
-                            <i class="bi bi-view-list"></i>
-                        </button>
-                        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="std-btn" style="display:none;">
-                            <i class="bi bi-grid"></i>
-                        </button>
-                    </div>
-                </div>
-                <hr>
-                <div class="container py-3" id="body-content">
-                    {% include "instruments/includes/masonryView.html" %}
-                    {% include "instruments/includes/listView.html" %}
-                    {% include "instruments/includes/stdView.html" %}
-                </div>
-
-                <div class="pagination-container">
-                    <ul class="pagination justify-content-center">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="First" title="First">
-                                    <i class="bi bi-chevron-double-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous" title="Previous">
-                                    <i class="bi bi-chevron-left"></i>
-                                </a>
-                            </li>
-                        {% endif %}
-                        
-                        <li class="page-item align-self-center">
-                            <span class="current p-2">
-                                Page 
-                                <span class="page-number">{{ page_obj.number }}</span>
-                                of 
-                                {{ page_obj.paginator.num_pages }}
-                            </span>
-                        </li>
-
-                        {% if page_obj.has_next %}
-                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next" title="Next">
-                                    <i class="bi bi-chevron-right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last" title="Last">
-                                    <i class="bi bi-chevron-double-right"></i>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
+            <div class="toggle-more d-flex justify-content-center" data-bs-toggle="collapse" data-bs-target="#sidebar-more-0" aria-expanded="false">
+              <i class="bi bi-chevron-double-down ps-1"></i>
             </div>
+          </ul>
+        </div>
+        <div class="info-block p-2 mb-3">
+          <h4>#####</h4>
+          <hr>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+          </ul>
+        </div>
+        <div class="info-block p-2 mb-3">
+          <h4>#####</h4>
+          <hr>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between p-0">
+              <span class="text-start">###</span>
+              <span class="text-end">###</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+  </div>
+    
+  <div class="col-lg-9 pt-3 body-container">
+    <div class="navigation d-flex justify-content-between align-items-center">
+        <h4 class="ms-3 my-auto"><small>INSTRUMENT LIST</small></h4>
+        <div class="d-flex">
+          <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn">
+            <i class="bi bi-gear"></i>
+          </button>
+          <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
+            <i class="bi bi-columns-gap"></i>
+          </button>
+          <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
+            <i class="bi bi-view-list"></i>
+          </button>
+          <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="std-btn" style="display:none;">
+            <i class="bi bi-grid"></i>
+          </button>
         </div>
     </div>
+    <hr>
+    <div class="container py-3" id="body-content">
+      {% include "instruments/includes/masonryView.html" %}
+      {% include "instruments/includes/listView.html" %}
+      {% include "instruments/includes/stdView.html" %}
+    </div>
+
+    <div class="pagination-container">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First" title="First">
+              <i class="bi bi-chevron-double-left"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous" title="Previous">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+        {% endif %}
+          
+        <li class="page-item align-self-center">
+          <span class="current p-2">
+            Page 
+            <span class="page-number">{{ page_obj.number }}</span>
+            of 
+            {{ page_obj.paginator.num_pages }}
+          </span>
+        </li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next" title="Next">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+          <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last" title="Last">
+              <i class="bi bi-chevron-double-right"></i>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
 
