@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}
-Instrument List
+{% trans "Instrument List" %}
 {% endblock %}
 
 {% block css_files %}
@@ -94,7 +95,7 @@ Instrument List
     
   <div class="col-lg-9 pt-3 body-container">
     <div class="navigation d-flex justify-content-between align-items-center">
-        <h4 class="ms-3 my-auto"><small>INSTRUMENT LIST</small></h4>
+        <h4 class="ms-3 my-auto"><small>{% trans "INSTRUMENT LIST" %}</small></h4>
         <div class="d-flex">
           <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn">
             <i class="bi bi-gear"></i>
@@ -134,9 +135,9 @@ Instrument List
           
         <li class="page-item align-self-center">
           <span class="current p-2">
-            Page 
+            {% trans "Page" %} 
             <span class="page-number">{{ page_obj.number }}</span>
-            of 
+            {% trans "of" %} 
             {{ page_obj.paginator.num_pages }}
           </span>
         </li>
