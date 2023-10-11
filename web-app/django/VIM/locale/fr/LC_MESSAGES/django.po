@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-11 21:37+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: VIM/apps/instruments/templates/instruments/index.html:6
+msgid "Instrument List"
+msgstr "Liste des Instruments"
+
+#: VIM/apps/instruments/templates/instruments/index.html:98
+msgid "INSTRUMENT LIST"
+msgstr "LISTE DES INSTRUMENTS"
+
+#: VIM/apps/instruments/templates/instruments/index.html:138
+msgid "Page"
+msgstr "Page"
+
+#: VIM/apps/instruments/templates/instruments/index.html:140
+msgid "of"
+msgstr "de"
+
+#: VIM/apps/main/templates/main/about.html:6 VIM/templates/base.html:36
+msgid "About"
+msgstr "À propos"
+
+#: VIM/apps/main/templates/main/about.html:17
+msgid "About VIM"
+msgstr "À propos de VIM"
+
+#: VIM/apps/main/templates/main/about.html:19
+msgid "As part of the "
+msgstr "Dans le cadre du "
+
+#: VIM/apps/main/templates/main/about.html:23
+msgid ""
+"Project, we will also create an online Virtual Instruments Museum (VIM), "
+"which will crowd-source names and pictures of instruments through history "
+"and in different languages, improving multilingual coverage for linked data."
+msgstr ""
+"Project, nous créerons également un Musée Virtuel des Instruments en ligne "
+"(VIM) qui sollicitera les noms et les images des instruments à travers "
+"l'histoire et dans différentes langues, améliorant ainsi la couverture "
+"multilingue des données liées."
+
+#: VIM/apps/main/templates/main/about.html:26
+msgid "Building on projects like "
+msgstr "S'appuyant sur des projets tels que "
+
+#: VIM/apps/main/templates/main/about.html:30
+msgid ""
+", VIM will build a special website to crowd-source the names of instruments, "
+"where pictures of instruments are displayed, and people can submit the name "
+"of the instruments in their own language. While this will be a significant "
+"undertaking, this should greatly aid in the mapping of instrument names and "
+"in searching for the same instrument across sources from different times and "
+"places. The multilingual search will be accomplished via a concept similar "
+"to a thesaurus, and each instrument will be represented by a URI. This URI "
+"will link all the names of the instrument together, and this system will "
+"also be used to display the search results in the user’s preferred language "
+"when using SESEMMI (Search Engine System for Enhancing Music Metadata "
+"Interoperability)."
+msgstr ""
+"e VIM construira un site Web spécial pour solliciter les noms des "
+"instruments, où les images des instruments sont affichées, et les gens "
+"peuvent soumettre le nom des instruments dans leur propre langue. Bien que "
+"cela représente un effort significatif, cela devrait grandement contribuer à "
+"la cartographie des noms d'instruments et à la recherche du même instrument "
+"dans des sources de différentes époques et de différents endroits. La "
+"recherche multilingue sera réalisée au moyen d'un concept similaire à un "
+"thésaurus, et chaque instrument sera représenté par un URI. Cet URI liera "
+"tous les noms de l'instrument ensemble, et ce système sera également utilisé "
+"pour afficher les résultats de la recherche dans la langue préférée de "
+"l'utilisateur lors de l'utilisation de SESEMMI (Système de recherche pour "
+"l'amélioration de l'interopérabilité des métadonnées musicales)."
+
+#: VIM/apps/main/templates/main/about.html:33
+msgid ""
+"A list of online databases either about musical instruments or with musical "
+"instrument sections can be found "
+msgstr ""
+"Une liste de bases de données en ligne concernant les instruments de musique "
+"ou contenant des sections sur les instruments de musique peut être trouvée "
+
+#: VIM/apps/main/templates/main/about.html:35
+#: VIM/apps/main/templates/main/about.html:42
+msgid "here"
+msgstr "ici"
+
+#: VIM/apps/main/templates/main/about.html:40
+msgid ""
+"Potential VIM Website Templates (based on photography, museum and shopping "
+"websites) can be found "
+msgstr ""
+"Des modèles potentiels de sites Web VIM (basés sur des sites de "
+"photographie, de musées et de vente en ligne) peuvent être trouvés "
+
+#: VIM/apps/main/templates/main/index.html:18
+msgid "<span style='color: #9EB384;'>Virtual</span> Instrument Museum"
+msgstr "Musée <span style='color: #9EB384;'>Virtuel</span> des Instruments"
+
+#: VIM/apps/main/templates/main/index.html:21
+msgid ""
+"Where the past and present of music collide. Explore, share, connect "
+"instruments in every language."
+msgstr ""
+"Où le passé et le présent de la musique se rencontrent. Explorez, partagez, "
+"connectez des instruments dans toutes les langues."
+
+#: VIM/apps/main/templates/main/index.html:24
+msgid "Get Started"
+msgstr "Commencer"
+
+#: VIM/settings.py:133
+msgid "English"
+msgstr "Anglais"
+
+#: VIM/settings.py:134
+msgid "French"
+msgstr "Français"
+
+#: VIM/templates/404.html:9
+msgid "We can't seem to find the page you are looking for."
+msgstr "Nous ne parvenons pas à trouver la page que vous recherchez."
+
+#: VIM/templates/base.html:31
+msgid "Home"
+msgstr "Accueil"
+
+#: VIM/templates/base.html:33
+msgid "Instruments"
+msgstr "Instruments"
+
+#: VIM/templates/base.html:34
+msgid "Search"
+msgstr "Recherche"
+
+#: VIM/templates/base.html:40
+msgid "Search..."
+msgstr "Recherche..."
+
+#: VIM/templates/base.html:44
+msgid "Login"
+msgstr "Connexion"
+
+#: VIM/templates/base.html:45
+msgid "Sign-up"
+msgstr "S'inscrire"

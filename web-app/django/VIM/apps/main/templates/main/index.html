@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}
 VIM
@@ -13,12 +14,14 @@ VIM
 <div class="container content-container">
   <div class="row d-flex flex-column align-items-start justify-content-center h-100">
     <div class="col-6">
-      <h1><span style="color: #9EB384;">Virtual</span> Instrument Museum</h1>
+      <h1>
+        {% trans "<span style='color: #9EB384;'>Virtual</span> Instrument Museum" %}
+      </h1>
       <p>
-        Where the past and present of music collide. Explore, share, connect instruments in every language.
+        {% trans "Where the past and present of music collide. Explore, share, connect instruments in every language." %}
       </p>
       <a href="{% url "instrument-list" %}">
-        <button class="btn btn-warning start-btn">Get Started</button>
+        <button class="btn btn-warning start-btn">{% trans "Get Started" %}</button>
       </a>
     </div>
   </div>
