@@ -12,7 +12,7 @@ NOTE: These instructions are for local development only. Refer to the "Installat
 
 VIM requires Docker Engine with Compose V2. VIM's Docker Compose configuration is written according to the Compose Specification. 
 
-After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Verify the values of the `DEVELOPMENT` and `HOST_NAME` variables. For local development ONLY, these should be set to "true" and "localhost" respectively.
+After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Verify the values of the `DEVELOPMENT`, `HOST_NAME`, and `PORT` variables. For local development ONLY, these should be set to "true", "localhost", and "8000" respectively.
 
 ```console
 > docker compose build
@@ -41,7 +41,7 @@ VIM requires Docker Engine with Compose V2. Ensure that the remote server has th
 
 SSH into the server. After cloning the repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Ensure that `POSTGRES_PASSWORD` is secure.
 
-Ensure that the `DEVELOPMENT` variable is set to "false", and that `HOST_NAME` is set to the host name where the VIM instance will be served (for example, "vim.linkedmusic.ca" or "vim.staging.linkedmusic.ca"). 
+Ensure that the `DEVELOPMENT` variable is set to "false", and that `HOST_NAME` is set to the host name where the VIM instance will be served (for example, "vim.linkedmusic.ca" or "vim.staging.linkedmusic.ca"). Set the `PORT` variable to "80".
 
 Then, run
 
