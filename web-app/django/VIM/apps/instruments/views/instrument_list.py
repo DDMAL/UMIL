@@ -25,5 +25,5 @@ class InstrumentList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["active_tab"] = "instruments"
-        context['instrument_num'] = Instrument.objects.count()
+        context["instrument_num"] = Instrument.objects.count()
         return context
