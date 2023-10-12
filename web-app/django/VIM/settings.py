@@ -153,7 +153,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # DEPLOYMENT SETTINGS
 
 CSRF_COOKIE_SECURE = IS_PRODUCTION
-CSRF_TRUSTED_ORIGINS = [
-    f'http{"s" if IS_PRODUCTION else ""}://{os.environ.get("HOST_NAME")}'
-]
+CSRF_TRUSTED_ORIGINS = [f'https://{os.environ.get("HOST_NAME")}']
 SESSION_COOKIE_SECURE = IS_PRODUCTION
