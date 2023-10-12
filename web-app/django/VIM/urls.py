@@ -24,6 +24,7 @@ urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("VIM.apps.main.urls", namespace="main")),
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
+    prefix_default_language=False,
 )
 
 
