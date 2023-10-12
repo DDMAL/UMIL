@@ -104,9 +104,9 @@
           <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
             <i class="bi bi-columns-gap"></i>
           </button>
-          <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
+          {% comment %} <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
             <i class="bi bi-view-list"></i>
-          </button>
+          </button> {% endcomment %}
           <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="std-btn" style="display:none;">
             <i class="bi bi-grid"></i>
           </button>
@@ -115,7 +115,7 @@
     <hr>
     <div class="container py-3" id="body-content">
       {% include "instruments/includes/masonryView.html" %}
-      {% include "instruments/includes/listView.html" %}
+      {% comment %} {% include "instruments/includes/listView.html" %} {% endcomment %}
       {% include "instruments/includes/stdView.html" %}
     </div>
 
@@ -166,5 +166,5 @@
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="{% static "instruments/js/DisplayMode.js" %}"></script>
-<script src="{% static "instruments/js/pagination.js" %}"></script>
+<script src="{% static "instruments/js/PaginationTools.js" %}"></script>
 {% endblock %}

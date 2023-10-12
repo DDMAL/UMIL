@@ -40,27 +40,25 @@
           <input type="search" class="form-control search-input" placeholder="{% trans 'Search...' %}" aria-label="Search">
         </form>
 
-        <div class="text-end">
+        <div class="text-end d-flex">
           <button type="button" class="btn me-2 login-btn">{% trans "Login" %}</button>
-          <button type="button" class="btn btn-warning signup-btn">{% trans "Sign-up" %}</button>
-        </div>
-
-        <div class="dropdown">
-          {% get_current_language as CURR_LANGUAGE_CODE %}
-          {% get_language_info for CURR_LANGUAGE_CODE as curr_language_info %}
-          {% get_available_languages as LANGUAGE_LIST %}
-          {% get_language_info_list for LANGUAGE_LIST as language_info_list %}
-      
-          <button class="btn ms-2 dropdown-toggle language-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ curr_language_info.name_local }}
-          </button>
-          <ul class="dropdown-menu language-dp-menu">
-            {% for language_info in language_info_list %}
-              <li><a class="dropdown-item language-opt" href="/{{ language_info.code }}/">
-                  {{ language_info.name_local }}
-              </a></li>
-            {% endfor %}
-          </ul>
+          <div class="dropdown">
+            {% get_current_language as CURR_LANGUAGE_CODE %}
+            {% get_language_info for CURR_LANGUAGE_CODE as curr_language_info %}
+            {% get_available_languages as LANGUAGE_LIST %}
+            {% get_language_info_list for LANGUAGE_LIST as language_info_list %}
+        
+            <button class="btn ms-2 dropdown-toggle language-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ curr_language_info.name_local }}
+            </button>
+            <ul class="dropdown-menu language-dp-menu">
+              {% for language_info in language_info_list %}
+                <li><a class="dropdown-item language-opt" href="/{{ language_info.code }}/">
+                    {{ language_info.name_local }}
+                </a></li>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

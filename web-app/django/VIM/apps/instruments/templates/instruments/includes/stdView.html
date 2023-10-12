@@ -4,7 +4,7 @@
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" id="std-view" style="display:none;">
   {% for instrument in instruments %}
   <div class="col">
-    <a href="#" class="text-decoration-none">
+    <a href="https://wikidata.org/wiki/{{ instrument.wikidata_id}}" class="text-decoration-none" target="_blank">
       <div class="card mb-3">
         <div class="square-box">
           <img src="{{ instrument.avresource_set.first.url }}" class="card-img-top rounded p-2 img-fluid"
