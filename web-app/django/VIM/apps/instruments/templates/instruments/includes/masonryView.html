@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n%}
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4" id="masonry-view">
   {% for instrument in instruments %}
@@ -9,8 +10,11 @@
           onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';">
         <div class="card-body pb-0 pt-0">
           <p class="card-title text-center">
+            {% get_current_language as CURR_LANGUAGE_CODE %}
+            {% get_language_info for CURR_LANGUAGE_CODE as curr_language_info %}
+            
             {% for instrumentname in instrument.instrumentname_set.all %}
-              {% if instrumentname.language.en_label == "english" %}
+              {% if instrumentname.language.wikidata_code == curr_language_info.code %}
                 {{ instrumentname.name|title }}
               {% endif %}
             {% endfor %}
