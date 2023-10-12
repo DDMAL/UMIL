@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<schema name="virtual-instrument-museum" version="2.0">
+    <field name="sid" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <uniqueKey>sid</uniqueKey>
+    <field name="type" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="_version_" type="long" indexed="true" stored="true" />
+
+    <dynamicField name="*_i" type="int" indexed="true" stored="true" />
+    <dynamicField name="*_is" type="int" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_s" type="string" indexed="true" stored="true" />
+    <dynamicField name="*_ss" type="string" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_l" type="long" indexed="true" stored="true" />
+    <dynamicField name="*_ls" type="long" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_t" type="text_general" indexed="true" stored="true" />
+    <dynamicField name="*_t_hidden" type="text_general" indexed="true" stored="false" />
+    <dynamicField name="*_txt" type="text_general" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_b" type="boolean" indexed="true" stored="true" />
+    <dynamicField name="*_bs" type="boolean" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_f" type="float" indexed="true" stored="true" />
+    <dynamicField name="*_fs" type="float" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_d" type="double" indexed="true" stored="true" />
+    <dynamicField name="*_ds" type="double" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="*_dt" type="date" indexed="true" stored="true" />
+    <dynamicField name="*_dts" type="date" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="ignored_*" type="ignored" multiValued="true" />
+    <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true" />
+    <dynamicField name="random_*" type="random" />
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" />
+    <fieldType name="int" class="solr.IntPointField"  />
+    <fieldType name="float" class="solr.FloatPointField"  />
+    <fieldType name="long" class="solr.LongPointField" />
+    <fieldType name="double" class="solr.DoublePointField"  />
+
+    <fieldType name="date" class="solr.DatePointField" />
+    <!--Binary data type. The data should be sent/retrieved in as Base64 encoded Strings -->
+    <fieldtype name="binary" class="solr.BinaryField" />
+
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+            <tokenizer class="solr.StandardTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.NGramFilterFactory" minGramSize="1" maxGramSize="15" />
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.StandardTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
+    <!-- Just like text_general except it reverses the characters of
+	 each token, to enable more efficient leading wildcard queries. -->
+    <fieldType name="text_general_rev" class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+            <tokenizer class="solr.StandardTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+            <filter class="solr.ReversedWildcardFilterFactory" withOriginal="true" maxPosAsterisk="3" maxPosQuestion="2" maxFractionAsterisk="0.33" />
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.StandardTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
+  
+   <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+</schema>
