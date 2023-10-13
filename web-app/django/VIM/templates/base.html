@@ -31,7 +31,6 @@
             {% if active_tab == 'home' %}active{% endif %}">{% trans "Home" %}</a></li>
           <li class="nav-item"><a href="{% url "instrument-list" %}" class="nav-link px-2 text-decoration-none
             {% if active_tab == 'instruments' %}active{% endif %}">{% trans "Instruments" %}</a></li>
-          <li class="nav-item"><a href="#" class="nav-link px-2 text-decoration-none">{% trans "Search" %}</a></li>
           <li class="nav-item"><a href="{% url "main:about" %}" class="nav-link px-2 text-decoration-none
             {% if active_tab == 'about' %}active{% endif %}">{% trans "About" %}</a></li>
         </ul>
