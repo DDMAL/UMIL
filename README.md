@@ -39,7 +39,7 @@ It is not generally necessary to use `poetry` for development, except when addin
 
 VIM requires Docker Engine with Compose V2. Ensure that the remote server has these installed. 
 
-SSH into the server. After cloning the repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Ensure that `POSTGRES_PASSWORD` is secure.
+SSH into the server. After cloning the repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Ensure that `POSTGRES_PASSWORD` is secure. Additionally, set `DJANGO_SECRET_KEY` with a secure secret key for Django. 
 
 Ensure that the `DEVELOPMENT` variable is set to "false", and that `HOST_NAME` is set to the host name where the VIM instance will be served (for example, "vim.linkedmusic.ca" or "vim.staging.linkedmusic.ca"). Set the `PORT` variable to "80".
 
