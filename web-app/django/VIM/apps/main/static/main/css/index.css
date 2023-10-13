@@ -1,5 +1,5 @@
 .content-container {
-    height: 78vh;
+    height: 90vh;
 }
 
 .content-container h1 {
@@ -26,4 +26,11 @@
 
 .start-btn:hover {
     color: #435334;
+}
+
+
+.line {
+    width: 1px;
+    height: 60%;
+    background-color: #9EB384;
 }
