@@ -18,6 +18,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - HOST_NAME=${HOST_NAME}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
     command: /virtual-instrument-museum/django-startup.sh
 
   postgres:

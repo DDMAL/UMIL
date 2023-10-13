@@ -12,7 +12,7 @@ NOTE: These instructions are for local development only. Refer to the "Installat
 
 VIM requires Docker Engine with Compose V2. VIM's Docker Compose configuration is written according to the Compose Specification. 
 
-After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Verify the values of the `DEVELOPMENT`, `HOST_NAME`, and `PORT` variables. For local development ONLY, these should be set to "true", "localhost", and "8000" respectively.
+After cloning this repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD` and the `DJANGO_SECRET_KEY`. Verify the values of the `DEVELOPMENT`, `HOST_NAME`, and `PORT` variables. For local development ONLY, these should be set to "true", "localhost", and "8000" respectively.
 
 ```console
 > docker compose build
