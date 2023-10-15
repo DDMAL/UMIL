@@ -10,7 +10,7 @@
             alt="instrument image" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';">
         </div>
         <div class="card-body pb-0 pt-0">
-          <p class="card-title text-center">
+          <p class="card-title text-center notranslate">
             {% for instrumentname in instrument.instrumentname_set.all %}
               {% if instrumentname.language.en_label == "english" %}
                 {{ instrumentname.name|title }}
