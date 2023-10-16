@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load i18n %}
 
 {% block title %}
 VIM
@@ -11,20 +10,45 @@ VIM
 {% endblock %}
 
 {% block content %}
-<div class="container content-container">
-  <div class="row d-flex flex-column align-items-start justify-content-center h-100">
-    <div class="col-6">
-      <h1>
-        {% trans "<span style='color: #9EB384;'>Virtual</span> Instrument Museum" %}
-      </h1>
-      <p>
-        {% trans "Where the past and present of music collide. Explore, share, connect instruments in every language." %}
-      </p>
-      <a href="{% url "instrument-list" %}">
-        <button class="btn btn-warning start-btn">{% trans "Get Started" %}</button>
-      </a>
+<div class="container content-container d-flex align-items-center">
+  <div>
+    <div class="row">
+      <div class="col-6">
+        <h1>
+          <span style='color: #9EB384;'>Virtual</span> Instrument <br>Museum
+      </div>
+      <div class="col-6 notranslate">
+        <h1>
+          Musée <span style='color: #9EB384;'>Virtuel</span> des Instruments
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <p>
+          Where the past and present of music collide. <br>Explore, share, connect musical instruments in every language.
+        </p>
+      </div>
+      <div class="col-6 notranslate">
+        <p>
+          Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <a href="{% url "instrument-list" %}">
+          <button class="btn btn-warning start-btn">Get Started</button>
+        </a>
+      </div>
+      <div class="col-6 notranslate">
+        <a href="{% url "instrument-list" %}">
+          <button class="btn btn-warning start-btn">Commencer</button>
+        </a>
+      </div>
     </div>
   </div>
+  
 </div>
 {% endblock %}
 

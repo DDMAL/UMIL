@@ -1,5 +1,4 @@
 {% load static %}
-{% load i18n%}
 
 <div class="row" id="list-view" style="display:none;">
   {% for instrument in instruments %}
@@ -14,12 +13,9 @@
       </div>
       <div class="col-md-10 card-body pb-2 pt-0">
         <a href="#" class="text-decoration-none">
-          <h5 class="card-title">
-            {% get_current_language as CURR_LANGUAGE_CODE %}
-            {% get_language_info for CURR_LANGUAGE_CODE as curr_language_info %}
-            
+          <h5 class="card-title notranslate">
             {% for instrumentname in instrument.instrumentname_set.all %}
-              {% if instrumentname.language.wikidata_code == curr_language_info.code %}
+              {% if instrumentname.language.en_label == "english" %}
                 {{ instrumentname.name|title }}
               {% endif %}
             {% endfor %}

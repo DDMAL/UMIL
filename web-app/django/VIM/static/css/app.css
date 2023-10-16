@@ -78,6 +78,36 @@ header {
     background-color: #CEDEBD;
 }
 
+#google_translate_element {
+    border: 1px solid #FAF1E4;
+    border-radius: 0.375rem;
+}
+
+.goog-te-combo,
+.goog-te-combo:valid {
+    color: #FAF1E4;
+    font-size: 16px;
+    /* height: 100%; */
+}
+
+#google_translate_element:hover {
+    border: 1px solid #FAF1E4;
+    background-color: #FAF1E4;
+}
+
+#google_translate_element:hover  .goog-te-combo{
+    color: #435334;
+}
+
+.goog-logo-link,
+.goog-te-gadget span {
+    display: none !important;
+}
+
+.goog-te-gadget {
+    font-size: 0 !important;
+}
+
 /* main */
 main {
     background-color: #FAF1E4;
