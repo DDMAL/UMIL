@@ -62,14 +62,6 @@ header {
     color: #435334;
 }
 
-.language-btn {
-    color:#435334;
-}
-
-.language-btn:focus {
-    border-color:#435334;
-}
-
 .dropdown-menu {
     background-color: #FAF1E4;
 }
