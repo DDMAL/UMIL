@@ -1,5 +1,5 @@
 {% load static %}
-{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,19 +25,19 @@
             </a>
           </li>
           <li class="nav-item"><a href="{% url "main:home" %}" class="nav-link px-2 text-decoration-none
-            {% if active_tab == 'home' %}active{% endif %}">{% trans "Home" %}</a></li>
+            {% if active_tab == 'home' %}active{% endif %}">Home</a></li>
           <li class="nav-item"><a href="{% url "instrument-list" %}" class="nav-link px-2 text-decoration-none
-            {% if active_tab == 'instruments' %}active{% endif %}">{% trans "Instruments" %}</a></li>
+            {% if active_tab == 'instruments' %}active{% endif %}">Instruments</a></li>
           <li class="nav-item"><a href="{% url "main:about" %}" class="nav-link px-2 text-decoration-none
-            {% if active_tab == 'about' %}active{% endif %}">{% trans "About" %}</a></li>
+            {% if active_tab == 'about' %}active{% endif %}">About</a></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control search-input" placeholder="{% trans 'Search...' %}" aria-label="Search">
+          <input type="search" class="form-control search-input" placeholder="Search..." aria-label="Search">
         </form>
 
         <div class="text-end d-flex">
-          <button type="button" class="btn me-2 login-btn">{% trans "Login" %}</button>
+          <button type="button" class="btn me-2 login-btn">Login</button>
           <div id="google_translate_element" class="d-flex align-items-center"></div>
         </div>
       </div>
