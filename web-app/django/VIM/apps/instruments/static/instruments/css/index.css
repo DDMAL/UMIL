@@ -5,6 +5,7 @@ h4 {
     color: #435334;
     font-size: 20px;
     font-weight: 700;
+    margin-bottom: 0;
 }
 
 h5 {
@@ -12,7 +13,7 @@ h5 {
 }
 
 hr {
-    border: 1.5px solid #435334;
+    color: #435334 !important;
     margin-top: 0;
 }
 
@@ -53,6 +54,9 @@ hr {
     border-radius: 30px;
 }
 
+.instrument-language {
+    overflow: visible;
+}
 .display-btn {
     font-weight: bold;
     color: #435334;

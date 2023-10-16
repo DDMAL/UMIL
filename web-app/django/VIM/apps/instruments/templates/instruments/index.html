@@ -95,9 +95,9 @@ Instrument List
   <div class="col-lg-9 pt-3 body-container">
     <div class="navigation d-flex justify-content-between align-items-center">
       <div class="d-flex">
-        <h4 class="ms-3 my-auto me-2"><small>INSTRUMENT LIST</small></h4>
-        <div class="dropdown notranslate">
-          <button class="btn btn-warning dropdown-toggle mx-2 mb-0 btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <h4 class="ms-3 me-2 my-auto"><small>INSTRUMENT LIST</small></h4>
+        <div class="dropdown mx-2 notranslate instrument-language">
+          <button class="btn btn-warning dropdown-toggle py-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ active_language.autonym|title }}
           </button>
           <ul class="dropdown-menu">
@@ -124,7 +124,7 @@ Instrument List
         </button>
       </div>
     </div>
-    <hr>
+    <hr class="mb-2 mx-2">
     <div class="container py-3" id="body-content">
       {% include "instruments/includes/masonryView.html" %}
       {% comment %} {% include "instruments/includes/listView.html" %} {% endcomment %}
