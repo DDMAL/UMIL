@@ -12,7 +12,7 @@
         <div class="card-body pb-0 pt-0">
           <p class="card-title text-center notranslate">
             {% for instrumentname in instrument.instrumentname_set.all %}
-              {% if instrumentname.language.en_label == "english" %}
+              {% if instrumentname.language.en_label == active_language.en_label %}
                 {{ instrumentname.name|title }}
               {% endif %}
             {% endfor %}
