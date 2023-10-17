@@ -1,5 +1,5 @@
 {% load static %}
-{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,20 +25,26 @@
             </a>
           </li>
           <li class="nav-item"><a href="{% url "main:home" %}" class="nav-link px-2 text-decoration-none
-            {% if active_tab == 'home' %}active{% endif %}">{% trans "Home" %}</a></li>
+            {% if active_tab == 'home' %}active{% endif %}">Home</a></li>
           <li class="nav-item"><a href="{% url "instrument-list" %}" class="nav-link px-2 text-decoration-none
-            {% if active_tab == 'instruments' %}active{% endif %}">{% trans "Instruments" %}</a></li>
+            {% if active_tab == 'instruments' %}active{% endif %}">Instruments</a></li>
           <li class="nav-item"><a href="{% url "main:about" %}" class="nav-link px-2 text-decoration-none
-            {% if active_tab == 'about' %}active{% endif %}">{% trans "About" %}</a></li>
+            {% if active_tab == 'about' %}active{% endif %}">About</a></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control search-input" placeholder="{% trans 'Search...' %}" aria-label="Search">
+          <input type="search" class="form-control search-input" placeholder="Search..." aria-label="Search">
         </form>
 
         <div class="text-end d-flex">
-          <button type="button" class="btn me-2 login-btn">{% trans "Login" %}</button>
-          <div id="google_translate_element" class="d-flex align-items-center"></div>
+          <button type="button" class="btn me-2 login-btn">Login</button>
+          <div id="google_translate_element" class="d-flex align-items-center position-relative">
+            <span id="page-language-badge" 
+              class="position-absolute top-0 end-0 translate-middle-y badge rounded-pill bg-secondary"
+              style="--bs-bg-opacity: .5; display: none;">
+              Web page language
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -48,15 +54,17 @@
     {% block content %} {% endblock %}
   </main>
 
-  <footer class="d-flex flex-column justify-content-center align-items-center py-3 border-top">
-    <a href="https://ddmal.music.mcgill.ca/" class="mb-3 mt-3 link-body-emphasis text-decoration-none">
-        <img src="{% static "images/lab-logo.png" %}" alt="ddmal logo">
+  <footer class="d-flex justify-content-center align-items-center py-3 border-top">
+    <a href="https://ddmal.music.mcgill.ca/" class="mb-3 mt-3 mx-3 link-body-emphasis text-decoration-none">
+      <img src="{% static "images/lab-logo.png" %}" alt="ddmal logo">
+    </a>
+    <a href="https://linkedmusic.ca/" class="mb-3 mt-3 mx-3 link-body-emphasis text-decoration-none">
+        <img src="{% static "images/LM_LogoTransparentBlack1.png" %}" alt="linkedmusic logo" style="height: 30px;">
     </a>
   </footer>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
   <script src="{% static "/js/GoogleTranslate.js" %}"></script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   {% block script %} {% endblock %}

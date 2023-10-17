@@ -94,24 +94,42 @@ Instrument List
     
   <div class="col-lg-9 pt-3 body-container">
     <div class="navigation d-flex justify-content-between align-items-center">
-        <h4 class="ms-3 my-auto"><small>INSTRUMENT LIST</small></h4>
-        <div class="d-flex">
-          <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn" data-bs-toggle="modal" data-bs-target="#paginationModal">
-            <i class="bi bi-gear"></i>
+      <div class="d-flex">
+        <h4 class="ms-3 me-2 my-auto"><small>INSTRUMENT LIST</small></h4>
+        <div class="dropdown mx-2 notranslate" id="instrument-language-element">
+          <button class="btn btn-warning dropdown-toggle position-relative py-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ active_language.autonym|title }}
+            <span id="instrument-language-badge" 
+              class="position-absolute top-0 start-95 translate-middle-y badge rounded-pill bg-secondary" 
+              style="--bs-bg-opacity: .5; display: none;">
+              Instrument name language
+            </span>
           </button>
-          {% include "instruments/includes/pageSetting.html" %}
-          <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
-            <i class="bi bi-columns-gap"></i>
-          </button>
-          {% comment %} <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
-            <i class="bi bi-view-list"></i>
-          </button> {% endcomment %}
-          <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="std-btn" style="display:none;">
-            <i class="bi bi-grid"></i>
-          </button>
+          <ul class="dropdown-menu">
+            {% for language in languages %}
+              <li><a class="dropdown-item" href="?language={{ language.en_label }}">{{ language.autonym|title }}</a></li>
+            {% endfor %}
+          </ul>
         </div>
+      </div>
+
+      <div class="d-flex">
+        <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn" id="page-setting-btn" data-bs-toggle="modal" data-bs-target="#paginationModal">
+          <i class="bi bi-gear"></i>
+        </button>
+        {% include "instruments/includes/pageSetting.html" %}
+        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
+          <i class="bi bi-columns-gap"></i>
+        </button>
+        {% comment %} <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
+          <i class="bi bi-view-list"></i>
+        </button> {% endcomment %}
+        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="std-btn" style="display:none;">
+          <i class="bi bi-grid"></i>
+        </button>
+      </div>
     </div>
-    <hr>
+    <hr class="mb-2 mx-2">
     <div class="container py-3" id="body-content">
       {% include "instruments/includes/masonryView.html" %}
       {% comment %} {% include "instruments/includes/listView.html" %} {% endcomment %}
@@ -164,6 +182,6 @@ Instrument List
 {% block script %}
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="{% static "instruments/js/DisplayMode.js" %}"></script>
+<script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
 <script src="{% static "instruments/js/PaginationTools.js" %}"></script>
 {% endblock %}

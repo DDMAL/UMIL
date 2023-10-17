@@ -1,4 +1,3 @@
-
 const masonryBtn = document.getElementById("masonry-btn");
 // const listBtn = document.getElementById("list-btn");
 const stdBtn = document.getElementById("std-btn");
@@ -82,3 +81,23 @@ function setMasonryView() {
         masonry.layout();
     });
 }
+
+// Instrument badge settings
+const instrumentLanguage = document.querySelector("#instrument-language-element");
+const instrumentBadge = document.querySelector("#instrument-language-badge");
+
+updateInstrumentBadge();
+
+function updateInstrumentBadge() {
+    const hideInstrumentBadge = localStorage.getItem('hideInstrumentBadge') || false;
+    if (hideInstrumentBadge) {
+        instrumentBadge.style.display = "none";
+    } else {
+        instrumentBadge.style.display = "";
+    }
+}
+
+instrumentLanguage.addEventListener("click", function () {
+    localStorage.setItem("hideInstrumentBadge", true);
+    updateInstrumentBadge();
+});
