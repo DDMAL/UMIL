@@ -15,26 +15,22 @@ Instrument List
     <div class="col-lg-3">
       <div class="px-3 pt-3 me-1 sidebar-container">
         <div class="info-block p-2 mb-3">
-          <h4>#####</h4>
+          <h4>Hornbostel-Sachs Classification</h4>
           <hr>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <div class="collapse" id="sidebar-more-0">
+            {% for hbs_facet in hbs_facets %}
+              <a href="#" class="text-decoration-none facet-link">
+                <li class="list-group-item d-flex justify-content-between p-0">
+                  {% if hbs_facet.name == '' %}
+                    <span class="text-start">Uncategorized (discuss tmw)</span>
+                  {% else %}
+                    <span class="text-start">{{ hbs_facet.name }}</span>
+                  {% endif %}
+                  <span class="text-end">{{ hbs_facet.count}}</span>
+                </li>
+              </a>
+            {% endfor %}
+            {% comment %} <div class="collapse" id="sidebar-more-0">
               <li class="list-group-item d-flex justify-content-between p-0">
                 <span class="text-start">###</span>
                 <span class="text-end">###</span>
@@ -42,11 +38,12 @@ Instrument List
             </div>
             <div class="toggle-more d-flex justify-content-center" data-bs-toggle="collapse" data-bs-target="#sidebar-more-0" aria-expanded="false">
               <i class="bi bi-chevron-double-down ps-1"></i>
-            </div>
+            </div> {% endcomment %}
           </ul>
         </div>
-        <div class="info-block p-2 mb-3">
-          <h4>#####</h4>
+        <h6 style="color: grey;" class="mb-3">More facet search coming...</h6>
+        {% comment %} <div class="info-block p-2 mb-3">
+          <h4>######</h4>
           <hr>
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between p-0">
@@ -66,29 +63,7 @@ Instrument List
               <span class="text-end">###</span>
             </li>
           </ul>
-        </div>
-        <div class="info-block p-2 mb-3">
-          <h4>#####</h4>
-          <hr>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between p-0">
-              <span class="text-start">###</span>
-              <span class="text-end">###</span>
-            </li>
-          </ul>
-        </div>
+        </div> {% endcomment %}
       </div>
   </div>
     

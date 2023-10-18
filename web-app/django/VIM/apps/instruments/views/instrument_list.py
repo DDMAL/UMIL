@@ -43,7 +43,8 @@ class InstrumentList(ListView):
         for hbs_prim_cat in hbs_facets:
             hbs_facet_list.append(
                 {
-                    hbs_prim_cat["value"]: hbs_prim_cat["count"],
+                    "name": hbs_prim_cat["value"],
+                    "count": hbs_prim_cat["count"],
                     "children": {
                         hbs_sec_cat["value"]: hbs_sec_cat["count"]
                         for hbs_sec_cat in hbs_prim_cat["pivot"]
