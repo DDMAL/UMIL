@@ -24,9 +24,36 @@ class Command(BaseCommand):
                 type=V("instrument"),
             )
         )
+        hbs_label_map = self.build_hbs_label_map()
+        for instrument in instruments:
+            instrument["hbs_prim_cat_label_s"] = (
+                hbs_label_map[instrument["hbs_prim_cat_s"]]
+                if instrument["hbs_prim_cat_s"] != ""
+                else ""
+            )
+            instrument["hbs_sec_cat_label_s"] = (
+                hbs_label_map[instrument["hbs_sec_cat_s"]]
+                if instrument["hbs_sec_cat_s"] != ""
+                else ""
+            )
         requests.post(
             "http://solr:8983/solr/virtual-instrument-museum/update?commit=true",
             json=instruments,
             headers={"Content-Type": "application/json"},
             timeout=10,
         )
+
+    def build_hbs_label_map(self):
+        top_concepts = requests.get(
+            "https://vocabulary.mimo-international.com/rest/v1/HornbostelAndSachs/topConcepts"
+        ).json()["topconcepts"]
+        hbs_label_map = {}
+        for t_c in top_concepts:
+            hbs_label_map[t_c["notation"]] = t_c["label"]
+            child_concepts = requests.get(
+                "https://vocabulary.mimo-international.com/rest/v1/HornbostelAndSachs/children?uri="
+                + t_c["uri"]
+            ).json()["narrower"]
+            for c_c in child_concepts:
+                hbs_label_map[c_c["notation"]] = c_c["prefLabel"]
+        return hbs_label_map
