@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from VIM.apps.instruments.models import Instrument, Language
+import requests
 
 
 class InstrumentList(ListView):
@@ -33,6 +34,23 @@ class InstrumentList(ListView):
             if active_language_en
             else Language.objects.get(en_label="english")  # default in English
         )
+        hbs_facets = requests.get(
+            "http://solr:8983/solr/virtual-instrument-museum/select?facet.pivot=hbs_prim_cat_label_s,hbs_sec_cat_label_s&facet=true&indent=true&q=*:*&rows=0"
+        ).json()["facet_counts"]["facet_pivot"][
+            "hbs_prim_cat_label_s,hbs_sec_cat_label_s"
+        ]
+        hbs_facet_list = []
+        for hbs_prim_cat in hbs_facets:
+            hbs_facet_list.append(
+                {
+                    hbs_prim_cat["value"]: hbs_prim_cat["count"],
+                    "children": {
+                        hbs_sec_cat["value"]: hbs_sec_cat["count"]
+                        for hbs_sec_cat in hbs_prim_cat["pivot"]
+                    },
+                }
+            )
+        context["hbs_facets"] = hbs_facet_list
         return context
 
     def get(self, request, *args, **kwargs):
