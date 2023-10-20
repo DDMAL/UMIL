@@ -14,8 +14,12 @@ Instrument List
   <div class="row">
     <div class="col-lg-3">
       <div class="px-3 pt-3 me-1 sidebar-container">
-        <div class="info-block p-2 mb-3">
-          <h4>Hornbostel-Sachs Classification</h4>
+        <div class="info-block p-2 mb-3 notranslate">
+          {% if active_language.en_label == "french"%}
+            <h4>Système Hornbostel-Sachs</h4>
+          {% else %}
+            <h4>Hornbostel-Sachs Classification</h4>
+          {% endif  %}
           <hr>
           <ul class="list-group list-group-flush">
             {% for hbs_facet in hbs_facets %}
