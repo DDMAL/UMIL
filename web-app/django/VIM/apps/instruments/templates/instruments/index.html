@@ -115,12 +115,12 @@ Instrument List
       <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
           <li class="page-item">
-            <a class="page-link" href="?page=1" aria-label="First" title="First">
+            <a class="page-link" href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" aria-label="First" title="First">
               <i class="bi bi-chevron-double-left"></i>
             </a>
           </li>
           <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous" title="Previous">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" aria-label="Previous" title="Previous">
               <i class="bi bi-chevron-left"></i>
             </a>
           </li>
@@ -137,12 +137,12 @@ Instrument List
 
         {% if page_obj.has_next %}
           <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next" title="Next">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" aria-label="Next" title="Next">
               <i class="bi bi-chevron-right"></i>
             </a>
           </li>
           <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last" title="Last">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" aria-label="Last" title="Last">
               <i class="bi bi-chevron-double-right"></i>
             </a>
           </li>
