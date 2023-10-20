@@ -36,9 +36,12 @@ class InstrumentList(ListView):
             if active_language_en
             else Language.objects.get(en_label="english")  # default in English
         )
+        active_language_code = context["active_language"].wikidata_code
         hbs_facets = requests.get(
-            "http://solr:8983/solr/virtual-instrument-museum/select?facet.pivot=hbs_prim_cat_s,hbs_prim_cat_label_s&facet=true&indent=true&q=*:*&rows=0"
-        ).json()["facet_counts"]["facet_pivot"]["hbs_prim_cat_s,hbs_prim_cat_label_s"]
+            f"http://solr:8983/solr/virtual-instrument-museum/select?facet.pivot=hbs_prim_cat_s,hbs_prim_cat_label_{active_language_code}_s&facet=true&indent=true&q=*:*&rows=0"
+        ).json()["facet_counts"]["facet_pivot"][
+            f"hbs_prim_cat_s,hbs_prim_cat_label_{active_language_code}_s"
+        ]
         hbs_facet_list = []
         for hbs_cat in hbs_facets:
             hbs_facet_list.append(
