@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.views.generic import ListView
 from VIM.apps.instruments.models import Instrument, Language
 import requests
@@ -35,22 +37,18 @@ class InstrumentList(ListView):
             else Language.objects.get(en_label="english")  # default in English
         )
         hbs_facets = requests.get(
-            "http://solr:8983/solr/virtual-instrument-museum/select?facet.pivot=hbs_prim_cat_label_s,hbs_sec_cat_label_s&facet=true&indent=true&q=*:*&rows=0"
-        ).json()["facet_counts"]["facet_pivot"][
-            "hbs_prim_cat_label_s,hbs_sec_cat_label_s"
-        ]
+            "http://solr:8983/solr/virtual-instrument-museum/select?facet.pivot=hbs_prim_cat_s,hbs_prim_cat_label_s&facet=true&indent=true&q=*:*&rows=0"
+        ).json()["facet_counts"]["facet_pivot"]["hbs_prim_cat_s,hbs_prim_cat_label_s"]
         hbs_facet_list = []
-        for hbs_prim_cat in hbs_facets:
+        for hbs_cat in hbs_facets:
             hbs_facet_list.append(
                 {
-                    "name": hbs_prim_cat["value"],
-                    "count": hbs_prim_cat["count"],
-                    "children": {
-                        hbs_sec_cat["value"]: hbs_sec_cat["count"]
-                        for hbs_sec_cat in hbs_prim_cat["pivot"]
-                    },
+                    "value": "999" if hbs_cat["value"] == "" else hbs_cat["value"],
+                    "name": hbs_cat["pivot"][0]["value"],
+                    "count": hbs_cat["count"],
                 }
             )
+        hbs_facet_list.sort(key=lambda x: x["value"])
         context["hbs_facets"] = hbs_facet_list
         return context
 
@@ -59,3 +57,11 @@ class InstrumentList(ListView):
         if language_en:
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
+
+    def get_queryset(self) -> QuerySet[Any]:
+        hbs_facet = self.request.GET.get("hbs_facet", None)
+        if hbs_facet:
+            return Instrument.objects.filter(
+                hornbostel_sachs_class__startswith=hbs_facet
+            )
+        return super().get_queryset()

@@ -19,12 +19,12 @@ Instrument List
           <hr>
           <ul class="list-group list-group-flush">
             {% for hbs_facet in hbs_facets %}
-              <a href="#" class="text-decoration-none">
+              <a href="?hbs_facet={{ hbs_facet.value }}" class="text-decoration-none">
                 <li class="list-group-item d-flex justify-content-between p-0">
                   {% if hbs_facet.name == '' %}
                     <span class="text-start">Unclassified</span>
                   {% else %}
-                    <span class="text-start">{{ hbs_facet.name }}</span>
+                    <span class="text-start">{{ hbs_facet.value }} - {{ hbs_facet.name }}</span>
                   {% endif %}
                   <span class="text-end">{{ hbs_facet.count}}</span>
                 </li>
