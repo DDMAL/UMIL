@@ -16,6 +16,10 @@
 }
 
 .start-btn {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.start-btn {
     padding: 1rem 3rem;
     font-size: 1rem;
     border: none;
