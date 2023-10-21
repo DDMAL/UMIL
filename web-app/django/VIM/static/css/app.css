@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&display=swap');
 
-html {
+body {
     font-family: 'Noto Sans', sans-serif;
 }
 
@@ -50,16 +50,13 @@ header {
 .login-btn {
     color: #FAF1E4;
     border: 1px solid #FAF1E4;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .login-btn:hover {
     color: #435334;
     border: 1px solid #FAF1E4;
     background-color: #FAF1E4;
-}
-
-.signup-btn {
-    color: #435334;
 }
 
 .dropdown-menu {
@@ -79,7 +76,7 @@ header {
 .goog-te-combo:valid {
     color: #FAF1E4;
     font-size: 16px;
-    /* height: 100%; */
+    font-family: 'Noto Sans', sans-serif;
 }
 
 #google_translate_element:hover {

@@ -35,11 +35,15 @@ hr {
 .list-group-item {
     border: none !important;
     background-color: transparent !important;
+    color: #435334;
+}
+
+.list-group-item:hover {
     color: #9EB384;
 }
 
 .toggle-more{
-    color: #435334;
+    color: #0b0f07;
 }
 
 .toggle-more:hover {
