@@ -1,0 +1,36 @@
+input[type="number"] {
+    border: 1px solid #9EB384;
+    border-radius: 4px;
+    padding: 5px;
+    width: 50px;
+    color: #435334;
+    margin: 0 0.3rem;
+}
+
+input[type="number"]:hover {
+    border: 1px solid #435334;
+    color: #435334;
+}
+
+input[type="number"]:focus {
+    border: 1px solid #435334;
+    box-shadow: 0 0 5px #9EB384;
+    outline: none;
+}
+
+.btn-check:checked + .btn {
+    color: #435334;
+    border: none;
+    padding: 0.1rem 0.2rem;
+}
+
+.btn-check:not(:checked) + .btn {
+    color: #9EB384;
+    border: none;
+    padding: 0.1rem 0.2rem;
+}
+
+.text-start, .text-end {
+    color: #435334;
+    margin: 0 0.3rem;
+}
