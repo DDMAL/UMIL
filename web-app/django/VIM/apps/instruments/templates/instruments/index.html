@@ -110,11 +110,11 @@ Instrument List
     </div>
     <hr class="mb-2 mx-2">
     <div class="container py-3" id="body-content">
-      <div class="mb-2 d-flex justify-content-between">
+      <div class="mb-2 d-flex flex-md-row flex-column justify-content-between">
         <span id="instrumentNum" data-instrument-num="{{ page_obj.paginator.count }}" class="text-start">
           Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
         </span>
-        <div class="ms-2 d-flex align-items-center justify-content-end">
+        <div class="ms-2 d-flex align-items-center">
           <span class="text-start">View</span>
           <input type="radio" class="btn-check option-radio" name="options-group1" id="20" autocomplete="off">
           <label class="btn" for="20">20</label>
@@ -130,8 +130,8 @@ Instrument List
       {% include "instruments/includes/stdView.html" %}
     </div>
     
-    <div class="mb-3 d-flex align-items-center justify-content-center">
-      <div class="ms-2 d-flex align-items-center justify-content-end">
+    <div class="mb-3 d-flex flex-md-row flex-column align-items-center justify-content-center">
+      <div class="me-2 mb-1 d-flex align-items-center justify-content-end">
         <span class="text-start">View</span>
         <input type="radio" class="btn-check option-radio" name="options-group2" id="20" autocomplete="off">
         <label class="btn" for="20">20</label>
@@ -141,8 +141,8 @@ Instrument List
         <label class="btn" for="100">100</label>
         <span class="text-end">per page</span>
       </div>
-      <div class="text-start pagination-container ">
-        <ul class="pagination mb-0">
+      <div class="pagination-container ">
+        <ul class="pagination mb-1 justify-content-center">
           {% if page_obj.has_previous %}
             <li class="page-item">
               <a class="page-link" href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" aria-label="First" title="First">
@@ -179,7 +179,7 @@ Instrument List
           {% endif %}
         </ul>
       </div>
-      <div class="ms-2 d-flex align-items-center justify-content-start">
+      <div class="ms-3 mb-1 d-flex align-items-center justify-content-start">
         <label for="go-to" class="col-form-label">Go to</label>
         <input type="number" name="page" id="page-num" min="1" step="1">
         <label for="go-to" class="col-form-label">Page</label>
