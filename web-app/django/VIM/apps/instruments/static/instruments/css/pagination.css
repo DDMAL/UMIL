@@ -34,3 +34,7 @@ input[type="number"]:focus {
     color: #435334;
     margin: 0 0.3rem;
 }
+
+.col-form-label {
+    color: #435334;
+}
