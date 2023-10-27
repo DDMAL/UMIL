@@ -60,13 +60,21 @@ hr {
 
 .display-btn {
     font-weight: bold;
-    color: #435334;
-    font-size: 20px;
+    color: #9EB384;
     width: 30px;
+    border: none;
 }
 
-.display-btn:focus {
-    border-color:#435334;
+.masonry-btn {
+    font-size: 20px;
+}
+
+.std-btn {
+    font-size: 23px;
+}
+
+.highlighted-btn {
+    color: #435334;
 }
 
 .card {
@@ -85,7 +93,6 @@ hr {
     color: #435334;
 }
 
-.page-number,
 .page-link:hover {
     color: #9EB384;
 }
