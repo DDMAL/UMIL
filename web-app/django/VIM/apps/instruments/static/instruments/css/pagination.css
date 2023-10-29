@@ -30,6 +30,7 @@ input[type="number"]:focus {
     padding: 0.1rem 0.2rem;
 }
 
+.view-per-page
 .text-start, .text-end {
     color: #435334;
     margin: 0 0.3rem;

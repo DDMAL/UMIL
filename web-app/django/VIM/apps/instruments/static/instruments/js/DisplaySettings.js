@@ -1,9 +1,7 @@
 const masonryBtn = document.getElementById("masonry-btn");
-// const listBtn = document.getElementById("list-btn");
 const stdBtn = document.getElementById("std-btn");
 
 const masonryView = document.getElementById('masonry-view');
-// const listView = document.getElementById('list-view');
 const stdView = document.getElementById('std-view');
 
 updateDisplayMode();
@@ -21,28 +19,16 @@ function updateDisplayMode() {
     switch (currentDisplayMode) {
         case 'masonry':
             setMasonryView();
-            masonryBtn.style.display = "";
-            // listBtn.style.display = "none";
-            stdBtn.style.display = "none";
             masonryView.style.display = "";
-            // listView.style.display = "none";
             stdView.style.display = "none";
+            masonryBtn.classList.toggle("highlighted-btn");
+            stdBtn.classList.remove("highlighted-btn");
             break;
-        // case 'list':
-        //     masonryBtn.style.display = "none";
-        //     listBtn.style.display = "";
-        //     stdBtn.style.display = "none";
-        //     masonryView.style.display = "none";
-        //     listView.style.display = "";
-        //     stdView.style.display = "none";
-        //     break;
         case 'standard':
-            masonryBtn.style.display = "none";
-            // listBtn.style.display = "none";
-            stdBtn.style.display = "";
             masonryView.style.display = "none";
-            // listView.style.display = "none";
             stdView.style.display = "";
+            stdBtn.classList.toggle("highlighted-btn");
+            masonryBtn.classList.remove("highlighted-btn");
             break;
         default:
             break;
@@ -51,18 +37,17 @@ function updateDisplayMode() {
 
 // Switch to the next mode
 masonryBtn.addEventListener("click", () => {
-    setDisplayMode('standard');
-    updateDisplayMode();
+    if (getDisplayMode() !== 'masonry') {
+        setDisplayMode('masonry');
+        updateDisplayMode();
+    }
 });
 
-// listBtn.addEventListener("click", () => {
-//     setDisplayMode('standard');
-//     updateDisplayMode();
-// });
-
 stdBtn.addEventListener("click", () => {
-    setDisplayMode('masonry'); 
-    updateDisplayMode();
+    if (getDisplayMode() !== 'standard') {
+        setDisplayMode('standard');
+        updateDisplayMode();
+    }
 });
 
 
@@ -101,3 +86,32 @@ instrumentLanguage.addEventListener("click", function () {
     localStorage.setItem("hideInstrumentBadge", true);
     updateInstrumentBadge();
 });
+
+
+// HBS facet settings
+const items = document.querySelectorAll('.list-group-item');
+
+updateHbsFacet();
+
+function updateHbsFacet() {
+    const url = new URL(window.location.href);
+    const selectedHbsFacet = url.searchParams.get("hbs_facet") || '';
+    localStorage.setItem('selectedHbsFacet', selectedHbsFacet);
+    items.forEach(item => {
+        current_item = item.getAttribute('current-value');
+        if (current_item === selectedHbsFacet) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+}
+
+items.forEach(item => {
+    item.addEventListener('click', function () {
+        current_item = item.getAttribute('current-value');
+        localStorage.setItem('selectedHbsFacet', current_item);
+        updateHbsFacet();
+    });
+});
+

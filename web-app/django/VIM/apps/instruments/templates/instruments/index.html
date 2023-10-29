@@ -14,7 +14,7 @@ Instrument List
 <div class="container py-5">
   <div class="row">
     <div class="col-lg-3">
-      <div class="px-3 pt-3 me-1 sidebar-container">
+      <div class="px-3 pt-3 me-1 mb-3 sidebar-container">
         <div class="info-block p-2 mb-3 notranslate">
           {% if active_language.en_label == "french"%}
             <h4>Système Hornbostel-Sachs</h4>
@@ -22,16 +22,16 @@ Instrument List
             <h4>Hornbostel-Sachs Classification</h4>
           {% endif  %}
           <hr>
-          <ul class="list-group list-group-flush">
-            {% for hbs_facet in hbs_facets %}
-              <a href="?hbs_facet={{ hbs_facet.value }}" class="text-decoration-none">
-                <li class="list-group-item d-flex justify-content-between p-0">
-                  {% if hbs_facet.name == '' %}
+          <ul class="list-group">
+            {% for hbs_facet_item in hbs_facets %}
+              <a href="?hbs_facet={{ hbs_facet_item.value }}" class="text-decoration-none">
+                <li class="list-group-item d-flex justify-content-between p-0" current-value="{{ hbs_facet_item.value }}">
+                  {% if hbs_facet_item.name == '' %}
                     <span class="text-start">Unclassified</span>
                   {% else %}
-                    <span class="text-start">{{ hbs_facet.value }} - {{ hbs_facet.name }}</span>
+                    <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }}</span>
                   {% endif %}
-                  <span class="text-end">{{ hbs_facet.count}}</span>
+                  <span class="text-end">{{ hbs_facet_item.count}}</span>
                 </li>
               </a>
             {% endfor %}
@@ -94,23 +94,24 @@ Instrument List
       </div>
 
       <div class="d-flex">
-        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="masonry-btn">
+        <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn" id="masonry-btn">
           <i class="bi bi-columns-gap"></i>
         </button>
-        {% comment %} <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="list-btn" style="display:none;">
-          <i class="bi bi-view-list"></i>
-        </button> {% endcomment %}
-        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn" id="std-btn" style="display:none;">
+        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn std-btn" id="std-btn">
           <i class="bi bi-grid"></i>
         </button>
       </div>
     </div>
     <hr class="mb-2 mx-2">
     <div class="container py-3" id="body-content">
-      <div class="mb-2 d-flex flex-md-row flex-column justify-content-between">
+      <div class="mb-2 d-flex flex-md-row flex-column justify-content-between view-per-page">
         <span id="instrumentNum" data-instrument-num="{{ page_obj.paginator.count }}" class="text-start">
           Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
-        </span>
+          {% if hbs_facet_name %}
+            for
+          {% endif %}
+          <strong>{{ hbs_facet_name }}</strong>
+        </span>        
         <div class="ms-2 d-flex align-items-center">
           <span class="text-start">View</span>
           <input type="radio" class="btn-check option-radio" name="options-group1" id="20" autocomplete="off">
@@ -130,7 +131,7 @@ Instrument List
     </div>
     
     <div class="mb-3 d-flex flex-md-row flex-column align-items-center justify-content-center">
-      <div class="me-2 mb-1 d-flex align-items-center justify-content-end">
+      <div class="me-2 mb-1 d-flex align-items-center justify-content-end view-per-page">
         <span class="text-start">View</span>
         <input type="radio" class="btn-check option-radio" name="options-group2" id="20" autocomplete="off">
         <label class="btn" for="20">20</label>
