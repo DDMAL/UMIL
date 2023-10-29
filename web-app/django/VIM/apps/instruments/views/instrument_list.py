@@ -59,7 +59,7 @@ class InstrumentList(ListView):
         context["hbs_facets"] = hbs_facet_list
         if hbs_facet:
             context["hbs_facet_name"] = next(
-                (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ''
+                (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
             )
         return context
 
