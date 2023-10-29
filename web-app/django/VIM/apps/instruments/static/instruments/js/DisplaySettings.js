@@ -86,3 +86,32 @@ instrumentLanguage.addEventListener("click", function () {
     localStorage.setItem("hideInstrumentBadge", true);
     updateInstrumentBadge();
 });
+
+
+// HBS facet settings
+const items = document.querySelectorAll('.list-group-item');
+
+updateHbsFacet();
+
+function updateHbsFacet() {
+    const url = new URL(window.location.href);
+    const selectedHbsFacet = url.searchParams.get("hbs_facet") || '';
+    localStorage.setItem('selectedHbsFacet', selectedHbsFacet);
+    items.forEach(item => {
+        current_item = item.getAttribute('current-value');
+        if (current_item === selectedHbsFacet) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+}
+
+items.forEach(item => {
+    item.addEventListener('click', function () {
+        current_item = item.getAttribute('current-value');
+        localStorage.setItem('selectedHbsFacet', current_item);
+        updateHbsFacet();
+    });
+});
+

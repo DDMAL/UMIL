@@ -42,6 +42,11 @@ hr {
     color: #9EB384;
 }
 
+.selected {
+    color: #435334;
+    font-weight: bold;
+}
+
 .toggle-more{
     color: #0b0f07;
 }
