@@ -57,6 +57,7 @@ class InstrumentList(ListView):
             )
         hbs_facet_list.sort(key=lambda x: x["value"])
         context["hbs_facets"] = hbs_facet_list
+        context["hbs_facet_name"] = hbs_facet_list[int(hbs_facet) - 1]["name"]
         return context
 
     def get(self, request, *args, **kwargs):
