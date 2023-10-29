@@ -37,7 +37,21 @@
         </form>
 
         <div class="text-end d-flex">
-          <button type="button" class="btn me-2 login-btn">Login</button>
+          {% if user.is_authenticated %}
+            <div class="dropdown me-3">
+              <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ user.email }}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{% url 'main:change_password' %}">Change Password</a></li>
+                <li><a class="dropdown-item" href="{% url 'main:logout' %}">Log out</a></li>
+              </ul>
+            </div>
+          {% else %}
+            <a href="{% url 'main:login' %}">
+              <button type="button" class="btn me-2 login-btn">Login</button>
+            </a>
+          {% endif %}
           <div id="google_translate_element" class="d-flex align-items-center position-relative">
             <span id="page-language-badge" 
               class="position-absolute top-0 end-0 translate-middle-y badge rounded-pill bg-secondary"
