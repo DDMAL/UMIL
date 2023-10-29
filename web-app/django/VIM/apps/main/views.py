@@ -3,6 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from .forms import LoginForm
 
+
 def home(request):
     return render(request, "main/index.html", {"active_tab": "home"})
 
