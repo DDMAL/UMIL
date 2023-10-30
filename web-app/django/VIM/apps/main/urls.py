@@ -9,14 +9,14 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("register/", views.register, name="register"),
     path(
-        "accounts/logout/", 
-        auth_views.LogoutView.as_view(next_page="main:home"), 
-        name="logout"
+        "accounts/logout/",
+        auth_views.LogoutView.as_view(next_page="main:home"),
+        name="logout",
     ),
     path(
         "change-password/",
         auth_views.PasswordChangeView.as_view(
-            template_name="registration/change_password.html", 
+            template_name="registration/change_password.html",
             success_url="/",
         ),
         name="change_password",
