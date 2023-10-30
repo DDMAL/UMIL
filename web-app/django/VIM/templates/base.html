@@ -40,7 +40,7 @@
           {% if user.is_authenticated %}
             <div class="dropdown me-3">
               <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {{ user.email }}
+                {{ user.username }}
               </button>
               <ul class="dropdown-menu" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="{% url 'main:change_password' %}">Change Password</a></li>

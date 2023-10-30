@@ -1,7 +1,6 @@
-from django.contrib.auth import login, update_session_auth_hash, logout
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm, CustomPasswordChangeForm
 
 
 def home(request):
@@ -12,7 +11,7 @@ def about(request):
     return render(request, "main/about.html", {"active_tab": "about"})
 
 
-def login_view(request):
+def user_login(request):
     if request.method == "POST":
         form = LoginForm(request, request.POST)
         if form.is_valid():
@@ -29,15 +28,26 @@ def user_logout(request):
     return redirect("main:home")
 
 
-def change_password(request):
-    if request.method == "POST":
-        form = PasswordChangeForm(request.user, request.POST)
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(
-                request, user
-            )  # Important for keeping the user authenticated
+            login(request, user)
+            return redirect('main:home')
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'registration/register.html', {'form': form})
+
+
+def change_password(request):
+    if request.method == "POST":
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
             return redirect("main:home")
     else:
-        form = PasswordChangeForm(request.user)
+        form = CustomPasswordChangeForm(request.user)
     return render(request, "registration/change_password.html", {"form": form})

@@ -13,7 +13,6 @@ Login
 <div class="container">
     <div class="row">
         <div class="mr-3 p-4 col-md-6">
-            <!--Display "submit success" message -->
             {% if messages %}
             <div class="alert alert-success alert-dismissible">
                 {% for message in messages %}
@@ -21,13 +20,13 @@ Login
                 {% endfor %}
             </div>
             {% endif %}
-            
             {% if form.errors %}
             <div class="alert alert-danger alert-dismissible">
-                <p>Your username and password didn't match. Please try again.</p>
+                {% for field, error in form.errors.items %}
+                    {{ error }}
+                {% endfor %}
             </div>
             {% endif %}
-
             <div class="col-md mt-4 login-form" id="login">
                 <h5><strong>Login for Contributors</strong></h5>
                 <form method="post">
@@ -42,6 +41,11 @@ Login
                     </div>
                     <button type="submit" class="btn btn-primary">Sign in</button>
                   </form>
+            </div>
+            <div class="col-md mt-4 create-account-link">
+                <p>Don't have an account? 
+                    <a href="{% url 'main:register' %}">Create a new account</a>
+                </p>
             </div>
         </div>
     </div>
