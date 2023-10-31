@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="mr-3 p-4 col-md-6">
+            {% if messages %}
+            <div class="alert alert-success alert-dismissible">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible">
+                {% for field, error in form.errors.items %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="col-md mt-4 login-form" id="login">
+                <h5><strong>Login for Contributors</strong></h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mt-4 mb-4">
+                        <label for="exampleInputEmail" class="form-label">Email Address</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-4">
+                        <label for="exampleInputPassword" class="form-label">Password</label>
+                        {{ form.password }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                  </form>
+            </div>
+            <div class="col-md mt-4 create-account-link">
+                <p>Don't have an account? 
+                    <a href="{% url 'main:register' %}">Create a new account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

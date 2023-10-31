@@ -1,0 +1,58 @@
+.login-form {
+    color: #435334;
+}
+
+input {
+    border: 1px solid #9EB384;
+    border-radius: 4px;
+    background-color: #FAF1E4;
+    padding: 5px;
+    color: #435334;
+    margin: 0 10px;
+}
+
+input:hover {
+    border: 1px solid #435334;
+    background-color: #FAF1E4;
+    color: #435334;
+}
+
+input:focus {
+    border: 1px solid #435334;
+    box-shadow: 0 0 5px #9EB384;
+    outline: none;
+}
+
+input::placeholder {
+    color: #9EB384;
+}
+
+.btn-primary {
+    background-color: #435334;
+    border: 1px solid #435334;
+}
+
+.btn-primary:hover {
+    background-color: #9EB384;
+    border: 1px solid #9EB384;
+}
+
+p {
+    color: #435334;
+}
+
+a {
+    color: #435334;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #9EB384;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.errorlist {
+    color: red;
+}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="mr-3 p-4 col-md-8">
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible">
+                {% for field, error in form.errors.items %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="col-md mt-4 login-form" id="registration">
+                <h5 class="mb-4"><strong>Create a New Account</strong></h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mt-4 mb-4">
+                        <label for="exampleInputEmail" class="form-label">Email Address</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-4">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="mb-4">
+                        <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
