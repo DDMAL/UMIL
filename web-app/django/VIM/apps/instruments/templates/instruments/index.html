@@ -13,7 +13,7 @@ Instrument List
 {% block content %}
 <div class="container py-5">
   <div class="row">
-    <div class="col-lg-3">
+    <div class="col-xl-3">
       <div class="px-3 pt-3 me-1 mb-3 sidebar-container">
         <div class="info-block p-2 mb-3 notranslate">
           {% if active_language.en_label == "french"%}
@@ -29,9 +29,8 @@ Instrument List
                   {% if hbs_facet_item.name == '' %}
                     <span class="text-start">Unclassified</span>
                   {% else %}
-                    <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }}</span>
+                    <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count}})</span>
                   {% endif %}
-                  <span class="text-end">{{ hbs_facet_item.count}}</span>
                 </li>
               </a>
             {% endfor %}
@@ -72,7 +71,7 @@ Instrument List
       </div>
   </div>
     
-  <div class="col-lg-9 pt-3 body-container">
+  <div class="col-xl-9 pt-3 body-container">
     <div class="navigation d-flex justify-content-between align-items-center">
       <div class="d-flex">
         <h4 class="ms-3 me-2 my-auto"><small>INSTRUMENT LIST</small></h4>
