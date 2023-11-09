@@ -103,7 +103,7 @@ Instrument List
     </div>
     <hr class="mb-2 mx-2">
     <div class="container py-3" id="body-content">
-      <div class="mb-2 d-flex flex-md-row flex-column justify-content-between view-per-page">
+      <div class="mb-2 d-flex flex-md-row flex-column align-items-center justify-content-between view-per-page">
         <span id="instrumentNum" data-instrument-num="{{ page_obj.paginator.count }}" class="text-start">
           Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
           {% if hbs_facet_name %}
