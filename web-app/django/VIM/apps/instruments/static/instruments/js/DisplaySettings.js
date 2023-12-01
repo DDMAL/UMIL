@@ -67,25 +67,25 @@ function setMasonryView() {
     });
 }
 
-// Instrument badge settings
-const instrumentLanguage = document.querySelector("#instrument-language-element");
-const instrumentBadge = document.querySelector("#instrument-language-badge");
+// // Instrument badge settings
+// const instrumentLanguage = document.querySelector("#instrument-language-element");
+// const instrumentBadge = document.querySelector("#instrument-language-badge");
 
-updateInstrumentBadge();
+// updateInstrumentBadge();
 
-function updateInstrumentBadge() {
-    const hideInstrumentBadge = localStorage.getItem('hideInstrumentBadge') || false;
-    if (hideInstrumentBadge) {
-        instrumentBadge.style.display = "none";
-    } else {
-        instrumentBadge.style.display = "";
-    }
-}
+// function updateInstrumentBadge() {
+//     const hideInstrumentBadge = localStorage.getItem('hideInstrumentBadge') || false;
+//     if (hideInstrumentBadge) {
+//         instrumentBadge.style.display = "none";
+//     } else {
+//         instrumentBadge.style.display = "";
+//     }
+// }
 
-instrumentLanguage.addEventListener("click", function () {
-    localStorage.setItem("hideInstrumentBadge", true);
-    updateInstrumentBadge();
-});
+// instrumentLanguage.addEventListener("click", function () {
+//     localStorage.setItem("hideInstrumentBadge", true);
+//     updateInstrumentBadge();
+// });
 
 
 // HBS facet settings
