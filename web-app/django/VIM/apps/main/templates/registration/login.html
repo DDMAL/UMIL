@@ -12,7 +12,7 @@ Login
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="mr-3 p-4 col-md-6">
+        <div class="mr-3 p-4 col-md-8">
             {% if messages %}
             <div class="alert alert-success alert-dismissible">
                 {% for message in messages %}
@@ -40,7 +40,10 @@ Login
                         {{ form.password }}
                     </div>
                     <button type="submit" class="btn btn-primary">Sign in</button>
-                  </form>
+                    <p class="mt-2">
+                        <a href="{% url 'main:reset_password' %}">Forgot your password?</a>
+                    </p>
+                </form>
             </div>
             <div class="col-md mt-4 create-account-link">
                 <p>Don't have an account? 

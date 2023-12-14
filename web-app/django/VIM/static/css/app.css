@@ -7,6 +7,7 @@ body {
 /* header */
 header {
     background-color: #9EB384;
+    min-height: 9.5vh;
 }
 
 .nav-link {
@@ -100,9 +101,11 @@ header {
 /* main */
 main {
     background-color: #FAF1E4;
+    min-height: 80vh;
 }
 
 /* footer */
 footer {
     background-color: #FAF1E4;
+    min-height: 10.5vh;
 }
