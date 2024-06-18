@@ -31,3 +31,12 @@ urlpatterns = i18n_patterns(
 
 if settings.IS_DEVELOPMENT:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
+
+
+###############################################################
+#                     Custom error handlers                   #
+# These handlers define custom views to be displayed for      #
+# specific HTTP error responses.                              #
+###############################################################
+# pylint: disable=invalid-name
+handler404 = "VIM.views.custom_404_page_not_found"
