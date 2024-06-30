@@ -45,7 +45,7 @@ services:
     environment:
       - HOST_NAME=${HOST_NAME}
     ports:
-      - "${PORT}:80"
+      - "8000:80"
     volumes:
       - vim-static:/virtual-instrument-museum/static
     depends_on:
