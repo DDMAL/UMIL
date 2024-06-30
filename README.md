@@ -21,7 +21,7 @@ NOTE: These instructions are for local development only. Refer to the "Installat
 - UMIL requires Docker Engine with Compose V2. Verify your version with `docker compose --version` and look for an output such as `Docker Compose version v2.19.1`. If you do not have the correct version, refer to the [Docker Compose Migration Documentation](https://docs.docker.com/compose/migrate/).
 
 ### Initial Set-up Instructions
-After cloning this repository, you will need a local `.env` file at the root of the directory. Copy the contents or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for the database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`, as well as the `DJANGO_SECRET_KEY`. The database credentials can be set to anything while the `DJANGO_SECRET_KEY` will need to be obtained from one of the developers working on the UMIL project. Next you will need to verify the values of the `DEVELOPMENT`, `HOST_NAME`, and `PORT` variables. For local development ONLY, these should be set to "true", "localhost", and "8000" respectively. \
+After cloning this repository, you will need a local `.env` file at the root of the directory. Copy the contents or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for the database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`, as well as the `DJANGO_SECRET_KEY`. The database credentials can be set to anything while the `DJANGO_SECRET_KEY` will need to be obtained from one of the developers working on the UMIL project. Next you will need to verify the values of the `DEVELOPMENT` and `HOST_NAME` variables. For local development ONLY, these should be set to "true" and "localhost", respectively. \
 In one terminal run the following commands to build the docker images and run the specified services.
 ```sh
 docker compose build
@@ -50,7 +50,7 @@ UMIL requires Docker Engine with Compose V2. Ensure that the remote server has t
 
 SSH into the server. After cloning the repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Ensure that `POSTGRES_PASSWORD` is secure. Additionally, set `DJANGO_SECRET_KEY` with a secure secret key for Django.
 
-Ensure that the `DEVELOPMENT` variable is set to "false", and that `HOST_NAME` is set to the host name where the UMIL instance will be served (for example, "vim.linkedmusic.ca" or "vim.staging.linkedmusic.ca"). Set the `PORT` variable to "80".
+Ensure that the `DEVELOPMENT` variable is set to "false", and that `HOST_NAME` is set to the host name where the UMIL instance will be served (for example, "vim.linkedmusic.ca" or "vim.staging.linkedmusic.ca").
 Run the following commands:
 
 ```bash
