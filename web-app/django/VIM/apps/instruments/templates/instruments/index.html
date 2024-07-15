@@ -82,11 +82,6 @@ Instrument List
                   data-bs-toggle="dropdown"
                   data-bs-title="Instrument name language">
             {{ active_language.autonym|title }}
-            {% comment %} <span id="instrument-language-badge" 
-              class="position-absolute top-0 start-95 translate-middle-y badge rounded-pill bg-secondary" 
-              style="--bs-bg-opacity: .5; display: none;">
-              Instrument name language
-            </span> {% endcomment %}
           </button>
           <ul class="dropdown-menu">
             {% for language in languages %}
