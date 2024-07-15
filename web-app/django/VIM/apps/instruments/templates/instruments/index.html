@@ -9,7 +9,7 @@ Instrument List
 <link rel="stylesheet" href="{% static "instruments/css/index.css" %}">
 <link rel="stylesheet" href="{% static "instruments/css/pagination.css" %}">
 {% endblock %}
- 
+
 {% block content %}
 <div class="container py-5">
   <div class="row">
@@ -70,23 +70,18 @@ Instrument List
         </div> {% endcomment %}
       </div>
   </div>
-    
+
   <div class="col-xl-9 pt-3 body-container">
     <div class="navigation d-flex justify-content-between align-items-center">
       <div class="d-flex">
         <h4 class="ms-3 me-2 my-auto"><small>INSTRUMENT LIST</small></h4>
         <div class="dropdown mx-2 notranslate" id="instrument-language-element">
-          <button class="btn btn-warning dropdown-toggle position-relative py-0" 
-                  type="button" 
-                  aria-expanded="false" 
+          <button class="btn btn-warning dropdown-toggle position-relative py-0"
+                  type="button"
+                  aria-expanded="false"
                   data-bs-toggle="dropdown"
                   data-bs-title="Instrument name language">
             {{ active_language.autonym|title }}
-            {% comment %} <span id="instrument-language-badge" 
-              class="position-absolute top-0 start-95 translate-middle-y badge rounded-pill bg-secondary" 
-              style="--bs-bg-opacity: .5; display: none;">
-              Instrument name language
-            </span> {% endcomment %}
           </button>
           <ul class="dropdown-menu">
             {% for language in languages %}
@@ -97,79 +92,55 @@ Instrument List
       </div>
 
       <div class="d-flex">
-        <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn" 
-                id="masonry-btn" data-bs-toggle="tooltip" 
-                data-bs-title="Switch to Masonry View" 
-                aria-label="Switch to Masonry View" 
+        <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn"
+                id="masonry-btn" title="Masonry View"
+                aria-label="Masonry View"
                 aria-pressed="true">
           <i class="bi bi-columns-gap"></i>
         </button>
-        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn std-btn" 
-                id="std-btn" data-bs-toggle="tooltip" 
-                data-bs-title="Switch to Standard View" 
-                aria-label="Switch to Standard View">
+        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn std-btn"
+                id="std-btn" title="Standard View"
+                aria-label="Standard View">
           <i class="bi bi-grid"></i>
         </button>
       </div>
     </div>
     <hr class="mb-2 mx-2">
     <div class="container py-3" id="body-content">
-      <div class="mb-2 d-flex flex-md-row flex-column align-items-center justify-content-between view-per-page">
+      <div class="mb-2 d-flex flex-md-row flex-column align-items-center justify-content-between">
         <span id="instrumentNum" data-instrument-num="{{ page_obj.paginator.count }}" class="text-start">
           Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
           {% if hbs_facet_name %}
             for
           {% endif %}
           <strong>{{ hbs_facet_name }}</strong>
-        </span>        
-        <div class="ms-2 d-flex align-items-center">
-          <span class="text-start">View</span>
-          <input type="radio" class="btn-check option-radio" name="options-group1" id="20" autocomplete="off">
-          <label class="btn" data-bs-toggle="tooltip" data-bs-title="View 20 entries per page" for="20">20</label>
-          <label class="col-form-label mb-1">|</label>
-          <input type="radio" class="btn-check option-radio" name="options-group1" id="50" autocomplete="off">
-          <label class="btn" data-bs-toggle="tooltip" data-bs-title="View 50 entries per page" for="50">50</label>
-          <label class="col-form-label mb-1">|</label>
-          <input type="radio" class="btn-check option-radio" name="options-group1" id="100" autocomplete="off">
-          <label class="btn" data-bs-toggle="tooltip" data-bs-title="View 100 entries per page" for="100">100</label>
-          <span class="text-end">per page</span>
-        </div>
+        </span>
+        {% include "instruments/includes/paginationOptions.html" %}
       </div>
       {% include "instruments/includes/masonryView.html" %}
       {% comment %} {% include "instruments/includes/listView.html" %} {% endcomment %}
       {% include "instruments/includes/stdView.html" %}
     </div>
-    
+
     <div class="mb-3 d-flex flex-md-row flex-column align-items-center justify-content-center">
-      <div class="me-2 mb-1 d-flex align-items-center justify-content-end view-per-page">
-        <span class="text-start">View</span>
-        <input type="radio" class="btn-check option-radio" name="options-group2" id="20" autocomplete="off">
-        <label class="btn" data-bs-toggle="tooltip" data-bs-title="View 20 entries per page" for="20">20</label>
-        <label class="col-form-label mb-1">|</label>
-        <input type="radio" class="btn-check option-radio" name="options-group2" id="50" autocomplete="off">
-        <label class="btn" data-bs-toggle="tooltip" data-bs-title="View 50 entries per page" for="50">50</label>
-        <label class="col-form-label mb-1">|</label>
-        <input type="radio" class="btn-check option-radio" name="options-group2" id="100" autocomplete="off">
-        <label class="btn" data-bs-toggle="tooltip" data-bs-title="View 100 entries per page" for="100">100</label>
-        <span class="text-end">per page</span>
-      </div>
+      {% include "instruments/includes/paginationOptions.html" %}
       <div class="pagination-container ">
         <ul class="pagination mb-1 justify-content-center">
           {% if page_obj.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" 
-                 aria-label="First" data-bs-toggle="tooltip" data-bs-title="First">
+              <a class="page-link" href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                 aria-label="First" title="First">
                 <i class="bi bi-chevron-double-left"></i>
               </a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" 
-                 aria-label="Previous" data-bs-toggle="tooltip" data-bs-title="Previous">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                 aria-label="Previous" title="Previous">
                 <i class="bi bi-chevron-left"></i>
               </a>
             </li>
           {% endif %}
-            
+
           <li class="page-item align-self-center">
             <span class="current p-2">
               Page
@@ -181,14 +152,14 @@ Instrument List
 
           {% if page_obj.has_next %}
             <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" 
-                 aria-label="Next" data-bs-toggle="tooltip" data-bs-title="Next">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                 aria-label="Next" title="Next">
                 <i class="bi bi-chevron-right"></i>
               </a>
             </li>
             <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}" 
-                 aria-label="Last" data-bs-toggle="tooltip" data-bs-title="Last">
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                 aria-label="Last" title="Last">
                 <i class="bi bi-chevron-double-right"></i>
               </a>
             </li>
@@ -210,8 +181,4 @@ Instrument List
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
 <script src="{% static "instruments/js/PaginationTools.js" %}"></script>
-<script>
-  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"], [data-bs-toggle="dropdown"]')
-  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
 {% endblock %}
