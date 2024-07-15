@@ -205,8 +205,4 @@ Instrument List
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
 <script src="{% static "instruments/js/PaginationTools.js" %}"></script>
-<script>
-  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"], [data-bs-toggle="dropdown"]')
-  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
 {% endblock %}
