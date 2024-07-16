@@ -1,111 +1,112 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&display=swap');
 
 body {
-    font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 /* header */
 header {
-    background-color: #9EB384;
-    min-height: 9.5vh;
+  background-color: #9eb384;
+  min-height: 9.5vh;
 }
 
 .nav-link {
-    color: #FAF1E4;
+  color: #faf1e4;
 }
 
 .nav-link:hover,
 .nav-link:focus {
-    color: #435334;
+  color: #435334;
 }
 
 .active {
-    color: #435334 !important;
-    font-weight: 400 !important;
-    border-color: #435334 !important;
+  color: #435334 !important;
+  font-weight: 400 !important;
+  border-color: #435334 !important;
 }
 
 .nav-home,
 .nav-home:hover,
-.nav-home:not(:hover) { /* on mouse leave */
-    text-decoration: none;
-    color:#435334;
-    border-bottom: 0;
+.nav-home:not(:hover) {
+  /* on mouse leave */
+  text-decoration: none;
+  color: #435334;
+  border-bottom: 0;
 }
 
 .search-input {
-    background-color: #FAF1E4;
-    color: #435334;
+  background-color: #faf1e4;
+  color: #435334;
 }
 
-.search-input::placeholder{
-    color: #435334;
+.search-input::placeholder {
+  color: #435334;
 }
 
 .search-input:focus {
-    background-color: #FAF1E4;
-    outline: none; /* Remove the outline */
-    border: 1px solid #FAF1E4;
+  background-color: #faf1e4;
+  outline: none; /* Remove the outline */
+  border: 1px solid #faf1e4;
 }
 
 .login-btn {
-    color: #FAF1E4;
-    border: 1px solid #FAF1E4;
-    font-family: 'Noto Sans', sans-serif;
+  color: #faf1e4;
+  border: 1px solid #faf1e4;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .login-btn:hover {
-    color: #435334;
-    border: 1px solid #FAF1E4;
-    background-color: #FAF1E4;
+  color: #435334;
+  border: 1px solid #faf1e4;
+  background-color: #faf1e4;
 }
 
 .dropdown-menu {
-    background-color: #FAF1E4;
+  background-color: #faf1e4;
 }
 
 .dropdown-item:hover {
-    background-color: #CEDEBD;
+  background-color: #cedebd;
 }
 
 #google_translate_element {
-    border: 1px solid #FAF1E4;
-    border-radius: 0.375rem;
+  border: 1px solid #faf1e4;
+  border-radius: 0.375rem;
 }
 
 .goog-te-combo,
 .goog-te-combo:valid {
-    color: #FAF1E4;
-    font-size: 16px;
-    font-family: 'Noto Sans', sans-serif;
+  color: #faf1e4;
+  font-size: 16px;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 #google_translate_element:hover {
-    border: 1px solid #FAF1E4;
-    background-color: #FAF1E4;
+  border: 1px solid #faf1e4;
+  background-color: #faf1e4;
 }
 
-#google_translate_element:hover  .goog-te-combo{
-    color: #435334;
+#google_translate_element:hover .goog-te-combo {
+  color: #435334;
 }
 
 .goog-logo-link,
 .goog-te-gadget span {
-    display: none !important;
+  display: none !important;
 }
 
 .goog-te-gadget {
-    font-size: 0 !important;
+  font-size: 0 !important;
 }
 
 /* main */
 main {
-    background-color: #FAF1E4;
-    min-height: 80vh;
+  background-color: #faf1e4;
+  min-height: 80vh;
 }
 
 /* footer */
 footer {
-    background-color: #FAF1E4;
-    min-height: 10.5vh;
+  background-color: #faf1e4;
+  min-height: 10.5vh;
 }

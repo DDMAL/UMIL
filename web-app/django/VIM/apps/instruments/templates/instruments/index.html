@@ -1,40 +1,43 @@
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block title %}
-Instrument List
-{% endblock %}
+  Instrument List
+{% endblock title %}
 
 {% block css_files %}
-<link rel="stylesheet" href="{% static "instruments/css/index.css" %}">
-<link rel="stylesheet" href="{% static "instruments/css/pagination.css" %}">
-{% endblock %}
+  <link rel="stylesheet" href="{% static "instruments/css/index.css" %}" />
+  <link rel="stylesheet" href="{% static "instruments/css/pagination.css" %}" />
+{% endblock css_files %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="row">
-    <div class="col-xl-3">
-      <div class="px-3 pt-3 me-1 mb-3 sidebar-container">
-        <div class="info-block p-2 mb-3 notranslate">
-          {% if active_language.en_label == "french"%}
-            <h4>Système Hornbostel-Sachs</h4>
-          {% else %}
-            <h4>Hornbostel-Sachs Classification</h4>
-          {% endif  %}
-          <hr>
-          <ul class="list-group">
-            {% for hbs_facet_item in hbs_facets %}
-              <a href="?hbs_facet={{ hbs_facet_item.value }}" class="text-decoration-none">
-                <li class="list-group-item d-flex justify-content-between p-0" current-value="{{ hbs_facet_item.value }}">
-                  {% if hbs_facet_item.name == '' %}
-                    <span class="text-start">Unclassified</span>
-                  {% else %}
-                    <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count}})</span>
-                  {% endif %}
-                </li>
-              </a>
-            {% endfor %}
-            {% comment %} <div class="collapse" id="sidebar-more-0">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-xl-3">
+        <div class="px-3 pt-3 me-1 mb-3 sidebar-container">
+          <div class="info-block p-2 mb-3 notranslate">
+            {% if active_language.en_label == "french" %}
+              <h4>Système Hornbostel-Sachs</h4>
+            {% else %}
+              <h4>Hornbostel-Sachs Classification</h4>
+            {% endif %}
+            <hr />
+            <ul class="list-group">
+              {% for hbs_facet_item in hbs_facets %}
+                <a href="?hbs_facet={{ hbs_facet_item.value }}"
+                   class="text-decoration-none">
+                  <li class="list-group-item d-flex justify-content-between p-0"
+                      current-value="{{ hbs_facet_item.value }}">
+                    {% if hbs_facet_item.name == '' %}
+                      <span class="text-start">Unclassified</span>
+                    {% else %}
+                      <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
+                    {% endif %}
+                  </li>
+                </a>
+              {% endfor %}
+              {% comment %} <div class="collapse" id="sidebar-more-0">
               <li class="list-group-item d-flex justify-content-between p-0">
                 <span class="text-start">###</span>
                 <span class="text-end">###</span>
@@ -42,13 +45,13 @@ Instrument List
             </div>
             <div class="toggle-more d-flex justify-content-center" data-bs-toggle="collapse" data-bs-target="#sidebar-more-0" aria-expanded="false">
               <i class="bi bi-chevron-double-down ps-1"></i>
-            </div> {% endcomment %}
-          </ul>
-        </div>
-        <h6 style="color: grey;" class="mb-3">More facet search coming...</h6>
-        {% comment %} <div class="info-block p-2 mb-3">
+              </div> {% endcomment %}
+            </ul>
+          </div>
+          <h6 style="color: grey;" class="mb-3">More facet search coming...</h6>
+          {% comment %} <div class="info-block p-2 mb-3">
           <h4>######</h4>
-          <hr>
+          <hr />
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between p-0">
               <span class="text-start">###</span>
@@ -67,118 +70,131 @@ Instrument List
               <span class="text-end">###</span>
             </li>
           </ul>
-        </div> {% endcomment %}
-      </div>
-  </div>
-
-  <div class="col-xl-9 pt-3 body-container">
-    <div class="navigation d-flex justify-content-between align-items-center">
-      <div class="d-flex">
-        <h4 class="ms-3 me-2 my-auto"><small>INSTRUMENT LIST</small></h4>
-        <div class="dropdown mx-2 notranslate" id="instrument-language-element">
-          <button class="btn btn-warning dropdown-toggle position-relative py-0"
-                  type="button"
-                  aria-expanded="false"
-                  data-bs-toggle="dropdown"
-                  data-bs-title="Instrument name language">
-            {{ active_language.autonym|title }}
-          </button>
-          <ul class="dropdown-menu">
-            {% for language in languages %}
-              <li><a class="dropdown-item" href="?language={{ language.en_label }}">{{ language.autonym|title }}</a></li>
-            {% endfor %}
-          </ul>
+          </div> {% endcomment %}
         </div>
       </div>
-
-      <div class="d-flex">
-        <button type="button" class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn"
-                id="masonry-btn" title="Masonry View"
-                aria-label="Masonry View"
-                aria-pressed="true">
-          <i class="bi bi-columns-gap"></i>
-        </button>
-        <button type="button" class="btn me-2 px-1 py-0 justify-content-center display-btn std-btn"
-                id="std-btn" title="Standard View"
-                aria-label="Standard View">
-          <i class="bi bi-grid"></i>
-        </button>
-      </div>
-    </div>
-    <hr class="mb-2 mx-2">
-    <div class="container py-3" id="body-content">
-      <div class="mb-2 d-flex flex-md-row flex-column align-items-center justify-content-between">
-        <span id="instrumentNum" data-instrument-num="{{ page_obj.paginator.count }}" class="text-start">
-          Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
-          {% if hbs_facet_name %}
-            for
-          {% endif %}
-          <strong>{{ hbs_facet_name }}</strong>
-        </span>
-        {% include "instruments/includes/paginationOptions.html" %}
-      </div>
-      {% include "instruments/includes/masonryView.html" %}
-      {% comment %} {% include "instruments/includes/listView.html" %} {% endcomment %}
-      {% include "instruments/includes/stdView.html" %}
-    </div>
-
-    <div class="mb-3 d-flex flex-md-row flex-column align-items-center justify-content-center">
-      {% include "instruments/includes/paginationOptions.html" %}
-      <div class="pagination-container ">
-        <ul class="pagination mb-1 justify-content-center">
-          {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                 aria-label="First" title="First">
-                <i class="bi bi-chevron-double-left"></i>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                 aria-label="Previous" title="Previous">
-                <i class="bi bi-chevron-left"></i>
-              </a>
-            </li>
-          {% endif %}
-
-          <li class="page-item align-self-center">
-            <span class="current p-2">
-              Page
-              <span class="page-number">{{ page_obj.number }}</span>
-              of
-              {{ page_obj.paginator.num_pages }}
+      <div class="col-xl-9 pt-3 body-container">
+        <div class="navigation d-flex justify-content-between align-items-center">
+          <div class="d-flex">
+            <h4 class="ms-3 me-2 my-auto">
+              <small>INSTRUMENT LIST</small>
+            </h4>
+            <div class="dropdown mx-2 notranslate" id="instrument-language-element">
+              <button class="btn btn-warning dropdown-toggle position-relative py-0"
+                      type="button"
+                      aria-expanded="false"
+                      data-bs-toggle="dropdown"
+                      data-bs-title="Instrument name language">{{ active_language.autonym|title }}</button>
+              <ul class="dropdown-menu">
+                {% for language in languages %}
+                  <li>
+                    <a class="dropdown-item" href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="d-flex">
+            <button type="button"
+                    class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn"
+                    id="masonry-btn"
+                    title="Masonry View"
+                    aria-label="Masonry View"
+                    aria-pressed="true">
+              <i class="bi bi-columns-gap"></i>
+            </button>
+            <button type="button"
+                    class="btn me-2 px-1 py-0 justify-content-center display-btn std-btn"
+                    id="std-btn"
+                    title="Standard View"
+                    aria-label="Standard View">
+              <i class="bi bi-grid"></i>
+            </button>
+          </div>
+        </div>
+        <hr class="mb-2 mx-2" />
+        <div class="container py-3" id="body-content">
+          <div class="mb-2 d-flex flex-md-row flex-column align-items-center justify-content-between">
+            <span id="instrumentNum"
+                  data-instrument-num="{{ page_obj.paginator.count }}"
+                  class="text-start">
+              Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
+              {% if hbs_facet_name %}for{% endif %}
+              <strong>{{ hbs_facet_name }}</strong>
             </span>
-          </li>
+            {% include "instruments/includes/paginationOptions.html" %}
 
-          {% if page_obj.has_next %}
-            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                 aria-label="Next" title="Next">
-                <i class="bi bi-chevron-right"></i>
-              </a>
-            </li>
-            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                 aria-label="Last" title="Last">
-                <i class="bi bi-chevron-double-right"></i>
-              </a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-      <div class="ms-3 mb-1 d-flex align-items-center justify-content-start">
-        <label for="go-to" class="col-form-label">Go to Page</label>
-        <input type="number" name="page" id="page-num" min="1" step="1">
+          </div>
+          {% include "instruments/includes/masonryView.html" %}
+
+          {% comment %} {% include "instruments/includes/listView.html" %} {% endcomment %}
+          {% include "instruments/includes/stdView.html" %}
+
+        </div>
+        <div class="mb-3 d-flex flex-md-row flex-column align-items-center justify-content-center">
+          {% include "instruments/includes/paginationOptions.html" %}
+
+          <div class="pagination-container ">
+            <ul class="pagination mb-1 justify-content-center">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                     aria-label="First"
+                     title="First">
+                    <i class="bi bi-chevron-double-left"></i>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                     aria-label="Previous"
+                     title="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+              <li class="page-item align-self-center">
+                <span class="current p-2">
+                  Page
+                  <span class="page-number">{{ page_obj.number }}</span>
+                  of
+                  {{ page_obj.paginator.num_pages }}
+                </span>
+              </li>
+              {% if page_obj.has_next %}
+                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                  <a class="page-link"
+                     href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                     aria-label="Next"
+                     title="Next">
+                    <i class="bi bi-chevron-right"></i>
+                  </a>
+                </li>
+                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                  <a class="page-link"
+                     href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
+                     aria-label="Last"
+                     title="Last">
+                    <i class="bi bi-chevron-double-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+          <div class="ms-3 mb-1 d-flex align-items-center justify-content-start">
+            <label for="go-to" class="col-form-label">Go to Page</label>
+            <input type="number" name="page" id="page-num" min="1" step="1" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+{% endblock content %}
 
-{% endblock %}
-
-{% block script %}
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
-<script src="{% static "instruments/js/PaginationTools.js" %}"></script>
-{% endblock %}
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+  <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+  <script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
+  <script src="{% static "instruments/js/PaginationTools.js" %}"></script>
+{% endblock scripts %}
