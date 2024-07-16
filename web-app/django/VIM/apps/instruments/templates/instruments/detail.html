@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Instrument Detail
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static "instruments/css/index.css" %}">
+<link rel="stylesheet" href="{% static "instruments/css/detail.css" %}">
+{% endblock %}
+
+{% block content %}
+<div class="instrument-detail">
+  <div class="detail-header">
+    <h2>{{ instrument_name_en }}</h2>
+    <hr>
+  </div>
+  <div class="detail-body">
+    <div class="instrument-forms">
+      <table class="table table-sm table-striped table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row">Wikidata ID</th>
+            <td>
+              <div class="name-form-item">
+                <div class="name-field">
+                  <a class="view-field" href="https://www.wikidata.org/wiki/{{ wikidata_id }}" target="_blank">{{ wikidata_id }}</a>
+                  <input class="edit-field" type="text" value="{{ wikidata_id }}">
+                </div>
+                <div class="button-group">
+                  <button class="btn edit">Edit</button>
+                  <button class="btn cancel">Cancel</button>
+                  <button class="btn publish">Publish</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Hornbostel-Sachs Classification</th>
+            <td>
+              <div class="name-form-item">
+                <div class="name-field">
+                  <span class="view-field">{{ hornbostel_sachs_class }}</span>
+                  <input class="edit-field" type="text" value="{{ hornbostel_sachs_class }}">
+                </div>
+                <div class="button-group">
+                  <button class="btn edit">Edit</button>
+                  <button class="btn cancel">Cancel</button>
+                  <button class="btn publish">Publish</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Classification</th>
+            <td>
+              <div class="name-form-item">
+                <div class="name-field">
+                  <a class="view-field" href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ mimo_class }}" target="_blank">{{ mimo_class }}</a>
+                  <input class="edit-field" type="text" value="{{ mimo_class }}">
+                </div>
+                <div class="button-group">
+                  <button class="btn edit">Edit</button>
+                  <button class="btn cancel">Cancel</button>
+                  <button class="btn publish">Publish</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">
+              Instrument Names in Different Languages
+            </th>
+            <td>
+              <table class="table table-sm table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col"><span class="name-form-item">Language</span></th>
+                    <th scope="col"><span class="name-form-item">Name</span></th>
+                    <th scope="col"><span class="name-form-item">Source</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for instrument_name in instrument_names %}
+                  <tr>
+                    <td>
+                      <div class="name-form-item">
+                        <div class="name-field">
+                          <span class="view-field">{{ instrument_name.language_en_label }}</span>
+                          <input class="edit-field" type="text" value="{{ instrument_name.language_en_label }}">
+                        </div>
+                        <div class="button-group">
+                          <button class="btn edit">Edit</button>
+                          <button class="btn cancel">Cancel</button>
+                          <button class="btn publish">Publish</button>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="name-form-item">
+                        <div class="name-field">
+                          <span class="view-field">{{ instrument_name.name }}</span>
+                          <input class="edit-field" type="text" value="{{ instrument_name.name }}">
+                        </div>
+                        <div class="button-group">
+                          <button class="btn edit">Edit</button>
+                          <button class="btn cancel">Cancel</button>
+                          <button class="btn publish">Publish</button>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="name-form-item">
+                        <div class="name-field">
+                          <span class="view-field">{{ instrument_name.source_name }}</span>
+                          <input class="edit-field" type="text" value="{{ instrument_name.source_name }}">
+                        </div>
+                        <div class="button-group">
+                          <button class="btn edit">Edit</button>
+                          <button class="btn cancel">Cancel</button>
+                          <button class="btn publish">Publish</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Image</th>
+            <td>
+              <div class="name-form-item">
+                <div class="detail-image">
+                  <img src="{{ default_image_url }}" alt="{{ instrument_name_en }}" class="figure-img img-fluid rounded instrument-image">
+                  <div class="detail-image-caption">
+                    <a href="{{ default_image_url }}" target="_blank">View image in full size</a>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static "instruments/js/InstrumentDetail.js" %}"></script>
+{% endblock %}

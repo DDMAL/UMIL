@@ -4,7 +4,7 @@
      id="masonry-view">
   {% for instrument in instruments %}
     <div class="col">
-      <a href="https://wikidata.org/wiki/{{ instrument.wikidata_id }}"
+      <a href="{% url 'instrument-detail' instrument.pk %}"
          class="text-decoration-none"
          target="_blank">
         <div class="card mb-3">
