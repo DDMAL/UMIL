@@ -14,7 +14,11 @@
 {% block content %}
   <div class="instrument-detail">
     <div class="detail-header">
-      <h2>{{ instrument_name_en }}</h2>
+      <h2>
+        {% for instrumentname in instrument_names %}
+          {% if instrumentname.language.en_label == active_language.en_label %}{{ instrumentname.name|title }}{% endif %}
+        {% endfor %}
+      </h2>
       <hr />
     </div>
     <div class="detail-body">
@@ -27,14 +31,8 @@
                 <div class="name-form-item">
                   <div class="name-field">
                     <a class="view-field"
-                       href="https://www.wikidata.org/wiki/{{ wikidata_id }}"
-                       target="_blank">{{ wikidata_id }}</a>
-                    <input class="edit-field" type="text" value="{{ wikidata_id }}" />
-                  </div>
-                  <div class="button-group">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn cancel">Cancel</button>
-                    <button class="btn publish">Publish</button>
+                       href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
+                       target="_blank">{{ instrument.wikidata_id }}</a>
                   </div>
                 </div>
               </td>
@@ -44,13 +42,7 @@
               <td>
                 <div class="name-form-item">
                   <div class="name-field">
-                    <span class="view-field">{{ hornbostel_sachs_class }}</span>
-                    <input class="edit-field" type="text" value="{{ hornbostel_sachs_class }}" />
-                  </div>
-                  <div class="button-group">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn cancel">Cancel</button>
-                    <button class="btn publish">Publish</button>
+                    <span class="view-field">{{ instrument.hornbostel_sachs_class }}</span>
                   </div>
                 </div>
               </td>
@@ -62,13 +54,7 @@
                   <div class="name-field">
                     <a class="view-field"
                        href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ mimo_class }}"
-                       target="_blank">{{ mimo_class }}</a>
-                    <input class="edit-field" type="text" value="{{ mimo_class }}" />
-                  </div>
-                  <div class="button-group">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn cancel">Cancel</button>
-                    <button class="btn publish">Publish</button>
+                       target="_blank">{{ instrument.mimo_class }}</a>
                   </div>
                 </div>
               </td>
@@ -91,15 +77,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for instrument_name in instrument_names %}
+                    {% for instrumentname in instrument_names %}
                       <tr>
                         <td>
                           <div class="name-form-item">
                             <div class="name-field">
-                              <span class="view-field">{{ instrument_name.language_en_label }}</span>
+                              <span class="view-field">{{ instrumentname.language.en_label }}</span>
                               <input class="edit-field"
                                      type="text"
-                                     value="{{ instrument_name.language_en_label }}" />
+                                     value="{{ instrumentname.language.en_label }}" />
                             </div>
                             <div class="button-group">
                               <button class="btn edit">Edit</button>
@@ -111,8 +97,8 @@
                         <td>
                           <div class="name-form-item">
                             <div class="name-field">
-                              <span class="view-field">{{ instrument_name.name }}</span>
-                              <input class="edit-field" type="text" value="{{ instrument_name.name }}" />
+                              <span class="view-field">{{ instrumentname.name }}</span>
+                              <input class="edit-field" type="text" value="{{ instrumentname.name }}" />
                             </div>
                             <div class="button-group">
                               <button class="btn edit">Edit</button>
@@ -124,10 +110,10 @@
                         <td>
                           <div class="name-form-item">
                             <div class="name-field">
-                              <span class="view-field">{{ instrument_name.source_name }}</span>
+                              <span class="view-field">{{ instrumentname.source_name }}</span>
                               <input class="edit-field"
                                      type="text"
-                                     value="{{ instrument_name.source_name }}" />
+                                     value="{{ instrumentname.source_name }}" />
                             </div>
                             <div class="button-group">
                               <button class="btn edit">Edit</button>
@@ -147,11 +133,11 @@
               <td>
                 <div class="name-form-item">
                   <div class="detail-image">
-                    <img src="{{ default_image_url }}"
-                         alt="{{ instrument_name_en }}"
+                    <img src="{{ instrument.default_image.url }}"
+                         alt="{{ instrument.default_image.url }}"
                          class="figure-img img-fluid rounded instrument-image" />
                     <div class="detail-image-caption">
-                      <a href="{{ default_image_url }}" target="_blank">View image in full size</a>
+                      <a href="{{ instrument.default_image.url }}" target="_blank">View image in full size</a>
                     </div>
                   </div>
                 </div>
@@ -164,6 +150,6 @@
   </div>
 {% endblock content %}
 
-{% block script %}
+{% block scripts %}
   <script src="{% static "instruments/js/InstrumentDetail.js" %}"></script>
-{% endblock script %}
+{% endblock scripts %}
