@@ -1,97 +1,99 @@
 .instrument-detail {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    flex-direction: column;
-    padding: 50px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px;
 }
 .detail-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
 }
 .detail-header hr {
-    width: 100%;
+  width: 100%;
 }
 .detail-body {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: flex-start;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  width: 100%;
 }
 .detail-image {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .instrument-image {
-    max-width: 50%;
-    margin-right: 10px;
+  max-width: 50%;
+  margin-right: 10px;
 }
 .detail-image-caption {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .instrument-forms {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 }
 .name-form-item {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 .name-field {
-    width: 90%;
+  width: 90%;
 }
 input.edit-field {
-    width: inherit;
+  width: inherit;
 }
-th[scope="col"] {
-    width: 30%;
+th[scope='col'] {
+  width: 30%;
 }
-th[scope="row"] {
-    width: 20%;
+th[scope='row'] {
+  width: 20%;
 }
 .button-group {
-    display:flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
-.edit-field, .btn.cancel, .btn.publish {
-    display: none;
+.edit-field,
+.btn.cancel,
+.btn.publish {
+  display: none;
 }
 .btn {
-    display: inline-block;
-    padding: 5px 10px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    margin-right: 5px;
+  display: inline-block;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  margin-right: 5px;
 }
 .btn.edit {
-    background-color: #ffc107;
+  background-color: #ffc107;
 }
 .btn.cancel {
-    background-color: #dc3545;
+  background-color: #dc3545;
 }
 .btn.publish {
-    background-color: #28a745;
+  background-color: #28a745;
 }
