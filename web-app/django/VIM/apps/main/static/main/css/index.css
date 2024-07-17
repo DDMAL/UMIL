@@ -1,5 +1,14 @@
 .content-container {
   height: 80vh;
+  position: relative;
+}
+
+.bg-decor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 60%;
 }
 
 .content-container h1 {
@@ -32,8 +41,8 @@
   color: #435334;
 }
 
-.line {
+/* .line {
   width: 1px;
   height: 60%;
   background-color: #9eb384;
-}
+} */
