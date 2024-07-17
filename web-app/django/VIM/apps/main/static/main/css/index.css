@@ -1,40 +1,39 @@
 .content-container {
-    height: 80vh;
+  height: 80vh;
 }
 
 .content-container h1 {
-    margin-bottom: 1rem;
-    font-size: 3rem;
-    color: #435334;
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  color: #435334;
 }
 
 .content-container p {
-    margin-bottom: 2rem;
-    font-size: 1.5rem;
-    line-height: 1.5;
-    color: #435334;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: #435334;
 }
 
 .start-btn {
-    font-family: 'Noto Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .start-btn {
-    padding: 1rem 3rem;
-    font-size: 1rem;
-    border: none;
-    color: #435334;
-    cursor: pointer;
-    border-radius: 50px;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  border: none;
+  color: #435334;
+  cursor: pointer;
+  border-radius: 50px;
 }
 
 .start-btn:hover {
-    color: #435334;
+  color: #435334;
 }
 
-
 .line {
-    width: 1px;
-    height: 60%;
-    background-color: #9EB384;
+  width: 1px;
+  height: 60%;
+  background-color: #9eb384;
 }

@@ -1,0 +1,13 @@
+name: frontend-format
+on: [push, pull_request]
+jobs:
+  format-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Prettier
+        run: npx prettier --check "**/*.css" "**/*.js" --trailing-comma es5
+      - name: Install djlint
+        run: npm install -g djlint
+      - name: Run djlint
+        run: djlint . --check --extension html --exclude "migrations/*"

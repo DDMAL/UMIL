@@ -1,14 +1,14 @@
 .content-container h4 {
-    color: #435334;
+  color: #435334;
 }
 
 .content-container p {
-    color: #435334;
-    font-size: 1rem;
-    text-align: justify
+  color: #435334;
+  font-size: 1rem;
+  text-align: justify;
 }
 
 .content-container a {
-    text-decoration: none;
-    color: #9EB384;
+  text-decoration: none;
+  color: #9eb384;
 }

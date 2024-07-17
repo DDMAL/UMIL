@@ -1,138 +1,137 @@
-
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css');
 
 h4 {
-    color: #435334;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 0;
+  color: #435334;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
 }
 
 h5 {
-    color: #435334;
+  color: #435334;
 }
 
 hr {
-    color: #435334 !important;
-    margin-top: 0;
+  color: #435334 !important;
+  margin-top: 0;
 }
 
 /* sidebar */
 .sidebar-container {
-    background-color: white;
-    border: 3px solid #9EB384;
-    border-radius: 30px;
-    height: auto !important;
+  background-color: white;
+  border: 3px solid #9eb384;
+  border-radius: 30px;
+  height: auto !important;
 }
 
 .info-block {
-    background-color: #FAF1E4;
-    border: 1.5px solid #CEDEBD;
-    border-radius: 10px;
-    height: auto !important;
+  background-color: #faf1e4;
+  border: 1.5px solid #cedebd;
+  border-radius: 10px;
+  height: auto !important;
 }
 
 .list-group-item {
-    border: none !important;
-    background-color: transparent !important;
-    color: #435334;
+  border: none !important;
+  background-color: transparent !important;
+  color: #435334;
 }
 
 .list-group-item:hover {
-    color: #9EB384;
+  color: #9eb384;
 }
 
 .selected {
-    color: #435334;
-    font-weight: bold;
+  color: #435334;
+  font-weight: bold;
 }
 
-.toggle-more{
-    color: #0b0f07;
+.toggle-more {
+  color: #0b0f07;
 }
 
 .toggle-more:hover {
-    cursor: pointer;
-    color: #9EB384;
+  cursor: pointer;
+  color: #9eb384;
 }
 
 /* body */
 .body-container {
-    background-color: white;
-    border: 3px solid #9EB384;
-    border-radius: 30px;
+  background-color: white;
+  border: 3px solid #9eb384;
+  border-radius: 30px;
 }
 
 .display-btn {
-    font-weight: bold;
-    color: #9EB384;
-    width: 30px;
-    border: none;
+  font-weight: bold;
+  color: #9eb384;
+  width: 30px;
+  border: none;
 }
 
 .masonry-btn {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .std-btn {
-    font-size: 23px;
+  font-size: 23px;
 }
 
 .highlighted-btn {
-    color: #435334;
+  color: #435334;
 }
 
 .card {
-    background-color: #FAF1E4;
+  background-color: #faf1e4;
 }
 
 .card-title {
-    color: #435334;
+  color: #435334;
 }
 
 .pagination-container {
-    color: #435334;
+  color: #435334;
 }
 
 .page-link {
-    color: #435334;
+  color: #435334;
 }
 
 .page-link:hover {
-    color: #9EB384;
+  color: #9eb384;
 }
 
 /* list view */
 .list-item-container {
-    min-height: 200px; 
-    max-height: 300px;
-    overflow: hidden;
+  min-height: 200px;
+  max-height: 300px;
+  overflow: hidden;
 }
 
 .card-title h5:hover {
-    color: #9EB384;
+  color: #9eb384;
 }
 
 .more-info {
-    color: #435334;
+  color: #435334;
 }
 
 .more-info:hover {
-    border: 1px solid #435334;
+  border: 1px solid #435334;
 }
 
 /* standard view */
 .square-box {
-    position: relative;
-    padding-top: 100%;
-    overflow: hidden;
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
 }
 
 .square-box img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
