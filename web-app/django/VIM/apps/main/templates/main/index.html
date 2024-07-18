@@ -11,14 +11,12 @@
 {% endblock css_files %}
 
 {% block content %}
-  <div class="container content-container d-flex align-items-center">
+  <div class="container content-container d-flex align-items-center justify-content-center">
     <div class="z-2">
       <div class="row">
         <div class="col-6">
           <h1>
-            <span style="color: #876445;">Universal</span> Musical Instrument
-            <br />
-            Lexicon
+            <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
           </h1>
         </div>
         <div class="col-6 notranslate">
@@ -54,7 +52,7 @@
         </div>
       </div>
     </div>
-    <img src="{% static "main/images/bg-decor.svg" %}" alt="background decoration" class="z-1 bg-decor" />
+    <img id="bg-decor" src="{% static "main/images/bg-decor.svg" %}" alt="background decoration" class="z-1" />
   </div>
 {% endblock content %}
 
