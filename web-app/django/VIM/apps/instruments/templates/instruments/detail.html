@@ -26,7 +26,11 @@
         <table class="table table-sm table-striped table-bordered">
           <tbody>
             <tr>
-              <th scope="row">Wikidata ID</th>
+              {% if active_language.en_label == "french" %}
+                <th scope="row">Identifiant Wikidata</th>
+              {% else %}
+                <th scope="row">Wikidata ID</th>
+              {% endif %}
               <td>
                 <div class="name-form-item">
                   <div class="name-field">
@@ -38,7 +42,11 @@
               </td>
             </tr>
             <tr>
-              <th scope="row">Hornbostel-Sachs Classification</th>
+              {% if active_language.en_label == "french" %}
+                <th scope="row">Classification Hornbostel-Sachs</th>
+              {% else %}
+                <th scope="row">Hornbostel-Sachs Classification</th>
+              {% endif %}
               <td>
                 <div class="name-form-item">
                   <div class="name-field">
@@ -48,7 +56,11 @@
               </td>
             </tr>
             <tr>
-              <th scope="row">MIMO Classification</th>
+              {% if active_language.en_label == "french" %}
+                <th scope="row">Classification MIMO</th>
+              {% else %}
+                <th scope="row">MIMO Classification</th>
+              {% endif %}
               <td>
                 <div class="name-form-item">
                   <div class="name-field">
@@ -60,20 +72,36 @@
               </td>
             </tr>
             <tr>
-              <th scope="row">Instrument Names in Different Languages</th>
+              {% if active_language.en_label == "french" %}
+                <th scope="row">Noms des Instruments dans Différentes Langues</th>
+              {% else %}
+                <th scope="row">Instrument Names in Different Languages</th>
+              {% endif %}
               <td>
                 <table class="table table-sm table-striped table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">
-                        <span class="name-form-item">Language</span>
-                      </th>
-                      <th scope="col">
-                        <span class="name-form-item">Name</span>
-                      </th>
-                      <th scope="col">
-                        <span class="name-form-item">Source</span>
-                      </th>
+                      {% if active_language.en_label == "french" %}
+                        <th scope="col">
+                          <span class="name-form-item">Langue</span>
+                        </th>
+                        <th scope="col">
+                          <span class="name-form-item">Nom</span>
+                        </th>
+                        <th scope="col">
+                          <span class="name-form-item">Source</span>
+                        </th>
+                      {% else %}
+                        <th scope="col">
+                          <span class="name-form-item">Language</span>
+                        </th>
+                        <th scope="col">
+                          <span class="name-form-item">Name</span>
+                        </th>
+                        <th scope="col">
+                          <span class="name-form-item">Source</span>
+                        </th>
+                      {% endif %}
                     </tr>
                   </thead>
                   <tbody>
@@ -88,9 +116,15 @@
                                      value="{{ instrumentname.language.en_label }}" />
                             </div>
                             <div class="button-group">
-                              <button class="btn edit">Edit</button>
-                              <button class="btn cancel">Cancel</button>
-                              <button class="btn publish">Publish</button>
+                              {% if active_language.en_label == "french" %}
+                                <button class="btn edit">Modifier</button>
+                                <button class="btn cancel">Annuler</button>
+                                <button class="btn publish">Publier</button>
+                              {% else %}
+                                <button class="btn edit">Edit</button>
+                                <button class="btn cancel">Cancel</button>
+                                <button class="btn publish">Publish</button>
+                              {% endif %}
                             </div>
                           </div>
                         </td>
@@ -101,9 +135,15 @@
                               <input class="edit-field" type="text" value="{{ instrumentname.name }}" />
                             </div>
                             <div class="button-group">
-                              <button class="btn edit">Edit</button>
-                              <button class="btn cancel">Cancel</button>
-                              <button class="btn publish">Publish</button>
+                              {% if active_language.en_label == "french" %}
+                                <button class="btn edit">Modifier</button>
+                                <button class="btn cancel">Annuler</button>
+                                <button class="btn publish">Publier</button>
+                              {% else %}
+                                <button class="btn edit">Edit</button>
+                                <button class="btn cancel">Cancel</button>
+                                <button class="btn publish">Publish</button>
+                              {% endif %}
                             </div>
                           </div>
                         </td>
@@ -116,9 +156,15 @@
                                      value="{{ instrumentname.source_name }}" />
                             </div>
                             <div class="button-group">
-                              <button class="btn edit">Edit</button>
-                              <button class="btn cancel">Cancel</button>
-                              <button class="btn publish">Publish</button>
+                              {% if active_language.en_label == "french" %}
+                                <button class="btn edit">Modifier</button>
+                                <button class="btn cancel">Annuler</button>
+                                <button class="btn publish">Publier</button>
+                              {% else %}
+                                <button class="btn edit">Edit</button>
+                                <button class="btn cancel">Cancel</button>
+                                <button class="btn publish">Publish</button>
+                              {% endif %}
                             </div>
                           </div>
                         </td>
@@ -137,7 +183,11 @@
                          alt="{{ instrument.default_image.url }}"
                          class="figure-img img-fluid rounded instrument-image" />
                     <div class="detail-image-caption">
-                      <a href="{{ instrument.default_image.url }}" target="_blank">View image in full size</a>
+                      {% if active_language.en_label == "french" %}
+                        <a href="{{ instrument.default_image.url }}" target="_blank">Afficher l'image en taille réelle</a>
+                      {% else %}
+                        <a href="{{ instrument.default_image.url }}" target="_blank">View image in full size</a>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
