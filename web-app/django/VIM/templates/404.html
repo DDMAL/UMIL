@@ -1,13 +1,32 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block title %}
+  Page Not Found
+{% endblock title %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "/css/404.css" %}" />
+{% endblock css_files %}
+
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <div class="p-3 col-12">
-        <h3>404</h3>
-        <h5>Page not found</h5>
-        <br />
-        <p>We couldn't find a page at this address.</p>
+  <div class="container content-container d-flex align-items-center justify-content-center">
+    <div class="container text-center ">
+      <div class="row">
+        <div class="col align-self-center">
+          <img id="bg-404" src="{% static "images/404.svg" %}" alt="404 decoration" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col align-self-center">
+          <h1>Page not found</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col align-self-center">
+          <p>We couldn't find a page at this address.</p>
+        </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,17 @@
+.content-container {
+  height: 80vh;
+}
+
+#bg-404 {
+  height: 25vh;
+}
+
+.content-container h1 {
+  color: #435334;
+  font-size: 2rem;
+}
+
+.content-container p {
+  font-size: 1.5rem;
+  color: #435334;
+}
