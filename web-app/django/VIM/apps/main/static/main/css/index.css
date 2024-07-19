@@ -1,10 +1,40 @@
+@keyframes settleDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0.2;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .content-container {
   height: 80vh;
+  position: relative;
+}
+
+#bg-decor {
+  position: absolute;
+  bottom: 0;
+  animation: fadeInUp 0.7s ease-in-out 0s forwards;
 }
 
 .content-container h1 {
   margin-bottom: 1rem;
   font-size: 3rem;
+  animation: settleDown 0.7s ease-in-out 0s forwards;
   color: #435334;
 }
 
@@ -30,10 +60,4 @@
 
 .start-btn:hover {
   color: #435334;
-}
-
-.line {
-  width: 1px;
-  height: 60%;
-  background-color: #9eb384;
 }

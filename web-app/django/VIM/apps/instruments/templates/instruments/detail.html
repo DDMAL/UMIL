@@ -16,7 +16,9 @@
     <div class="detail-header">
       <h2>
         {% for instrumentname in instrument_names %}
-          {% if instrumentname.language.en_label == active_language.en_label %}{{ instrumentname.name|title }}{% endif %}
+          {% if instrumentname.language.en_label == active_language.en_label %}
+            {{ instrumentname.name|title }}
+          {% endif %}
         {% endfor %}
       </h2>
       <hr />
