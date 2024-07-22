@@ -13,44 +13,52 @@
 {% endblock css_files %}
 
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <div class="mr-3 p-4 col-md-8">
-        {% if messages %}
-          <div class="alert alert-success alert-dismissible">
-            {% for message in messages %}{{ message }}{% endfor %}
-          </div>
-        {% endif %}
-        {% if form.errors %}
-          <div class="alert alert-danger alert-dismissible">
-            {% for field, error in form.errors.items %}{{ error }}{% endfor %}
-          </div>
-        {% endif %}
-        <div class="col-md mt-4 login-form" id="login">
-          <h5>
-            <strong>Login for Contributors</strong>
-          </h5>
-          <form method="post">
-            {% csrf_token %}
-            <div class="mt-4 mb-4">
-              <label for="exampleInputEmail" class="form-label">Email Address</label>
-              {{ form.username }}
-            </div>
-            <div class="mb-4">
-              <label for="exampleInputPassword" class="form-label">Password</label>
-              {{ form.password }}
-            </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-            <p class="mt-2">
-              <a href="{% url 'main:reset_password' %}">Forgot your password?</a>
-            </p>
-          </form>
+  <div class="container content-container d-flex justify-content-center align-items-center">
+    <div class="col-8 p-4 login-container">
+      {% if messages %}
+        <div class="alert alert-success alert-dismissible">
+          {% for message in messages %}{{ message }}{% endfor %}
         </div>
-        <div class="col-md mt-4 create-account-link">
-          <p>
-            Don't have an account?
-            <a href="{% url 'main:register' %}">Create a new account</a>
-          </p>
+      {% endif %}
+      {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible">
+          {% for field, error in form.errors.items %}{{ error }}{% endfor %}
+        </div>
+      {% endif %}
+      <div class="container">
+        <div class="row">
+          <div class="col-6 my-4 px-4 d-flex justify-content-center align-items-center login-form"
+               id="login">
+            <div class="col-12 mx-4 px-2">
+              <h5>
+                <strong>Login</strong>
+              </h5>
+              <form method="post">
+                {% csrf_token %}
+                <div class="my-4">
+                  <label for="exampleInputEmail" class="form-label">Email Address</label>
+                  <div>{{ form.username }}</div>
+                </div>
+                <div class="mb-4">
+                  <label for="exampleInputPassword" class="form-label">Password</label>
+                  <div>{{ form.password }}</div>
+                </div>
+                <button type="submit" class="btn btn-primary sign-in-btn">Sign in</button>
+                <p class="mt-2">
+                  <a href="{% url 'main:reset_password' %}">Forgot your password?</a>
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="col-6 my-4 create-account-link d-flex align-items-center">
+            <div id="signup-option-separator" class="flex-fill">
+              <div class="text-center" id="error">
+                <img src="{% static "images/sign-up.svg" %}" alt="sign up image" id="signup-decor" class="my-4" />
+                <p class="mb-1">Don't have an account?</p>
+                <a href="{% url 'main:register' %}">Create a new account</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
