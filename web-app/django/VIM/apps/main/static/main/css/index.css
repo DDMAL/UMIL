@@ -20,6 +20,20 @@
   }
 }
 
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+  }
+
+  70% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.95);
+  }
+}
+
 .content-container {
   height: 80vh;
   position: relative;
@@ -55,9 +69,9 @@
   border: none;
   color: #435334;
   cursor: pointer;
-  border-radius: 50px;
 }
 
 .start-btn:hover {
   color: #435334;
+  animation: pulse 0.5s both;
 }
