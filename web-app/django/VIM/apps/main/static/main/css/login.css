@@ -8,6 +8,12 @@
   border: 3px solid #9eb384;
   border-radius: 30px;
   height: auto !important;
+  position: relative;
+}
+
+.message-container {
+  position: absolute;
+  top: 10px;
 }
 
 .login-form {
@@ -74,5 +80,10 @@ a:hover {
 }
 
 .errorlist {
-  color: red;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0 0.5rem;
 }

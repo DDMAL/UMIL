@@ -14,18 +14,13 @@
 
 {% block content %}
   <div class="container content-container d-flex justify-content-center align-items-center">
-    <div class="col-8 p-4 login-container">
-      {% if messages %}
-        <div class="alert alert-success alert-dismissible">
-          {% for message in messages %}{{ message }}{% endfor %}
-        </div>
-      {% endif %}
+    <div class="col-8 p-4 align-items-center login-container">
       {% if form.errors %}
-        <div class="alert alert-danger alert-dismissible">
+        <div class="alert alert-danger p-2 z-2 message-container">
           {% for field, error in form.errors.items %}{{ error }}{% endfor %}
         </div>
       {% endif %}
-      <div class="container">
+      <div class="container z-1">
         <div class="row">
           <div class="col-6 my-4 px-4 d-flex justify-content-center align-items-center login-form"
                id="login">
