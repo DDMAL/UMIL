@@ -1,0 +1,31 @@
+<div class="modal fade"
+     id="uploadImageModal"
+     tabindex="-1"
+     aria-labelledby="uploadImageModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="uploadImageModalLabel">Upload New Images</h4>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="imageUpload" class="form-label">Choose images to upload</label>
+            <input class="form-control"
+                   type="file"
+                   id="imageUpload"
+                   name="images"
+                   multiple />
+          </div>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
