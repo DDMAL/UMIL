@@ -1,5 +1,25 @@
+.content-container {
+  height: 80vh;
+  width: 80vw;
+}
+
+.login-container {
+  background-color: white;
+  border: 3px solid #9eb384;
+  border-radius: 30px;
+  height: auto !important;
+}
+
 .login-form {
   color: #435334;
+}
+
+#signup-decor {
+  height: 20vh;
+}
+
+#signup-option-separator {
+  border-left: 2px solid rgb(232 232 232);
 }
 
 input {
@@ -8,7 +28,7 @@ input {
   background-color: #faf1e4;
   padding: 5px;
   color: #435334;
-  margin: 0 10px;
+  width: 80%;
 }
 
 input:hover {
@@ -27,12 +47,12 @@ input::placeholder {
   color: #9eb384;
 }
 
-.btn-primary {
+.sign-in-btn {
   background-color: #435334;
   border: 1px solid #435334;
 }
 
-.btn-primary:hover {
+.sign-in-btn:hover {
   background-color: #9eb384;
   border: 1px solid #9eb384;
 }
