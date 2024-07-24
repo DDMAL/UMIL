@@ -14,9 +14,9 @@ urlpatterns = [
         name="logout",
     ),
     path(
-        "change-password/",
+        "password-change/",
         auth_views.PasswordChangeView.as_view(
-            template_name="registration/change_password.html",
+            template_name="registration/changePassword.html",
             success_url="/",
         ),
         name="change_password",
@@ -32,34 +32,34 @@ urlpatterns = [
         name="login",
     ),
     path(
-        "reset-password/",
+        "password-reset/",
         auth_views.PasswordResetView.as_view(
-            template_name="registration/reset_password.html",
-            email_template_name="registration/reset_password_email.html",
-            success_url="/reset-password-sent/",
+            template_name="registration/resetPassword.html",
+            email_template_name="registration/resetPasswordEmail.html",
+            success_url="/password-reset/done/",
         ),
         name="reset_password",
     ),
     path(
-        "reset-password-sent/",
+        "password-reset/done/",
         auth_views.PasswordResetDoneView.as_view(
-            template_name="registration/reset_password_sent.html",
+            template_name="registration/resetPasswordDone.html",
         ),
         name="reset_password_done",
     ),
     path(
         "reset/<uidb64>/<token>",
         auth_views.PasswordResetConfirmView.as_view(
-            template_name="registration/reset_password_confirm.html",
+            template_name="registration/resetPasswordConfirm.html",
             success_url="/reset-password-complete/",
         ),
-        name="reset_password_confirm",
+        name="password_reset_confirm",
     ),
     path(
-        "reset-password-complete/",
+        "reset/done/",
         auth_views.PasswordResetCompleteView.as_view(
-            template_name="registration/reset_password_complete.html",
+            template_name="registration/resetPasswordComplete.html",
         ),
-        name="reset_password_complete",
+        name="password_reset_complete",
     ),
 ]
