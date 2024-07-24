@@ -55,17 +55,22 @@ header {
   font-family: 'Noto Sans', sans-serif;
 }
 
-.login-btn:hover {
+.login-btn:hover,
+.login-btn:focus {
   color: #435334;
   border: 1px solid #faf1e4;
   background-color: #faf1e4;
 }
 
-.dropdown-menu {
+.umil-dropdown-menu {
   background-color: #faf1e4;
 }
 
-.dropdown-item:hover {
+.umil-dropdown-item {
+  color: #435334;
+}
+
+.umil-dropdown-item:hover {
   background-color: #cedebd;
 }
 
