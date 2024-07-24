@@ -1,5 +1,5 @@
 const tooltipTriggerList = document.querySelectorAll(
-  '[data-bs-toggle="tooltip"], [data-bs-toggle="dropdown"]'
+  '[data-bs-toggle="tooltip"]'
 );
 const tooltipList = [...tooltipTriggerList].map(
   (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
