@@ -14,7 +14,7 @@
 
 {% block content %}
   <div class="container content-container d-flex justify-content-center align-items-center">
-    <div class="col-8 p-4 align-items-center login-container">
+    <div class="col-10 p-4 align-content-center account-container">
       {% if form.errors %}
         <div class="alert alert-danger p-2 z-2 message-container">
           {% for field, error in form.errors.items %}{{ error }}{% endfor %}
@@ -22,8 +22,7 @@
       {% endif %}
       <div class="container z-1">
         <div class="row">
-          <div class="col-6 my-4 px-4 d-flex justify-content-center align-items-center login-form"
-               id="login">
+          <div class="col-6 my-4 px-4 d-flex justify-content-center align-items-center">
             <div class="col-12 mx-4 px-2">
               <h5>
                 <strong>Login</strong>
@@ -38,7 +37,7 @@
                   <label for="exampleInputPassword" class="form-label">Password</label>
                   <div>{{ form.password }}</div>
                 </div>
-                <button type="submit" class="btn btn-primary sign-in-btn">Sign in</button>
+                <button type="submit" class="btn btn-primary account-btn">Sign in</button>
                 <p class="mt-2">
                   <a href="{% url 'main:reset_password' %}">Forgot your password?</a>
                 </p>

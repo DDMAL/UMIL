@@ -3,21 +3,18 @@
   width: 80vw;
 }
 
-.login-container {
+.account-container {
   background-color: white;
   border: 3px solid #9eb384;
   border-radius: 30px;
-  height: auto !important;
+  height: 500px !important;
   position: relative;
+  color: #435334;
 }
 
 .message-container {
   position: absolute;
   top: 10px;
-}
-
-.login-form {
-  color: #435334;
 }
 
 #signup-decor {
@@ -53,12 +50,12 @@ input::placeholder {
   color: #9eb384;
 }
 
-.sign-in-btn {
+.account-btn {
   background-color: #435334;
   border: 1px solid #435334;
 }
 
-.sign-in-btn:hover {
+.account-btn:hover {
   background-color: #9eb384;
   border: 1px solid #9eb384;
 }
