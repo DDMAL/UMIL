@@ -52,17 +52,20 @@
           </form>
           <div class="text-end d-flex">
             {% if user.is_authenticated %}
-              <div class="dropdown me-3">
-                <button class="btn dropdown-toggle"
+              <div class="dropdown me-2">
+                <button class="btn dropdown-toggle login-btn"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">{{ user.username }}</button>
-                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <ul class="dropdown-menu umil-dropdown-menu"
+                    aria-labelledby="userDropdown">
                   <li>
-                    <a class="dropdown-item" href="{% url 'main:change_password' %}">Change Password</a>
+                    <a class="dropdown-item umil-dropdown-item"
+                       href="{% url 'main:change_password' %}">Change Password</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="{% url 'main:logout' %}">Log out</a>
+                    <a class="dropdown-item umil-dropdown-item"
+                       href="{% url 'main:logout' %}">Log out</a>
                   </li>
                 </ul>
               </div>

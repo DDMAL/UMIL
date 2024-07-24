@@ -79,7 +79,12 @@
             <h4 class="ms-3 me-2 my-auto">
               <small>INSTRUMENT LIST</small>
             </h4>
-            <div class="dropdown mx-2 notranslate" id="instrument-language-element">
+            <div class="dropdown mx-2 notranslate"
+                 id="instrument-language-element"
+                 data-bs-toggle="tooltip"
+                 data-bs-title="Instrument Name Language"
+                 aria-label="Instrument Name Language"
+                 aria-pressed="true">
               <button class="btn btn-warning dropdown-toggle position-relative py-0"
                       type="button"
                       aria-expanded="false"
@@ -87,10 +92,11 @@
                       data-bs-title="Instrument name language">
                 {{ active_language.autonym|title }}
               </button>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu umil-dropdown-menu">
                 {% for language in languages %}
                   <li>
-                    <a class="dropdown-item" href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
+                    <a class="dropdown-item umil-dropdown-item"
+                       href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
                   </li>
                 {% endfor %}
               </ul>
