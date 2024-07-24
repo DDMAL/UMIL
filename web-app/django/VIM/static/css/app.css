@@ -72,6 +72,7 @@ header {
 #google_translate_element {
   border: 1px solid #faf1e4;
   border-radius: 0.375rem;
+  width: 180px;
 }
 
 .goog-te-combo,
