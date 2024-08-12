@@ -12,6 +12,7 @@ django = "4.2.5"
 psycopg = "3.1.10"
 requests = "2.31.0"
 gunicorn = "21.2.0"
+pillow = "^10.4.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -84,14 +84,17 @@ class Command(BaseCommand):
         ]
         return instrument_data
 
-    def create_database_objects(self, instrument_attrs: dict, ins_img_url: str) -> None:
+    def create_database_objects(
+        self, instrument_attrs: dict, original_img_path: str, thumbnail_img_path: str
+    ) -> None:
         """
         Given a dictionary of instrument attributes and a url to an instrument image,
         create the corresponding database objects.
 
         instrument_attrs [dict]: Dictionary of instrument attributes. See
             parse_instrument_data for details.
-        ins_img_url [str]: URL of instrument image
+        original_img_path [str]: Path to the original instrument image
+        thumbnail_img_path [str]: Path to the thumbnail of the instrument image
         """
         ins_names = instrument_attrs.pop("ins_names")
         instrument = Instrument.objects.create(**instrument_attrs)
@@ -105,10 +108,17 @@ class Command(BaseCommand):
         img_obj = AVResource.objects.create(
             instrument=instrument,
             type="image",
-            format=ins_img_url.split(".")[-1],
-            url=ins_img_url,
+            format=original_img_path.split(".")[-1],
+            url=original_img_path,
         )
         instrument.default_image = img_obj
+        thumbnail_obj = AVResource.objects.create(
+            instrument=instrument,
+            type="image",
+            format=thumbnail_img_path.split(".")[-1],
+            url=thumbnail_img_path,
+        )
+        instrument.thumbnail = thumbnail_obj
         instrument.save()
 
     def handle(self, *args, **options) -> None:
@@ -125,8 +135,10 @@ class Command(BaseCommand):
                     for ins in instrument_list[ins_i : ins_i + 50]
                 ]
                 ins_data: list[dict] = self.get_instrument_data(ins_ids_subset)
-                ins_imgs_subset: list[str] = [
-                    ins["image"] for ins in instrument_list[ins_i : ins_i + 50]
-                ]
-                for instrument_attrs, ins_img_url in zip(ins_data, ins_imgs_subset):
-                    self.create_database_objects(instrument_attrs, ins_img_url)
+                for instrument_attrs, ins_id in zip(ins_data, ins_ids_subset):
+                    img_dir = "../../static/instruments/images/instrument_imgs"
+                    original_img_path = f"{img_dir}/original/{ins_id}.png"
+                    thumbnail_img_path = f"{img_dir}/thumbnail/{ins_id}.png"
+                    self.create_database_objects(
+                        instrument_attrs, original_img_path, thumbnail_img_path
+                    )

@@ -10,7 +10,7 @@
          target="_blank">
         <div class="card mb-3">
           <div class="square-box">
-            <img src="{{ instrument.avresource_set.first.url }}" class="card-img-top rounded p-2 img-fluid" alt="instrument image" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';" />
+            <img src="{{ instrument.thumbnail.url }}" class="card-img-top rounded p-2 img-fluid" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';" />
           </div>
           <div class="card-body pb-0 pt-0">
             <p class="card-title text-center notranslate">
