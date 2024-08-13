@@ -1,8 +1,12 @@
+"""This module imports instrument objects from Wikidata for the VIM project."""
+
 import csv
+import os
 from typing import Optional
 import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from django.conf import settings
 from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
 
 
@@ -16,6 +20,10 @@ class Command(BaseCommand):
     """
 
     help = "Imports instrument objects"
+
+    def __init__(self):
+        super().__init__()
+        self.language_map: dict[str, Language] = {}
 
     def parse_instrument_data(
         self, instrument_id: str, instrument_data: dict
@@ -128,6 +136,9 @@ class Command(BaseCommand):
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
         self.language_map = Language.objects.in_bulk(field_name="wikidata_code")
+        img_dir = os.path.join(
+            settings.STATIC_URL, "instruments", "images", "instrument_imgs"
+        )
         with transaction.atomic():
             for ins_i in range(0, len(instrument_list), 50):
                 ins_ids_subset: list[str] = [
@@ -136,9 +147,12 @@ class Command(BaseCommand):
                 ]
                 ins_data: list[dict] = self.get_instrument_data(ins_ids_subset)
                 for instrument_attrs, ins_id in zip(ins_data, ins_ids_subset):
-                    img_dir = "../../static/instruments/images/instrument_imgs"
-                    original_img_path = f"{img_dir}/original/{ins_id}.png"
-                    thumbnail_img_path = f"{img_dir}/thumbnail/{ins_id}.png"
+                    original_img_path = os.path.join(
+                        img_dir, "original", f"{ins_id}.png"
+                    )
+                    thumbnail_img_path = os.path.join(
+                        img_dir, "thumbnail", f"{ins_id}.png"
+                    )
                     self.create_database_objects(
                         instrument_attrs, original_img_path, thumbnail_img_path
                     )

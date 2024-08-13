@@ -1,8 +1,10 @@
+"""This module indexes instrument data in the database in Solr."""
+
 from django.core.management.base import BaseCommand
 from django.db.models import F, CharField, Value as V
 from django.db.models.functions import Concat, Left
-from VIM.apps.instruments.models import Instrument
 import requests
+from VIM.apps.instruments.models import Instrument
 
 
 class Command(BaseCommand):
@@ -43,6 +45,7 @@ class Command(BaseCommand):
         )
 
     def build_hbs_label_map(self):
+        """Build a mapping of Hornbostel-Sachs classification codes to labels."""
         # For now, we just want the names in English and French of the first category of
         # the Hornbostel-Sachs classification.
         eng_name_mapping = {
