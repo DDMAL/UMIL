@@ -8,7 +8,7 @@ class AVResource(models.Model):
         ("image", "Image"),
     ]
 
-    instrument = models.ForeignKey("Instrument", on_delete=models.PROTECT)
+    instrument = models.ForeignKey("Instrument", on_delete=models.SET_NULL, null=True)
     type = models.CharField(
         max_length=5,
         choices=RESOURCE_TYPE_CHOICES,
