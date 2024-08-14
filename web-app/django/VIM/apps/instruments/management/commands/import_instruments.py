@@ -6,7 +6,6 @@ from typing import Optional
 import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from django.conf import settings
 from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
 
 
@@ -136,9 +135,7 @@ class Command(BaseCommand):
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
         self.language_map = Language.objects.in_bulk(field_name="wikidata_code")
-        img_dir = os.path.join(
-            settings.STATIC_URL, "instruments", "images", "instrument_imgs"
-        )
+        img_dir = "instruments/images/instrument_imgs"
         with transaction.atomic():
             for ins_i in range(0, len(instrument_list), 50):
                 ins_ids_subset: list[str] = [

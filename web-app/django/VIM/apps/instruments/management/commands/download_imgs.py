@@ -5,6 +5,7 @@ import os
 from io import BytesIO
 import requests
 from PIL import Image
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 
@@ -12,7 +13,9 @@ class Command(BaseCommand):
     """Django management command to download images and create thumbnails for instruments."""
 
     USER_AGENT = "UMIL/0.1.0 (https://vim.simssa.ca/; https://ddmal.music.mcgill.ca/)"
-    OUTPUT_DIR = "VIM/apps/instruments/static/instruments/images/instrument_imgs"
+    OUTPUT_DIR = os.path.join(
+        settings.STATIC_ROOT, "instruments", "images", "instrument_imgs"
+    )
     CSV_PATH = "startup_data/vim_instruments_with_images-15sept.csv"
 
     help = "Download images and create thumbnails for instruments"

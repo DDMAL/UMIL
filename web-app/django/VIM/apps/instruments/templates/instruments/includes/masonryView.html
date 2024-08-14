@@ -8,7 +8,7 @@
          class="text-decoration-none"
          target="_blank">
         <div class="card mb-3">
-          <img src="{{ instrument.thumbnail.url }}" class="card-img-top rounded p-2" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';" />
+          <img src="{% static instrument.thumbnail.url %}" class="card-img-top rounded p-2" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';" />
           <div class="card-body pb-0 pt-0">
             <p class="card-title text-center notranslate ">
               {% for instrumentname in instrument.instrumentname_set.all %}
