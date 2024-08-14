@@ -1,3 +1,5 @@
+"""This module imports possible languages for instrument names from Wikidata."""
+
 from django.core.management.base import BaseCommand
 from VIM.apps.instruments.models import Language
 
