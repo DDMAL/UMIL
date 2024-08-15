@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install poetry
-pip install poetry==1.6.1
+pip install poetry==1.8.3
 
 poetry config virtualenvs.in-project true
 poetry config virtualenvs.options.no-pip true
