@@ -1,7 +1,7 @@
-from typing import Any
+from django.db.models import Prefetch
 from django.db.models.query import QuerySet
 from django.views.generic import ListView
-from VIM.apps.instruments.models import Instrument, Language
+from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 import requests
 
 
@@ -15,7 +15,6 @@ class InstrumentList(ListView):
 
     template_name = "instruments/index.html"
     context_object_name = "instruments"
-    model = Instrument
 
     def get_paginate_by(self, queryset) -> int:
         pag_by_param: str = self.request.GET.get("paginate_by", "20")
@@ -25,24 +24,42 @@ class InstrumentList(ListView):
             paginate_by = 20
         return paginate_by
 
+    def get_active_language_en_label(self) -> str:
+        """
+        Returns the English label of the active language.
+
+        The active language is determined by the following order of precedence:
+            - by the `language` query parameter if present
+            - by the `active_language_en` session variable if present
+            - by the default language 'english'
+
+        Returns:
+            str: The English label of the active language
+        """
+        language_en = self.request.GET.get("language")
+        if language_en:
+            return language_en
+        return self.request.session.get("active_language_en", "english")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["active_tab"] = "instruments"
-        context["instrument_num"] = Instrument.objects.count()
+        context["instrument_num"] = context["paginator"].count
         context["languages"] = Language.objects.all()
-        active_language_en = self.request.session.get("active_language_en", None)
-        context["active_language"] = (
-            Language.objects.get(en_label=active_language_en)
-            if active_language_en
-            else Language.objects.get(en_label="english")  # default in English
-        )
+        active_language_en = self.get_active_language_en_label()
+        context["active_language"] = Language.objects.get(en_label=active_language_en)
         active_language_code = context["active_language"].wikidata_code
 
         hbs_facet = self.request.GET.get("hbs_facet", None)
         context["hbs_facet"] = hbs_facet
 
         hbs_facets = requests.get(
-            f"http://solr:8983/solr/virtual-instrument-museum/select?facet.pivot=hbs_prim_cat_s,hbs_prim_cat_label_{active_language_code}_s&facet=true&indent=true&q=*:*&rows=0"
+            (
+                "http://solr:8983/solr/virtual-instrument-museum/select?"
+                f"facet.pivot=hbs_prim_cat_s,hbs_prim_cat_label_{active_language_code}_s"
+                "&facet=true&indent=true&q=*:*&rows=0"
+            ),
+            timeout=10,
         ).json()["facet_counts"]["facet_pivot"][
             f"hbs_prim_cat_s,hbs_prim_cat_label_{active_language_code}_s"
         ]
@@ -69,10 +86,19 @@ class InstrumentList(ListView):
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self) -> QuerySet[Instrument]:
+        language_en = self.get_active_language_en_label()
+        instrumentname_prefetch_manager = Prefetch(
+            "instrumentname_set",
+            queryset=InstrumentName.objects.filter(language__en_label=language_en),
+        )
         hbs_facet = self.request.GET.get("hbs_facet", None)
         if hbs_facet:
-            return Instrument.objects.filter(
-                hornbostel_sachs_class__startswith=hbs_facet
+            return (
+                Instrument.objects.filter(hornbostel_sachs_class__startswith=hbs_facet)
+                .select_related("thumbnail")
+                .prefetch_related(instrumentname_prefetch_manager)
             )
-        return super().get_queryset()
+        return Instrument.objects.select_related("thumbnail").prefetch_related(
+            instrumentname_prefetch_manager
+        )
