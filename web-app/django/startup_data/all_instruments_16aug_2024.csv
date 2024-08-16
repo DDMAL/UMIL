@@ -1,0 +1,860 @@
+﻿instrument,instrumentLabel,image
+http://www.wikidata.org/entity/Q6607,guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Classical%20Guitar%20two%20views.jpg
+http://www.wikidata.org/entity/Q8338,trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/Trumpet%201.png
+http://www.wikidata.org/entity/Q8343,clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Klarinetten%20von%20Herbert%20Wurlitzer%202.jpg
+http://www.wikidata.org/entity/Q8345,bass clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/FAU%20Bass%20B%20Mp.jpg
+http://www.wikidata.org/entity/Q8347,bagpipes,http://commons.wikimedia.org/wiki/Special:FilePath/Abraham%20Bloemaert%20-%20The%20Bagpiper%20-%20WGA02274.jpg
+http://www.wikidata.org/entity/Q8350,trombone,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Tenor%20trombone%20YSL-891Z.tif
+http://www.wikidata.org/entity/Q8355,violin,http://commons.wikimedia.org/wiki/Special:FilePath/Violin%20VL100.png
+http://www.wikidata.org/entity/Q8371,cello,http://commons.wikimedia.org/wiki/Special:FilePath/Cello%20front%20side.png
+http://www.wikidata.org/entity/Q8374,cimbalom,http://commons.wikimedia.org/wiki/Special:FilePath/BuikCymbaal.jpg
+http://www.wikidata.org/entity/Q8377,oboe,http://commons.wikimedia.org/wiki/Special:FilePath/M%C3%B6nnig%2C%20Oboe%20Modell%20155%20Albrecht%20Mayer.jpg
+http://www.wikidata.org/entity/Q8380,oboe d'amore,http://commons.wikimedia.org/wiki/Special:FilePath/Oboen%2C%20modern%2Bhist.jpg
+http://www.wikidata.org/entity/Q9798,saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/A%20Saxophone.jpg
+http://www.wikidata.org/entity/Q11405,flute,http://commons.wikimedia.org/wiki/Special:FilePath/Fluiers.jpg
+http://www.wikidata.org/entity/Q39777,maraca,http://commons.wikimedia.org/wiki/Special:FilePath/Sambaballen.JPG
+http://www.wikidata.org/entity/Q48298,shofar,http://commons.wikimedia.org/wiki/Special:FilePath/Liten%20askenasisk%20sjofar%205380.jpg
+http://www.wikidata.org/entity/Q51290,harmonica,http://commons.wikimedia.org/wiki/Special:FilePath/16-hole%20chrom%2010-hole%20diatonic.jpg
+http://www.wikidata.org/entity/Q61285,ukulele,http://commons.wikimedia.org/wiki/Special:FilePath/Ukulele4.png
+http://www.wikidata.org/entity/Q76239,zither,http://commons.wikimedia.org/wiki/Special:FilePath/Zither.png
+http://www.wikidata.org/entity/Q78987,electric guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Yngwie%20Malmsteen%27s%20electric%20guitar.jpg
+http://www.wikidata.org/entity/Q80019,double bass,http://commons.wikimedia.org/wiki/Special:FilePath/AGK%20bass1%20full.jpg
+http://www.wikidata.org/entity/Q80284,viola,http://commons.wikimedia.org/wiki/Special:FilePath/Bratsche.jpg
+http://www.wikidata.org/entity/Q83509,piccolo,http://commons.wikimedia.org/wiki/Special:FilePath/Piccolo.jpg
+http://www.wikidata.org/entity/Q83513,contrabassoon,http://commons.wikimedia.org/wiki/Special:FilePath/Contrabassoon2.jpg
+http://www.wikidata.org/entity/Q93985,crash cymbal,http://commons.wikimedia.org/wiki/Special:FilePath/2006-07-06%20crash%20paiste%2016.jpg
+http://www.wikidata.org/entity/Q131168,tuba,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Bass%20tuba%20YFB-822.tif
+http://www.wikidata.org/entity/Q157420,alto horn,http://commons.wikimedia.org/wiki/Special:FilePath/Althorn%20%28PSF%29.png
+http://www.wikidata.org/entity/Q159998,bassoon,http://commons.wikimedia.org/wiki/Special:FilePath/Bassoon%20001.jpg
+http://www.wikidata.org/entity/Q163759,horn,http://commons.wikimedia.org/wiki/Special:FilePath/French%20horn%20front.png
+http://www.wikidata.org/entity/Q163829,synthesizer,http://commons.wikimedia.org/wiki/Special:FilePath/Micromoog.jpg
+http://www.wikidata.org/entity/Q165666,xylophone,http://commons.wikimedia.org/wiki/Special:FilePath/Xylophone%20%28PSF%29.svg
+http://www.wikidata.org/entity/Q176926,Cuíca,http://commons.wikimedia.org/wiki/Special:FilePath/Cuica.jpg
+http://www.wikidata.org/entity/Q178389,balalaika,http://commons.wikimedia.org/wiki/Special:FilePath/Balalajka%2C%20druga%20polovina%2020.%20veka.jpg
+http://www.wikidata.org/entity/Q182718,nyckelharpa,http://commons.wikimedia.org/wiki/Special:FilePath/Didier%20Fran%C3%A7ois%20teaching%20his%20special%20nyckelharpa-technique.jpg
+http://www.wikidata.org/entity/Q183932,castanets,http://commons.wikimedia.org/wiki/Special:FilePath/Kastanjetter%2C%20Nordisk%20familjebok.png
+http://www.wikidata.org/entity/Q185041,cor anglais,http://commons.wikimedia.org/wiki/Special:FilePath/English%20Horn%20picture.jpg
+http://www.wikidata.org/entity/Q187780,ocarina,http://commons.wikimedia.org/wiki/Special:FilePath/2016-01%20Ocarina%20front-back.jpg
+http://www.wikidata.org/entity/Q187851,recorder,http://commons.wikimedia.org/wiki/Special:FilePath/VariousRecorderFlutes.jpg
+http://www.wikidata.org/entity/Q189388,didgeridoo,http://commons.wikimedia.org/wiki/Special:FilePath/Australiandidgeridoos.jpg
+http://www.wikidata.org/entity/Q189737,timpani,http://commons.wikimedia.org/wiki/Special:FilePath/Munich%20-%20A%20standard%20set%20of%20timpani%20Percussion%20-%205647.jpg
+http://www.wikidata.org/entity/Q191000,oud,http://commons.wikimedia.org/wiki/Special:FilePath/Oud%20-%20MIM%20PHX.jpg
+http://www.wikidata.org/entity/Q193666,tambourine,http://commons.wikimedia.org/wiki/Special:FilePath/Deff%20-%20Tambourine%2C%20p.%20579%20in%20Thomson%2C%201859.jpg
+http://www.wikidata.org/entity/Q201735,triangle,http://commons.wikimedia.org/wiki/Special:FilePath/Triangle%20hg.jpg
+http://www.wikidata.org/entity/Q203449,zill,http://commons.wikimedia.org/wiki/Special:FilePath/Zils.JPG
+http://www.wikidata.org/entity/Q204917,whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Pio%20n%C2%BA%2024%20de%20jatob%C3%A1%2C%20F%C3%A1brica%20de%20Pios%20Maur%C3%ADlio%20Coelho.jpg
+http://www.wikidata.org/entity/Q206987,vibraphone,http://commons.wikimedia.org/wiki/Special:FilePath/RCAStudioB%20Vibraphone%201.jpg
+http://www.wikidata.org/entity/Q207691,theremin,http://commons.wikimedia.org/wiki/Special:FilePath/Etherwave%20Theremin%20Kit.jpg
+http://www.wikidata.org/entity/Q207821,hurdy-gurdy,http://commons.wikimedia.org/wiki/Special:FilePath/Chiesa%20di%20San%20Maurizio%20-%20Museo%20della%20Musica%20in%20Venice%20-%20Ghironda%201850%20.jpg
+http://www.wikidata.org/entity/Q208421,snare drum,http://commons.wikimedia.org/wiki/Special:FilePath/2006-07-06%20snare%2014.jpg
+http://www.wikidata.org/entity/Q213100,tabla,http://commons.wikimedia.org/wiki/Special:FilePath/Instrument%20perkusyjny%20TABLA%20firmy%20Meinl.jpg
+http://www.wikidata.org/entity/Q217306,transposing instrument,http://commons.wikimedia.org/wiki/Special:FilePath/Der%20100.%20Psalm%20Max%20Reger.jpg
+http://www.wikidata.org/entity/Q218802,pan flute,http://commons.wikimedia.org/wiki/Special:FilePath/Pan%20flute%20Gibonus%20FP-12.jpg
+http://www.wikidata.org/entity/Q220971,marimba,http://commons.wikimedia.org/wiki/Special:FilePath/Marimba-Antonko-AMC12.jpg
+http://www.wikidata.org/entity/Q229205,sitar,http://commons.wikimedia.org/wiki/Special:FilePath/Sitar3.jpg
+http://www.wikidata.org/entity/Q230471,zurna,http://commons.wikimedia.org/wiki/Special:FilePath/Zournas.jpg
+http://www.wikidata.org/entity/Q79982485,Side-Blown Trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/Equatorial%20Africa%2C%20Cameroon%3B%20Fang%2C%2019th%20century%20-%20Side-Blown%20Trumpet%20-%201998.93%20-%20Cleveland%20Museum%20of%20Art.jpg
+http://www.wikidata.org/entity/Q80075108,Oliphant (Side-Blown Trumpet),http://commons.wikimedia.org/wiki/Special:FilePath/Central%20Africa%2C%20Democratic%20Republic%20of%20the%20Congo%20%28most%20likely%29%2C%20Cabinda%2C%20or%20-%20Oliphant%20%28Side-Blown%20Trumpet%29%20-%202010.448%20-%20Cleveland%20Museum%20of%20Art.tif
+http://www.wikidata.org/entity/Q80871854,Kravik lyre,http://commons.wikimedia.org/wiki/Special:FilePath/NF.1904-0194.jpg
+http://www.wikidata.org/entity/Q104413030,Goqing,http://commons.wikimedia.org/wiki/Special:FilePath/Goqing%20MET%20DP216549.jpg
+http://www.wikidata.org/entity/Q115298896,komet,http://commons.wikimedia.org/wiki/Special:FilePath/Komet%20in%20Siak.JPG
+http://www.wikidata.org/entity/Q116827154,Ọjà (flute),http://commons.wikimedia.org/wiki/Special:FilePath/Oja.jpg
+http://www.wikidata.org/entity/Q117061610,Amos,http://commons.wikimedia.org/wiki/Special:FilePath/Joe%20Bonamassa%202-18-23%20Riverside%20Theatre%20in%20Milwaukee.jpg
+http://www.wikidata.org/entity/Q117337764,mashak,http://commons.wikimedia.org/wiki/Special:FilePath/Mashak%2C%20Indian%20Bagpipe.jpg
+http://www.wikidata.org/entity/Q117337774,turhi,http://commons.wikimedia.org/wiki/Special:FilePath/Turhi%2C%20short%20trumpet.jpg
+http://www.wikidata.org/entity/Q117337793,Plate Tarang,http://commons.wikimedia.org/wiki/Special:FilePath/Plate%20Tarang.jpg
+http://www.wikidata.org/entity/Q117337798,poongi,http://commons.wikimedia.org/wiki/Special:FilePath/Poongi%2C%20Jaipur.jpg
+http://www.wikidata.org/entity/Q117337804,bigul,http://commons.wikimedia.org/wiki/Special:FilePath/Horn%20Bigul%2C%20Jaipur.jpg
+http://www.wikidata.org/entity/Q117337822,Types of Sarangi,http://commons.wikimedia.org/wiki/Special:FilePath/Types%20of%20Sarangi.jpg
+http://www.wikidata.org/entity/Q241337,shamisen,http://commons.wikimedia.org/wiki/Special:FilePath/ShamisenBuskerPittStreetSydney.JPG
+http://www.wikidata.org/entity/Q243998,bongo drum,http://commons.wikimedia.org/wiki/Special:FilePath/Bongo.jpg
+http://www.wikidata.org/entity/Q258896,banjo,http://commons.wikimedia.org/wiki/Special:FilePath/Bluegrass%20banjo.png
+http://www.wikidata.org/entity/Q266675,bass flute,http://commons.wikimedia.org/wiki/Special:FilePath/Paas%20floote.jpg
+http://www.wikidata.org/entity/Q270200,conga,http://commons.wikimedia.org/wiki/Special:FilePath/2006-06-03%20Congas1.JPG
+http://www.wikidata.org/entity/Q289037,koto,http://commons.wikimedia.org/wiki/Special:FilePath/Koto%20by%20Fumie%20Hihara%202016.png
+http://www.wikidata.org/entity/Q290688,wind machine,http://commons.wikimedia.org/wiki/Special:FilePath/Ravensburg%20Konzerthaus%20Historische%20Klangerzeuger%20Windmaschine.jpg
+http://www.wikidata.org/entity/Q302497,mandolin,http://commons.wikimedia.org/wiki/Special:FilePath/Mandolin1.jpg
+http://www.wikidata.org/entity/Q322675,bouzouki,http://commons.wikimedia.org/wiki/Special:FilePath/Bouzouki%20tetrachordo.jpg
+http://www.wikidata.org/entity/Q324299,aulos,http://commons.wikimedia.org/wiki/Special:FilePath/Banquet%20Euaion%20Louvre%20G467.jpg
+http://www.wikidata.org/entity/Q339359,gemshorn,http://commons.wikimedia.org/wiki/Special:FilePath/Gemshorn%20Alt.jpg
+http://www.wikidata.org/entity/Q381629,eunuch flute,http://commons.wikimedia.org/wiki/Special:FilePath/Fl%C3%BBte%20a%20l%27%20agnon1.jpg
+http://www.wikidata.org/entity/Q382616,flugelhorn,http://commons.wikimedia.org/wiki/Special:FilePath/Chuck%20Mangione%20DSC0042%202.jpg
+http://www.wikidata.org/entity/Q389949,imzad,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Langhalsluit%20met%201%20snaar%20TMnr%202760-74.jpg
+http://www.wikidata.org/entity/Q390110,vibraslap,http://commons.wikimedia.org/wiki/Special:FilePath/Vibraslap2.jpg
+http://www.wikidata.org/entity/Q390570,hornpipe,http://commons.wikimedia.org/wiki/Special:FilePath/Falsterpiben%20Rekonstr.jpg
+http://www.wikidata.org/entity/Q395212,agogô,http://commons.wikimedia.org/wiki/Special:FilePath/Modern-Agogo.jpg
+http://www.wikidata.org/entity/Q426948,sistrum,http://commons.wikimedia.org/wiki/Special:FilePath/Mostra%20Olearie%20-%20sistro%201010384.JPG
+http://www.wikidata.org/entity/Q468776,charango,http://commons.wikimedia.org/wiki/Special:FilePath/Bolivian%20charango%20001.jpg
+http://www.wikidata.org/entity/Q500568,Lyra,http://commons.wikimedia.org/wiki/Special:FilePath/Cal%20Band%20en%20route%20to%20Memorial%20Stadium%20for%202008%20Big%20Game%2021.JPG
+http://www.wikidata.org/entity/Q512191,melodica,http://commons.wikimedia.org/wiki/Special:FilePath/Melodicas.jpg
+http://www.wikidata.org/entity/Q521151,baryton,http://commons.wikimedia.org/wiki/Special:FilePath/Aagrovebaryton.jpg
+http://www.wikidata.org/entity/Q524526,shakuhachi,http://commons.wikimedia.org/wiki/Special:FilePath/JapaneseShakuhachiSection.jpg
+http://www.wikidata.org/entity/Q537750,djembe,http://commons.wikimedia.org/wiki/Special:FilePath/Djemb%C3%A9%27s.jpg
+http://www.wikidata.org/entity/Q539942,phorminx,http://commons.wikimedia.org/wiki/Special:FilePath/939b2.jpg
+http://www.wikidata.org/entity/Q541533,wind organ,http://commons.wikimedia.org/wiki/Special:FilePath/Klangspiel%20Waldlehrpfad%20K%C3%B6nigstuhl.JPG
+http://www.wikidata.org/entity/Q584967,Lira da braccio,http://commons.wikimedia.org/wiki/Special:FilePath/Lira%20da%20braccio.png
+http://www.wikidata.org/entity/Q585969,kora,http://commons.wikimedia.org/wiki/Special:FilePath/Kora%20DSC%200355.JPG
+http://www.wikidata.org/entity/Q593995,player piano,http://commons.wikimedia.org/wiki/Special:FilePath/SteinwayWelte1919.jpg
+http://www.wikidata.org/entity/Q595730,viola pomposa,http://commons.wikimedia.org/wiki/Special:FilePath/Viola%20Pomposa%20MET%2083993.jpg
+http://www.wikidata.org/entity/Q602719,piccolo oboe,http://commons.wikimedia.org/wiki/Special:FilePath/Hautbois%20musette%20bois%20de%20rose%2019%C3%A8me.JPG
+http://www.wikidata.org/entity/Q604538,temple block,http://commons.wikimedia.org/wiki/Special:FilePath/Auftaktveranstaltung%20zu%20%E2%80%9EK%C3%B6lner%20retten%20ihr%20Stadtged%C3%A4chtnis%E2%80%9C-8978.jpg
+http://www.wikidata.org/entity/Q608926,harmonichord,http://commons.wikimedia.org/wiki/Special:FilePath/Die%20Gartenlaube%20%281860%29%20b%20709.jpg
+http://www.wikidata.org/entity/Q623941,spinet,http://commons.wikimedia.org/wiki/Special:FilePath/Spinet%20MET%20mi53.6ab.R.jpg
+http://www.wikidata.org/entity/Q628428,slit drums,http://commons.wikimedia.org/wiki/Special:FilePath/TamTam.jpg
+http://www.wikidata.org/entity/Q638182,arpeggione,http://commons.wikimedia.org/wiki/Special:FilePath/Arpeggione%20Henning%20Aschauer%201968.png
+http://www.wikidata.org/entity/Q655389,cristal baschet,http://commons.wikimedia.org/wiki/Special:FilePath/The%20cristal%20baschet.jpg
+http://www.wikidata.org/entity/Q656696,slide whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Flauta%20d%27%C3%A8mbol%20-%20edit.jpg
+http://www.wikidata.org/entity/Q665657,citole,http://commons.wikimedia.org/wiki/Special:FilePath/Citole-BritishMuseum-bgw.jpg
+http://www.wikidata.org/entity/Q666971,bullroarer,http://commons.wikimedia.org/wiki/Special:FilePath/Bull%20roarers.jpg
+http://www.wikidata.org/entity/Q669370,gusle,http://commons.wikimedia.org/wiki/Special:FilePath/Gusle%20Zelovo%20kod%20Sinja%20Juki%C4%87%20260109.jpg
+http://www.wikidata.org/entity/Q685206,alphorn,http://commons.wikimedia.org/wiki/Special:FilePath/Alphorn%20player%20in%20Wallis.jpg
+http://www.wikidata.org/entity/Q692640,octobass,http://commons.wikimedia.org/wiki/Special:FilePath/Octobasse.jpg
+http://www.wikidata.org/entity/Q737520,rebec,http://commons.wikimedia.org/wiki/Special:FilePath/Rebec%20fiddle.jpg
+http://www.wikidata.org/entity/Q742168,serpent,http://commons.wikimedia.org/wiki/Special:FilePath/Manifattura%20italiana%2C%20Serpentone%2C%20fine%20sec.%20XVIII.%20Museo%20Civico%20di%20Modena%2C%20foto%20P.%20Terzi.jpg
+http://www.wikidata.org/entity/Q742180,viola d'amore,http://commons.wikimedia.org/wiki/Special:FilePath/Viola%20d%27amore.jpg
+http://www.wikidata.org/entity/Q743836,ney,http://commons.wikimedia.org/wiki/Special:FilePath/KizNey.jpg
+http://www.wikidata.org/entity/Q745769,sipsi,http://commons.wikimedia.org/wiki/Special:FilePath/Sipsi.jpg
+http://www.wikidata.org/entity/Q748420,colascione,http://commons.wikimedia.org/wiki/Special:FilePath/Colascione.jpg
+http://www.wikidata.org/entity/Q751884,vihuela,http://commons.wikimedia.org/wiki/Special:FilePath/Vihuela1954Text2.jpg
+http://www.wikidata.org/entity/Q766461,crwth,http://commons.wikimedia.org/wiki/Special:FilePath/Crwth%20rem.jpg
+http://www.wikidata.org/entity/Q775570,cowbell,http://commons.wikimedia.org/wiki/Special:FilePath/Koebel.jpg
+http://www.wikidata.org/entity/Q787557,saxhorn,http://commons.wikimedia.org/wiki/Special:FilePath/Saxhornbasse.jpg
+http://www.wikidata.org/entity/Q789141,balafon,http://commons.wikimedia.org/wiki/Special:FilePath/Balafon%20%28Aly%20Keita%29%20Unterfahrt%202010-03-11-001.jpg
+http://www.wikidata.org/entity/Q790312,barbiton,http://commons.wikimedia.org/wiki/Special:FilePath/Barbitos%2C%20Nordisk%20familjebok.png
+http://www.wikidata.org/entity/Q810515,basset horn,http://commons.wikimedia.org/wiki/Special:FilePath/Schwenk%2BSeggelke%20Bassetthorn-mue.jpg
+http://www.wikidata.org/entity/Q829729,biwa,http://commons.wikimedia.org/wiki/Special:FilePath/Biwa.png
+http://www.wikidata.org/entity/Q830863,violino piccolo,http://commons.wikimedia.org/wiki/Special:FilePath/Klein%20Diskant-Geige%20und%20Viola-Tenor-1594.jpg
+http://www.wikidata.org/entity/Q840920,theorbo,http://commons.wikimedia.org/wiki/Special:FilePath/Barocktheorbe%20Martin%20Hoffmann%20ed.JPG
+http://www.wikidata.org/entity/Q845193,xylorimba,http://commons.wikimedia.org/wiki/Special:FilePath/Xylorimba%20%28from%20Emil%20Richards%20Collection%29.jpg
+http://www.wikidata.org/entity/Q849349,tom-tom drum,http://commons.wikimedia.org/wiki/Special:FilePath/Tom-tom%2012x8.jpg
+http://www.wikidata.org/entity/Q850118,claves,http://commons.wikimedia.org/wiki/Special:FilePath/Playingclaves.jpg
+http://www.wikidata.org/entity/Q871633,handbell,http://commons.wikimedia.org/wiki/Special:FilePath/Handbells%20Whitechapel.jpg
+http://www.wikidata.org/entity/Q901239,sarrusophone,http://commons.wikimedia.org/wiki/Special:FilePath/Soprano%20Sarrusophone%20in%20B-flat%20MET%20mus350a.jpeg
+http://www.wikidata.org/entity/Q902984,Wagner tuba,http://commons.wikimedia.org/wiki/Special:FilePath/Double%20Wagner%20tuba%20by%20Alexander.jpg
+http://www.wikidata.org/entity/Q904646,qanun,http://commons.wikimedia.org/wiki/Special:FilePath/Q%C4%81n%C5%ABn%20-%20MET%2089.4.330.jpg
+http://www.wikidata.org/entity/Q911038,dulcian,http://commons.wikimedia.org/wiki/Special:FilePath/Dulcians%20Brussels.jpg
+http://www.wikidata.org/entity/Q917571,glass harmonica,http://commons.wikimedia.org/wiki/Special:FilePath/Glassharmonica.png
+http://www.wikidata.org/entity/Q922337,virginal,http://commons.wikimedia.org/wiki/Special:FilePath/Virginal.jpg
+http://www.wikidata.org/entity/Q930342,rainstick,http://commons.wikimedia.org/wiki/Special:FilePath/Rainstick%2001.png
+http://www.wikidata.org/entity/Q930827,regal,http://commons.wikimedia.org/wiki/Special:FilePath/Regal%20MET%20DP302650.jpg
+http://www.wikidata.org/entity/Q943438,txalaparta,http://commons.wikimedia.org/wiki/Special:FilePath/Two%20txalaparta%20players%20at%20a%20performance%20in%20a%20fiesta.jpg
+http://www.wikidata.org/entity/Q946304,Salpinx,http://commons.wikimedia.org/wiki/Special:FilePath/Salpinx%20player%20MAR%20Palermo%20NI1853.jpg
+http://www.wikidata.org/entity/Q953846,nail violin,http://commons.wikimedia.org/wiki/Special:FilePath/Nail%20violin%2CBohemia.jpg
+http://www.wikidata.org/entity/Q954753,ratchet,http://commons.wikimedia.org/wiki/Special:FilePath/Troccole.jpg
+http://www.wikidata.org/entity/Q957212,wood block,http://commons.wikimedia.org/wiki/Special:FilePath/WoodBlock.jpg
+http://www.wikidata.org/entity/Q961470,A♭ clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Piccolo%20Clarinet%20in%20A-flat%20MET%20MUS315A7.jpg
+http://www.wikidata.org/entity/Q963334,hi-hat,http://commons.wikimedia.org/wiki/Special:FilePath/Hi-hat.jpg
+http://www.wikidata.org/entity/Q996531,post horn,http://commons.wikimedia.org/wiki/Special:FilePath/Posthorn-echt.jpg
+http://www.wikidata.org/entity/Q1001877,flageolet,http://commons.wikimedia.org/wiki/Special:FilePath/Flageolets.jpg
+http://www.wikidata.org/entity/Q1024685,cabasa,http://commons.wikimedia.org/wiki/Special:FilePath/Cabasa.jpg
+http://www.wikidata.org/entity/Q1044408,psaltery,http://commons.wikimedia.org/wiki/Special:FilePath/Chiesa%20di%20San%20Maurizio%20-%20Salterio%20-%20Scuola%20Veniziana%20-%201700.jpg
+http://www.wikidata.org/entity/Q1048934,pommer,http://commons.wikimedia.org/wiki/Special:FilePath/Pommerenriet.jpg
+http://www.wikidata.org/entity/Q1060334,chalumeau,http://commons.wikimedia.org/wiki/Special:FilePath/Pocketinos.jpg
+http://www.wikidata.org/entity/Q1075560,chocalho,http://commons.wikimedia.org/wiki/Special:FilePath/Chocalho.JPG
+http://www.wikidata.org/entity/Q1093290,cittern,http://commons.wikimedia.org/wiki/Special:FilePath/Cistre%2C%20s.%20XVI%2C%20MDMB%20331.jpg
+http://www.wikidata.org/entity/Q1094813,pochette,http://commons.wikimedia.org/wiki/Special:FilePath/Pochette%20MET%20DP225415.jpg
+http://www.wikidata.org/entity/Q1095084,Tromba marina,http://commons.wikimedia.org/wiki/Special:FilePath/Tromba%20marina%20mersenne%20001.jpg
+http://www.wikidata.org/entity/Q1129422,morin khuur,http://commons.wikimedia.org/wiki/Special:FilePath/Mongolian%20horse%20violin.JPG
+http://www.wikidata.org/entity/Q191823,clavichord,http://commons.wikimedia.org/wiki/Special:FilePath/Clavichord%20MET%20DP302629.jpg
+http://www.wikidata.org/entity/Q2539852,Tutankhamun's trumpets,http://commons.wikimedia.org/wiki/Special:FilePath/Silver%20trumpet%20from%20Tutankhamun%27s%20tomb.jpg
+http://www.wikidata.org/entity/Q2598011,Xeremia,http://commons.wikimedia.org/wiki/Special:FilePath/Xeremies%20de%20Mallorca.jpg
+http://www.wikidata.org/entity/Q6049870,Olifant of Borradaile,http://commons.wikimedia.org/wiki/Special:FilePath/Borradaile%20Oliphant-%20DSC2276.jpg
+http://www.wikidata.org/entity/Q7360425,Roland SP-404,http://commons.wikimedia.org/wiki/Special:FilePath/Sp-404sx.jpg
+http://www.wikidata.org/entity/Q13200682,Waditra,http://commons.wikimedia.org/wiki/Special:FilePath/Two%20Sundanese%20Saron%20and%20a%20Gong%20Gede%20Gedhe%20in%20the%20background%20from%20a%20set%20of%20gamelan%20degung.jpg
+http://www.wikidata.org/entity/Q60759326,Whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Central%20Africa%2C%20Democratic%20Republic%20of%20the%20Congo%20or%20Angola%2C%20Chokwe%20people%2C%20-%20Whistle%20-%201915.443%20-%20Cleveland%20Museum%20of%20Art.tif
+http://www.wikidata.org/entity/Q79475735,Whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Central%20Africa%2C%20Democratic%20Republic%20of%20the%20Congo%20or%20Angola%2C%20Chokwe%20people%2C%20-%20Whistle%20-%201915.442%20-%20Cleveland%20Museum%20of%20Art.jpg
+http://www.wikidata.org/entity/Q79475739,Whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Central%20Africa%2C%20Democratic%20Republic%20of%20the%20Congo%20or%20Angola%2C%20Chokwe%20people%2C%20-%20Whistle%20-%201915.444%20-%20Cleveland%20Museum%20of%20Art.tif
+http://www.wikidata.org/entity/Q79475752,Whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Central%20Africa%2C%20Democratic%20Republic%20of%20the%20Congo%20or%20Angola%2C%20Chokwe%20people%2C%20-%20Whistle%20-%201915.454%20-%20Cleveland%20Museum%20of%20Art.jpg
+http://www.wikidata.org/entity/Q79475802,Lamellophone (chisanji),http://commons.wikimedia.org/wiki/Special:FilePath/Central%20Africa%2C%20Democratic%20Republic%20of%20the%20Congo%20or%20Angola%2C%20Chokwe%20peoples%2C%20-%20Thumb%20Piano%20-%201915.495%20-%20Cleveland%20Museum%20of%20Art.tif
+http://www.wikidata.org/entity/Q79485139,Sitar,http://commons.wikimedia.org/wiki/Special:FilePath/India%2C%20British%20Period%20-%20Vina%20-%201918.346%20-%20Cleveland%20Museum%20of%20Art.tif
+http://www.wikidata.org/entity/Q79485152,Tsuzumi Drum,http://commons.wikimedia.org/wiki/Special:FilePath/Japan%2C%20Edo%20%281615-1868%29%20-%20Meiji%20%281868-1912%29%20periods%20-%20Tsuzumi%20Drum%20-%201918.349%20-%20Cleveland%20Museum%20of%20Art.jpg
+http://www.wikidata.org/entity/Q79485254,Lute or Tiorbino,http://commons.wikimedia.org/wiki/Special:FilePath/Italy%2C%20probably%20made%20in%20the%20mid-17th%20century%2C%20but%20modified%20by%20later%20repair%20-%20Lute%20or%20Tiorbino%20-%201918.368%20-%20Cleveland%20Museum%20of%20Art.tif
+http://www.wikidata.org/entity/Q10864032,hitoyogiri,http://commons.wikimedia.org/wiki/Special:FilePath/%E4%B8%80%E7%AF%80%E5%88%87.jpg
+http://www.wikidata.org/entity/Q11434792,cromorne,http://commons.wikimedia.org/wiki/Special:FilePath/Cromorne%20Borjon%201672.png
+http://www.wikidata.org/entity/Q12272796,ayumaa,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%90%D1%8E%D0%BC%D0%B0%D0%B0.jpg
+http://www.wikidata.org/entity/Q12634515,kithara,http://commons.wikimedia.org/wiki/Special:FilePath/Britannica%20Cithara%20Phorminx.jpg
+http://www.wikidata.org/entity/Q13522655,three-hole pipe,http://commons.wikimedia.org/wiki/Special:FilePath/Flautade3cerca.JPG
+http://www.wikidata.org/entity/Q13744339,knaptand,http://commons.wikimedia.org/wiki/Special:FilePath/2%20knaptanden.JPG
+http://www.wikidata.org/entity/Q16632086,musical anvil,http://commons.wikimedia.org/wiki/Special:FilePath/Enclumes%20Ionisation.JPG
+http://www.wikidata.org/entity/Q16661393,Lutar,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Langhalsluit%20met%20twee%20snaren%20TMnr%203423-1.jpg
+http://www.wikidata.org/entity/Q18456301,Practice pad,http://commons.wikimedia.org/wiki/Special:FilePath/Practice%20pad%20-%20Vladimir%20Morozov.jpg
+http://www.wikidata.org/entity/Q21071111,Therevox,http://commons.wikimedia.org/wiki/Special:FilePath/Therevox.jpg
+http://www.wikidata.org/entity/Q24950289,Darkhuang,http://commons.wikimedia.org/wiki/Special:FilePath/Zamluang.jpg
+http://www.wikidata.org/entity/Q36973404,batyphone,http://commons.wikimedia.org/wiki/Special:FilePath/Batyphon%20-%20issu%20de%20Larousse%201898.png
+http://www.wikidata.org/entity/Q46996061,contrabass trombone,http://commons.wikimedia.org/wiki/Special:FilePath/Wessex%20contrabass%20trombone%20in%20F.jpg
+http://www.wikidata.org/entity/Q51446928,bass viol,http://commons.wikimedia.org/wiki/Special:FilePath/Bas%20viola%20da%20gamba%2C%20Pieter%20Rombouts%2C%201726.jpg
+http://www.wikidata.org/entity/Q56411346,African slit drums,http://commons.wikimedia.org/wiki/Special:FilePath/Lukumvu%2C%20Congo%20%E2%80%93%20Tambour%20t%C3%A9l%C3%A9graphique.jpg
+http://www.wikidata.org/entity/Q64166304,electric bass guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Gitara%20basowa%20Road%20Worn%2050%27s%20P-Bass%20firmy%20Fender.jpg
+http://www.wikidata.org/entity/Q1141589,crotales,http://commons.wikimedia.org/wiki/Special:FilePath/Cymbales-E%2012567-img%202793.jpg
+http://www.wikidata.org/entity/Q1165766,metallophone,http://commons.wikimedia.org/wiki/Special:FilePath/Traditional%20indonesian%20instruments.jpg
+http://www.wikidata.org/entity/Q1179017,daxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Daxophone.jpg
+http://www.wikidata.org/entity/Q1186958,dendrophone,http://commons.wikimedia.org/wiki/Special:FilePath/Dendrophon%20%28Uchtelfangen%29%202019-01.jpg
+http://www.wikidata.org/entity/Q95994094,Huantou,http://commons.wikimedia.org/wiki/Special:FilePath/Qing%20barbers%20at%20work.jpg
+http://www.wikidata.org/entity/Q106581486,Tibia,http://commons.wikimedia.org/wiki/Special:FilePath/Etruscan%20Painting%203.jpg
+http://www.wikidata.org/entity/Q106773111,Greek santur,http://commons.wikimedia.org/wiki/Special:FilePath/Greek%20Santur.jpg
+http://www.wikidata.org/entity/Q106782089,Kinnari vina,http://commons.wikimedia.org/wiki/Special:FilePath/Kinnari%20Veena%2C%20by%20William%20Gibb%2C%20from%20Music%20and%20Musical%20Instruments%20of%20India%20and%20the%20Deccan%20by%20C%20R%20Day.jpg
+http://www.wikidata.org/entity/Q107324933,Eka-tantri Vina,http://commons.wikimedia.org/wiki/Special:FilePath/Decorations%20of%20the%20Mukteshvara%20Temple%20of%20Bhubaneswar%2002.jpg
+http://www.wikidata.org/entity/Q107324948,Alapini Vina,http://commons.wikimedia.org/wiki/Special:FilePath/Ellora%2C%20cave%2021%2C%20Shiva%20with%20vina.jpg
+http://www.wikidata.org/entity/Q111687413,electric charango,http://commons.wikimedia.org/wiki/Special:FilePath/Charango%20el%C3%A9ctrico%2001.jpg
+http://www.wikidata.org/entity/Q111842128,Church Drums,http://commons.wikimedia.org/wiki/Special:FilePath/Church%20drums%20at%20the%20Ghana%20Art%20Centre%2002.jpg
+http://www.wikidata.org/entity/Q115556869,pBone,http://commons.wikimedia.org/wiki/Special:FilePath/The%20Trombone%20Show%20%28color%29.JPG
+http://www.wikidata.org/entity/Q117069790,Bamboo stem,http://commons.wikimedia.org/wiki/Special:FilePath/Instrument%20used%20in%20performing%20Nkwa-nwaite.jpg
+http://www.wikidata.org/entity/Q117069972,Metal Gong,http://commons.wikimedia.org/wiki/Special:FilePath/Ogele.jpg
+http://www.wikidata.org/entity/Q117072258,Marakash,http://commons.wikimedia.org/wiki/Special:FilePath/Oyara.jpg
+http://www.wikidata.org/entity/Q1235547,doli,http://commons.wikimedia.org/wiki/Special:FilePath/Doli%2CTbilisi2.jpg
+http://www.wikidata.org/entity/Q1241859,thunder sheet,http://commons.wikimedia.org/wiki/Special:FilePath/Macchina%20del%20tuono.jpg
+http://www.wikidata.org/entity/Q1243782,quinton,http://commons.wikimedia.org/wiki/Special:FilePath/Quinton%20%28violon%29.jpg
+http://www.wikidata.org/entity/Q1243790,Dord,http://commons.wikimedia.org/wiki/Special:FilePath/Bronzeageirishhorns.png
+http://www.wikidata.org/entity/Q1258456,Tenori-on,http://commons.wikimedia.org/wiki/Special:FilePath/Tenori-on-london-2nd-january-2008.JPG
+http://www.wikidata.org/entity/Q1288250,celtic harp,http://commons.wikimedia.org/wiki/Special:FilePath/Celtic%20harp%20dsc05425.jpg
+http://www.wikidata.org/entity/Q1328415,tenora,http://commons.wikimedia.org/wiki/Special:FilePath/Tenora%2C%20Andreu%20Turon.jpg
+http://www.wikidata.org/entity/Q1366388,E♭ clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Clarinet%20in%20Eb.jpg
+http://www.wikidata.org/entity/Q1398629,rackett,http://commons.wikimedia.org/wiki/Special:FilePath/BaroqueRackett.jpg
+http://www.wikidata.org/entity/Q1410790,whip,http://commons.wikimedia.org/wiki/Special:FilePath/Ludwig%20Slapstick.JPG
+http://www.wikidata.org/entity/Q1414882,Turkish crescent,http://commons.wikimedia.org/wiki/Special:FilePath/Schellenbaum%20Bundeswehr.JPG
+http://www.wikidata.org/entity/Q1426827,flexatone,http://commons.wikimedia.org/wiki/Special:FilePath/Flexatone%20Apr2005.jpg
+http://www.wikidata.org/entity/Q1434775,musical clock,http://commons.wikimedia.org/wiki/Special:FilePath/Musical%20Clock%20with%20Spinet%20and%20Organ%20MET%20DP302691.jpg
+http://www.wikidata.org/entity/Q1445673,flûte d'amour,http://commons.wikimedia.org/wiki/Special:FilePath/Flute%20d%27amour.jpg
+http://www.wikidata.org/entity/Q1467960,mbira,http://commons.wikimedia.org/wiki/Special:FilePath/Holding%20an%20mbira%20dzavadzimu.jpg
+http://www.wikidata.org/entity/Q1515888,rototom,http://commons.wikimedia.org/wiki/Special:FilePath/Rototom%201.jpg
+http://www.wikidata.org/entity/Q1571002,heckelphone,http://commons.wikimedia.org/wiki/Special:FilePath/Heckelphon%20Wilhelm%20Heckel.jpg
+http://www.wikidata.org/entity/Q1621499,wind chime,http://commons.wikimedia.org/wiki/Special:FilePath/Wchime.jpg
+http://www.wikidata.org/entity/Q1628293,bugle,http://commons.wikimedia.org/wiki/Special:FilePath/German%20military%20trumpet%20Memorial%20de%20Verdun.JPG
+http://www.wikidata.org/entity/Q1633881,archlute,http://commons.wikimedia.org/wiki/Special:FilePath/Aartsluit%20%28liuto%20attiorbato%29%2C%20BK-2016-98-3.jpg
+http://www.wikidata.org/entity/Q1640934,rubab,http://commons.wikimedia.org/wiki/Special:FilePath/Rubab.jpg
+http://www.wikidata.org/entity/Q1680874,trembita,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%A2%D1%80%D0%B5%D0%BC%D0%B1%D1%96%D1%82%D0%B8.jpg
+http://www.wikidata.org/entity/Q1704079,lithophone,http://commons.wikimedia.org/wiki/Special:FilePath/Jinan%202009%201168.jpg
+http://www.wikidata.org/entity/Q1760274,oboe da caccia,http://commons.wikimedia.org/wiki/Special:FilePath/Oboe%20da%20caccia.jpg
+http://www.wikidata.org/entity/Q1871532,tambu,http://commons.wikimedia.org/wiki/Special:FilePath/Collectie%20Nationaal%20Museum%20van%20Wereldculturen%20RV-07-594%20Trom%20Nederlandse%20Antillen.jpg
+http://www.wikidata.org/entity/Q1889072,Mandriola,http://commons.wikimedia.org/wiki/Special:FilePath/Mandolina.jpg
+http://www.wikidata.org/entity/Q2030802,Roman tuba,http://commons.wikimedia.org/wiki/Special:FilePath/Tuba%20romana%20%28reconstrucci%C3%B3%29.jpg
+http://www.wikidata.org/entity/Q2142015,piccolo trombone,http://commons.wikimedia.org/wiki/Special:FilePath/Piccolo%20Trombone.jpg
+http://www.wikidata.org/entity/Q2216381,chitarrone,http://commons.wikimedia.org/wiki/Special:FilePath/Page%20348%20%28A%20Dictionary%20of%20Music%20and%20Musicians-Volume%201%29.jpg
+http://www.wikidata.org/entity/Q2216785,cobza,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%9C%D0%BE%D0%BB%D0%B4%D0%B0%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BA%D0%BE%D0%B1%D0%B7%D0%B0.png
+http://www.wikidata.org/entity/Q2237198,güiro,http://commons.wikimedia.org/wiki/Special:FilePath/180%20Museu%20de%20la%20M%C3%BAsica%2C%20el%20Bosc.jpg
+http://www.wikidata.org/entity/Q2255516,fife,http://commons.wikimedia.org/wiki/Special:FilePath/Manet%2C%20Edouard%20-%20Young%20Flautist%2C%20or%20The%20Fifer%2C%201866%20%282%29.jpg
+http://www.wikidata.org/entity/Q2276536,Shaker (musical instrument),http://commons.wikimedia.org/wiki/Special:FilePath/Shakers.jpg
+http://www.wikidata.org/entity/Q2625622,sopranino recorder,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Recorder%20YRN-814.jpg
+http://www.wikidata.org/entity/Q2882099,banda,http://commons.wikimedia.org/wiki/Special:FilePath/2018-FSJL%20-%20Banda.jpg
+http://www.wikidata.org/entity/Q3083684,tabor,http://commons.wikimedia.org/wiki/Special:FilePath/Timbal%20fondo.JPG
+http://www.wikidata.org/entity/Q3120692,Hawaiian guitar,http://commons.wikimedia.org/wiki/Special:FilePath/RogerSteel2b.jpg
+http://www.wikidata.org/entity/Q3143699,hydraulophone,http://commons.wikimedia.org/wiki/Special:FilePath/HHSB%20playing%20Suite%20for%20Hydraulophone.jpg
+http://www.wikidata.org/entity/Q3153674,Intonarumori,http://commons.wikimedia.org/wiki/Special:FilePath/Russolointonorumori.jpg
+http://www.wikidata.org/entity/Q3354977,psalmodicon,http://commons.wikimedia.org/wiki/Special:FilePath/Psalmodikon%2C%20Gagnef%2C%20Dalarna%2C%20Sverige%201.JPG
+http://www.wikidata.org/entity/Q3393118,podorythmie,http://commons.wikimedia.org/wiki/Special:FilePath/Olivier%20Demers%20en%20spectacle%20avec%20Le%20Vent%20du%20Nord.jpg
+http://www.wikidata.org/entity/Q3424319,tanbur,http://commons.wikimedia.org/wiki/Special:FilePath/Tambur.jpg
+http://www.wikidata.org/entity/Q3545453,mandore,http://commons.wikimedia.org/wiki/Special:FilePath/Carlos%20Gonzalez%20Marcos%20made%20Mandore.jpg
+http://www.wikidata.org/entity/Q3574205,string tambourine,http://commons.wikimedia.org/wiki/Special:FilePath/Toum-toum.jpg
+http://www.wikidata.org/entity/Q3574707,Zamar,http://commons.wikimedia.org/wiki/Special:FilePath/Zamar.jpg
+http://www.wikidata.org/entity/Q3574843,tonbak,http://commons.wikimedia.org/wiki/Special:FilePath/Tombak%20Tonbak%20Persian%20percussion%20Instrument.jpg
+http://www.wikidata.org/entity/Q3675195,lyre-guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Guitarra-lira.jpg
+http://www.wikidata.org/entity/Q4358503,Drum,http://commons.wikimedia.org/wiki/Special:FilePath/Igba%201.jpg
+http://www.wikidata.org/entity/Q4395534,Russian horn,http://commons.wikimedia.org/wiki/Special:FilePath/Alexey%20Ivanov%20%28trumpet%29%20and%20the%20Russian%20Horn%20Capella.jpg
+http://www.wikidata.org/entity/Q5350631,Wooden gong,http://commons.wikimedia.org/wiki/Special:FilePath/Ekwe%20nta.jpg
+http://www.wikidata.org/entity/Q5530911,Gendang beleq,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Dans%20met%20trommels%20op%20Lombok%20TMnr%2010004743.jpg
+http://www.wikidata.org/entity/Q6415141,reyong,http://commons.wikimedia.org/wiki/Special:FilePath/Gamelan%20of%20Bali%20200507-4.jpg
+http://www.wikidata.org/entity/Q6610630,steelpan,http://commons.wikimedia.org/wiki/Special:FilePath/Aasteeldrum.jpg
+http://www.wikidata.org/entity/Q6685124,pipa,http://commons.wikimedia.org/wiki/Special:FilePath/Pipa%20MET%20DP216711.jpg
+http://www.wikidata.org/entity/Q6701540,Lujon,http://commons.wikimedia.org/wiki/Special:FilePath/Lujon%20%28from%20Emil%20Richards%20Collection%29.jpg
+http://www.wikidata.org/entity/Q7079990,Ogene,http://commons.wikimedia.org/wiki/Special:FilePath/Ogene.jpg
+http://www.wikidata.org/entity/Q7489204,Shapar,http://commons.wikimedia.org/wiki/Special:FilePath/Shapar%20Bagpipe.jpg
+http://www.wikidata.org/entity/Q7563204,soprano clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Clarinet.jpg
+http://www.wikidata.org/entity/Q7578333,spitzharfe,http://commons.wikimedia.org/wiki/Special:FilePath/Spitzharfe%20MET%20MUS19A.jpg
+http://www.wikidata.org/entity/Q7672803,taal,http://commons.wikimedia.org/wiki/Special:FilePath/Manjeera%20or%20Taal.jpg
+http://www.wikidata.org/entity/Q516397,gittern,http://commons.wikimedia.org/wiki/Special:FilePath/Wartburg-Laute.JPG
+http://www.wikidata.org/entity/Q587246,contrabass flute,http://commons.wikimedia.org/wiki/Special:FilePath/Kotatocontra%20flute.jpg
+http://www.wikidata.org/entity/Q425748,hichiriki,http://commons.wikimedia.org/wiki/Special:FilePath/Hichiriki.JPG
+http://www.wikidata.org/entity/Q497224,kayamb,http://commons.wikimedia.org/wiki/Special:FilePath/Kayamb%20dsc01292.jpg
+http://www.wikidata.org/entity/Q322050,Lute guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Gitarrenlaute.jpg
+http://www.wikidata.org/entity/Q379269,diatonic button accordion,http://commons.wikimedia.org/wiki/Special:FilePath/Accord%C3%A9on%20diatonique.jpg
+http://www.wikidata.org/entity/Q594256,cornamuse,http://commons.wikimedia.org/wiki/Special:FilePath/Kornamusa.jpg
+http://www.wikidata.org/entity/Q593050,concertina,http://commons.wikimedia.org/wiki/Special:FilePath/Wheatstone%20English%20Concertina.jpg
+http://www.wikidata.org/entity/Q281460,pipe organ,http://commons.wikimedia.org/wiki/Special:FilePath/Main%20pipe%20organ%20-%20Frauenkirche%20-%20Munich%20-%20Germany%202017.jpg
+http://www.wikidata.org/entity/Q284532,byzaanchy,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%91%D1%8B%D0%B7%D0%B0%D0%B0%D0%BD%D1%87%D1%8B%D0%BD%D1%8B%D2%A3%20%D1%82%D1%83%D1%80%D0%B3%D1%83%D0%B7%D1%83%D1%83.jpg
+http://www.wikidata.org/entity/Q424017,acoustic bass guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Estonbass.jpg
+http://www.wikidata.org/entity/Q284715,subcontrabass saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/B-flatSubcontrabassTubax.jpg
+http://www.wikidata.org/entity/Q507102,cuatro,http://commons.wikimedia.org/wiki/Special:FilePath/Cuatro%20Ramon%20Blanco.jpg
+http://www.wikidata.org/entity/Q545271,pungi,http://commons.wikimedia.org/wiki/Special:FilePath/Beeninstrument.jpg
+http://www.wikidata.org/entity/Q278597,Kemanak,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Bekken%20van%20messing%20TMnr%202711-1a.jpg
+http://www.wikidata.org/entity/Q544352,alto flute,http://commons.wikimedia.org/wiki/Special:FilePath/Alto%20flute%20006.jpg
+http://www.wikidata.org/entity/Q546936,tar,http://commons.wikimedia.org/wiki/Special:FilePath/Meshadi%20Jamil%20Amirov.jpg
+http://www.wikidata.org/entity/Q272827,Çifteli,http://commons.wikimedia.org/wiki/Special:FilePath/%C3%87ifteli%202021.jpg
+http://www.wikidata.org/entity/Q262414,bandura,http://commons.wikimedia.org/wiki/Special:FilePath/Stamp%202011%20Bandura%20crop.png
+http://www.wikidata.org/entity/Q518585,bucium,http://commons.wikimedia.org/wiki/Special:FilePath/Tulnice.jpg
+http://www.wikidata.org/entity/Q339306,saung,http://commons.wikimedia.org/wiki/Special:FilePath/A%20little%20lunchtime%20music%20%2810845286724%29.jpg
+http://www.wikidata.org/entity/Q411880,ajaeng,http://commons.wikimedia.org/wiki/Special:FilePath/Ajaeng.jpg
+http://www.wikidata.org/entity/Q444037,nose flute,http://commons.wikimedia.org/wiki/Special:FilePath/Fl%C3%BBte%20nasale%20MHNT%20ETH%20AC%20FI%2047%20Gaston%20de%20Roquemaurel.jpg
+http://www.wikidata.org/entity/Q369556,Cretan lyra,http://commons.wikimedia.org/wiki/Special:FilePath/Creatn%20Lyre2.jpg
+http://www.wikidata.org/entity/Q370915,autoharp,http://commons.wikimedia.org/wiki/Special:FilePath/Autoharp%20of%20roger%20penney.jpg
+http://www.wikidata.org/entity/Q399597,free reeds,http://commons.wikimedia.org/wiki/Special:FilePath/Reedsinset.jpg
+http://www.wikidata.org/entity/Q313053,alboka,http://commons.wikimedia.org/wiki/Special:FilePath/Alboka.jpg
+http://www.wikidata.org/entity/Q532584,Moodswinger,http://commons.wikimedia.org/wiki/Special:FilePath/Moodswinger.jpg
+http://www.wikidata.org/entity/Q255358,aeolian harp,http://commons.wikimedia.org/wiki/Special:FilePath/Aeolian%20harp.JPG
+http://www.wikidata.org/entity/Q427782,reco-reco,http://commons.wikimedia.org/wiki/Special:FilePath/Reco-reco%20metal.JPG
+http://www.wikidata.org/entity/Q540049,angklung,http://commons.wikimedia.org/wiki/Special:FilePath/Angklung%20del%20Museu%20de%20la%20M%C3%BAsica%20de%20Barcelona.jpg
+http://www.wikidata.org/entity/Q504847,santur,http://commons.wikimedia.org/wiki/Special:FilePath/Greek%20Santur.jpg
+http://www.wikidata.org/entity/Q369445,pibgorn,http://commons.wikimedia.org/wiki/Special:FilePath/Pibgorn.jpg
+http://www.wikidata.org/entity/Q319154,darbuka,http://commons.wikimedia.org/wiki/Special:FilePath/Derbouka.jpg
+http://www.wikidata.org/entity/Q541464,trompeta china,http://commons.wikimedia.org/wiki/Special:FilePath/Trompeta%20china%2C%20Santiago%20de%20Cuba.jpg
+http://www.wikidata.org/entity/Q320341,celesta,http://commons.wikimedia.org/wiki/Special:FilePath/Celesta%20Schiedmayer%20MIM%201592.jpg
+http://www.wikidata.org/entity/Q543833,uilleann pipes,http://commons.wikimedia.org/wiki/Special:FilePath/UilleannPipes.jpg
+http://www.wikidata.org/entity/Q490054,Ondioline,http://commons.wikimedia.org/wiki/Special:FilePath/Ondioline%20%28ca.1938%29%20keyboard%20on%20speaker%2C%20National%20Music%20Centre.jpg
+http://www.wikidata.org/entity/Q277670,carnyx,http://commons.wikimedia.org/wiki/Special:FilePath/Mus%C3%A9e%20ch%C3%A2teau%20Montb%C3%A9liard%20071.jpg
+http://www.wikidata.org/entity/Q348878,sarinda,http://commons.wikimedia.org/wiki/Special:FilePath/Sarinda1.gif
+http://www.wikidata.org/entity/Q583827,friction drum,http://commons.wikimedia.org/wiki/Special:FilePath/Frans%20Hals%20070.jpg
+http://www.wikidata.org/entity/Q585289,Portuguese guitar,http://commons.wikimedia.org/wiki/Special:FilePath/2%20Portuguese%20guitars.jpg
+http://www.wikidata.org/entity/Q510487,fiddle,http://commons.wikimedia.org/wiki/Special:FilePath/FIDDLES%21%20-%20Jay%20Haide%2C%20Joseph%20Collingwood%2C%20Salve%20H%C3%A5kedal%2C%20Stefano%20Scarampella%2C%20Stefano%20Conia.jpg
+http://www.wikidata.org/entity/Q342234,đàn tranh,http://commons.wikimedia.org/wiki/Special:FilePath/Dantranh%20top02.jpg
+http://www.wikidata.org/entity/Q505174,carillon,http://commons.wikimedia.org/wiki/Special:FilePath/Kong%20Frederik%20IX%27s%20Klokkespil%2002.jpg
+http://www.wikidata.org/entity/Q457992,Terpodion,http://commons.wikimedia.org/wiki/Special:FilePath/Terpodion%2001%20gr.jpg
+http://www.wikidata.org/entity/Q508805,tambura,http://commons.wikimedia.org/wiki/Special:FilePath/Bulgarian%20Tambura.png
+http://www.wikidata.org/entity/Q495529,euphonium,http://commons.wikimedia.org/wiki/Special:FilePath/Euphonium%20Boosey%20and%20hawkes.jpg
+http://www.wikidata.org/entity/Q354765,chimta,http://commons.wikimedia.org/wiki/Special:FilePath/Chimta%20%285945190629%29.jpg
+http://www.wikidata.org/entity/Q499387,sousaphone,http://commons.wikimedia.org/wiki/Special:FilePath/Eis-Zwei-Geissebei%20IMG%208662.JPG
+http://www.wikidata.org/entity/Q356330,angélique,http://commons.wikimedia.org/wiki/Special:FilePath/Ang%C3%A9lique%20zur%20Schwedischen%20Theorbe%20umgebaut%20-Museum%20f%C3%BCr%20Kunst%20und%20Gewerbe%20Hamburg-1893.466.tif
+http://www.wikidata.org/entity/Q279879,Native American flute,http://commons.wikimedia.org/wiki/Special:FilePath/Native%20American%20Flute%20by%20Chief%20Arthur%20Two%20Crows.jpg
+http://www.wikidata.org/entity/Q372308,bowed clavier,http://commons.wikimedia.org/wiki/Special:FilePath/Geigenwerk%20Truchado.JPG
+http://www.wikidata.org/entity/Q290951,kamancheh,http://commons.wikimedia.org/wiki/Special:FilePath/2%20Kam%C4%81nches%2C%20Persia%2C%20ca.%201880.jpg
+http://www.wikidata.org/entity/Q445275,alto saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Saxophone%20YAS-62.tif
+http://www.wikidata.org/entity/Q483994,kazoo,http://commons.wikimedia.org/wiki/Special:FilePath/2023%20Kazoo%20%281%29.jpg
+http://www.wikidata.org/entity/Q579484,gaohu,http://commons.wikimedia.org/wiki/Special:FilePath/Gaohu%201.jpg
+http://www.wikidata.org/entity/Q419896,guitar zither,http://commons.wikimedia.org/wiki/Special:FilePath/Zither1%20David%20Dupplaw.jpg
+http://www.wikidata.org/entity/Q528239,baglamas,http://commons.wikimedia.org/wiki/Special:FilePath/GreekBaglama1.jpg
+http://www.wikidata.org/entity/Q491453,tingsha,http://commons.wikimedia.org/wiki/Special:FilePath/Tingsha.jpg
+http://www.wikidata.org/entity/Q540887,bombard,http://commons.wikimedia.org/wiki/Special:FilePath/Bombarde%20si%20b%C3%A9mol.jpg
+http://www.wikidata.org/entity/Q180744,brass instrument,http://commons.wikimedia.org/wiki/Special:FilePath/Boston%201869%20catalogue%20images%20%28re-created%201%29.jpg
+http://www.wikidata.org/entity/Q79838,accordion,http://commons.wikimedia.org/wiki/Special:FilePath/A%20convertor%20free-bass%20piano-accordion%20and%20a%20Russian%20bayan.jpg
+http://www.wikidata.org/entity/Q190172,cymbal,http://commons.wikimedia.org/wiki/Special:FilePath/2006-07-06%20crash%20paiste%2016.jpg
+http://www.wikidata.org/entity/Q196318,chirimio,http://commons.wikimedia.org/wiki/Special:FilePath/ChirimiaGuatemala.jpg
+http://www.wikidata.org/entity/Q185626,single-reed instrument,http://commons.wikimedia.org/wiki/Special:FilePath/Fest-Noz.jpg
+http://www.wikidata.org/entity/Q204482,bowed psaltery,http://commons.wikimedia.org/wiki/Special:FilePath/Streichpsalter-spielerin%20cropped.jpg
+http://www.wikidata.org/entity/Q180733,lute,http://commons.wikimedia.org/wiki/Special:FilePath/Lute%20%28by%20Princess%20Ruto%2C%202013-02-11%29.jpg
+http://www.wikidata.org/entity/Q205234,siren,http://commons.wikimedia.org/wiki/Special:FilePath/Pneumatic%20siren.jpg
+http://www.wikidata.org/entity/Q255273,repinique,http://commons.wikimedia.org/wiki/Special:FilePath/Repique.JPG
+http://www.wikidata.org/entity/Q221769,taiko,http://commons.wikimedia.org/wiki/Special:FilePath/Taiko%20drum.jpg
+http://www.wikidata.org/entity/Q83489,wot,http://commons.wikimedia.org/wiki/Special:FilePath/General%20Vot.jpg
+http://www.wikidata.org/entity/Q209554,western concert flute,http://commons.wikimedia.org/wiki/Special:FilePath/Western%20concert%20flute%20%28Yamaha%29.jpg
+http://www.wikidata.org/entity/Q101401,bell,http://commons.wikimedia.org/wiki/Special:FilePath/Church%20bell%20cutaway.png
+http://www.wikidata.org/entity/Q212892,Membranophones,http://commons.wikimedia.org/wiki/Special:FilePath/Civic%20Orchestra%20of%20Chicago%20Timpani.jpg
+http://www.wikidata.org/entity/Q128309,drum kit,http://commons.wikimedia.org/wiki/Special:FilePath/Bateria.jpg
+http://www.wikidata.org/entity/Q93992,ride cymbal,http://commons.wikimedia.org/wiki/Special:FilePath/Zildjian-Ride.jpg
+http://www.wikidata.org/entity/Q145971,zampogna,http://commons.wikimedia.org/wiki/Special:FilePath/Zampogna.jpg
+http://www.wikidata.org/entity/Q211028,bass drum,http://commons.wikimedia.org/wiki/Special:FilePath/Mounted%20concert%20bass%20drum.jpg
+http://www.wikidata.org/entity/Q120585,tsuzumi,http://commons.wikimedia.org/wiki/Special:FilePath/Tsuzumi.jpg
+http://www.wikidata.org/entity/Q145840,kantele,http://commons.wikimedia.org/wiki/Special:FilePath/Five%20string%20kanteles.jpg
+http://www.wikidata.org/entity/Q204638,cornett,http://commons.wikimedia.org/wiki/Special:FilePath/Three%20cornetts.jpg
+http://www.wikidata.org/entity/Q213461,Indian harmonium,http://commons.wikimedia.org/wiki/Special:FilePath/Harmonium%2020151009%20%2823914086965%29.jpg
+http://www.wikidata.org/entity/Q212483,mellotron,http://commons.wikimedia.org/wiki/Special:FilePath/Mellotron.jpg
+http://www.wikidata.org/entity/Q163026,soprillo,http://commons.wikimedia.org/wiki/Special:FilePath/Soprillo%20Saxophone.jpg
+http://www.wikidata.org/entity/Q167126,Kobza,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%9C%D0%BE%D0%BB%D0%B4%D0%B0%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%20%D0%BA%D0%BE%D0%B1%D0%B7%D0%B0.png
+http://www.wikidata.org/entity/Q208320,gong,http://commons.wikimedia.org/wiki/Special:FilePath/HelfferichGong.jpg
+http://www.wikidata.org/entity/Q171253,choghur,http://commons.wikimedia.org/wiki/Special:FilePath/%C3%87o%C4%9Fur.jpg
+http://www.wikidata.org/entity/Q201129,lyre,http://commons.wikimedia.org/wiki/Special:FilePath/Mousai%20Helikon%20Staatliche%20Antikensammlungen%20Schoen80%20n1.jpg
+http://www.wikidata.org/entity/Q133506,telharmonium,http://commons.wikimedia.org/wiki/Special:FilePath/Teleharmonium1897.jpg
+http://www.wikidata.org/entity/Q228529,slide trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/SlideTrumpet2.jpg
+http://www.wikidata.org/entity/Q178374,kaval,http://commons.wikimedia.org/wiki/Special:FilePath/Kaval.gif
+http://www.wikidata.org/entity/Q215032,bandoneon,http://commons.wikimedia.org/wiki/Special:FilePath/Bandoneon-curved.jpg
+http://www.wikidata.org/entity/Q229717,double clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Zummara.jpg
+http://www.wikidata.org/entity/Q173453,wind instrument,http://commons.wikimedia.org/wiki/Special:FilePath/Mundorgel.jpg
+http://www.wikidata.org/entity/Q182999,physharmonica,http://commons.wikimedia.org/wiki/Special:FilePath/Physharmonica.JPG
+http://www.wikidata.org/entity/Q133722,bianzhong,http://commons.wikimedia.org/wiki/Special:FilePath/Bianzhong.jpg
+http://www.wikidata.org/entity/Q139727,tres,http://commons.wikimedia.org/wiki/Special:FilePath/Tres%20cubano.jpg
+http://www.wikidata.org/entity/Q104363,anvil,http://commons.wikimedia.org/wiki/Special:FilePath/Blacksmith%20at%20work02.jpg
+http://www.wikidata.org/entity/Q249105,kokyū,http://commons.wikimedia.org/wiki/Special:FilePath/JapaneseKokyu.jpg
+http://www.wikidata.org/entity/Q178812,tubular bell,http://commons.wikimedia.org/wiki/Special:FilePath/Tubular-bells.JPG
+http://www.wikidata.org/entity/Q83266,vuvuzela,http://commons.wikimedia.org/wiki/Special:FilePath/Vuvuzela%20blower%2C%20Final%20Draw%2C%20FIFA%202010%20World%20Cup.jpg
+http://www.wikidata.org/entity/Q244976,bodhrán,http://commons.wikimedia.org/wiki/Special:FilePath/Bodhran.jpg
+http://www.wikidata.org/entity/Q200823,ophicleide,http://commons.wikimedia.org/wiki/Special:FilePath/Ophicleide%20%28AM%201998.60.100-1%29.jpg
+http://www.wikidata.org/entity/Q186496,Neo-Bechstein,http://commons.wikimedia.org/wiki/Special:FilePath/NeoBechstein%20Fl%C3%BCgel.jpg
+http://www.wikidata.org/entity/Q202027,cornet,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Cornet%20YCR-6330II%20crop.png
+http://www.wikidata.org/entity/Q178933,Hardanger fiddle,http://commons.wikimedia.org/wiki/Special:FilePath/Midt.jpg
+http://www.wikidata.org/entity/Q74207,mandola,http://commons.wikimedia.org/wiki/Special:FilePath/Mandola.jpg
+http://www.wikidata.org/entity/Q185003,mouth harp,http://commons.wikimedia.org/wiki/Special:FilePath/2023%20Drumla.jpg
+http://www.wikidata.org/entity/Q120031,qanbūs,http://commons.wikimedia.org/wiki/Special:FilePath/Qanbuz.JPG
+http://www.wikidata.org/entity/Q749247,cimbasso,http://commons.wikimedia.org/wiki/Special:FilePath/Cimbasso%20in%20f.jpg
+http://www.wikidata.org/entity/Q717407,kayagum,http://commons.wikimedia.org/wiki/Special:FilePath/Gayageum%2012%20string.jpg
+http://www.wikidata.org/entity/Q808578,Baroque violin,http://commons.wikimedia.org/wiki/Special:FilePath/Baroque%20violin%20Walter%20Mahr%2C%202010%20-%20Violin%20Joseph%20Chevrier%2C%201889.jpg
+http://www.wikidata.org/entity/Q808573,sackbut,http://commons.wikimedia.org/wiki/Special:FilePath/Sackbutt.jpg
+http://www.wikidata.org/entity/Q810551,bass saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Otto%20Lington%20with%20We%20Three.jpg
+http://www.wikidata.org/entity/Q646920,arghul,http://commons.wikimedia.org/wiki/Special:FilePath/Arghul%20Egypt.jpg
+http://www.wikidata.org/entity/Q812043,bawu,http://commons.wikimedia.org/wiki/Special:FilePath/Bawuphoto.jpg
+http://www.wikidata.org/entity/Q808218,baritone saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Baritone%20Saxophone%20Amati.png
+http://www.wikidata.org/entity/Q659216,aerophone,http://commons.wikimedia.org/wiki/Special:FilePath/ButtonAccordeon.jpg
+http://www.wikidata.org/entity/Q644440,lap steel guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Fender%20Champion%20lap%20steel%20%40%202010%20TSGA%20Jamboree.jpg
+http://www.wikidata.org/entity/Q664055,masenqo,http://commons.wikimedia.org/wiki/Special:FilePath/Azmari%20in%20a%20tejbeit.jpg
+http://www.wikidata.org/entity/Q745478,tenorhorn,http://commons.wikimedia.org/wiki/Special:FilePath/Tenorhorn%20001.jpg
+http://www.wikidata.org/entity/Q717773,bağlama,http://commons.wikimedia.org/wiki/Special:FilePath/Tamburasaz-Baglamasaz.jpg
+http://www.wikidata.org/entity/Q748187,berimbau,http://commons.wikimedia.org/wiki/Special:FilePath/Hn%203berimbau.jpg
+http://www.wikidata.org/entity/Q748455,cajón,http://commons.wikimedia.org/wiki/Special:FilePath/Homemade%20caj%C3%B3n.jpg
+http://www.wikidata.org/entity/Q842190,taepyeongso,http://commons.wikimedia.org/wiki/Special:FilePath/Taepyeongso.jpg
+http://www.wikidata.org/entity/Q656766,alto clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Alto%20Clarinet%20YCL-631%20II.jpg
+http://www.wikidata.org/entity/Q677921,shawm,http://commons.wikimedia.org/wiki/Special:FilePath/Barocke-Schalmei.png
+http://www.wikidata.org/entity/Q656922,sopranino saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/SopraninoSax.jpg
+http://www.wikidata.org/entity/Q726306,erhu,http://commons.wikimedia.org/wiki/Special:FilePath/Erhu.png
+http://www.wikidata.org/entity/Q840638,tromboon,http://commons.wikimedia.org/wiki/Special:FilePath/Tromboon.jpg
+http://www.wikidata.org/entity/Q675382,guan,http://commons.wikimedia.org/wiki/Special:FilePath/Guanzi.jpg
+http://www.wikidata.org/entity/Q726303,guzheng,http://commons.wikimedia.org/wiki/Special:FilePath/Guzheng%202020%20by%20Glenn%20Francis.jpg
+http://www.wikidata.org/entity/Q752638,barrel organ,http://commons.wikimedia.org/wiki/Special:FilePath/Drehorgel%20Leierkasten%20Charly.jpg
+http://www.wikidata.org/entity/Q846109,danso,http://commons.wikimedia.org/wiki/Special:FilePath/Danso.jpg
+http://www.wikidata.org/entity/Q733370,valiha,http://commons.wikimedia.org/wiki/Special:FilePath/Valiha%20player%20in%20Ambohimahasoa.jpg
+http://www.wikidata.org/entity/Q778999,lur,http://commons.wikimedia.org/wiki/Special:FilePath/Bronse-Lurer-Danmark.png
+http://www.wikidata.org/entity/Q639717,trautonium,http://commons.wikimedia.org/wiki/Special:FilePath/Mixtur%20Trautonium.jpg
+http://www.wikidata.org/entity/Q678090,12-string guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20FG720S-12.jpg
+http://www.wikidata.org/entity/Q719120,classical guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Classical%20Guitar%20two%20views.jpg
+http://www.wikidata.org/entity/Q626035,glockenspiel,http://commons.wikimedia.org/wiki/Special:FilePath/Glockenspiel.jpg
+http://www.wikidata.org/entity/Q790468,baritone horn,http://commons.wikimedia.org/wiki/Special:FilePath/Be2056%20cdenisgliskman%200.jpg
+http://www.wikidata.org/entity/Q685663,electric violin,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha-sv-100.jpg
+http://www.wikidata.org/entity/Q737917,duduk,http://commons.wikimedia.org/wiki/Special:FilePath/Duduk%20%28landscape%29.jpg
+http://www.wikidata.org/entity/Q743659,Rhodes piano,http://commons.wikimedia.org/wiki/Special:FilePath/Rhodes%20Mk%20II%2073%20cropped.jpg
+http://www.wikidata.org/entity/Q804099,bayan,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%91%D0%B0%D1%8F%D0%BD%20%D0%AD%D1%82%D1%8E%D0%B4%20205.jpg
+http://www.wikidata.org/entity/Q645977,komuz,http://commons.wikimedia.org/wiki/Special:FilePath/Kopuz.jpg
+http://www.wikidata.org/entity/Q839767,xun,http://commons.wikimedia.org/wiki/Special:FilePath/XUN%20Leo.JPG
+http://www.wikidata.org/entity/Q792006,Begena,http://commons.wikimedia.org/wiki/Special:FilePath/Begena%20001.jpg
+http://www.wikidata.org/entity/Q808574,baroque trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/Eheiii.jpg
+http://www.wikidata.org/entity/Q810475,bass banjo,http://commons.wikimedia.org/wiki/Special:FilePath/Sss%20basslargead%20%28cropped%29.gif
+http://www.wikidata.org/entity/Q811075,batá,http://commons.wikimedia.org/wiki/Special:FilePath/Bata%20drums.jpg
+http://www.wikidata.org/entity/Q687406,sarod,http://commons.wikimedia.org/wiki/Special:FilePath/Sarod%20001.jpg
+http://www.wikidata.org/entity/Q748119,Baroque guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Guitar%20MET%20DP232758.jpg
+http://www.wikidata.org/entity/Q816793,bendir,http://commons.wikimedia.org/wiki/Special:FilePath/Bendir.jpg
+http://www.wikidata.org/entity/Q669610,MIDI controller,http://commons.wikimedia.org/wiki/Special:FilePath/Evolution%20X-Session%20MIDI%20controller%20%28cropped%29.jpg
+http://www.wikidata.org/entity/Q713298,geomungo,http://commons.wikimedia.org/wiki/Special:FilePath/Geomungo.jpg
+http://www.wikidata.org/entity/Q779650,helicon,http://commons.wikimedia.org/wiki/Special:FilePath/Helikon-Stowasser-Graz.jpg
+http://www.wikidata.org/entity/Q791876,axatse,http://commons.wikimedia.org/wiki/Special:FilePath/Axatse%20Ghana.jpg
+http://www.wikidata.org/entity/Q667047,violone,http://commons.wikimedia.org/wiki/Special:FilePath/Violone.jpg
+http://www.wikidata.org/entity/Q684058,treble flute,http://commons.wikimedia.org/wiki/Special:FilePath/Treble-flute-case.jpg
+http://www.wikidata.org/entity/Q723720,guqin,http://commons.wikimedia.org/wiki/Special:FilePath/ZhongNiShi.jpg
+http://www.wikidata.org/entity/Q835877,Hang,http://commons.wikimedia.org/wiki/Special:FilePath/Panart-freies-integrales-hang.jpg
+http://www.wikidata.org/entity/Q807780,barbat,http://commons.wikimedia.org/wiki/Special:FilePath/Barbat.jpg
+http://www.wikidata.org/entity/Q841005,quena,http://commons.wikimedia.org/wiki/Special:FilePath/Qinakuna.png
+http://www.wikidata.org/entity/Q836224,violoncello piccolo,http://commons.wikimedia.org/wiki/Special:FilePath/Josephine%20van%20Lier%20plays%20violoncello%20piccolo.jpg
+http://www.wikidata.org/entity/Q736874,tárogató,http://commons.wikimedia.org/wiki/Special:FilePath/Tarogato.jpg
+http://www.wikidata.org/entity/Q804161,bajo sexto,http://commons.wikimedia.org/wiki/Special:FilePath/Bajo%20sexto.jpg
+http://www.wikidata.org/entity/Q843679,vielle,http://commons.wikimedia.org/wiki/Special:FilePath/Viella2.jpg
+http://www.wikidata.org/entity/Q806351,bandola,http://commons.wikimedia.org/wiki/Special:FilePath/Bandolallanera.jpg
+http://www.wikidata.org/entity/Q847911,shehnai,http://commons.wikimedia.org/wiki/Special:FilePath/Shehnai.jpg
+http://www.wikidata.org/entity/Q810511,basset clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/3%20basset%20cl.jpg
+http://www.wikidata.org/entity/Q623509,rebab,http://commons.wikimedia.org/wiki/Special:FilePath/Turkey.Konya027.jpg
+http://www.wikidata.org/entity/Q960389,bansuri,http://commons.wikimedia.org/wiki/Special:FilePath/Bansuri%20bamboo%20flute%2023inch.jpg
+http://www.wikidata.org/entity/Q863876,biniou,http://commons.wikimedia.org/wiki/Special:FilePath/Biniou-kozh-monte.JPG
+http://www.wikidata.org/entity/Q963150,tenor guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Item-tenor-guitar-503%20lg.jpg
+http://www.wikidata.org/entity/Q1022301,C melody saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Conn%20C%20Melody%20Saxophone%201921.jpg
+http://www.wikidata.org/entity/Q864989,birbynė,http://commons.wikimedia.org/wiki/Special:FilePath/Birbyne%20front%20back.jpg
+http://www.wikidata.org/entity/Q980383,surbahar,http://commons.wikimedia.org/wiki/Special:FilePath/Sur2.jpg
+http://www.wikidata.org/entity/Q892076,bonang,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Reeks%20van%20tien%20kleine%20gongs%20naast%20elkaar%20hangend%20in%20een%20frame%20onderdeel%20van%20gamelan%20Slendro%20TMnr%20500-19.jpg
+http://www.wikidata.org/entity/Q849052,sheng,http://commons.wikimedia.org/wiki/Special:FilePath/Sheng%20%28Chinese%20mouth%20organ%29.jpg
+http://www.wikidata.org/entity/Q1155980,se,http://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%B8%82%E5%AD%94%E5%BB%9F%E6%96%87%E7%89%A9%E6%94%B6%E8%97%8F%20%E6%A8%82%E5%99%A8%E7%91%9F.JPG
+http://www.wikidata.org/entity/Q1073120,mark tree,http://commons.wikimedia.org/wiki/Special:FilePath/Meinl%20CH-12%20Chimes.jpg
+http://www.wikidata.org/entity/Q1002233,bugarija,http://commons.wikimedia.org/wiki/Special:FilePath/Bugarija%2C%20instrument.png
+http://www.wikidata.org/entity/Q850613,buccina,http://commons.wikimedia.org/wiki/Special:FilePath/Buccina%201.png
+http://www.wikidata.org/entity/Q1123270,tarka,http://commons.wikimedia.org/wiki/Special:FilePath/Tarka%20vertical.jpg
+http://www.wikidata.org/entity/Q891935,bombo legűero,http://commons.wikimedia.org/wiki/Special:FilePath/Bombo%20leg%C3%BCero.jpg
+http://www.wikidata.org/entity/Q948603,Russian guitar,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B0%D1%8F%20%D1%81%D0%B5%D0%BC%D0%B8%D1%81%D1%82%D1%80%D1%83%D0%BD%D0%BD%D0%B0%D1%8F%20%D0%B3%D0%B8%D1%82%D0%B0%D1%80%D0%B0.JPG
+http://www.wikidata.org/entity/Q956406,jingle bell,http://commons.wikimedia.org/wiki/Special:FilePath/Inzagera-Africa%20Museum.jpg
+http://www.wikidata.org/entity/Q959769,veena,http://commons.wikimedia.org/wiki/Special:FilePath/Rudraveena1.JPG
+http://www.wikidata.org/entity/Q1115244,party horn,http://commons.wikimedia.org/wiki/Special:FilePath/Party%20Horn.jpg
+http://www.wikidata.org/entity/Q1051772,chordophone,http://commons.wikimedia.org/wiki/Special:FilePath/The%20Duet%20c1635%20by%20Saftleven.jpg
+http://www.wikidata.org/entity/Q1134216,corno da caccia,http://commons.wikimedia.org/wiki/Special:FilePath/Corno%20da%20caccia%20modern.jpg
+http://www.wikidata.org/entity/Q905244,sikus,http://commons.wikimedia.org/wiki/Special:FilePath/Siku%20%2810%29.jpg
+http://www.wikidata.org/entity/Q1130464,Calabrian lira,http://commons.wikimedia.org/wiki/Special:FilePath/Lira%20calabrese.JPG
+http://www.wikidata.org/entity/Q1140792,Croix Sonore,http://commons.wikimedia.org/wiki/Special:FilePath/Croix%20Sonore%20Jon%20B%201.jpg
+http://www.wikidata.org/entity/Q940274,surdo,http://commons.wikimedia.org/wiki/Special:FilePath/Olodum-drummers.jpg
+http://www.wikidata.org/entity/Q1144761,musical saw,http://commons.wikimedia.org/wiki/Special:FilePath/Zingzaag.jpg
+http://www.wikidata.org/entity/Q1024962,cabrette,http://commons.wikimedia.org/wiki/Special:FilePath/Cabreta.jpg
+http://www.wikidata.org/entity/Q1098974,folding harpsichord,http://commons.wikimedia.org/wiki/Special:FilePath/Clavecin%20bris%C3%A9.jpg
+http://www.wikidata.org/entity/Q1026087,Cajun accordion,http://commons.wikimedia.org/wiki/Special:FilePath/AccordionFront.png
+http://www.wikidata.org/entity/Q1046018,Northumbrian smallpipes,http://commons.wikimedia.org/wiki/Special:FilePath/Tickell%202004.jpg
+http://www.wikidata.org/entity/Q1114297,bass trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/Thein%20bass%20trumpet%20in%20C%20with%204%20rotary%20valves.png
+http://www.wikidata.org/entity/Q1143814,dutar,http://commons.wikimedia.org/wiki/Special:FilePath/Dutar1.jpg
+http://www.wikidata.org/entity/Q877239,yangqin,http://commons.wikimedia.org/wiki/Special:FilePath/Yangqin%2C%20MIM%20PHX.jpg
+http://www.wikidata.org/entity/Q893045,Boomwhacker,http://commons.wikimedia.org/wiki/Special:FilePath/Boomwhaker%20diatonic.jpg
+http://www.wikidata.org/entity/Q930367,crumhorn,http://commons.wikimedia.org/wiki/Special:FilePath/Britannica%20Cromorne%20Bass%20Tournebout.png
+http://www.wikidata.org/entity/Q1112687,keytar,http://commons.wikimedia.org/wiki/Special:FilePath/Monster%20Ball%20Money%20Honey.jpg
+http://www.wikidata.org/entity/Q1127899,gyaling,http://commons.wikimedia.org/wiki/Special:FilePath/Ghyaling%20%28Wooden%20oboe%2C%20double%20reed%20-%20Rgya-gling%29.png
+http://www.wikidata.org/entity/Q862501,Ondes Martenot,http://commons.wikimedia.org/wiki/Special:FilePath/Ondes%20martenot.jpg
+http://www.wikidata.org/entity/Q1050106,handchime,http://commons.wikimedia.org/wiki/Special:FilePath/Hand%20Chimes.jpg
+http://www.wikidata.org/entity/Q930531,flamenco guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Alhambra%203f.jpg
+http://www.wikidata.org/entity/Q1124382,diple,http://commons.wikimedia.org/wiki/Special:FilePath/Sviranje%20dipli.JPG
+http://www.wikidata.org/entity/Q1158229,damaru,http://commons.wikimedia.org/wiki/Special:FilePath/Tambour%20Damaru%20%28British%20Museum%29%20%288697430998%29.jpg
+http://www.wikidata.org/entity/Q1137869,xalam,http://commons.wikimedia.org/wiki/Special:FilePath/Diffa%20Niger%20Griot%20DSC%200177.jpg
+http://www.wikidata.org/entity/Q944412,Kinnor,http://commons.wikimedia.org/wiki/Special:FilePath/Kinnorancient.png
+http://www.wikidata.org/entity/Q1051805,cavaquinho,http://commons.wikimedia.org/wiki/Special:FilePath/Cavaquinho%20close%20up.jpg
+http://www.wikidata.org/entity/Q1129755,steel tongue drum,http://commons.wikimedia.org/wiki/Special:FilePath/Steel%20tongue%20drum%20laying%20on%20the%20grass.jpg
+http://www.wikidata.org/entity/Q941492,domra,http://commons.wikimedia.org/wiki/Special:FilePath/Domra-topview2.png
+http://www.wikidata.org/entity/Q1082843,trutruka,http://commons.wikimedia.org/wiki/Special:FilePath/Instrument%20Mapuche.JPG
+http://www.wikidata.org/entity/Q934675,kissar,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Lier%20met%206%20snaren%20TMnr%202309-66.jpg
+http://www.wikidata.org/entity/Q936590,dholak,http://commons.wikimedia.org/wiki/Special:FilePath/Dholak.jpg
+http://www.wikidata.org/entity/Q1136507,electric piano,http://commons.wikimedia.org/wiki/Special:FilePath/6f%201.png
+http://www.wikidata.org/entity/Q1078965,badulka,http://commons.wikimedia.org/wiki/Special:FilePath/Gdulka-bow%20copy.jpg
+http://www.wikidata.org/entity/Q1147128,gusli,http://commons.wikimedia.org/wiki/Special:FilePath/Gusli%20tradition.png
+http://www.wikidata.org/entity/Q1149847,clavecin électrique,http://commons.wikimedia.org/wiki/Special:FilePath/Clavecin%20%C3%A9lectrique.jpg
+http://www.wikidata.org/entity/Q1136653,monochord,http://commons.wikimedia.org/wiki/Special:FilePath/Monochord2.jpg
+http://www.wikidata.org/entity/Q936762,lamellophone,http://commons.wikimedia.org/wiki/Special:FilePath/TrebleKalimba.jpg
+http://www.wikidata.org/entity/Q949708,hne,http://commons.wikimedia.org/wiki/Special:FilePath/Burmese%20Hne.jpg
+http://www.wikidata.org/entity/Q1074981,splash cymbal,http://commons.wikimedia.org/wiki/Special:FilePath/Splash%20cymbalDK.JPG
+http://www.wikidata.org/entity/Q922001,zhonghu,http://commons.wikimedia.org/wiki/Special:FilePath/Zhonghuplayer.jpg
+http://www.wikidata.org/entity/Q864778,quray,http://commons.wikimedia.org/wiki/Special:FilePath/Quraybash.jpg
+http://www.wikidata.org/entity/Q1146067,dizi,http://commons.wikimedia.org/wiki/Special:FilePath/Dizi%28F%29.jpg
+http://www.wikidata.org/entity/Q1753689,Rauschpfeife,http://commons.wikimedia.org/wiki/Special:FilePath/Rausch%20SopAlt1.JPG
+http://www.wikidata.org/entity/Q1783263,contrabass saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Orsi%20Contrabass%20Saxophone%20%281999%29.jpg
+http://www.wikidata.org/entity/Q1760249,ryūteki,http://commons.wikimedia.org/wiki/Special:FilePath/Ryuteki.jpeg
+http://www.wikidata.org/entity/Q2394487,Tarota,http://commons.wikimedia.org/wiki/Special:FilePath/Tarota.png
+http://www.wikidata.org/entity/Q1914926,mbira dza vadzimu,http://commons.wikimedia.org/wiki/Special:FilePath/Mbira%20dzavadzimu%20in%20deze.jpg
+http://www.wikidata.org/entity/Q2035157,balaban,http://commons.wikimedia.org/wiki/Special:FilePath/Balaban%20Azerbaijani.JPG
+http://www.wikidata.org/entity/Q1757829,natural horn,http://commons.wikimedia.org/wiki/Special:FilePath/Natural%20Horn%20%28instrument%29.JPG
+http://www.wikidata.org/entity/Q1879664,spoons,http://commons.wikimedia.org/wiki/Special:FilePath/16er%20Buam%2C%20Klaus%20P.%20Steurer%20with%20his%20wooden%20spoons%2020090426%20191.jpg
+http://www.wikidata.org/entity/Q1786674,krar,http://commons.wikimedia.org/wiki/Special:FilePath/Kissar%20SAM%209.jpg
+http://www.wikidata.org/entity/Q1678302,hunting horn,http://commons.wikimedia.org/wiki/Special:FilePath/Hunters%20signal%20horn-Sygnalowka.jpg
+http://www.wikidata.org/entity/Q2242097,Firebird,http://commons.wikimedia.org/wiki/Special:FilePath/Firebird-original-resolution.jpg
+http://www.wikidata.org/entity/Q1802897,csakan,http://commons.wikimedia.org/wiki/Special:FilePath/%22Czakan%22%20im%20%C3%96sterreichischen%20Blasmusikmuseum%20Oberw%C3%B6lz%20Steiermark.jpg
+http://www.wikidata.org/entity/Q1975355,shō,http://commons.wikimedia.org/wiki/Special:FilePath/Gifujyou5846.JPG
+http://www.wikidata.org/entity/Q1926466,mezzo-soprano saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Saxalto%26mezzo.jpg
+http://www.wikidata.org/entity/Q1744357,keyed bugle,http://commons.wikimedia.org/wiki/Special:FilePath/Klappenhorn%20in%20C%20-Museum%20f%C3%BCr%20Kunst%20und%20Gewerbe%20Hamburg-1912.1543.tif
+http://www.wikidata.org/entity/Q2312868,dōtaku,http://commons.wikimedia.org/wiki/Special:FilePath/DotakuBronzeBellLateYayoi3rdCenturyCE.jpg
+http://www.wikidata.org/entity/Q1901997,flabiol,http://commons.wikimedia.org/wiki/Special:FilePath/Flabiol%20Sans.png
+http://www.wikidata.org/entity/Q1751598,Tamborim,http://commons.wikimedia.org/wiki/Special:FilePath/Tamborim.JPG
+http://www.wikidata.org/entity/Q1703491,ngoni,http://commons.wikimedia.org/wiki/Special:FilePath/Ngoni%202011.JPG
+http://www.wikidata.org/entity/Q1820831,Galician gaita,http://commons.wikimedia.org/wiki/Special:FilePath/Gaita%20de%20Ant%C3%B3n%20Corral.jpg
+http://www.wikidata.org/entity/Q2542348,triple harp,http://commons.wikimedia.org/wiki/Special:FilePath/Welsh%20triple%20harp.jpg
+http://www.wikidata.org/entity/Q1905735,Martinstrompete,http://commons.wikimedia.org/wiki/Special:FilePath/Schalmei%20Martinstrompete%202.jpg
+http://www.wikidata.org/entity/Q1709776,jouhikko,http://commons.wikimedia.org/wiki/Special:FilePath/Chadwickjouhikko.jpg
+http://www.wikidata.org/entity/Q1790046,crotalum,http://commons.wikimedia.org/wiki/Special:FilePath/Altes%20Museum%20-%20Antikensammlung%20099.JPG
+http://www.wikidata.org/entity/Q1818847,esraj,http://commons.wikimedia.org/wiki/Special:FilePath/Dilruba%20detail.jpg
+http://www.wikidata.org/entity/Q2045021,clash cymbals,http://commons.wikimedia.org/wiki/Special:FilePath/Aaclashcymbals.jpg
+http://www.wikidata.org/entity/Q2164192,Great Highland bagpipe,http://commons.wikimedia.org/wiki/Special:FilePath/Great%20Highlands%20Bagpipe%20001.jpg
+http://www.wikidata.org/entity/Q2574301,teponaztli,http://commons.wikimedia.org/wiki/Special:FilePath/Two%20Teponaztli.jpg
+http://www.wikidata.org/entity/Q2563510,steel-string acoustic guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Gibson%20SJ200.jpg
+http://www.wikidata.org/entity/Q2613413,Moonlander,http://commons.wikimedia.org/wiki/Special:FilePath/Moonlander.jpg
+http://www.wikidata.org/entity/Q2405825,tautirut,http://commons.wikimedia.org/wiki/Special:FilePath/Eskimo%20fiddle%20Turner%201894%20p259.png
+http://www.wikidata.org/entity/Q2442891,Đàn môi,http://commons.wikimedia.org/wiki/Special:FilePath/Bass%20Dan%20Moi.jpg
+http://www.wikidata.org/entity/Q2606377,conch,http://commons.wikimedia.org/wiki/Special:FilePath/Corn%20mar%C3%AD%20dels%20llaguters%20al%20riu%20Ebre.jpg
+http://www.wikidata.org/entity/Q2096201,seven-string guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Seven-string-guitar.jpg
+http://www.wikidata.org/entity/Q2081927,pate,http://commons.wikimedia.org/wiki/Special:FilePath/Pate%20Drum.JPG
+http://www.wikidata.org/entity/Q1805401,langspil,http://commons.wikimedia.org/wiki/Special:FilePath/Langspil.jpg
+http://www.wikidata.org/entity/Q2542042,waldzither,http://commons.wikimedia.org/wiki/Special:FilePath/Hamburger%20waldzither.jpg
+http://www.wikidata.org/entity/Q1809626,laúd,http://commons.wikimedia.org/wiki/Special:FilePath/La%C3%BAd%20espa%C3%B1ol.jpg
+http://www.wikidata.org/entity/Q2300910,tiple,http://commons.wikimedia.org/wiki/Special:FilePath/Tiple.jpg
+http://www.wikidata.org/entity/Q2059671,diddley bow,http://commons.wikimedia.org/wiki/Special:FilePath/DiddleyBow.jpg
+http://www.wikidata.org/entity/Q2227437,suction reed organ,http://commons.wikimedia.org/wiki/Special:FilePath/Parlor%20organ%2C%20Estey%20Organ%20Company%2C%20Brattleboro%20VT%2C%20c.%201882%2C%20walnut%2C%20pine%2C%20steel%2C%20painted%20and%20gilt%20with%20ivory%20and%20ebony%20keys%20-%20Bennington%20Museum%20-%20Bennington%2C%20VT%20-%20DSC09091.JPG
+http://www.wikidata.org/entity/Q1986655,shvi,http://commons.wikimedia.org/wiki/Special:FilePath/Shvi.jpg
+http://www.wikidata.org/entity/Q1823485,kacapi,http://commons.wikimedia.org/wiki/Special:FilePath/Kacapi-rincik-covered.jpg
+http://www.wikidata.org/entity/Q2152657,double reed instrument,http://commons.wikimedia.org/wiki/Special:FilePath/Zournas.jpg
+http://www.wikidata.org/entity/Q1679135,Midwinter horn,http://commons.wikimedia.org/wiki/Special:FilePath/Midwinterhoorn1.jpg
+http://www.wikidata.org/entity/Q2096912,suona,http://commons.wikimedia.org/wiki/Special:FilePath/B-Suonas.JPG
+http://www.wikidata.org/entity/Q1751664,orpharion,http://commons.wikimedia.org/wiki/Special:FilePath/Orpharion.jpg
+http://www.wikidata.org/entity/Q1755559,tible,http://commons.wikimedia.org/wiki/Special:FilePath/Llu%C3%ADs%20Pujals%20-%20Tible.jpg
+http://www.wikidata.org/entity/Q2353374,Cross-strung harp,http://commons.wikimedia.org/wiki/Special:FilePath/Chromatic%20Harp.jpg
+http://www.wikidata.org/entity/Q1672931,Irish flute,http://commons.wikimedia.org/wiki/Special:FilePath/IrishFlute.jpg
+http://www.wikidata.org/entity/Q2564890,piccolo bass,http://commons.wikimedia.org/wiki/Special:FilePath/A%201963%20Hofner%20Model%20185%20Bass%20converted%20to%20Piccolo%20Tuning.jpg
+http://www.wikidata.org/entity/Q2132068,shaken idiophone,http://commons.wikimedia.org/wiki/Special:FilePath/Chocalho.JPG
+http://www.wikidata.org/entity/Q2029807,organetto,http://commons.wikimedia.org/wiki/Special:FilePath/Organetto.jpg
+http://www.wikidata.org/entity/Q1683429,jarana jarocha,http://commons.wikimedia.org/wiki/Special:FilePath/Jarana%20de%20frente.JPG
+http://www.wikidata.org/entity/Q2569413,Ten-string guitar,http://commons.wikimedia.org/wiki/Special:FilePath/JME%20ten%20string%20guitar.jpg
+http://www.wikidata.org/entity/Q1860805,sanxian,http://commons.wikimedia.org/wiki/Special:FilePath/Sanxian.gif
+http://www.wikidata.org/entity/Q1727254,rih,http://commons.wikimedia.org/wiki/Special:FilePath/%28The%20rustic%20Pipes%20of%20Russia%29%20-%20Clarke%20Edward%20Daniel%20-%201810.jpg
+http://www.wikidata.org/entity/Q2482031,tubax,http://commons.wikimedia.org/wiki/Special:FilePath/Tubax%20pic.jpg
+http://www.wikidata.org/entity/Q2066397,ching,http://commons.wikimedia.org/wiki/Special:FilePath/Ching%20%28musical%20instrument%29.jpg
+http://www.wikidata.org/entity/Q1757934,pitch pipe,http://commons.wikimedia.org/wiki/Special:FilePath/Czechoslovakian%20Pitch%20Pipe.jpg
+http://www.wikidata.org/entity/Q1685320,willow flute,http://commons.wikimedia.org/wiki/Special:FilePath/Willow%20whistle.jpg
+http://www.wikidata.org/entity/Q1808578,lutes,http://commons.wikimedia.org/wiki/Special:FilePath/NationalGallery%202-8-19%201.jpg
+http://www.wikidata.org/entity/Q2606162,Byzantine lyra,http://commons.wikimedia.org/wiki/Special:FilePath/Gdulka-bow%20copy.jpg
+http://www.wikidata.org/entity/Q1888789,xaphoon,http://commons.wikimedia.org/wiki/Special:FilePath/Xaphoon%20005.jpg
+http://www.wikidata.org/entity/Q2141273,square piano,http://commons.wikimedia.org/wiki/Special:FilePath/Muzeum%20Su%C5%82kowskich%20-%20zabytkowy%20fortepian.JPG
+http://www.wikidata.org/entity/Q2365138,muselar virginal,http://commons.wikimedia.org/wiki/Special:FilePath/Muselaar.jpg
+http://www.wikidata.org/entity/Q2145031,Appalachian dulcimer,http://commons.wikimedia.org/wiki/Special:FilePath/Dulcimershapes.jpg
+http://www.wikidata.org/entity/Q1818477,piffero,http://commons.wikimedia.org/wiki/Special:FilePath/Piffero%2020090502.jpg
+http://www.wikidata.org/entity/Q2372035,pinkillu,http://commons.wikimedia.org/wiki/Special:FilePath/Pinquillo.jpg
+http://www.wikidata.org/entity/Q2598017,reclam de xeremies,http://commons.wikimedia.org/wiki/Special:FilePath/Reclam%20de%20xeremia.jpg
+http://www.wikidata.org/entity/Q1740479,khene,http://commons.wikimedia.org/wiki/Special:FilePath/Khene.jpg
+http://www.wikidata.org/entity/Q1889070,mandocello,http://commons.wikimedia.org/wiki/Special:FilePath/Gibson-mandolin-orchestra.jpg
+http://www.wikidata.org/entity/Q2595197,kanklės,http://commons.wikimedia.org/wiki/Special:FilePath/%C4%AEvairias%20auk%C5%A1tai%C4%8Di%C5%B3%20ir%20%C5%BEemai%C4%8Di%C5%B3%20kankl%C4%97s%20%28LNM%29.jpg
+http://www.wikidata.org/entity/Q1744337,bianqing,http://commons.wikimedia.org/wiki/Special:FilePath/Bianqing%20from%20Marquis%20Yi%27s%20tomb.jpg
+http://www.wikidata.org/entity/Q2586606,bones,http://commons.wikimedia.org/wiki/Special:FilePath/Bones%20-%20percussion%20instrument.jpg
+http://www.wikidata.org/entity/Q2297117,chitarra battente,http://commons.wikimedia.org/wiki/Special:FilePath/Chitarra%20battente%20%282%29.jpg
+http://www.wikidata.org/entity/Q2479786,shankha,http://commons.wikimedia.org/wiki/Special:FilePath/Conchimage.jpg
+http://www.wikidata.org/entity/Q3504809,kokle,http://commons.wikimedia.org/wiki/Special:FilePath/Gunta%20Niedoli%C5%86a%20kokles.jpg
+http://www.wikidata.org/entity/Q2852614,antara,http://commons.wikimedia.org/wiki/Special:FilePath/U%C3%B1a%20Ramos%20joue%20l%27antara.jpg
+http://www.wikidata.org/entity/Q3732881,kannel,http://commons.wikimedia.org/wiki/Special:FilePath/V%C3%A4ikekannel.jpg
+http://www.wikidata.org/entity/Q3605859,Adungu,http://commons.wikimedia.org/wiki/Special:FilePath/Adungu%20%28182131%29%20-%20The%20Noun%20Project.svg
+http://www.wikidata.org/entity/Q2640100,saron,http://commons.wikimedia.org/wiki/Special:FilePath/Demung%20Saron%20Peking%2C%20STSI%20Surakarta.jpg
+http://www.wikidata.org/entity/Q3142190,huehuetl,http://commons.wikimedia.org/wiki/Special:FilePath/Huehuetl.jpg
+http://www.wikidata.org/entity/Q2997443,suling,http://commons.wikimedia.org/wiki/Special:FilePath/Suling.jpg
+http://www.wikidata.org/entity/Q3622278,basolia,http://commons.wikimedia.org/wiki/Special:FilePath/Basy%2020st%20Pokuttja%20NMNAPU.jpg
+http://www.wikidata.org/entity/Q3929958,Ramsinga,http://commons.wikimedia.org/wiki/Special:FilePath/Narsinga%20at%20Hindu%20wedding%20ceremony.jpg
+http://www.wikidata.org/entity/Q2744331,langeleik,http://commons.wikimedia.org/wiki/Special:FilePath/Langeleiker%20p%C3%A5%20Eiktunet.jpg
+http://www.wikidata.org/entity/Q3429366,lali,http://commons.wikimedia.org/wiki/Special:FilePath/Lali%20drum%20%28Fiji%29.jpg
+http://www.wikidata.org/entity/Q3127548,Harmoneon,http://commons.wikimedia.org/wiki/Special:FilePath/Harmoneon%20cavagnolo.jpg
+http://www.wikidata.org/entity/Q2786107,Superbone,http://commons.wikimedia.org/wiki/Special:FilePath/Superbone.svg
+http://www.wikidata.org/entity/Q3038392,dayereh,http://commons.wikimedia.org/wiki/Special:FilePath/DairaShahidi1.jpg
+http://www.wikidata.org/entity/Q2665724,blowing horn,http://commons.wikimedia.org/wiki/Special:FilePath/Hungary%20Jaszbereny%20Lehel.jpg
+http://www.wikidata.org/entity/Q2978687,clavioline,http://commons.wikimedia.org/wiki/Special:FilePath/US2563477A%20Electronic%20Musical%20Instrument%20%281948-05-01%20filed%2C%201951-08-07%20published%29%20by%20Constant%20Martin%20-%20Clavioline%20Fig.1.jpg
+http://www.wikidata.org/entity/Q3009831,cécilium,http://commons.wikimedia.org/wiki/Special:FilePath/Ch%C3%A2teau%20de%20Martainville%20C%C3%A9cilium%201.jpg
+http://www.wikidata.org/entity/Q3976676,sudrophone,http://commons.wikimedia.org/wiki/Special:FilePath/MIMEd%203828.%20Baritone%20sudrophone%20in%20C-Bb%20%28crop%29.jpg
+http://www.wikidata.org/entity/Q3049642,akonting,http://commons.wikimedia.org/wiki/Special:FilePath/Joueur%20d%27ekonting%20%C3%A0%20Bagaya.jpg
+http://www.wikidata.org/entity/Q3095230,ganzá,http://commons.wikimedia.org/wiki/Special:FilePath/Ganza%2020cm.JPG
+http://www.wikidata.org/entity/Q2904003,binzasara,http://commons.wikimedia.org/wiki/Special:FilePath/Binzasara%201.jpg
+http://www.wikidata.org/entity/Q2655327,Ashiko,http://commons.wikimedia.org/wiki/Special:FilePath/Ashiko.jpg
+http://www.wikidata.org/entity/Q2781273,tambori,http://commons.wikimedia.org/wiki/Special:FilePath/Pipetaborchristmasminstrel.png
+http://www.wikidata.org/entity/Q2909502,bolon,http://commons.wikimedia.org/wiki/Special:FilePath/Griot%20Soussou%20%28Guin%C3%A9e%29.jpg
+http://www.wikidata.org/entity/Q2709639,sanshin,http://commons.wikimedia.org/wiki/Special:FilePath/Sanshin.jpg
+http://www.wikidata.org/entity/Q3491104,sopilka,http://commons.wikimedia.org/wiki/Special:FilePath/Sopilka-Prima2-2023-Shaul.jpg
+http://www.wikidata.org/entity/Q2660670,Irish bouzouki,http://commons.wikimedia.org/wiki/Special:FilePath/Irish%20Bouzouki.jpg
+http://www.wikidata.org/entity/Q2822837,Accordina,http://commons.wikimedia.org/wiki/Special:FilePath/Accordina-carrel.jpg
+http://www.wikidata.org/entity/Q3444092,valve trombone,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20YSL-354%20V%20valve%20trombone.png
+http://www.wikidata.org/entity/Q2670360,Çeng,http://commons.wikimedia.org/wiki/Special:FilePath/Turkey.Konya024.jpg
+http://www.wikidata.org/entity/Q3120694,guitars for type,http://commons.wikimedia.org/wiki/Special:FilePath/My%20Mates%203%20%282082240480%29.jpg
+http://www.wikidata.org/entity/Q3296114,Marxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Marxophone.JPG
+http://www.wikidata.org/entity/Q3339215,Ney-anbān,http://commons.wikimedia.org/wiki/Special:FilePath/Mohsen%20Sharifian.jpg
+http://www.wikidata.org/entity/Q3623687,harp lute,http://commons.wikimedia.org/wiki/Special:FilePath/Harp-Lute%20%281810-1818%29%2C%20Cincinnati%20Art%20Museum.jpg
+http://www.wikidata.org/entity/Q3181140,rebana,http://commons.wikimedia.org/wiki/Special:FilePath/YosriRebana.jpg
+http://www.wikidata.org/entity/Q3362060,panduri,http://commons.wikimedia.org/wiki/Special:FilePath/Panduri%20%289%29.jpg
+http://www.wikidata.org/entity/Q2757805,bazooka,http://commons.wikimedia.org/wiki/Special:FilePath/Bob%20Burns%20Bazooka.jpg
+http://www.wikidata.org/entity/Q2642697,thumb piano,http://commons.wikimedia.org/wiki/Special:FilePath/Sanza.jpg
+http://www.wikidata.org/entity/Q4077510,bangu,http://commons.wikimedia.org/wiki/Special:FilePath/Bangu02.png
+http://www.wikidata.org/entity/Q3122611,gyil,http://commons.wikimedia.org/wiki/Special:FilePath/The%20underside%20of%20SK%20Kakraba%E2%80%99s%20gyil%20%2827159239192%29.jpg
+http://www.wikidata.org/entity/Q3571466,yamatogoto,http://commons.wikimedia.org/wiki/Special:FilePath/Yamato-goto%20Edo%20period%20TNM.jpg
+http://www.wikidata.org/entity/Q2698284,monkey stick,http://commons.wikimedia.org/wiki/Special:FilePath/Photo%20of%20a%20group%20of%20Mendoza%27s%20or%20Monkey%20Sticks.jpg
+http://www.wikidata.org/entity/Q3980641,tammorra,http://commons.wikimedia.org/wiki/Special:FilePath/Tammorra%20%28tambour%20italien%29.jpg
+http://www.wikidata.org/entity/Q2731509,contrabass clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Selmer%20double%20bass%20clarinet.jpg
+http://www.wikidata.org/entity/Q2651987,torban,http://commons.wikimedia.org/wiki/Special:FilePath/Tor-bor2.jpg
+http://www.wikidata.org/entity/Q2956018,chang,http://commons.wikimedia.org/wiki/Special:FilePath/Chang%20%28instrument%29.jpg
+http://www.wikidata.org/entity/Q3030514,kōauau,http://commons.wikimedia.org/wiki/Special:FilePath/Kooauau.png
+http://www.wikidata.org/entity/Q3362451,pantalon,http://commons.wikimedia.org/wiki/Special:FilePath/Pantaleon-Clavier%20%28Nachbau%29.jpg
+http://www.wikidata.org/entity/Q3869274,müsa,http://commons.wikimedia.org/wiki/Special:FilePath/M%C3%BCsa.jpg
+http://www.wikidata.org/entity/Q3268757,analog synthesizer,http://commons.wikimedia.org/wiki/Special:FilePath/Buchla%20Music%20Easel.jpg
+http://www.wikidata.org/entity/Q2617520,steel guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Steel%20guitar.jpg
+http://www.wikidata.org/entity/Q3339324,ngombi,http://commons.wikimedia.org/wiki/Special:FilePath/Ngombi.jpg
+http://www.wikidata.org/entity/Q3623688,Paraguayan harp,http://commons.wikimedia.org/wiki/Special:FilePath/Arpista%20de%20Paraguay.jpg
+http://www.wikidata.org/entity/Q2631432,gambang,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Xylofoon%20met%20twintig%20toetsen%20onderdeel%20van%20gamelan%20Slendro%20TMnr%20500-9.jpg
+http://www.wikidata.org/entity/Q3904898,pifilca,http://commons.wikimedia.org/wiki/Special:FilePath/Pifilka.jpg
+http://www.wikidata.org/entity/Q3624317,bedug,http://commons.wikimedia.org/wiki/Special:FilePath/Bedhug%20dan%20kentongan%20masjid%20raya%20Pare%20Kediri%20Pj%2016-09-12%201245.jpg
+http://www.wikidata.org/entity/Q3729520,den-den daiko,http://commons.wikimedia.org/wiki/Special:FilePath/Dendendaiko.jpg
+http://www.wikidata.org/entity/Q2723974,low whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Low%20whistles%20in%20C%20and%20D.jpg
+http://www.wikidata.org/entity/Q1423158,tamburica,http://commons.wikimedia.org/wiki/Special:FilePath/Prim%20tambura.png
+http://www.wikidata.org/entity/Q1436500,khol,http://commons.wikimedia.org/wiki/Special:FilePath/Khol%20Bass.jpg
+http://www.wikidata.org/entity/Q1660902,inanga,http://commons.wikimedia.org/wiki/Special:FilePath/Inanga%2Ctraditional%20Rwandan%20instrument%20during%20the%20introduction%20wedding%20in%20Kigali%2C%20Rwanda.jpg
+http://www.wikidata.org/entity/Q1166068,taishōgoto,http://commons.wikimedia.org/wiki/Special:FilePath/Taishogoto.jpg
+http://www.wikidata.org/entity/Q1335907,olifant,http://commons.wikimedia.org/wiki/Special:FilePath/Le%20Mus%C3%A9e%20Paul%20Dupuy%20-%20Olifant%20dit%20Cor%20de%20Roland%2C%20XIe%20si%C3%A8cle%209.5x52%20Inv.18036.jpg
+http://www.wikidata.org/entity/Q1283177,frame drum,http://commons.wikimedia.org/wiki/Special:FilePath/Bebny%20szama%C5%84skie.jpg
+http://www.wikidata.org/entity/Q1328494,tonkori,http://commons.wikimedia.org/wiki/Special:FilePath/Tonkori.jpg
+http://www.wikidata.org/entity/Q1435054,keyed trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/MIMEd%205782.%20Keyed%20Trumpet%20in%20G%20with%20C%20and%20D%20crooks%20by%20St%C3%B6hr%20c.%201830%20%28whitebalance%29.png
+http://www.wikidata.org/entity/Q1572629,igil,http://commons.wikimedia.org/wiki/Special:FilePath/Igil%20made%20by%20Oktober%20Saya%20side%20view.gif
+http://www.wikidata.org/entity/Q1164356,erkencho,http://commons.wikimedia.org/wiki/Special:FilePath/Erkencho%20del%20norte.jpg
+http://www.wikidata.org/entity/Q1321111,ektara,http://commons.wikimedia.org/wiki/Special:FilePath/Ek%20Tare%20from%20YouTube%20video%20Tu%20Majhi%20Mauli%20Meditative%20Vitthal%20Siddha%20Kirtan%20by%20Rivesh%20Vade%20BodhMarga%20Wellness%20Vibe.png
+http://www.wikidata.org/entity/Q1532595,pambai,http://commons.wikimedia.org/wiki/Special:FilePath/A%20Pambai.JPG
+http://www.wikidata.org/entity/Q1588132,Hasapi,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Langhalsluit%20met%20twee%20snaren%20TMnr%203583-6.jpg
+http://www.wikidata.org/entity/Q1569742,piccolo trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/Piccolo%20trumpet.jpg
+http://www.wikidata.org/entity/Q1543785,launeddas,http://commons.wikimedia.org/wiki/Special:FilePath/Lotzorai%20-%20Costume%20tradizionale%20%2808%29.JPG
+http://www.wikidata.org/entity/Q1423051,dog whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Galton%20whistle.jpg
+http://www.wikidata.org/entity/Q1321104,Talking drum,http://commons.wikimedia.org/wiki/Special:FilePath/Igba%201.jpg
+http://www.wikidata.org/entity/Q1474853,mellophone,http://commons.wikimedia.org/wiki/Special:FilePath/Mellophone.jpg
+http://www.wikidata.org/entity/Q1437981,zhaleika,http://commons.wikimedia.org/wiki/Special:FilePath/Zhaleika.svg
+http://www.wikidata.org/entity/Q1179086,mizmar,http://commons.wikimedia.org/wiki/Special:FilePath/La%20f%C3%AAte%20de%20la%20musique%20au%20centre%20culturel%20dEgypte%20%28Paris%29%20%287416610718%29.jpg
+http://www.wikidata.org/entity/Q1553249,kendang,http://commons.wikimedia.org/wiki/Special:FilePath/Gamelan%20Jawa%20-%20Kendang%20Ageng%20%282%29.jpg
+http://www.wikidata.org/entity/Q1514705,bell plate,http://commons.wikimedia.org/wiki/Special:FilePath/Bell%20Plates%20%28from%20LA%20Percussion%20Rentals%29.jpg
+http://www.wikidata.org/entity/Q1554184,guitarrón,http://commons.wikimedia.org/wiki/Special:FilePath/Mexican%20Guitarron.jpg
+http://www.wikidata.org/entity/Q1527836,Gittler guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Gittler%20%28electric%20guitar%29%20%281970-1985%29%20-%20MIM%20PHX.jpg
+http://www.wikidata.org/entity/Q1437089,pandeiro,http://commons.wikimedia.org/wiki/Special:FilePath/Pandeiro2.JPG
+http://www.wikidata.org/entity/Q1327327,electronic organ,http://commons.wikimedia.org/wiki/Special:FilePath/OrgueRembrandt4090.jpg
+http://www.wikidata.org/entity/Q1187260,Warr Guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Warr-Guitar-Raptor.jpg
+http://www.wikidata.org/entity/Q1248877,timple,http://commons.wikimedia.org/wiki/Special:FilePath/Timple%20Front.png
+http://www.wikidata.org/entity/Q1422412,gaida,http://commons.wikimedia.org/wiki/Special:FilePath/Gaida%20speler.jpg
+http://www.wikidata.org/entity/Q1414932,tenor saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Amati-Kraslice%20tenor%20saxophone.jpg
+http://www.wikidata.org/entity/Q1542137,caxixi,http://commons.wikimedia.org/wiki/Special:FilePath/Hn%20caxixi.jpg
+http://www.wikidata.org/entity/Q1342193,musical jug,http://commons.wikimedia.org/wiki/Special:FilePath/Jugplayer.jpg
+http://www.wikidata.org/entity/Q1449548,hyperbass flute,http://commons.wikimedia.org/wiki/Special:FilePath/Hyperbass%20flute%2C%20played%20by%20Roberto%20Fabbriciani.png
+http://www.wikidata.org/entity/Q1242932,Double pipes,http://commons.wikimedia.org/wiki/Special:FilePath/Double%20clarinet%2C%20purchased%20in%20Jerusalem%2C%20c.%201902%2C%20bone%20-%20Harvard%20Semitic%20Museum%20-%20Cambridge%2C%20MA%20-%20DSC06087.jpg
+http://www.wikidata.org/entity/Q1463985,soprano saxophone,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Saxophone%20YSS-875%20EX.jpg
+http://www.wikidata.org/entity/Q1500255,Base pot,http://commons.wikimedia.org/wiki/Special:FilePath/Udu.jpg
+http://www.wikidata.org/entity/Q1264870,Dulzaina,http://commons.wikimedia.org/wiki/Special:FilePath/Gaita%20nafarra.jpg
+http://www.wikidata.org/entity/Q1327500,electronic musical instrument,http://commons.wikimedia.org/wiki/Special:FilePath/Bob%20Moog3.jpg
+http://www.wikidata.org/entity/Q1374076,euphon,http://commons.wikimedia.org/wiki/Special:FilePath/Euphon.png
+http://www.wikidata.org/entity/Q1494360,garmon,http://commons.wikimedia.org/wiki/Special:FilePath/Russkaya%20garmon.jpg
+http://www.wikidata.org/entity/Q1432696,kangling,http://commons.wikimedia.org/wiki/Special:FilePath/Kangling%20example.jpg
+http://www.wikidata.org/entity/Q1471374,waterphone,http://commons.wikimedia.org/wiki/Special:FilePath/Hangklang%20Waterphone.jpg
+http://www.wikidata.org/entity/Q1370147,yueqin,http://commons.wikimedia.org/wiki/Special:FilePath/Chinese%20Yueqin%20QM%20r.jpg
+http://www.wikidata.org/entity/Q1264755,dulcitone,http://commons.wikimedia.org/wiki/Special:FilePath/Dulcitone%20keyboard.JPG
+http://www.wikidata.org/entity/Q1493573,gankogui,http://commons.wikimedia.org/wiki/Special:FilePath/Africanagogo.jpg
+http://www.wikidata.org/entity/Q1611652,nadaswaram,http://commons.wikimedia.org/wiki/Special:FilePath/Nadaswaram%20%28also%20nagaswaram%20or%20nagasuram%29.jpg
+http://www.wikidata.org/entity/Q1273167,electric upright bass,http://commons.wikimedia.org/wiki/Special:FilePath/Baby%20bass%20bllanes.jpg
+http://www.wikidata.org/entity/Q1595537,qeej,http://commons.wikimedia.org/wiki/Special:FilePath/Kenh%20player.jpg
+http://www.wikidata.org/entity/Q1394795,xiao,http://commons.wikimedia.org/wiki/Special:FilePath/%E7%90%B4%E8%95%AD%E8%88%87%E6%B4%9E%E8%95%AD.JPG
+http://www.wikidata.org/entity/Q1236973,dombra,http://commons.wikimedia.org/wiki/Special:FilePath/Kazakh%20Dombra2.png
+http://www.wikidata.org/entity/Q1478007,hulusi,http://commons.wikimedia.org/wiki/Special:FilePath/Hu%20Lu%20Si.jpg
+http://www.wikidata.org/entity/Q1247912,mijwiz,http://commons.wikimedia.org/wiki/Special:FilePath/Mijwiz.jpg
+http://www.wikidata.org/entity/Q1246482,Indonesian rebab,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Klankkast%20van%20langhalsluit%20TMnr%205057-2a.jpg
+http://www.wikidata.org/entity/Q1588017,hammered dulcimer,http://commons.wikimedia.org/wiki/Special:FilePath/Hammered%20dulcimer.JPG
+http://www.wikidata.org/entity/Q1431454,sintir,http://commons.wikimedia.org/wiki/Special:FilePath/Guinbri%2C%20Marroc%2C%20s.%20XIX.jpg
+http://www.wikidata.org/entity/Q1413983,singing bowl,http://commons.wikimedia.org/wiki/Special:FilePath/Himalayanbowls.jpg
+http://www.wikidata.org/entity/Q1178361,davul,http://commons.wikimedia.org/wiki/Special:FilePath/Tapan.jpg
+http://www.wikidata.org/entity/Q1420096,lijerica,http://commons.wikimedia.org/wiki/Special:FilePath/Lirica%20Dalmacija%20EMZ%20300109.jpg
+http://www.wikidata.org/entity/Q1255766,dramyin,http://commons.wikimedia.org/wiki/Special:FilePath/Sgra-Snyan%20MET%20MI115.jpg
+http://www.wikidata.org/entity/Q1158854,calliope,http://commons.wikimedia.org/wiki/Special:FilePath/Calliope%20-%20The%20Wonderful%20Operonicon%20%281874%29.jpg
+http://www.wikidata.org/entity/Q1231959,pedal harp,http://commons.wikimedia.org/wiki/Special:FilePath/Salvi%20harp%20Diana.jpg
+http://www.wikidata.org/entity/Q1233386,jal tarang,http://commons.wikimedia.org/wiki/Special:FilePath/Jal%20tarang%20%28from%20Emil%20Richards%20Collection%29.jpg
+http://www.wikidata.org/entity/Q1544746,setar,http://commons.wikimedia.org/wiki/Special:FilePath/Setar%20Body.jpg
+http://www.wikidata.org/entity/Q1426973,guitalele,http://commons.wikimedia.org/wiki/Special:FilePath/Guitalele.jpg
+http://www.wikidata.org/entity/Q1552564,Guacharaca,http://commons.wikimedia.org/wiki/Special:FilePath/Guacharaca.png
+http://www.wikidata.org/entity/Q1365218,music box,http://commons.wikimedia.org/wiki/Special:FilePath/Boite-a-musique-p1030518.jpg
+http://www.wikidata.org/entity/Q1662735,natural trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/F103%20Naturtrumpet.tif
+http://www.wikidata.org/entity/Q1630744,musical bow,http://commons.wikimedia.org/wiki/Special:FilePath/MusicalBow.gif
+http://www.wikidata.org/entity/Q5068327,chakhe,http://commons.wikimedia.org/wiki/Special:FilePath/Chakhe.jpg
+http://www.wikidata.org/entity/Q6502879,lavta,http://commons.wikimedia.org/wiki/Special:FilePath/Lavta%20%28Museum%20of%20Greek%20Folk%20Instruments%20in%20Athens%29.jpg
+http://www.wikidata.org/entity/Q5277044,dilrupa,http://commons.wikimedia.org/wiki/Special:FilePath/Dilruba%20woman.jpg
+http://www.wikidata.org/entity/Q6321200,txistu,http://commons.wikimedia.org/wiki/Special:FilePath/Txistu2.jpg
+http://www.wikidata.org/entity/Q5429274,fadno,http://commons.wikimedia.org/wiki/Special:FilePath/Two%20Angelica%20F%C3%A1dno%20S%C3%A1mi%20instruments.jpg
+http://www.wikidata.org/entity/Q6346681,kagul,http://commons.wikimedia.org/wiki/Special:FilePath/Kagul.jpg
+http://www.wikidata.org/entity/Q4795879,Array mbira,http://commons.wikimedia.org/wiki/Special:FilePath/Arraymbiraplayed.jpg
+http://www.wikidata.org/entity/Q5299280,doshpuluur,http://commons.wikimedia.org/wiki/Special:FilePath/Doshpuluur%20made%20by%20Marat%20Damdyn.png
+http://www.wikidata.org/entity/Q5193170,Cultrun,http://commons.wikimedia.org/wiki/Special:FilePath/Cultrun.png
+http://www.wikidata.org/entity/Q4667250,ranat,http://commons.wikimedia.org/wiki/Special:FilePath/Ranat%20ek.jpg
+http://www.wikidata.org/entity/Q4460933,tovshuur,http://commons.wikimedia.org/wiki/Special:FilePath/Topshuur.jpg
+http://www.wikidata.org/entity/Q5317831,dvoyanka,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%94%D0%B2%D0%BE%D1%8F%D0%BD%D0%BA%D0%B0.jpg
+http://www.wikidata.org/entity/Q4507063,Chanza,http://commons.wikimedia.org/wiki/Special:FilePath/Namgar%20en%20Trio%20Nov%2013%202008%20Moscow.jpg
+http://www.wikidata.org/entity/Q4410796,svirel,http://commons.wikimedia.org/wiki/Special:FilePath/Dudki%20%28RNMM%29.jpg
+http://www.wikidata.org/entity/Q5764117,Chajchas,http://commons.wikimedia.org/wiki/Special:FilePath/Chajchas%20de%20cabra.jpg
+http://www.wikidata.org/entity/Q6387169,kempul,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Gong%20hangend%20aan%20een%20standaard%20onderdeel%20van%20gamelan%20Slendro%20TMnr%20500-26a.jpg
+http://www.wikidata.org/entity/Q5581711,gong chime,http://commons.wikimedia.org/wiki/Special:FilePath/Gong%20chimes.jpg
+http://www.wikidata.org/entity/Q4997651,Bungkaka,http://commons.wikimedia.org/wiki/Special:FilePath/Bungkaka.JPG
+http://www.wikidata.org/entity/Q5719028,Bandolina,http://commons.wikimedia.org/wiki/Special:FilePath/Bandola%20andina%20columbiana.jpg
+http://www.wikidata.org/entity/Q4951628,true board zithers with resonator box,http://commons.wikimedia.org/wiki/Special:FilePath/Guzheng%20%28box%20zither%29%2C%20MfM.Uni-Leipzig.jpg
+http://www.wikidata.org/entity/Q4955628,Brahms guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Brahms%20guitar.jpg
+http://www.wikidata.org/entity/Q4852742,Baltic psaltery,http://commons.wikimedia.org/wiki/Special:FilePath/Gusli%20tradition.png
+http://www.wikidata.org/entity/Q4701390,akkordolia,http://commons.wikimedia.org/wiki/Special:FilePath/Akkordolia%20from%20top.JPG
+http://www.wikidata.org/entity/Q5995811,ikembe,http://commons.wikimedia.org/wiki/Special:FilePath/Ikembe.JPG
+http://www.wikidata.org/entity/Q4592185,melodeon,http://commons.wikimedia.org/wiki/Special:FilePath/New%20Haven%20Melodeon%2C%20Mission%20Mill%20Museum.jpg
+http://www.wikidata.org/entity/Q4244288,kuvytsi,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%A2%D0%B8%D0%BF%D1%8B%20%D0%BA%D1%83%D1%80%D1%8F%D0%BA%D0%BE%D0%B2%20%D1%81%D0%B5%D0%BB%D0%B0%20%D0%92%D1%8B%D1%81%D0%BE%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%9A%D1%83%D0%B3%D0%B8%D0%BA%D0%BB%D1%8B.jpg
+http://www.wikidata.org/entity/Q4222986,clarinette d'amour,http://commons.wikimedia.org/wiki/Special:FilePath/Clarinettes%20d%27amour%20Bate.jpg
+http://www.wikidata.org/entity/Q5996169,Ikoro,http://commons.wikimedia.org/wiki/Special:FilePath/Ikoro.jpg
+http://www.wikidata.org/entity/Q5357606,electric grand piano,http://commons.wikimedia.org/wiki/Special:FilePath/Vierlang-Forster%20electric%20piano%20%281937%29.jpg
+http://www.wikidata.org/entity/Q5099323,chime,http://commons.wikimedia.org/wiki/Special:FilePath/McShane%20Eight%20Bell%20Chime%20in%20its%20frame.jpg
+http://www.wikidata.org/entity/Q4201135,calung,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Metallofoon%20onderdeel%20van%20gamelan%20Gong%20of%20gamelan%20Semar%20Pagulingan%20TMnr%20A-4898a.jpg
+http://www.wikidata.org/entity/Q5171699,cornettino,http://commons.wikimedia.org/wiki/Special:FilePath/Cornettino.jpg
+http://www.wikidata.org/entity/Q4518086,chuniri,http://commons.wikimedia.org/wiki/Special:FilePath/Chuniri%2CTbilisi1.jpg
+http://www.wikidata.org/entity/Q5289312,dollu,http://commons.wikimedia.org/wiki/Special:FilePath/Dollu-kunitha.jpg
+http://www.wikidata.org/entity/Q4260715,Slenthem,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Metallofoon%20bestaande%20uit%20zeven%20toetsen%20en%20een%20onderstel%20onderdeel%20van%20gamelan%20Slendro%20TMnr%20500-1.jpg
+http://www.wikidata.org/entity/Q4229054,kalyuka,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%9A%D0%B0%D0%BB%D1%8E%D0%BA%D0%B0%2C%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D0%B8%D0%B7%20%D0%B1%D0%BE%D1%80%D1%89%D0%B5%D0%B2%D0%B8%D0%BA%D0%B0.png
+http://www.wikidata.org/entity/Q5503427,friction idiophone,http://commons.wikimedia.org/wiki/Special:FilePath/Zingzaag.jpg
+http://www.wikidata.org/entity/Q4982421,Buccin,http://commons.wikimedia.org/wiki/Special:FilePath/012%20Museu%20de%20la%20M%C3%BAsica%2C%20el%20Bosc.jpg
+http://www.wikidata.org/entity/Q5911047,hotchiku,http://commons.wikimedia.org/wiki/Special:FilePath/Yunghocchiku.jpg
+http://www.wikidata.org/entity/Q6434803,kouxian,http://commons.wikimedia.org/wiki/Special:FilePath/5%20Leaf%20Kouxian.jpg
+http://www.wikidata.org/entity/Q6421300,klong yao,http://commons.wikimedia.org/wiki/Special:FilePath/Ban%20Khung%20Taphao06.jpg
+http://www.wikidata.org/entity/Q6436926,Krez,http://commons.wikimedia.org/wiki/Special:FilePath/Krez-2.jpg
+http://www.wikidata.org/entity/Q6401851,khlui,http://commons.wikimedia.org/wiki/Special:FilePath/Khluimouthpiece.jpg
+http://www.wikidata.org/entity/Q5515287,gabbang,http://commons.wikimedia.org/wiki/Special:FilePath/Philippine%20Gabbang.jpg
+http://www.wikidata.org/entity/Q5647544,handpan,http://commons.wikimedia.org/wiki/Special:FilePath/Handpan%202014.jpg
+http://www.wikidata.org/entity/Q6149665,rondador,http://commons.wikimedia.org/wiki/Special:FilePath/Rondador.jpg
+http://www.wikidata.org/entity/Q4752984,Ancient veena,http://commons.wikimedia.org/wiki/Special:FilePath/Plaque%20with%20a%20Dancer%20and%20a%20Vina%20Player%201st%20century%20B.C.jpg
+http://www.wikidata.org/entity/Q5284752,Diwas,http://commons.wikimedia.org/wiki/Special:FilePath/Diwas%20upce.jpg
+http://www.wikidata.org/entity/Q5521203,gangsa,http://commons.wikimedia.org/wiki/Special:FilePath/Ubud%20Bali%20Indonesia%20Pura-Dalem-Puri-05.jpg
+http://www.wikidata.org/entity/Q6517474,contra-alto clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/BC%20contraalto%201553.jpg
+http://www.wikidata.org/entity/Q5953170,chi,http://commons.wikimedia.org/wiki/Special:FilePath/Imperial%20Encyclopaedia%20-%20Music%20-%20pic015%20-%20%E7%AE%8E.svg
+http://www.wikidata.org/entity/Q16973705,Dhyāngro,http://commons.wikimedia.org/wiki/Special:FilePath/Dhyangro.jpg
+http://www.wikidata.org/entity/Q7370501,rothphone,http://commons.wikimedia.org/wiki/Special:FilePath/Rothophones07%20wikivm.JPG
+http://www.wikidata.org/entity/Q15294559,gralla,http://commons.wikimedia.org/wiki/Special:FilePath/Gralla%20seca.png
+http://www.wikidata.org/entity/Q12521411,tifa,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Enkelvellige%20cilindrische%20trom%20TMnr%201071-4.jpg
+http://www.wikidata.org/entity/Q14640031,kundu,http://commons.wikimedia.org/wiki/Special:FilePath/Kundu%20drum%2C%20from%20Papua-New%20Guinea%2C%2020th%20century.jpg
+http://www.wikidata.org/entity/Q7678567,takumbo,http://commons.wikimedia.org/wiki/Special:FilePath/Takumbo.jpg
+http://www.wikidata.org/entity/Q7630969,subcontrabass tuba,http://commons.wikimedia.org/wiki/Special:FilePath/Bohland%20Fuchs%20Riesenba%C3%9F%20Subcontrabass%20tuba.jpg
+http://www.wikidata.org/entity/Q6726202,madal,http://commons.wikimedia.org/wiki/Special:FilePath/Madal%20nepal%20krish.jpg
+http://www.wikidata.org/entity/Q13580448,cetara,http://commons.wikimedia.org/wiki/Special:FilePath/Cetera.jpg
+http://www.wikidata.org/entity/Q13194854,bass trombone,http://commons.wikimedia.org/wiki/Special:FilePath/Yamaha%20Bass%20trombone%20YBL-830%20horizontal.tif
+http://www.wikidata.org/entity/Q8079915,đàn gáo,http://commons.wikimedia.org/wiki/Special:FilePath/Dangaoback.jpg
+http://www.wikidata.org/entity/Q7658823,swish cymbal,http://commons.wikimedia.org/wiki/Special:FilePath/Swishcymbal.jpg
+http://www.wikidata.org/entity/Q8192099,bonshō,http://commons.wikimedia.org/wiki/Special:FilePath/RyoanJi-Kane.jpg
+http://www.wikidata.org/entity/Q13219842,goblet drum,http://commons.wikimedia.org/wiki/Special:FilePath/Lenke%20djembe%20from%20Mali.jpeg
+http://www.wikidata.org/entity/Q16621929,walking stick violin,http://commons.wikimedia.org/wiki/Special:FilePath/Jascha%20Heifetz%20playing%20a%20walking%20stick%20violin.jpg
+http://www.wikidata.org/entity/Q13094253,Q13094253,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Dubbelvellige%20tonvormige%20trom%20onderdeel%20tjalung-ensemble%20TMnr%201029-2b.jpg
+http://www.wikidata.org/entity/Q16875637,transverse flute,http://commons.wikimedia.org/wiki/Special:FilePath/A%20musician%20playing%20transverse%20flute%205.jpg
+http://www.wikidata.org/entity/Q7814483,tololoche,http://commons.wikimedia.org/wiki/Special:FilePath/Instrument%20tololoche%20Mex%2020010.jpg
+http://www.wikidata.org/entity/Q9286486,Harmonia pedałowa,http://commons.wikimedia.org/wiki/Special:FilePath/Harmonia%20Mielnicki%202.jpg
+http://www.wikidata.org/entity/Q10259047,classical kemençe,http://commons.wikimedia.org/wiki/Special:FilePath/Kemence%20Sezgin%20%281%29.jpg
+http://www.wikidata.org/entity/Q8044776,xirula,http://commons.wikimedia.org/wiki/Special:FilePath/Xirula.jpg
+http://www.wikidata.org/entity/Q15838637,cello da spalla,http://commons.wikimedia.org/wiki/Special:FilePath/Baroque%20violin%20and%20Violoncello%20da%20spalla.jpg
+http://www.wikidata.org/entity/Q15141691,Q15141691,http://commons.wikimedia.org/wiki/Special:FilePath/Troccole.jpg
+http://www.wikidata.org/entity/Q7199741,Pixiphone,http://commons.wikimedia.org/wiki/Special:FilePath/Pixiphone%20N.52.jpg
+http://www.wikidata.org/entity/Q6926344,mouth organ,http://commons.wikimedia.org/wiki/Special:FilePath/16-hole%20chrom%2010-hole%20diatonic.jpg
+http://www.wikidata.org/entity/Q11084057,daf,http://commons.wikimedia.org/wiki/Special:FilePath/Daff.jpg
+http://www.wikidata.org/entity/Q7306717,reed contrabass,http://commons.wikimedia.org/wiki/Special:FilePath/MIMEd%201706.%20Contrebasse%20%C3%A0%20anche%20%28reed%20contrabass%29%20by%20J.%20Albert%2C%20Brussels%20c.%201880-1900.png
+http://www.wikidata.org/entity/Q7682928,tanggu,http://commons.wikimedia.org/wiki/Special:FilePath/Thian%20Hock%20Keng%207%2C%20Oct%2006.JPG
+http://www.wikidata.org/entity/Q16938294,talharpa,http://commons.wikimedia.org/wiki/Special:FilePath/Talharpa%2C%20by%20Charlie%20Bynum%2C%20Silver%20Spoon%20Music%2C%20NL%202014.jpg
+http://www.wikidata.org/entity/Q7563205,soprano cornet,http://commons.wikimedia.org/wiki/Special:FilePath/CornEb.02.jpg
+http://www.wikidata.org/entity/Q10969818,kemenche,http://commons.wikimedia.org/wiki/Special:FilePath/Kemenche0.jpg
+http://www.wikidata.org/entity/Q7838128,tremoloa,http://commons.wikimedia.org/wiki/Special:FilePath/TremoloaEscanabaMichigan.jpg
+http://www.wikidata.org/entity/Q7314870,requinto jarocho,http://commons.wikimedia.org/wiki/Special:FilePath/Guitarra%20de%20son%20o%20requinto%20jarocho%20de%20cuatro%20cuerdas%2001.jpg
+http://www.wikidata.org/entity/Q13522404,musette de cour,http://commons.wikimedia.org/wiki/Special:FilePath/Musette%20MIM%205262.jpg
+http://www.wikidata.org/entity/Q9097454,rommelpot,http://commons.wikimedia.org/wiki/Special:FilePath/Danish%20friction%20drum.JPG
+http://www.wikidata.org/entity/Q16256860,yanggeum,http://commons.wikimedia.org/wiki/Special:FilePath/Yanggeum.jpg
+http://www.wikidata.org/entity/Q11650198,luo,http://commons.wikimedia.org/wiki/Special:FilePath/HelfferichGong.jpg
+http://www.wikidata.org/entity/Q6810507,Mejoranera,http://commons.wikimedia.org/wiki/Special:FilePath/Mejorana.jpg
+http://www.wikidata.org/entity/Q16950185,bandora,http://commons.wikimedia.org/wiki/Special:FilePath/Syntagma101.png
+http://www.wikidata.org/entity/Q7206087,bo,http://commons.wikimedia.org/wiki/Special:FilePath/Aachinaclash.jpg
+http://www.wikidata.org/entity/Q12690320,Kompang,http://commons.wikimedia.org/wiki/Special:FilePath/Balinese%20men%20-%20traditional%20percussion%20instrument.jpg
+http://www.wikidata.org/entity/Q12059669,Tritonikon,http://commons.wikimedia.org/wiki/Special:FilePath/Tritonikon%20vmwik.jpg
+http://www.wikidata.org/entity/Q16831511,Garamut,http://commons.wikimedia.org/wiki/Special:FilePath/Slit%20drum%2C%20Papua%20New%20Guinea%2C%20Melanesia%2C%20East%20Sepik%2C%20Maramba%20people%2C%2020th%20century%2C%20wood%2C%20pigment%20-%20De%20Young%20Museum%20-%20DSC01020.JPG
+http://www.wikidata.org/entity/Q7993828,whirly tube,http://commons.wikimedia.org/wiki/Special:FilePath/Whirlytube.png
+http://www.wikidata.org/entity/Q12460259,pump organ,http://commons.wikimedia.org/wiki/Special:FilePath/John%20Church%20and%20Co.%20reed%20organ.jpg
+http://www.wikidata.org/entity/Q7852690,tumpong,http://commons.wikimedia.org/wiki/Special:FilePath/TumpongPhilippines.jpg
+http://www.wikidata.org/entity/Q10862199,Snpoñia,http://commons.wikimedia.org/wiki/Special:FilePath/POL%20COA%20Trzaska.svg
+http://www.wikidata.org/entity/Q16911842,seperewa,http://commons.wikimedia.org/wiki/Special:FilePath/Seperewa.jpg
+http://www.wikidata.org/entity/Q12339842,birch trumpet,http://commons.wikimedia.org/wiki/Special:FilePath/A%20young%20Swedish%20women%20playing%20a%20birch%20trumpet%20around%201930%20%28cropped%29.jpg
+http://www.wikidata.org/entity/Q12060981,kemençe of the Black Sea,http://commons.wikimedia.org/wiki/Special:FilePath/Kemenche0.jpg
+http://www.wikidata.org/entity/Q7999138,Wiener oboe,http://commons.wikimedia.org/wiki/Special:FilePath/Hautbois%20viennois.jpg
+http://www.wikidata.org/entity/Q7379154,quinto,http://commons.wikimedia.org/wiki/Special:FilePath/Quinto%20drum.JPG
+http://www.wikidata.org/entity/Q8069980,zeze,http://commons.wikimedia.org/wiki/Special:FilePath/Adzabe%20Guitar.jpg
+http://www.wikidata.org/entity/Q6893623,Mohan veena,http://commons.wikimedia.org/wiki/Special:FilePath/Mohanaveena.JPG
+http://www.wikidata.org/entity/Q7022514,ngoma,http://commons.wikimedia.org/wiki/Special:FilePath/Bundesarchiv%20Bild%20105-DOA0543%2C%20Deutsch-Ostafrika%2C%20Ngoma-Schlagen.jpg
+http://www.wikidata.org/entity/Q1444,organ,http://commons.wikimedia.org/wiki/Special:FilePath/Main%20pipe%20organ%20-%20Frauenkirche%20-%20Munich%20-%20Germany%202017%20%282%29.jpg
+http://www.wikidata.org/entity/Q48230,glass harp,http://commons.wikimedia.org/wiki/Special:FilePath/Glasharfenspielerin.jpg
+http://www.wikidata.org/entity/Q111824539,soprano trombone,http://commons.wikimedia.org/wiki/Special:FilePath/Jean%20Baptiste%20soprano%20trombone.png
+http://www.wikidata.org/entity/Q64038,baritone guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Fender%20baritone%20custom.jpg
+http://www.wikidata.org/entity/Q81962448,ala bohemica,http://commons.wikimedia.org/wiki/Special:FilePath/AlaBohemicaPsaltery.jpg
+http://www.wikidata.org/entity/Q12639,idiophone,http://commons.wikimedia.org/wiki/Special:FilePath/2006-07-06%20crash%20paiste%2016.jpg
+http://www.wikidata.org/entity/Q47369,harp,http://commons.wikimedia.org/wiki/Special:FilePath/Harp.png
+http://www.wikidata.org/entity/Q22662103,tympanon,http://commons.wikimedia.org/wiki/Special:FilePath/Cassandre%20BnF%20Fran%C3%A7ais%20599%20fol.%2029.jpg
+http://www.wikidata.org/entity/Q60517,konghou,http://commons.wikimedia.org/wiki/Special:FilePath/%E9%B3%B3%E9%A6%96%E7%AE%9C%E7%AF%8C2.jpg
+http://www.wikidata.org/entity/Q30034781,tube zither,http://commons.wikimedia.org/wiki/Special:FilePath/Phillipine%20Tube%20zither.jpg
+http://www.wikidata.org/entity/Q121889865,gambus,http://commons.wikimedia.org/wiki/Special:FilePath/Stamp%20of%20Indonesia%20-%202020%20-%20Colnect%20947116%20-%20Gambus%20Riau.jpeg
+http://www.wikidata.org/entity/Q608650,sarangi,http://commons.wikimedia.org/wiki/Special:FilePath/Saranghi%20ou%20Sarangi%20%28Luth%29%2C%20%22Rituels%20et%20Musiques%20du%20Monde%22%2C%20CPFI%2C%20Festival%20Les%20Orientales%20%28Saint-Florent-Le-Vieil%29.jpg
+http://www.wikidata.org/entity/Q89189756,harpsichord,http://commons.wikimedia.org/wiki/Special:FilePath/Harpsichord%2C%20Alessandro%20Trasuntino%2C%20Venice%2C%201531.jpg
+http://www.wikidata.org/entity/Q611259,dotara,http://commons.wikimedia.org/wiki/Special:FilePath/Lukobadya%20dotara.jpg
+http://www.wikidata.org/entity/Q55723246,barrel-shaped drums,http://commons.wikimedia.org/wiki/Special:FilePath/Barrel%20Shaped%20Drum.JPG
+http://www.wikidata.org/entity/Q55724721,raft zithers,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Vlotciter%20van%20bamboe%20TMnr%203911-61.jpg
+http://www.wikidata.org/entity/Q55724975,harp lutes,http://commons.wikimedia.org/wiki/Special:FilePath/Kora%20%28Bridge-Harp%20Or%20Plucked%20Harp-Lute%29%20%28cropped%29.png
+http://www.wikidata.org/entity/Q55724710,half-tube zithers,http://commons.wikimedia.org/wiki/Special:FilePath/Chinese%20half-tube%20bamboo%20zithers.jpg
+http://www.wikidata.org/entity/Q104996348,kundi,http://commons.wikimedia.org/wiki/Special:FilePath/Harpe%20Zande-Mus%C3%A9e%20royal%20de%20l%27Afrique%20centrale.jpg
+http://www.wikidata.org/entity/Q50752927,Trimpanu,http://commons.wikimedia.org/wiki/Special:FilePath/Trimpanu%20%2802%29.jpg
+http://www.wikidata.org/entity/Q60750638,Pin,http://commons.wikimedia.org/wiki/Special:FilePath/Khmer%20harps%20%28Sounds%20of%20Angkor%29.jpg
+http://www.wikidata.org/entity/Q29918192,kamelen n'goni,http://commons.wikimedia.org/wiki/Special:FilePath/Kamele%20ngoni.jpg
+http://www.wikidata.org/entity/Q40125,viol,http://commons.wikimedia.org/wiki/Special:FilePath/GambeUilderks.png
+http://www.wikidata.org/entity/Q122962549,normaphone,http://commons.wikimedia.org/wiki/Special:FilePath/MIMEd%204235.%20Valve%20trombone%20in%20%28normaphon%29%20saxophone%20shape%2C%20in%20B%E2%99%AD%20%28white%20bg%29.png
+http://www.wikidata.org/entity/Q25091993,Algerian mandole,http://commons.wikimedia.org/wiki/Special:FilePath/%D8%AF%D9%86%D8%AF%D9%86%D8%A9.jpg
+http://www.wikidata.org/entity/Q848250,yu,http://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%B8%82%E5%AD%94%E5%BB%9F%E6%96%87%E7%89%A9%E6%94%B6%E8%97%8F%E6%A8%82%E5%99%A8.JPG
+http://www.wikidata.org/entity/Q26874923,frame harp,http://commons.wikimedia.org/wiki/Special:FilePath/Fenton%20House%20%2847945395367%29.jpg
+http://www.wikidata.org/entity/Q61324520,Clavicytherium,http://commons.wikimedia.org/wiki/Special:FilePath/Clavicytherium%2C%20South%20German%2C%20c.%201480.jpg
+http://www.wikidata.org/entity/Q21607265,washboard,http://commons.wikimedia.org/wiki/Special:FilePath/Washboards%20player.jpg
+http://www.wikidata.org/entity/Q107894862,Q107894862,http://commons.wikimedia.org/wiki/Special:FilePath/Gralla%20baixa.png
+http://www.wikidata.org/entity/Q55738872,"single clarinets with cylindrical bore, with fingerholes",http://commons.wikimedia.org/wiki/Special:FilePath/BC%20Alto%20Basset%202%20Bass%20Contralto.jpg
+http://www.wikidata.org/entity/Q17057067,riq,http://commons.wikimedia.org/wiki/Special:FilePath/Riqq.jpg
+http://www.wikidata.org/entity/Q30038873,trigonon,http://commons.wikimedia.org/wiki/Special:FilePath/Varieties%20of%20the%20great%20lyre%20or%20phorminx%20%3B%20The%20trigonon.%20%281812%29.jpg
+http://www.wikidata.org/entity/Q46185,bass guitar,http://commons.wikimedia.org/wiki/Special:FilePath/MusicmanStingray.jpg
+http://www.wikidata.org/entity/Q104521646,metal clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Silva%20Bet%20silver%20clarinet%20S5047%2C%20overview.jpg
+http://www.wikidata.org/entity/Q17074660,epinette des Vosges,http://commons.wikimedia.org/wiki/Special:FilePath/Epinette.PNG
+http://www.wikidata.org/entity/Q46190664,diaulos,http://commons.wikimedia.org/wiki/Special:FilePath/Youth%20playing%20a%20diaulos%2C%20Bowdoin%20Painter%2C%20480-460%20BC%2C%20Prague%20NM-H10%20773%2C%20151336.jpg
+http://www.wikidata.org/entity/Q56054583,Colombian tiple,http://commons.wikimedia.org/wiki/Special:FilePath/Tiple.jpg
+http://www.wikidata.org/entity/Q18696249,Q18696249,http://commons.wikimedia.org/wiki/Special:FilePath/Gralla%20dol%C3%A7a.png
+http://www.wikidata.org/entity/Q5994,piano,http://commons.wikimedia.org/wiki/Special:FilePath/Steinway%20%26%20Sons%20concert%20grand%20piano%2C%20model%20D-274%2C%20manufactured%20at%20Steinway%27s%20factory%20in%20Hamburg%2C%20Germany.png
+http://www.wikidata.org/entity/Q20427331,Ketipung,http://commons.wikimedia.org/wiki/Special:FilePath/COLLECTIE%20TROPENMUSEUM%20Dubbelvellige%20tonvormige%20trom%20onderdeel%20van%20gamelan%20Slendro%20TMnr%20500-8.jpg
+http://www.wikidata.org/entity/Q17099625,tsymbaly,http://commons.wikimedia.org/wiki/Special:FilePath/%D0%A1ymbalo%20XIX%20century.jpg
+http://www.wikidata.org/entity/Q11787,fujara,http://commons.wikimedia.org/wiki/Special:FilePath/Fujaro%20ludado%20tuta%20bildo.jpg
+http://www.wikidata.org/entity/Q117459414,Brazilian guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Seven-string-guitar.jpg
+http://www.wikidata.org/entity/Q31561,acoustic guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Acoustic%20guitars%20in%20store%2020180625.jpg
+http://www.wikidata.org/entity/Q24196576,requinto guitar,http://commons.wikimedia.org/wiki/Special:FilePath/Paracho%20requinto.jpg
+http://www.wikidata.org/entity/Q615403,tin whistle,http://commons.wikimedia.org/wiki/Special:FilePath/Tinwhistles.jpg
+http://www.wikidata.org/entity/Q17091232,guitalin,http://commons.wikimedia.org/wiki/Special:FilePath/Guitalin%20LMN-1.jpg
+http://www.wikidata.org/entity/Q82350983,bell harp,http://commons.wikimedia.org/wiki/Special:FilePath/Bell%20Harp%20MET%20240665.jpg
+http://www.wikidata.org/entity/Q614158,Atabaque,http://commons.wikimedia.org/wiki/Special:FilePath/Atabaque%20in%20the%20street.jpg
+http://www.wikidata.org/entity/Q42890140,reed,http://commons.wikimedia.org/wiki/Special:FilePath/Saxophone%20reeds-alto%2C%20tenor.jpeg
+http://www.wikidata.org/entity/Q18449477,clog fiddle,http://commons.wikimedia.org/wiki/Special:FilePath/X6029%20-%20Tr%C3%A4skofiol%20-%20ok%C3%A4nd%20tillverkare%20-%20foto%20Mikael%20Bodner.jpg
+http://www.wikidata.org/entity/Q60689,banhu,http://commons.wikimedia.org/wiki/Special:FilePath/Banhu.jpg
+http://www.wikidata.org/entity/Q98647213,octocontrabass clarinet,http://commons.wikimedia.org/wiki/Special:FilePath/Clarinette%20octo-contrebasse%20Leblanc.jpg
+http://www.wikidata.org/entity/Q19650003,sets of free reeds,http://commons.wikimedia.org/wiki/Special:FilePath/Hohner%20Multimonica%20MIM.jpg
