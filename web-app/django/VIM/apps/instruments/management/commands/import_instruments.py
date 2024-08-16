@@ -130,7 +130,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options) -> None:
         with open(
-            "startup_data/vim_instruments_with_images-15sept.csv", encoding="utf-8-sig"
+            "startup_data/all_instruments_16aug_2024.csv",
+            encoding="utf-8-sig",
         ) as csvfile:
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
