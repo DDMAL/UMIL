@@ -1,0 +1,42 @@
+{% load static %}
+
+<!-- Modal Structure -->
+<div class="modal fade"
+     id="uploadImagesModal"
+     tabindex="-1"
+     aria-labelledby="uploadImagesModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadImagesModalLabel">Upload Images</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="imageUploadForm" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden"
+                 id="instrumentWikidataId"
+                 name="wikidata_id"
+                 value="{{ wikidata_id }}" />
+          <div class="mb-3">
+            <label for="imageFiles" class="form-label">
+              Select Images for <span id="instrumentNameInModal"></span>
+            </label>
+            <input class="form-control"
+                   type="file"
+                   id="imageFiles"
+                   name="images"
+                   accept="image/*"
+                   multiple />
+          </div>
+          <div id="previewImages" class="row g-2"></div>
+          <button type="submit" class="btn btn-primary modal-btn">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
