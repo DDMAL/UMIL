@@ -103,6 +103,8 @@
             </div>
           </div>
           <div class="d-flex">
+            {% include "instruments/includes/uploadImgModal.html" %}
+
             <button type="button"
                     class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn"
                     id="masonry-btn"
@@ -205,4 +207,5 @@
   <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
   <script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
   <script src="{% static "instruments/js/PaginationTools.js" %}"></script>
+  <script src="{% static "instruments/js/ImageUpload.js" %}"></script>
 {% endblock scripts %}

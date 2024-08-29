@@ -4,11 +4,24 @@
      id="masonry-view">
   {% for instrument in instruments %}
     <div class="col">
-      <a href="{% url 'instrument-detail' instrument.pk %}"
-         class="text-decoration-none"
-         target="_blank">
+      <div class="text-decoration-none">
         <div class="card mb-3">
-          <img src="{% static instrument.thumbnail.url %}" class="card-img-top rounded p-2" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';" />
+          <div class="instrument-img-container">
+            <img src="{% static instrument.thumbnail.url %}" class="card-img-top rounded p-2 instrument-img" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "instruments/images/no-image.svg" %}';" />
+            <div class="middle-button-group">
+              <button type="button"
+                      class="btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#uploadImagesModal"
+                      data-instrument-name="{{ instrument.instrumentname_set.first.name|title }}"
+                      data-instrument-wikidata-id="{{ instrument.wikidata_id }}">
+                Upload new images
+              </button>
+              <a class="btn"
+                 href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
+                 target="_blank">View on Wikidata</a>
+            </div>
+          </div>
           <div class="card-body pb-0 pt-0">
             <p class="card-title text-center notranslate ">
               {% for instrumentname in instrument.instrumentname_set.all %}
@@ -17,7 +30,7 @@
             </p>
           </div>
         </div>
-      </a>
+      </div>
     </div>
   {% endfor %}
 </div>
