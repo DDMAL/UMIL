@@ -41,7 +41,9 @@ class Command(BaseCommand):
             en_label = item["languageLabel"]["value"]
             autonym = item["autonym"]["value"]
 
-            print(wikidata_code, "-", wikidata_id, "-", en_label, "-", autonym)
+            self.stdout.write(
+                wikidata_code, "-", wikidata_id, "-", en_label, "-", autonym
+            )
 
             Language.objects.update_or_create(
                 wikidata_code=wikidata_code,
