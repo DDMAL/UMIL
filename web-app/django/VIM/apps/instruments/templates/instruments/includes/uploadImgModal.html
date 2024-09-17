@@ -19,12 +19,14 @@
         <form id="imageUploadForm" enctype="multipart/form-data">
           {% csrf_token %}
           <input type="hidden"
-                 id="instrumentWikidataId"
+                 id="instrumentWikidataIdInModal"
                  name="wikidata_id"
                  value="{{ wikidata_id }}" />
           <div class="mb-3">
             <label for="imageFiles" class="form-label">
-              Select Images for <span id="instrumentNameInModal"></span>
+              Select Images for
+              <span id="instrumentNameInModal"></span>
+              (wikidata ID:<span id="instrumentWikidataIdInModal"></span>)
             </label>
             <input class="form-control"
                    type="file"

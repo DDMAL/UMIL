@@ -26,7 +26,7 @@ uploadImagesModal.addEventListener('show.bs.modal', function (event) {
   instrumentNameInModal.textContent = instrumentName;
 
   var instrumentWikidataIdInModal = uploadImagesModal.querySelector(
-    '#instrumentWikidataId'
+    '#instrumentWikidataIdInModal'
   );
   instrumentWikidataIdInModal.textContent = instrumentWikidataId;
 });
