@@ -83,7 +83,6 @@ th[scope='row'] {
   text-align: center;
   text-decoration: none;
   outline: none;
-  color: #fff;
   border: none;
   border-radius: 3px;
   margin-right: 5px;
@@ -96,4 +95,7 @@ th[scope='row'] {
 }
 .btn.publish {
   background-color: #28a745;
+}
+.btn.search {
+  background-color: #9eb384
 }

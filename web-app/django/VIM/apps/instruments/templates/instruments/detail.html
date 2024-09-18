@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% load static %}
 
 {% block title %}
@@ -23,6 +22,18 @@
       </h2>
       <hr />
     </div>
+
+    <div class="sort-search-form">
+      <form method="get" action="">
+        <input type="text" name="search" placeholder="Search by language..." value="{{ request.GET.search }}" />
+        <select name="sort">
+          <option value="language__en_label" {% if request.GET.sort == 'language__en_label' %}selected{% endif %}>Sort by Language</option>
+          <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Sort by Name</option>
+        </select>
+        <button class="btn search">Search/Sort</button>
+      </form>
+    </div>
+
     <div class="detail-body">
       <div class="instrument-forms">
         <table class="table table-sm table-striped table-bordered">
