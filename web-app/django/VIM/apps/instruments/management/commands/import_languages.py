@@ -123,7 +123,7 @@ def get_language_details(language_codes):
 class Command(BaseCommand):
     """
     The import_languages command populates the database with languages in which instrument
-    names can be provided in VIM. It fetches the language list from Wikidata, retrieves the
+    names can be provided in UMIL. It fetches the language list from Wikidata, retrieves the
     'wikidata_code', 'autonym', and 'en_label', and stores them in the database.
     """
 
