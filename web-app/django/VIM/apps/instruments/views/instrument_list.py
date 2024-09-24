@@ -39,7 +39,7 @@ class InstrumentList(ListView):
         language_en = self.request.GET.get("language")
         if language_en:
             return language_en
-        return self.request.session.get("active_language_en", "english")
+        return self.request.session.get("active_language_en", "English")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
