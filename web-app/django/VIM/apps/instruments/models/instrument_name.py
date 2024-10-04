@@ -8,3 +8,9 @@ class InstrumentName(models.Model):
     source_name = models.CharField(
         max_length=50, blank=False, help_text="Who or what called the instrument this?"
     )  # Stand-in for source data; format TBD
+    description = models.CharField(
+        blank=True, help_text="Description of the instrument name"
+    )  # Stand-in for description
+    alias = models.CharField(
+        blank=True, help_text="Alternative name for the instrument"
+    )  # Stand-in for alias

@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     NOTE: For now, this script only imports instrument names in English and French. It
     also only imports a set of previously-curated instruments that have images available.
-    This list of instruments is stored in startup_data/vim_instruments_with_images-15sept.csv
+    This list of instruments is stored in startup_data/all_instruments_with_16aug_2024.csv
     """
 
     help = "Imports instrument objects"
@@ -48,6 +48,20 @@ class Command(BaseCommand):
         ins_names: dict[str, str] = {
             value["language"]: value["value"] for key, value in ins_labels.items()
         }
+
+        # Get available instrument descriptions
+        ins_descriptions: dict = instrument_data["descriptions"]
+        ins_descs: dict[str, str] = {
+            value["language"]: value["value"] for key, value in ins_descriptions.items()
+        }
+
+        # Get available instrument aliases
+        ins_aliases: dict = instrument_data["aliases"]
+        ins_alias: dict[str, list[str]] = {
+            key: [value["value"] for value in values]
+            for key, values in ins_aliases.items()
+        }
+
         # Get Hornbostel-Sachs and MIMO classifications, if available
         ins_hbs: Optional[list[dict]] = instrument_data["claims"].get("P1762")
         ins_mimo: Optional[list[dict]] = instrument_data["claims"].get("P3763")
@@ -62,6 +76,8 @@ class Command(BaseCommand):
         parsed_data: dict[str, str | dict[str, str]] = {
             "wikidata_id": instrument_id,
             "ins_names": ins_names,
+            "ins_descs": ins_descs,
+            "ins_alias": ins_alias,
             "hornbostel_sachs_class": hbs_class,
             "mimo_class": mimo_class,
         }
@@ -80,7 +96,7 @@ class Command(BaseCommand):
         ins_ids_str: str = "|".join(instrument_ids)
         url = (
             "https://www.wikidata.org/w/api.php?action=wbgetentities&"
-            f"ids={ins_ids_str}&format=json&props=labels|descriptions|"
+            f"ids={ins_ids_str}&format=json&props=labels|descriptions|aliases|"
             "claims&languages=en|fr"
         )
         response = requests.get(url, timeout=10)
@@ -104,11 +120,17 @@ class Command(BaseCommand):
         thumbnail_img_path [str]: Path to the thumbnail of the instrument image
         """
         ins_names = instrument_attrs.pop("ins_names")
+        ins_descs = instrument_attrs.pop("ins_descs")
+        ins_alias = instrument_attrs.pop("ins_alias")
         instrument = Instrument.objects.create(**instrument_attrs)
         for lang, name in ins_names.items():
+            description = ins_descs.get(lang, "")
+            alias = ins_alias.get(lang, [])
             InstrumentName.objects.create(
                 instrument=instrument,
                 language=self.language_map[lang],
+                description=description,
+                alias=", ".join(alias),
                 name=name,
                 source_name="Wikidata",
             )

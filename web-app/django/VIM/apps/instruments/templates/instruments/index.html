@@ -17,7 +17,7 @@
       <div class="col-xl-3">
         <div class="px-3 pt-3 me-1 mb-3 sidebar-container">
           <div class="info-block p-2 mb-3 notranslate">
-            {% if active_language.en_label == "french" %}
+            {% if active_language.en_label == "French" %}
               <h4>Système Hornbostel-Sachs</h4>
             {% else %}
               <h4>Hornbostel-Sachs Classification</h4>
@@ -30,7 +30,11 @@
                   <li class="list-group-item d-flex justify-content-between p-0"
                       current-value="{{ hbs_facet_item.value }}">
                     {% if hbs_facet_item.name == '' %}
-                      <span class="text-start">Unclassified</span>
+                      {% if active_language.en_label == "French" %}
+                        <span class="text-start">Non classifiés</span>
+                      {% else %}
+                        <span class="text-start">Unclassified</span>
+                      {% endif %}
                     {% else %}
                       <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
                     {% endif %}
@@ -94,10 +98,13 @@
               </button>
               <ul class="dropdown-menu umil-dropdown-menu">
                 {% for language in languages %}
-                  <li>
-                    <a class="dropdown-item umil-dropdown-item"
-                       href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
-                  </li>
+                  {% comment %} Here only English and French are shown {% endcomment %}
+                  {% if language.en_label == "English" or language.en_label == "French" %}
+                    <li>
+                      <a class="dropdown-item umil-dropdown-item"
+                         href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
+                    </li>
+                  {% endif %}
                 {% endfor %}
               </ul>
             </div>
