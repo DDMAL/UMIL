@@ -1,0 +1,105 @@
+{% load static %}
+
+<!-- Modal Structure -->
+<div class="modal fade"
+     id="addNameModal"
+     tabindex="-1"
+     aria-labelledby="addNameModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNameModalLabel">
+          Add New Name for
+          <span id="instrumentNameInModal"></span>
+          (wikidata ID:<span id="instrumentWikidataIdInModal"></span>)
+        </h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addNameForm" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          <input type="hidden"
+                 id="instrumentWikidataIdInModal"
+                 name="wikidata_id"
+                 value="{{ wikidata_id }}" />
+          <div class="mb-3" id="nameRows">
+            <!-- Placeholder for dynamically generated rows -->
+          </div>
+          <!-- Row for 'Add a new row' button -->
+          <div class="row">
+            <div class="col">
+              <button type="button" class="btn btn-sm btn-secondary" id="addRowBtn">
+                Add another row
+              </button>
+            </div>
+          </div>
+          <!-- Checkbox for Wikidata publication -->
+          <div class="row mt-3">
+            <div class="col">
+              <div class="form-check">
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="publishToWikidataCheckbox"
+                       name="publish_to_wikidata" />
+                <label class="form-check-label" for="publishToWikidataCheckbox">
+                  Do you want to publish also to Wikidata?
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- Row for 'Publish' button -->
+          <div class="row mt-3">
+            <div class="col text-end">
+              <button type="submit" class="btn btn-primary modal-btn">Publish</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirmation Modal Structure -->
+<div class="modal fade"
+     id="confirmationModal"
+     tabindex="-1"
+     aria-labelledby="confirmationModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel">Confirm Publish</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="publishResults"></p>
+        <p>Are you sure you want to publish these entries?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmPublishBtn">
+          Publish
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    var languages = [
+        {% for language in languages %}
+        {
+            "wikidata_code": "{{ language.wikidata_code }}",
+            "autonym": "{{ language.autonym }}",
+            "en_label": "{{ language.en_label }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+</script>

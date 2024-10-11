@@ -18,13 +18,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from VIM.apps.instruments.views.instrument_list import InstrumentList
 from django.conf.urls.i18n import i18n_patterns
+from VIM.apps.instruments.views.instrument_list import (
+    InstrumentList,
+    publish_name,
+)
 
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("VIM.apps.main.urls", namespace="main")),
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
+    path("publish_name/", publish_name, name="publish_name"),
     prefix_default_language=False,
 )
 

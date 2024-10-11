@@ -110,6 +110,7 @@
             </div>
           </div>
           <div class="d-flex">
+            {% include "instruments/includes/addNameModal.html" %}
             {% include "instruments/includes/uploadImgModal.html" %}
 
             <button type="button"
@@ -215,4 +216,5 @@
   <script src="{% static "instruments/js/DisplaySettings.js" %}"></script>
   <script src="{% static "instruments/js/PaginationTools.js" %}"></script>
   <script src="{% static "instruments/js/ImageUpload.js" %}"></script>
+  <script src="{% static "instruments/js/AddName.js" %}"></script>
 {% endblock scripts %}
