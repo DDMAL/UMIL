@@ -152,7 +152,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options) -> None:
         with open(
-            "startup_data/all_instruments_16aug_2024.csv",
+            "startup_data/all_instruments_11oct_2024.csv",
             encoding="utf-8-sig",
         ) as csvfile:
             reader = csv.DictReader(csvfile)

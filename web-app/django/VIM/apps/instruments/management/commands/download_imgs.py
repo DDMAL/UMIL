@@ -16,7 +16,7 @@ class Command(BaseCommand):
     OUTPUT_DIR = os.path.join(
         settings.STATIC_ROOT, "instruments", "images", "instrument_imgs"
     )
-    CSV_PATH = "startup_data/all_instruments_16aug_2024.csv"
+    CSV_PATH = "startup_data/all_instruments_11oct_2024.csv"
 
     help = "Download images and create thumbnails for instruments"
 
