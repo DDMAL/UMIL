@@ -6,12 +6,12 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
   var instrumentName = button.getAttribute('data-instrument-name');
   var instrumentWikidataId = button.getAttribute('data-instrument-wikidata-id');
   var instrumentNameInModal = addNameModal.querySelector(
-    '#instrumentNameInModal'
+    '#instrumentNameInModal',
   );
   instrumentNameInModal.textContent = instrumentName;
 
   var instrumentWikidataIdInModal = addNameModal.querySelector(
-    '#instrumentWikidataIdInModal'
+    '#instrumentWikidataIdInModal',
   );
   instrumentWikidataIdInModal.textContent = instrumentWikidataId;
 });
@@ -45,7 +45,7 @@ async function checkNameInWikidata(wikidataId, languageCode, languageLabel) {
 
   const endpointUrl = 'https://query.wikidata.org/sparql';
   const queryUrl = `${endpointUrl}?query=${encodeURIComponent(
-    sparqlQuery
+    sparqlQuery,
   )}&format=json`;
 
   try {
@@ -73,7 +73,7 @@ function createRow(index) {
     .map(
       (language) => `
       <option value="${language.wikidata_code}">${language.autonym} - ${language.en_label}</option>
-  `
+  `,
     )
     .join('');
 
@@ -155,28 +155,28 @@ document
       const nameInput = row.querySelector('.name-input input[type="text"]');
       const sourceInput = row.querySelector('.source-input input[type="text"]');
       const descriptionInput = row.querySelector(
-        '.description-input input[type="text"]'
+        '.description-input input[type="text"]',
       );
       const aliasInput = row.querySelector('.alias-input input[type="text"]');
 
       const languageCode = languageInput.value;
       const selectedOption = row.querySelector(
-        `option[value="${languageCode}"]`
+        `option[value="${languageCode}"]`,
       );
       const languageLabel = selectedOption ? selectedOption.textContent : '';
 
       // get feedback elements for valid and invalid inputs respectively for language and name
       const languageFeedbackValid = row.querySelector(
-        '.language-input .valid-feedback'
+        '.language-input .valid-feedback',
       );
       const languageFeedbackInvalid = row.querySelector(
-        '.language-input .invalid-feedback'
+        '.language-input .invalid-feedback',
       );
       const nameFeedbackInvalid = row.querySelector(
-        '.name-input .invalid-feedback'
+        '.name-input .invalid-feedback',
       );
       const sourceFeedbackInvalid = row.querySelector(
-        '.source-input .invalid-feedback'
+        '.source-input .invalid-feedback',
       );
 
       const wikidataId = document
@@ -195,7 +195,7 @@ document
         const result = await checkNameInWikidata(
           wikidataId,
           languageCode,
-          languageLabel
+          languageLabel,
         );
         if (result.exists) {
           languageInput.classList.add('is-invalid');
@@ -237,7 +237,7 @@ document
       } catch (error) {
         displayMessage(
           'There was an error checking Wikidata. Please try again later.',
-          'danger'
+          'danger',
         );
         return; // Stop further processing
       }
@@ -245,11 +245,10 @@ document
 
     // If all rows are valid, show the confirmation modal
     if (allValid) {
-      document.getElementById(
-        'publishResults'
-      ).innerHTML = `You will publish the following:<br />${publishResults}`;
+      document.getElementById('publishResults').innerHTML =
+        `You will publish the following:<br />${publishResults}`;
       const confirmationModal = new bootstrap.Modal(
-        document.getElementById('confirmationModal')
+        document.getElementById('confirmationModal'),
       );
       confirmationModal.show();
     }
@@ -298,7 +297,7 @@ document
       const nameInput = row.querySelector('.name-input input[type="text"]');
       const sourceInput = row.querySelector('.source-input input[type="text"]');
       const descriptionInput = row.querySelector(
-        '.description-input input[type="text"]'
+        '.description-input input[type="text"]',
       );
       const aliasInput = row.querySelector('.alias-input input[type="text"]');
 
@@ -327,7 +326,7 @@ document
 
     // Check if the user wants to publish to Wikidata
     const publishToWikidata = document.getElementById(
-      'publishToWikidataCheckbox'
+      'publishToWikidataCheckbox',
     ).checked;
 
     // Publish data to our database and then to Wikidata
@@ -350,10 +349,10 @@ document
           alert('Data published successfully!');
           // Close both modals
           const addNameModal = bootstrap.Modal.getInstance(
-            document.getElementById('addNameModal')
+            document.getElementById('addNameModal'),
           );
           const confirmationModal = bootstrap.Modal.getInstance(
-            document.getElementById('confirmationModal')
+            document.getElementById('confirmationModal'),
           );
 
           if (addNameModal) {
