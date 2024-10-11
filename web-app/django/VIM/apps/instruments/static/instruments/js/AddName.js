@@ -247,7 +247,7 @@ document
     if (allValid) {
       document.getElementById(
         'publishResults'
-      ).innerHTML = `Your final publish results will be:<br />${publishResults}`;
+      ).innerHTML = `You will publish the following:<br />${publishResults}`;
       const confirmationModal = new bootstrap.Modal(
         document.getElementById('confirmationModal')
       );
