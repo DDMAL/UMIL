@@ -304,24 +304,22 @@ document
       const languageCode = languageInput.value;
       const nameValue = nameInput.value;
       const sourceValue = sourceInput.value;
-      const descriptionValue = descriptionInput.value;
-      const aliasValue = aliasInput.value;
+      const descriptionValue = descriptionInput.value || '';
+      const aliasValue = aliasInput.value || '';
 
-      if (
-        languageCode &&
-        nameValue &&
-        sourceValue &&
-        descriptionValue &&
-        aliasValue
-      ) {
-        entries.push({
-          language: languageCode,
-          name: nameValue,
-          source: sourceValue,
-          description: descriptionValue,
-          alias: aliasValue,
-        });
-      }
+      console.log('languageCode: ', languageCode);
+      console.log('nameValue: ', nameValue);
+      console.log('sourceValue: ', sourceValue);
+      console.log('descriptionValue: ', descriptionValue);
+      console.log('aliasValue: ', aliasValue);
+
+      entries.push({
+        language: languageCode,
+        name: nameValue,
+        source: sourceValue,
+        description: descriptionValue,
+        alias: aliasValue,
+      });
     });
 
     // Check if the user wants to publish to Wikidata
