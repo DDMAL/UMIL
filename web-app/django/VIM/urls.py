@@ -19,10 +19,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
-from VIM.apps.instruments.views.instrument_list import (
-    InstrumentList,
-    publish_name,
-)
+from VIM.apps.instruments.views.instrument_list import InstrumentList
+from VIM.apps.instruments.views.publish_name import publish_name
 
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),

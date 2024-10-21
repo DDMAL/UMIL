@@ -125,15 +125,23 @@ class Command(BaseCommand):
         instrument = Instrument.objects.create(**instrument_attrs)
         for lang, name in ins_names.items():
             description = ins_descs.get(lang, "")
-            alias = ins_alias.get(lang, [])
+            # Create InstrumentName object for "name" in "lang" with "description"
             InstrumentName.objects.create(
                 instrument=instrument,
                 language=self.language_map[lang],
                 description=description,
-                alias=", ".join(alias),
                 name=name,
                 source_name="Wikidata",
             )
+            alias = ins_alias.get(lang, [])
+            # Create InstrumentName object for "alias" in language "lang"
+            for alias_name in alias:
+                InstrumentName.objects.create(
+                    instrument=instrument,
+                    language=self.language_map[lang],
+                    name=alias_name,
+                    source_name="Wikidata",
+                )
         img_obj = AVResource.objects.create(
             instrument=instrument,
             type="image",

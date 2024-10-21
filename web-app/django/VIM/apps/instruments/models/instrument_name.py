@@ -11,6 +11,3 @@ class InstrumentName(models.Model):
     description = models.CharField(
         blank=True, help_text="Description of the instrument name"
     )  # Stand-in for description
-    alias = models.CharField(
-        blank=True, help_text="Alternative name for the instrument"
-    )  # Stand-in for alias
