@@ -1,10 +1,6 @@
 {
-  "exclude": [
-    "migrations/*"
-  ],
-  "extension": [
-    "html"
-  ],
+  "exclude": "migrations/*",
+  "extension": "html",
   "indent": 2,
   "blank_line_after_tag": "load,extends,include,endblock",
   "ignore": "H006,H016,H021,H025,H030,H031",
