@@ -156,3 +156,7 @@ DEFAULT_FROM_EMAIL = "noreply@cantusdatabase.simssa.ca"
 CSRF_COOKIE_SECURE = IS_PRODUCTION
 CSRF_TRUSTED_ORIGINS = [f'https://{os.environ.get("HOST_NAME")}']
 SESSION_COOKIE_SECURE = IS_PRODUCTION
+
+
+# OAuth settings
+WIKIDATA_ACCESS_TOKEN = os.environ.get("WIKIDATA_ACCESS_TOKEN")
