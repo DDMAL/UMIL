@@ -1,96 +1,67 @@
-""" This module contains functions to interact with the Wikidata API. """
+""" This module contains functions to interact with the Wikidata API using OAuth. """
 
 import requests
+import urllib.parse
+from django.shortcuts import redirect
+from django.http import JsonResponse
 
 WIKIDATA_URL = "https://www.wikidata.org/w/api.php"
-
+WIKIDATA_OAUTH_URL = "https://www.wikidata.org/w/rest.php/oauth2"
+WIKIDATA_REDIRECT_URI = "https://vim.simssa.ca/oauth/callback"
+WIKIDATA_CLIENT_ID = "4b8617100ef01f44476115fb787d9d18"
 session = requests.Session()
 
 
-def get_csrf_token(username, password, url=WIKIDATA_URL):
+def wikidata_callback(request):
+    print("[wikidata_callback] called")
+    # Retrieve the authorization code from the query parameters
+    authorization_code = request.GET.get("code")
+    if not authorization_code:
+        return JsonResponse({"error": "Authorization code not provided"}, status=400)
+    # Exchange the authorization code for an access token
+    base_url = f"{WIKIDATA_OAUTH_URL}/access_token"
+    data = {
+        "grant_type": "authorization_code",
+        "code": authorization_code,
+        "client_id": WIKIDATA_CLIENT_ID,
+        "redirect_uri": WIKIDATA_REDIRECT_URI,
+    }
+
+    response = requests.post(base_url, data=data, timeout=50)
+    if response.status_code == 200:
+        access_token = response.json().get("access_token")
+        request.session["wikidata_access_token"] = access_token
+        next_url = request.session.get("next", "/")
+        return redirect(next_url)
+    else:
+        return JsonResponse({"error": response.json()}, status=response.status_code)
+
+
+def wikidata_authorize(request):
+    # Get the current target URL from the request
+    next_url = request.GET.get("next", "/")
+    request.session["next"] = next_url
+    # Construct the authorization URL
+    base_url = f"{WIKIDATA_OAUTH_URL}/authorize"
+    params = {
+        "response_type": "code",
+        "client_id": WIKIDATA_CLIENT_ID,
+        "redirect_uri": WIKIDATA_REDIRECT_URI,
+    }
+    authorization_url = f"{base_url}?{urllib.parse.urlencode(params)}"
+    return redirect(authorization_url)
+
+
+def add_info_to_wikidata_entity(action, access_token, wikidata_id, value, language):
     """
-    Logs in to Wikidata.
+    Adds information to a Wikidata entity using OAuth.
 
     Args:
-        username (str): The username of the account.
-        password (str): The password of the account.
-
-    Returns:
-        tuple: The CSRF token and username if successful,
-            otherwise (None, None, error_message).
-    """
-    try:
-        # Step 1: Retrieve a login token
-        params_1 = {
-            "action": "query",
-            "meta": "tokens",
-            "type": "login",
-            "format": "json",
-        }
-        response = session.get(url=url, params=params_1)
-        response.raise_for_status()  # Raises HTTPError for bad responses
-        data = response.json()
-        if "query" not in data or "tokens" not in data["query"]:
-            raise ValueError("Failed to retrieve login token.")
-        login_token = data["query"]["tokens"]["logintoken"]
-        print(f"login_token: {login_token}")
-
-        # Step 2: Send a post request to login
-        params_2 = {
-            "action": "login",
-            "lgname": username,
-            "lgpassword": password,
-            "format": "json",
-            "lgtoken": login_token,
-        }
-        response = session.post(url, data=params_2)
-        response.raise_for_status()
-        data = response.json()
-        if data.get("login", {}).get("result") != "Success":
-            raise ValueError(
-                f"Login failed: {data.get('login', {}).get('reason', 'Unknown error')}"
-            )
-
-        lgusername = data["login"]["lgusername"]
-        print(f"lgusername: {lgusername}")
-
-        # Obtain a CSRF token
-        params_3 = {
-            "action": "query",
-            "meta": "tokens",
-            "format": "json",
-            "type": "csrf",
-            "assertuser": lgusername,
-        }
-        response = session.get(url=url, params=params_3)
-        response.raise_for_status()
-        data = response.json()
-        if "query" not in data or "tokens" not in data["query"]:
-            raise ValueError("Failed to retrieve CSRF token.")
-        csrf_token = data["query"]["tokens"]["csrftoken"]
-        print(f"csrf_token: {csrf_token}")
-        return csrf_token, lgusername, None
-
-    except requests.RequestException as e:
-        return None, None, f"HTTP error occurred: {e}"
-    except ValueError as ve:
-        return None, None, f"Value error occurred: {ve}"
-
-
-def add_info_to_wikidata_entity(
-    action, csrf_token, wikidata_id, value, language, username
-):
-    """
-    Adds an existing Wikimedia image to a Wikidata entity.
-
-    Args:
-        action (str): The action to perform
-            (e.g., "wbsetlabel", "wbsetdescription", "wbsetaliases").
-        csrf_token (str): The CSRF token.
+        action (str): The action to perform (e.g., "wbsetlabel", "wbsetdescription", "wbsetaliases").
+        access_token (str): The OAuth access token.
         wikidata_id (str): The Wikidata ID of the entity.
         value (str): The value to add.
         language (str): The language code.
-        username (str): The username of the account.
 
     Returns:
         dict: The response from the Wikidata API or an error message if failed.
@@ -103,17 +74,21 @@ def add_info_to_wikidata_entity(
             "language": language,
             "tags": "wikidata-ui",
             "bot": 1,
-            "assertuser": username,
             "errorformat": "plaintext",
             "uselang": "en",
-            "token": csrf_token,
         }
         if action == "wbsetaliases":
             params["add"] = value
         else:
             params["value"] = value
 
-        response = session.post(WIKIDATA_URL, data=params)
+        # Authorization header with OAuth access token
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+
+        response = session.post(WIKIDATA_URL, data=params, headers=headers)
         response.raise_for_status()
         data = response.json()
 

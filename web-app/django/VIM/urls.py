@@ -21,11 +21,14 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.publish_name import publish_name
+from VIM.apps.instruments.views.wiki_apis import wikidata_callback, wikidata_authorize
 
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("VIM.apps.main.urls", namespace="main")),
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
+    path("oauth/authorize/", wikidata_authorize, name="wikidata_authorize"),
+    path("oauth/callback/", wikidata_callback, name="wikidata_callback"),
     path("publish_name/", publish_name, name="publish_name"),
     prefix_default_language=False,
 )

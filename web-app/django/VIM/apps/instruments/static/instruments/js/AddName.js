@@ -276,10 +276,55 @@ document.getElementById('addRowBtn').addEventListener('click', function () {
   updateRemoveButtons(); // Update remove buttons after adding a new row
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  const publishCheckbox = document.getElementById('publishToWikidataCheckbox');
+  const accountSelection = document.getElementById('accountSelection');
+  const accountOption = document.getElementById('accountOption');
+  const authorizeButtonRow = document.getElementById('authorizeButtonRow');
+  const authorizeBtn = document.getElementById('authorizeBtn');
+
+  // Show account selection when 'publish to Wikidata' checkbox is checked
+  publishCheckbox.addEventListener('change', function () {
+    accountSelection.style.display = publishCheckbox.checked ? 'block' : 'none';
+    if (!publishCheckbox.checked) {
+      authorizeButtonRow.style.display = 'none'; // Hide authorize button if unchecked
+    }
+  });
+
+  // Show authorize button if the user selects 'Your own Wikidata account'
+  accountOption.addEventListener('change', function () {
+    authorizeButtonRow.style.display =
+      accountOption.value === 'user_account' ? 'block' : 'none';
+  });
+
+  // Handle the OAuth authorization button click
+  authorizeBtn.addEventListener('click', function () {
+    // Redirect to your OAuth authorization endpoint
+    window.location.href = '/oauth/authorize';
+  });
+});
+
 // Reset the modal when hidden
 document
   .getElementById('addNameModal')
   .addEventListener('hide.bs.modal', resetModal);
+
+// Function to get CSRF token from cookies
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Check if this cookie string begins with the name
+      if (cookie.substring(0, name.length + 1) === name + '=') {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
 
 // Function to handle confirm publish action
 document
@@ -307,12 +352,6 @@ document
       const descriptionValue = descriptionInput.value || '';
       const aliasValue = aliasInput.value || '';
 
-      console.log('languageCode: ', languageCode);
-      console.log('nameValue: ', nameValue);
-      console.log('sourceValue: ', sourceValue);
-      console.log('descriptionValue: ', descriptionValue);
-      console.log('aliasValue: ', aliasValue);
-
       entries.push({
         language: languageCode,
         name: nameValue,
@@ -322,23 +361,24 @@ document
       });
     });
 
-    // Check if the user wants to publish to Wikidata
+    // Determine if publishing to Wikidata is enabled
     const publishToWikidata = document.getElementById(
       'publishToWikidataCheckbox',
     ).checked;
+    const accountOption = document.getElementById('accountOption').value;
 
-    // Publish data to our database and then to Wikidata
+    // Send the request to publish
     fetch('/publish_name/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')
-          .value,
+        'X-CSRFToken': getCookie('csrftoken'),
       },
       body: JSON.stringify({
         wikidata_id: wikidataId,
         entries: entries,
         publish_to_wikidata: publishToWikidata,
+        account_option: accountOption,
       }),
     })
       .then((response) => response.json())
