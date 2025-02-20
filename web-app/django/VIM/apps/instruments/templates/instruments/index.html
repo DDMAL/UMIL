@@ -30,7 +30,11 @@
                   <li class="list-group-item d-flex justify-content-between p-0"
                       current-value="{{ hbs_facet_item.value }}">
                     {% if hbs_facet_item.name == '' %}
-                      <span class="text-start">Unclassified</span>
+                      {% if active_language.en_label == "French" %}
+                        <span class="text-start">Non classifiés</span>
+                      {% else %}
+                        <span class="text-start">Unclassified</span>
+                      {% endif %}
                     {% else %}
                       <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
                     {% endif %}
@@ -48,7 +52,13 @@
               </div> {% endcomment %}
             </ul>
           </div>
-          <h6 style="color: grey;" class="mb-3">More facet search coming...</h6>
+          <h6 style="color: grey;" class="mb-3">
+            {% if active_language.en_label == "French" %}
+              Plus de recherche à facettes à venir...
+            {% else %}
+              More facet search coming...
+            {% endif %}
+          </h6>
           {% comment %} <div class="info-block p-2 mb-3">
           <h4>######</h4>
           <hr />
@@ -77,7 +87,13 @@
         <div class="navigation d-flex justify-content-between align-items-center">
           <div class="d-flex">
             <h4 class="ms-3 me-2 my-auto">
-              <small>INSTRUMENT LIST</small>
+              <small>
+                {% if active_language.en_label == "French" %}
+                  LISTE DES INSTRUMENTS
+                {% else %}
+                  INSTRUMENT LIST
+                {% endif %}
+              </small>
             </h4>
             <div class="dropdown mx-2 notranslate"
                  id="instrument-language-element"
@@ -90,13 +106,15 @@
                       aria-expanded="false"
                       data-bs-toggle="dropdown"
                       data-bs-title="Instrument name language">
-                {{ active_language.autonym|title }}
+                {{ active_language.en_label }} ({{ active_language.autonym|title }})
               </button>
-              <ul class="dropdown-menu umil-dropdown-menu">
+              <ul class="dropdown-menu umil-dropdown-menu"
+                  style="max-height: 300px;
+                         width: 400px">
                 {% for language in languages %}
                   <li>
                     <a class="dropdown-item umil-dropdown-item"
-                       href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
+                       href="?language={{ language.en_label }}">{{ language.en_label }} ({{ language.autonym|title }})</a>
                   </li>
                 {% endfor %}
               </ul>
@@ -126,8 +144,13 @@
             <span id="instrumentNum"
                   data-instrument-num="{{ page_obj.paginator.count }}"
                   class="text-start">
-              Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
-              {% if hbs_facet_name %}for{% endif %}
+              {% if active_language.en_label == "French" %}
+                Affichage de {{ page_obj.start_index }} à {{ page_obj.end_index }} sur {{ page_obj.paginator.count }} entrées
+                {% if hbs_facet_name %}pour{% endif %}
+              {% else %}
+                Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
+                {% if hbs_facet_name %}for{% endif %}
+              {% endif %}
               <strong>{{ hbs_facet_name }}</strong>
             </span>
             {% include "instruments/includes/paginationOptions.html" %}
@@ -166,7 +189,11 @@
                 <span class="current p-2">
                   Page
                   <span class="page-number">{{ page_obj.number }}</span>
-                  of
+                  {% if active_language.en_label == "French" %}
+                    sur
+                  {% else %}
+                    of
+                  {% endif %}
                   {{ page_obj.paginator.num_pages }}
                 </span>
               </li>
@@ -191,7 +218,13 @@
             </ul>
           </div>
           <div class="ms-3 mb-1 d-flex align-items-center justify-content-start">
-            <label for="go-to" class="col-form-label">Go to Page</label>
+            <label for="go-to" class="col-form-label">
+              {% if active_language.en_label == "French" %}
+                Aller à la page
+              {% else %}
+                Go to Page
+              {% endif %}
+            </label>
             <input type="number" name="page" id="page-num" min="1" step="1" />
           </div>
         </div>

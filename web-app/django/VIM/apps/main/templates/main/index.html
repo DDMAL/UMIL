@@ -14,7 +14,7 @@
   <div class="container content-container d-flex align-items-center justify-content-center">
     <div class="z-2">
       <div class="row">
-        <div class="col-6">
+        <div class="col-6 notranslate">
           <h1>
             <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
           </h1>
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col-6 notranslate">
           <p>
             Where the past and present of music collide.
             <br />
@@ -42,12 +42,16 @@
       <div class="row">
         <div class="col-6">
           <a href="{% url "instrument-list" %}?language=English">
-            <button class="btn btn-warning rounded-pill start-btn">Get Started</button>
+            <button class="btn btn-warning rounded-pill start-btn">
+              Visit English Site
+            </button>
           </a>
         </div>
-        <div class="col-6 notranslate">
+        <div class="col-6">
           <a href="{% url "instrument-list" %}?language=French">
-            <button class="btn btn-warning rounded-pill start-btn">Commencer</button>
+            <button class="btn btn-warning rounded-pill start-btn">
+              Visitez le site français
+            </button>
           </a>
         </div>
       </div>

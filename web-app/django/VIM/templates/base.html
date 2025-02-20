@@ -33,27 +33,52 @@
             </li>
             <li class="nav-item">
               <a href="{% url "main:home" %}"
-                 class="nav-link px-2 text-decoration-none {% if active_tab == 'home' %}active{% endif %}">Home</a>
+                 class="nav-link px-2 text-decoration-none {% if active_tab == 'home' %}active{% endif %}">
+                {% if active_language.en_label == "French" %}
+                  Accueil
+                {% else %}
+                  Home
+                {% endif %}
+              </a>
             </li>
             <li class="nav-item">
               <a href="{% url "instrument-list" %}"
-                 class="nav-link px-2 text-decoration-none {% if active_tab == 'instruments' %}active{% endif %}">Instruments</a>
+                 class="nav-link px-2 text-decoration-none {% if active_tab == 'instruments' %}active{% endif %}">
+                {% if active_language.en_label == "French" %}
+                  Instruments
+                {% else %}
+                  Instruments
+                {% endif %}
+              </a>
             </li>
             <li class="nav-item">
               <a href="{% url "main:about" %}"
-                 class="nav-link px-2 text-decoration-none {% if active_tab == 'about' %}active{% endif %}">About</a>
+                 class="nav-link px-2 text-decoration-none {% if active_tab == 'about' %}active{% endif %}">
+                {% if active_language.en_label == "French" %}
+                  À propos
+                {% else %}
+                  About
+                {% endif %}
+              </a>
             </li>
           </ul>
           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search"
-                   class="form-control search-input"
-                   placeholder="Search..."
-                   aria-label="Search" />
+            {% if active_language.en_label == "French" %}
+              <input type="search"
+                     class="form-control search-input"
+                     placeholder="Rechercher..."
+                     aria-label="Rechercher" />
+            {% else %}
+              <input type="search"
+                     class="form-control search-input"
+                     placeholder="Search..."
+                     aria-label="Search" />
+            {% endif %}
           </form>
           <div class="text-end d-flex">
             {% if user.is_authenticated %}
               <div class="dropdown me-2">
-                <button class="btn dropdown-toggle login-btn"
+                <button class="btn dropdown-toggle login-btn notranslate"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">{{ user.username }}</button>
@@ -61,17 +86,35 @@
                     aria-labelledby="userDropdown">
                   <li>
                     <a class="dropdown-item umil-dropdown-item"
-                       href="{% url 'main:change_password' %}">Change Password</a>
+                       href="{% url 'main:change_password' %}">
+                      {% if active_language.en_label == "French" %}
+                        Changer le mot de passe
+                      {% else %}
+                        Change Password
+                      {% endif %}
+                    </a>
                   </li>
                   <li>
                     <a class="dropdown-item umil-dropdown-item"
-                       href="{% url 'main:logout' %}">Log out</a>
+                       href="{% url 'main:logout' %}">
+                      {% if active_language.en_label == "French" %}
+                        Se déconnecter
+                      {% else %}
+                        Logout
+                      {% endif %}
+                    </a>
                   </li>
                 </ul>
               </div>
             {% else %}
               <a href="{% url 'main:login' %}">
-                <button type="button" class="btn me-2 login-btn">Login</button>
+                <button type="button" class="btn me-2 login-btn">
+                  {% if active_language.en_label == "French" %}
+                    Se connecter
+                  {% else %}
+                    Login
+                  {% endif %}
+                </button>
               </a>
             {% endif %}
             <div id="google_translate_element"

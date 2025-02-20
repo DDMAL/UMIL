@@ -1,5 +1,11 @@
 <div class="me-2 mb-1 d-flex align-items-center justify-content-end view-per-page">
-  <span class="text-start">View</span>
+  <span class="text-start">
+    {% if active_language.en_label == "French" %}
+      Voir
+    {% else %}
+      View
+    {% endif %}
+  </span>
   <input type="radio"
          class="btn-check option-radio"
          id="20"
@@ -17,5 +23,11 @@
          id="100"
          autocomplete="off" />
   <label class="btn" title="View 100 entries per page" for="100">100</label>
-  <span class="text-end">per page</span>
+  <span class="text-end">
+    {% if active_language.en_label == "French" %}
+      par page
+    {% else %}
+      per page
+    {% endif %}
+  </span>
 </div>
