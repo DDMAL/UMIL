@@ -154,10 +154,7 @@ DEFAULT_FROM_EMAIL = "noreply@cantusdatabase.simssa.ca"
 # DEPLOYMENT SETTINGS
 
 CSRF_COOKIE_SECURE = IS_PRODUCTION
-CSRF_TRUSTED_ORIGINS = [
-    f'https://{os.environ.get("HOST_NAME")}',
-    "https://vim.simssa.ca",
-]
+CSRF_TRUSTED_ORIGINS = [f'https://{os.environ.get("HOST_NAME")}']
 SESSION_COOKIE_SECURE = IS_PRODUCTION
 
 # Wikidata settings
