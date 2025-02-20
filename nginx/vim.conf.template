@@ -12,18 +12,11 @@
 
 server {
     listen 80;
-    listen 443 ssl;
     client_max_body_size 4G;
-    server_name ${HOST_NAME} 127.0.0.1 localhost;
-
-    # SSL Configuration
-    ssl_certificate      /etc/nginx/templates/vim.simssa.ca.crt;
-    ssl_certificate_key  /etc/nginx/templates/vim.simssa.ca.key;
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
+    server_name ${HOST_NAME};
 
     location /static/ {
-        root /virtual-instrument-museum/;
+      root /virtual-instrument-museum/;
     }
 
   location / {

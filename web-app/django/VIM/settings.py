@@ -25,13 +25,7 @@ IS_PRODUCTION = not IS_DEVELOPMENT
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT
 
-ALLOWED_HOSTS = [
-    os.environ.get("HOST_NAME"),
-    "localhost",
-    "127.0.0.1",
-    "vim-app",
-    "0.0.0.0",
-]
+ALLOWED_HOSTS = [os.environ.get("HOST_NAME")]
 
 if DEBUG:
     import socket
@@ -160,7 +154,10 @@ DEFAULT_FROM_EMAIL = "noreply@cantusdatabase.simssa.ca"
 # DEPLOYMENT SETTINGS
 
 CSRF_COOKIE_SECURE = IS_PRODUCTION
-CSRF_TRUSTED_ORIGINS = [f'https://{os.environ.get("HOST_NAME")}']
+CSRF_TRUSTED_ORIGINS = [
+    f'https://{os.environ.get("HOST_NAME")}',
+    "https://vim.simssa.ca",
+]
 SESSION_COOKIE_SECURE = IS_PRODUCTION
 
 # Wikidata settings
