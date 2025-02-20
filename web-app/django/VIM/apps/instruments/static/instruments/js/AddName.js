@@ -1,23 +1,166 @@
 // Get the modal element
 var addNameModal = document.getElementById('addNameModal');
 
+// Fetch the token from a Django endpoint
+async function getWikidataAccessToken() {
+  try {
+    const response = await fetch('/get_wikidata_access_token/');
+    const data = await response.json();
+    if (data.access_token) {
+      localStorage.setItem('wikidata_access_token', data.access_token);
+      updateUIState();
+    }
+  } catch (error) {
+    console.error('Error fetching access token:', error);
+  }
+}
+document.addEventListener('DOMContentLoaded', getWikidataAccessToken);
+
+// Handle modal show event
 addNameModal.addEventListener('show.bs.modal', function (event) {
   var button = event.relatedTarget;
-  var instrumentName = button.getAttribute('data-instrument-name');
-  var instrumentWikidataId = button.getAttribute('data-instrument-wikidata-id');
-  var instrumentNameInModal = addNameModal.querySelector(
-    '#instrumentNameInModal',
-  );
-  instrumentNameInModal.textContent = instrumentName;
-
-  var instrumentWikidataIdInModal = addNameModal.querySelector(
-    '#instrumentWikidataIdInModal',
-  );
-  instrumentWikidataIdInModal.textContent = instrumentWikidataId;
+  if (button != undefined) {
+    var instrumentName = button.getAttribute('data-instrument-name');
+    var instrumentWikidataId = button.getAttribute(
+      'data-instrument-wikidata-id',
+    );
+    addNameModal.querySelector('#instrumentNameInModal').textContent =
+      instrumentName;
+    addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
+      instrumentWikidataId;
+  }
+  // Restore UI states based on stored values
+  updateUIState();
 });
 
-// the number of rows in the modal
-let rowIndex = 1;
+// Store UI control elements
+const publishCheckbox = document.getElementById('publishToWikidataCheckbox');
+const authorizeButtonRow = document.getElementById('authorizeButtonRow');
+const authorizeMessageRow = document.getElementById('authorizeMessageRow');
+const authorizeBtn = document.getElementById('authorizeBtn');
+
+// Function to update UI state based on stored values
+function updateUIState() {
+  const publishToWikidata =
+    localStorage.getItem('publishToWikidata') === 'true';
+
+  // Get the stored access token
+  const wikidataAccessToken = localStorage.getItem('wikidata_access_token');
+  console.log('[updateUIState] Access token:', wikidataAccessToken);
+
+  // Control checkbox display
+  publishCheckbox.checked = publishToWikidata;
+  publishCheckbox.style.display = publishToWikidata ? 'block' : 'none';
+
+  // Control authorization UI elements
+  if (publishToWikidata) {
+    if (!wikidataAccessToken) {
+      authorizeButtonRow.style.display = 'block';
+      authorizeMessageRow.style.display = 'none';
+    } else {
+      authorizeButtonRow.style.display = 'none';
+      authorizeMessageRow.style.display = 'block';
+    }
+  } else {
+    authorizeButtonRow.style.display = 'none';
+    authorizeMessageRow.style.display = 'none';
+  }
+}
+
+// Event listener for publishing to Wikidata checkbox
+publishCheckbox.addEventListener('change', function () {
+  localStorage.setItem('publishToWikidata', publishCheckbox.checked);
+  updateUIState();
+});
+
+// Handle OAuth authorization button click
+authorizeBtn.addEventListener('click', function () {
+  storeFormData();
+  window.location.href = '/oauth/authorize';
+});
+
+// Function to store form data
+function storeFormData() {
+  const storedData = {};
+  storedData['instrumentName'] = document.getElementById(
+    'instrumentNameInModal',
+  ).textContent;
+  storedData['wikidata_id'] = document.getElementById(
+    'instrumentWikidataIdInModal',
+  ).textContent;
+  storedData['publish_to_wikidata'] = document.getElementById(
+    'publishToWikidataCheckbox',
+  ).checked
+    ? 'on'
+    : 'off';
+  storedData['nameRows'] = [];
+  document.querySelectorAll('.name-row').forEach((row) => {
+    const rowData = {
+      language: row.querySelector('.language-input input').value,
+      name: row.querySelector('.name-input input').value,
+      source: row.querySelector('.source-input input').value,
+      description: row.querySelector('.description-input input').value,
+      alias: row.querySelector('.alias-input input').value,
+    };
+    storedData['nameRows'].push(rowData);
+  });
+  localStorage.setItem('addNameFormData', JSON.stringify(storedData));
+}
+
+// Function to restore form data
+function restoreFormData(storedData) {
+  const form = document.getElementById('addNameForm');
+  const parsedData = JSON.parse(storedData);
+  // Restore main form values
+  for (const key in parsedData) {
+    if (form.elements[key]) {
+      form.elements[key].value = parsedData[key];
+    }
+  }
+
+  // Restore wikidata_id, publish_to_wikidata
+  document.getElementById('instrumentNameInModal').textContent =
+    parsedData['instrumentName'];
+  document.getElementById('instrumentWikidataIdInModal').textContent =
+    parsedData['wikidata_id'];
+  publishCheckbox.checked = parsedData['publish_to_wikidata'] === 'on';
+
+  // Restore dynamically added rows
+  const nameRowsContainer = document.getElementById('nameRows');
+  nameRowsContainer.innerHTML = ''; // Clear existing rows
+
+  if (parsedData['nameRows'] && parsedData['nameRows'].length > 0) {
+    parsedData['nameRows'].forEach((rowData, index) => {
+      const newRow = createRow(index + 1);
+      nameRowsContainer.appendChild(newRow);
+      newRow.querySelector('.language-input input').value = rowData.language;
+      newRow.querySelector('.name-input input').value = rowData.name;
+      newRow.querySelector('.source-input input').value = rowData.source;
+      newRow.querySelector('.description-input input').value =
+        rowData.description;
+      newRow.querySelector('.alias-input input').value = rowData.alias;
+    });
+  }
+
+  // Check rows
+  const nameRows = document.querySelectorAll('.name-row');
+  nameRows.forEach((row) => {
+    const languageInput = row.querySelector('input[list]');
+    const nameInput = row.querySelector('.name-input input[type="text"]');
+    const sourceInput = row.querySelector('.source-input input[type="text"]');
+  });
+
+  updateUIState();
+}
+
+// Reset modal on close
+document
+  .getElementById('addNameModal')
+  .addEventListener('hide.bs.modal', function () {
+    localStorage.removeItem('publishToWikidata');
+    localStorage.removeItem('addNameFormData');
+    updateUIState();
+  });
 
 // Function to validate that the user has selected a valid language from the datalist
 function isValidLanguage(inputElement) {
@@ -254,6 +397,9 @@ document
     }
   });
 
+// the number of rows in the modal
+let rowIndex = 1;
+
 // Function to reset the modal and ensure only one row is present
 function resetModal() {
   const nameRows = document.getElementById('nameRows');
@@ -262,11 +408,6 @@ function resetModal() {
   updateRemoveButtons(); // Ensure remove buttons are updated on reset
   rowIndex = 1; // Reset row index
 }
-
-// Fetch languages when the modal is loaded
-document.addEventListener('DOMContentLoaded', async () => {
-  resetModal();
-});
 
 // Add a new row when the 'Add another row' button is clicked
 document.getElementById('addRowBtn').addEventListener('click', function () {
@@ -277,54 +418,24 @@ document.getElementById('addRowBtn').addEventListener('click', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const publishCheckbox = document.getElementById('publishToWikidataCheckbox');
-  const accountSelection = document.getElementById('accountSelection');
-  const accountOption = document.getElementById('accountOption');
-  const authorizeButtonRow = document.getElementById('authorizeButtonRow');
-  const authorizeBtn = document.getElementById('authorizeBtn');
-
-  // Show account selection when 'publish to Wikidata' checkbox is checked
-  publishCheckbox.addEventListener('change', function () {
-    accountSelection.style.display = publishCheckbox.checked ? 'block' : 'none';
-    if (!publishCheckbox.checked) {
-      authorizeButtonRow.style.display = 'none'; // Hide authorize button if unchecked
-    }
-  });
-
-  // Show authorize button if the user selects 'Your own Wikidata account'
-  accountOption.addEventListener('change', function () {
-    authorizeButtonRow.style.display =
-      accountOption.value === 'user_account' ? 'block' : 'none';
-  });
-
-  // Handle the OAuth authorization button click
-  authorizeBtn.addEventListener('click', function () {
-    // Redirect to your OAuth authorization endpoint
-    window.location.href = '/oauth/authorize';
-  });
+  const storedData = localStorage.getItem('addNameFormData');
+  if (storedData) {
+    // Show the modal
+    const addNameModal = new bootstrap.Modal(
+      document.getElementById('addNameModal'),
+    );
+    addNameModal.show();
+    // Restore form data
+    restoreFormData(storedData);
+  } else {
+    resetModal();
+  }
 });
 
 // Reset the modal when hidden
 document
   .getElementById('addNameModal')
   .addEventListener('hide.bs.modal', resetModal);
-
-// Function to get CSRF token from cookies
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      // Check if this cookie string begins with the name
-      if (cookie.substring(0, name.length + 1) === name + '=') {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
 
 // Function to handle confirm publish action
 document
@@ -365,20 +476,23 @@ document
     const publishToWikidata = document.getElementById(
       'publishToWikidataCheckbox',
     ).checked;
-    const accountOption = document.getElementById('accountOption').value;
+
+    // Get the CSRF token
+    const csrftoken = document.querySelector(
+      '[name=csrfmiddlewaretoken]',
+    ).value;
 
     // Send the request to publish
     fetch('/publish_name/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken'),
+        'X-CSRFToken': csrftoken,
       },
       body: JSON.stringify({
         wikidata_id: wikidataId,
         entries: entries,
         publish_to_wikidata: publishToWikidata,
-        account_option: accountOption,
       }),
     })
       .then((response) => response.json())

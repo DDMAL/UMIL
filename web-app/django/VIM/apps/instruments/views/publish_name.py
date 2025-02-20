@@ -32,7 +32,6 @@ def publish_name(request):
             }
         ],
         "publish_to_wikidata": true,
-        "account_option": "public_account" or "user_account"
     }
 
     Returns:
@@ -44,15 +43,11 @@ def publish_name(request):
         wikidata_id = data.get("wikidata_id")
         entries = data.get("entries", [])
         publish_to_wikidata = data.get("publish_to_wikidata", False)
-        account_option = data.get(
-            "account_option", "public_account"
-        )  # Default to public account
-
         if not wikidata_id or not entries:
             return JsonResponse(
                 {
                     "status": "error",
-                    "message": "[publish_name] Missing required data",
+                    "message": "Missing required data",
                 }
             )
 
@@ -60,35 +55,16 @@ def publish_name(request):
             # Fetch the instrument from the database
             instrument = Instrument.objects.get(wikidata_id=wikidata_id)
 
-            # Determine which access token to use based on account_option
+            # If publishing to Wikidata is requested, handle OAuth authorization
+            access_token = None
             if publish_to_wikidata:
-                if account_option == "public_account":
-                    # Use UMIL's public access token (set in settings or environment)
-                    access_token = request.session.get("wikidata_access_token")
-                    print("[publish_name] access_token", access_token)
-                    if not access_token:
-                        # Redirect to the authorization flow and return to `publish_name` after completion
-                        redirect_url = (
-                            f"{reverse('wikidata_authorize')}?next={request.path}"
-                        )
-                        print("[publish_name] Redirecting to", redirect_url)
-                        return redirect(redirect_url)
-                    print("[publish_name] access_token", access_token)
-                elif account_option == "user_account":
-                    # Use the user's OAuth access token (stored in session)
-                    access_token = request.session.get("user_access_token")
-                    if not access_token:
-                        return JsonResponse(
-                            {
-                                "status": "error",
-                                "message": "[publish_name] User not authenticated for Wikidata.",
-                            }
-                        )
-                else:
+                # Extract the access_token from the cookie
+                access_token = request.COOKIES.get("wikidata_access_token")
+                if not access_token:
                     return JsonResponse(
                         {
                             "status": "error",
-                            "message": "[publish_name] Invalid account option.",
+                            "message": "Failed to retrieve access token",
                         }
                     )
 
@@ -104,47 +80,47 @@ def publish_name(request):
                 if publish_to_wikidata:
                     # Add the label
                     response_label = add_info_to_wikidata_entity(
-                        "wbsetlabel", access_token, wikidata_id, name, language_code
+                        "add_label", access_token, wikidata_id, name, language_code
                     )
-                    if "error" in response_label:
+                    if "errors" in response_label:
                         return JsonResponse(
                             {
                                 "status": "error",
-                                "message": f"[publish_name] Failed to publish label: {response_label}",
+                                "message": f"Failed to publish label: {response_label}",
                             }
                         )
 
                     # Add the description if provided
                     if description:
                         response_desc = add_info_to_wikidata_entity(
-                            "wbsetdescription",
+                            "add_description",
                             access_token,
                             wikidata_id,
                             description,
                             language_code,
                         )
-                        if "error" in response_desc:
+                        if "errors" in response_desc:
                             return JsonResponse(
                                 {
                                     "status": "error",
-                                    "message": f"[publish_name] Failed to publish description: {response_desc}",
+                                    "message": f"Failed to publish description: {response_desc}",
                                 }
                             )
 
                     # Add the alias if provided
                     if alias:
                         response_alias = add_info_to_wikidata_entity(
-                            "wbsetaliases",
+                            "add_aliases",
                             access_token,
                             wikidata_id,
                             alias,
                             language_code,
                         )
-                        if "error" in response_alias:
+                        if "errors" in response_alias:
                             return JsonResponse(
                                 {
                                     "status": "error",
-                                    "message": f"[publish_name] Failed to publish alias: {response_alias}",
+                                    "message": f"Failed to publish alias: {response_alias}",
                                 }
                             )
 
@@ -173,14 +149,8 @@ def publish_name(request):
             )
 
         except Instrument.DoesNotExist:
-            return JsonResponse(
-                {"status": "error", "message": "[publish_name] Instrument not found"}
-            )
+            return JsonResponse({"status": "error", "message": "Instrument not found"})
         except Exception as e:
-            return JsonResponse(
-                {"status": "error", "message": "[publish_name] " + str(e)}
-            )
+            return JsonResponse({"status": "error", "message": "" + str(e)})
 
-    return JsonResponse(
-        {"status": "error", "message": "[publish_name] Invalid request method"}
-    )
+    return JsonResponse({"status": "error", "message": "Invalid request method"})
