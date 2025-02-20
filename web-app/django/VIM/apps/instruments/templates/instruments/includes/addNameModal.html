@@ -50,17 +50,12 @@
               </div>
             </div>
           </div>
-          <!-- Account selection options (hidden by default) -->
-          <div class="row mt-3" id="accountSelection" style="display: none;">
+          <!-- authorizeMessage to show the successful status of OAuth (hidden by default) -->
+          <div class="row mt-3" id="authorizeMessageRow" style="display: none;">
             <div class="col">
-              <label for="accountOption" class="form-label">
-                Choose an account for publishing:
-              </label>
-              <select class="form-select" id="accountOption" name="account_option" required>
-                <option value="">Select the Wikidata account to use</option>
-                <option value="user_account">Your own Wikidata account</option>
-                <option value="public_account">UMIL's public Wikidata account</option>
-              </select>
+              <div class="alert alert-success" role="alert" id="authorizeMessage">
+                You have successfully authorized the application to publish to Wikidata.
+              </div>
             </div>
           </div>
           <!-- Authorize button for OAuth (hidden by default) -->
