@@ -44,12 +44,9 @@
                  class="nav-link px-2 text-decoration-none {% if active_tab == 'about' %}active{% endif %}">About</a>
             </li>
           </ul>
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search"
-                   class="form-control search-input"
-                   placeholder="Search..."
-                   aria-label="Search" />
-          </form>
+          {% comment %} <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input type="search" class="form-control search-input" placeholder="Search..." aria-label="Search" />
+          </form> {% endcomment %}
           <div class="text-end d-flex">
             {% if user.is_authenticated %}
               <div class="dropdown me-2">
