@@ -5,9 +5,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies with Poetry
+        run: poetry install --no-root
+
       - name: Run Prettier
         run: npx prettier --check "**/*.css" "**/*.js" --trailing-comma es5
-      - name: Install djlint
-        run: npm install -g djlint
-      - name: Run djlint
-        run: djlint . --check --extension html --exclude "migrations/*"
+
+      - name: Run djlint via Poetry
+        run: poetry run djlint . --check --extension html --exclude "migrations/*"
