@@ -99,6 +99,21 @@ class InstrumentList(ListView):
                 .select_related("thumbnail")
                 .prefetch_related(instrumentname_prefetch_manager)
             )
+
+        # Perform Django ORM search using icontains (case-insensitive partial search)
+        search_query = self.request.GET.get("search_query", "").strip()
+        if search_query:
+            instruments = (
+                Instrument.objects.filter(
+                    instrumentname__name__icontains=search_query,
+                )
+                .prefetch_related(
+                    instrumentname_prefetch_manager,
+                )
+                .select_related("thumbnail")
+            )
+            return instruments.distinct()
+
         return Instrument.objects.select_related("thumbnail").prefetch_related(
             instrumentname_prefetch_manager
         )
