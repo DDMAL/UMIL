@@ -155,58 +155,57 @@
           <div class="mb-3 d-flex flex-md-row flex-column align-items-center justify-content-center">
             {% include "instruments/includes/paginationOptions.html" %}
 
-            <div class="pagination-container">
-              <ul class="pagination mb-1 justify-content-center">
-                {% if page_obj.has_previous %}
-                  <li class="page-item">
-                    <a class="page-link"
-                       href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                       aria-label="First"
-                       title="First">
-                      <i class="bi bi-chevron-double-left"></i>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link"
-                       href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                       aria-label="Previous"
-                       title="Previous">
-                      <i class="bi bi-chevron-left"></i>
-                    </a>
-                  </li>
-                {% endif %}
-                <li class="page-item align-self-center">
-                  <span class="current p-2">
-                    Page
-                    <span class="page-number">{{ page_obj.number }}</span>
-                    of
-                    {{ page_obj.paginator.num_pages }}
-                  </span>
+          <div class="pagination-container">
+            <ul class="pagination mb-1 justify-content-center">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.search_query %}&search_query={{ request.GET.search_query }}{% endif %}"
+                     aria-label="First"
+                     title="First">
+                    <i class="bi bi-chevron-double-left"></i>
+                  </a>
                 </li>
-                {% if page_obj.has_next %}
-                  <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                    <a class="page-link"
-                       href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                       aria-label="Next"
-                       title="Next">
-                      <i class="bi bi-chevron-right"></i>
-                    </a>
-                  </li>
-                  <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                    <a class="page-link"
-                       href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}"
-                       aria-label="Last"
-                       title="Last">
-                      <i class="bi bi-chevron-double-right"></i>
-                    </a>
-                  </li>
-                {% endif %}
-              </ul>
-            </div>
-            <div class="ms-3 mb-1 d-flex align-items-center justify-content-start">
-              <label for="go-to">Go to Page</label>
-              <input type="number" name="page" id="page-num" min="1" step="1" />
-            </div>
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.search_query %}&search_query={{ request.GET.search_query }}{% endif %}"
+                     aria-label="Previous"
+                     title="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+              <li class="page-item align-self-center">
+                <span class="current p-2">
+                  Page
+                  <span class="page-number">{{ page_obj.number }}</span>
+                  of
+                  {{ page_obj.paginator.num_pages }}
+                </span>
+              </li>
+              {% if page_obj.has_next %}
+                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                  <a class="page-link"
+                     href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.search_query %}&search_query={{ request.GET.search_query }}{% endif %}"
+                     aria-label="Next"
+                     title="Next">
+                    <i class="bi bi-chevron-right"></i>
+                  </a>
+                </li>
+                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                  <a class="page-link"
+                     href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.search_query %}&search_query={{ request.GET.search_query }}{% endif %}"
+                     aria-label="Last"
+                     title="Last">
+                    <i class="bi bi-chevron-double-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+          <div class="ms-3 mb-1 d-flex align-items-center justify-content-start">
+            <label for="go-to" class="col-form-label">Go to Page</label>
+            <input type="number" name="page" id="page-num" min="1" step="1" />
           </div>
         </div>
       </div>
