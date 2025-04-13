@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import F, CharField, Value as V
 from django.db.models.functions import Concat, Left
 import requests
-from VIM.apps.instruments.models import Instrument
+from VIM.apps.instruments.models import Instrument, InstrumentName
 
 
 class Command(BaseCommand):
@@ -37,6 +37,13 @@ class Command(BaseCommand):
                 if instrument["hbs_prim_cat_s"] != ""
                 else ""
             )
+
+            # Get all instrument names in different languages and concatenate them
+            instrument_names = InstrumentName.objects.filter(
+                instrument=instrument["sid"].replace("instrument-", "")
+            ).values_list("name", flat=True)
+            instrument["instrument_names_s"] = "|".join(instrument_names)
+
         requests.post(
             "http://solr:8983/solr/virtual-instrument-museum/update?commit=true",
             json=instruments,

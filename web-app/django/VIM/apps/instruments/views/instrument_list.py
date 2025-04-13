@@ -1,5 +1,4 @@
 from django.db.models import Prefetch
-from django.db.models.query import QuerySet
 from django.views.generic import ListView
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 import requests
@@ -86,7 +85,7 @@ class InstrumentList(ListView):
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
 
-    def get_queryset(self) -> QuerySet[Instrument]:
+    def get_queryset(self):
         language_en = self.get_active_language_en_label()
         instrumentname_prefetch_manager = Prefetch(
             "instrumentname_set",
@@ -100,20 +99,27 @@ class InstrumentList(ListView):
                 .prefetch_related(instrumentname_prefetch_manager)
             )
 
-        # Perform Django ORM search using icontains (case-insensitive partial search)
         search_query = self.request.GET.get("search_query", "").strip()
-        if search_query:
-            instruments = (
-                Instrument.objects.filter(
-                    instrumentname__name__icontains=search_query,
-                )
-                .prefetch_related(
-                    instrumentname_prefetch_manager,
-                )
-                .select_related("thumbnail")
-            )
-            return instruments.distinct()
+        solr_url = "http://solr:8983/solr/virtual-instrument-museum/select"
+        solr_params = {
+            "q": f"instrument_names_s:*{search_query}* OR wikidata_id_s:*{search_query}*",
+            "wt": "json",
+            "rows": 100,
+            "facet": "false",
+        }
 
+        if search_query:
+            # Send query to Solr
+            solr_response = requests.get(solr_url, params=solr_params).json()
+            instrument_ids = [
+                doc["sid"].replace("instrument-", "")
+                for doc in solr_response.get("response", {}).get("docs", [])
+            ]
+            return (
+                Instrument.objects.filter(id__in=instrument_ids)
+                .select_related("thumbnail")
+                .prefetch_related(instrumentname_prefetch_manager)
+            )
         return Instrument.objects.select_related("thumbnail").prefetch_related(
             instrumentname_prefetch_manager
         )
