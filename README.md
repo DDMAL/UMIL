@@ -34,7 +34,9 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py import_languages
 python manage.py import_instruments
+python manage.py download_imgs
 ```
+> Note: `download_imgs` might take a while depending on your internet connection. In case the download is interrupted, run the command again inside the container shell.
 
 The Django development server should now be available at `localhost:8000`. Ensure that the database schema is properly set up and the application can display data as expected by navigating to `localhost:8000/instruments/`.
 
