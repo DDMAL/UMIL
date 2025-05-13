@@ -7,7 +7,8 @@
   background-color: white;
   border: 3px solid #9eb384;
   border-radius: 30px;
-  height: 500px !important;
+  height: 60vh;
+  min-height: 400px;
   position: relative;
   color: #435334;
 }
