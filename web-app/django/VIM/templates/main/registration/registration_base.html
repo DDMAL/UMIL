@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+  {% block registration_title %}
+  {% endblock registration_title %}
+{% endblock title %}
+
+{% block css_files %}
+  <link rel="stylesheet"
+        type="text/css"
+        href="{% static 'css/main/login.css' %}" />
+{% endblock css_files %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12">
+        {% block registration_content %}
+        {% endblock registration_content %}
+
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+{% endblock scripts %}
