@@ -1,3 +1,7 @@
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
+import { DisplayMode } from './Types';
+
 const masonryBtn = document.getElementById('masonry-btn');
 const stdBtn = document.getElementById('std-btn');
 
@@ -6,7 +10,7 @@ const stdView = document.getElementById('std-view');
 
 updateDisplayMode();
 
-function setDisplayMode(displayMode) {
+function setDisplayMode(displayMode: DisplayMode) {
   localStorage.setItem('displayMode', displayMode);
 }
 
@@ -52,13 +56,13 @@ stdBtn.addEventListener('click', () => {
 
 function setMasonryView() {
   // Initialize Masonry
-  var masonryGrid = document.getElementById('masonry-view');
-  var masonry = new Masonry(masonryGrid, {
+  let masonryGrid = document.getElementById('masonry-view');
+  let masonry = new Masonry(masonryGrid, {
     percentPosition: true,
   });
 
   // Initialize ImagesLoaded
-  var imgLoad = imagesLoaded(masonryGrid);
+  let imgLoad = imagesLoaded(masonryGrid);
 
   // When all images are loaded, relayout Masonry
   imgLoad.on('always', function () {
@@ -76,7 +80,7 @@ function updateHbsFacet() {
   const selectedHbsFacet = url.searchParams.get('hbs_facet') || '';
   localStorage.setItem('selectedHbsFacet', selectedHbsFacet);
   items.forEach((item) => {
-    current_item = item.getAttribute('current-value');
+    const current_item = item.getAttribute('current-value');
     if (current_item === selectedHbsFacet) {
       item.classList.add('selected');
     } else {
@@ -87,7 +91,7 @@ function updateHbsFacet() {
 
 items.forEach((item) => {
   item.addEventListener('click', function () {
-    current_item = item.getAttribute('current-value');
+    const current_item = item.getAttribute('current-value');
     localStorage.setItem('selectedHbsFacet', current_item);
     updateHbsFacet();
   });

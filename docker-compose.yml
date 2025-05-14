@@ -61,6 +61,5 @@ services:
 networks:
   vim-net:
 
-
 volumes:
   vim-static:
