@@ -1,18 +1,12 @@
-{% extends "base.html" %}
+{% extends "main/registration/registration_base.html" %}
 
 {% load static %}
 
-{% block title %}
+{% block registration_title %}
   Login
-{% endblock title %}
+{% endblock registration_title %}
 
-{% block css_files %}
-  <link rel="stylesheet"
-        type="text/css"
-        href="{% static 'css/main/login.css' %}" />
-{% endblock css_files %}
-
-{% block content %}
+{% block registration_content %}
   <div class="container content-container d-flex justify-content-center align-items-center">
     <div class="col-10 p-4 align-content-center account-container">
       {% if form.errors %}
@@ -57,7 +51,4 @@
       </div>
     </div>
   </div>
-{% endblock content %}
-
-{% block scripts %}
-{% endblock scripts %}
+{% endblock registration_content %}
