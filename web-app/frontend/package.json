@@ -22,6 +22,8 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "bootstrap": "^5.3.6"
+    "bootstrap": "^5.3.6",
+    "imagesloaded": "^5.0.0",
+    "masonry-layout": "^4.2.2"
   }
 }
