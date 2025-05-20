@@ -1,21 +1,6 @@
 // Get the modal element
 var addNameModal = document.getElementById('addNameModal');
 
-// Fetch the token from a Django endpoint
-async function getWikidataAccessToken() {
-  try {
-    const response = await fetch('/get_wikidata_access_token/');
-    const data = await response.json();
-    if (data.access_token) {
-      localStorage.setItem('wikidata_access_token', data.access_token);
-      updateUIState();
-    }
-  } catch (error) {
-    console.error('Error fetching access token:', error);
-  }
-}
-document.addEventListener('DOMContentLoaded', getWikidataAccessToken);
-
 // Handle modal show event
 addNameModal.addEventListener('show.bs.modal', function (event) {
   var button = event.relatedTarget;
@@ -29,54 +14,7 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
     addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
       instrumentWikidataId;
   }
-  // Restore UI states based on stored values
-  updateUIState();
-});
 
-// Store UI control elements
-const publishCheckbox = document.getElementById('publishToWikidataCheckbox');
-const authorizeButtonRow = document.getElementById('authorizeButtonRow');
-const authorizeMessageRow = document.getElementById('authorizeMessageRow');
-const authorizeBtn = document.getElementById('authorizeBtn');
-
-// Function to update UI state based on stored values
-function updateUIState() {
-  const publishToWikidata =
-    localStorage.getItem('publishToWikidata') === 'true';
-
-  // Get the stored access token
-  const wikidataAccessToken = localStorage.getItem('wikidata_access_token');
-  console.log('[updateUIState] Access token:', wikidataAccessToken);
-
-  // Control checkbox display
-  publishCheckbox.checked = publishToWikidata;
-  publishCheckbox.style.display = publishToWikidata ? 'block' : 'none';
-
-  // Control authorization UI elements
-  if (publishToWikidata) {
-    if (!wikidataAccessToken) {
-      authorizeButtonRow.style.display = 'block';
-      authorizeMessageRow.style.display = 'none';
-    } else {
-      authorizeButtonRow.style.display = 'none';
-      authorizeMessageRow.style.display = 'block';
-    }
-  } else {
-    authorizeButtonRow.style.display = 'none';
-    authorizeMessageRow.style.display = 'none';
-  }
-}
-
-// Event listener for publishing to Wikidata checkbox
-publishCheckbox.addEventListener('change', function () {
-  localStorage.setItem('publishToWikidata', publishCheckbox.checked);
-  updateUIState();
-});
-
-// Handle OAuth authorization button click
-authorizeBtn.addEventListener('click', function () {
-  storeFormData();
-  window.location.href = '/oauth/authorize';
 });
 
 // Function to store form data
@@ -88,11 +26,6 @@ function storeFormData() {
   storedData['wikidata_id'] = document.getElementById(
     'instrumentWikidataIdInModal',
   ).textContent;
-  storedData['publish_to_wikidata'] = document.getElementById(
-    'publishToWikidataCheckbox',
-  ).checked
-    ? 'on'
-    : 'off';
   storedData['nameRows'] = [];
   document.querySelectorAll('.name-row').forEach((row) => {
     const rowData = {
@@ -123,7 +56,6 @@ function restoreFormData(storedData) {
     parsedData['instrumentName'];
   document.getElementById('instrumentWikidataIdInModal').textContent =
     parsedData['wikidata_id'];
-  publishCheckbox.checked = parsedData['publish_to_wikidata'] === 'on';
 
   // Restore dynamically added rows
   const nameRowsContainer = document.getElementById('nameRows');
@@ -150,16 +82,13 @@ function restoreFormData(storedData) {
     const sourceInput = row.querySelector('.source-input input[type="text"]');
   });
 
-  updateUIState();
 }
 
 // Reset modal on close
 document
   .getElementById('addNameModal')
   .addEventListener('hide.bs.modal', function () {
-    localStorage.removeItem('publishToWikidata');
     localStorage.removeItem('addNameFormData');
-    updateUIState();
   });
 
 // Function to validate that the user has selected a valid language from the datalist
@@ -472,18 +401,13 @@ document
       });
     });
 
-    // Determine if publishing to Wikidata is enabled
-    const publishToWikidata = document.getElementById(
-      'publishToWikidataCheckbox',
-    ).checked;
-
     // Get the CSRF token
     const csrftoken = document.querySelector(
       '[name=csrfmiddlewaretoken]',
     ).value;
 
     // Send the request to publish
-    fetch('/publish_name/', {
+    fetch('/update_umil_data/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -492,7 +416,7 @@ document
       body: JSON.stringify({
         wikidata_id: wikidataId,
         entries: entries,
-        publish_to_wikidata: publishToWikidata,
+        // publish_to_wikidata: publishToWikidata,
       }),
     })
       .then((response) => response.json())
