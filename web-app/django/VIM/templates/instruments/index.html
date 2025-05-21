@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load django_vite %}
 
 {% block title %}
   Instrument List
 {% endblock title %}
+
+{% block ts_files %}
+  {% vite_asset 'src/instruments/PaginationTools.ts' %}
+  {% vite_asset 'src/instruments/DisplaySettings.ts' %}
+  {% vite_asset 'src/LanguageList.ts' %}
+{% endblock ts_files %}
 
 {% block css_files %}
   <link rel="stylesheet" href="{% static "css/instruments/index.css" %}" />
@@ -202,9 +209,3 @@
     </div>
   </div>
 {% endblock content %}
-
-{% block scripts %}
-  <script src="{% static "js/instruments/DisplaySettings.js" %}"></script>
-  <script src="{% static "js/instruments/PaginationTools.js" %}"></script>
-  <script src="{% static "js/LanguageList.js" %}"></script>
-{% endblock scripts %}

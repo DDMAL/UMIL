@@ -15,6 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
 ]
 
 if IS_DEVELOPMENT:
-    INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
+    INSTALLED_APPS += ["django_extensions", "debug_toolbar", "django_vite"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -134,7 +135,16 @@ STATIC_ROOT = "/virtual-instrument-museum/static"
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "VIM" / "static",
+    ROOT_DIR / "frontend" / "assets",
 ]
+
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": IS_DEVELOPMENT,
+        "dev_server_port": 5173,
+        "dev_server_host": "localhost",
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

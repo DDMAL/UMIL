@@ -2,8 +2,11 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  publicDir: 'assets',
+  base: '/static/',
   build: {
-    outDir: 'dist',
+    outDir: 'static',
+    manifest: 'manifest.json',
     emptyOutDir: true,
     sourcemap: true,
     rollupOptions: {
@@ -21,5 +24,10 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
     },
+  },
+  server: {
+    hmr: true,
+    host: 'localhost',
+    port: 5173,
   },
 });
