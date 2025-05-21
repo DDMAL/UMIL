@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-{% load static %}
 {% load django_vite %}
 
 {% block title %}
@@ -14,8 +13,8 @@
 {% endblock ts_files %}
 
 {% block css_files %}
-  <link rel="stylesheet" href="{% static "css/instruments/index.css" %}" />
-  <link rel="stylesheet" href="{% static "css/instruments/pagination.css" %}" />
+  {% vite_asset 'assets/css/instruments/index.css' %}
+  {% vite_asset 'assets/css/instruments/pagination.css' %}
 {% endblock css_files %}
 
 {% block content %}

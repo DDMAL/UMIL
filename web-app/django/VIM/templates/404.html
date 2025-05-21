@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load django_vite %}
 
 {% block title %}
   Page Not Found
 {% endblock title %}
 
 {% block css_files %}
-  <link rel="stylesheet" href="{% static "/css/404.css" %}" />
+  {% vite_asset 'assets/css/404.css' %}
 {% endblock css_files %}
 
 {% block content %}

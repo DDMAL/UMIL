@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load django_vite %}
 
 {% block title %}
   {% block registration_title %}
@@ -8,9 +8,7 @@
 {% endblock title %}
 
 {% block css_files %}
-  <link rel="stylesheet"
-        type="text/css"
-        href="{% static 'css/main/login.css' %}" />
+  {% vite_asset 'assets/css/main/login.css' %}
 {% endblock css_files %}
 
 {% block content %}

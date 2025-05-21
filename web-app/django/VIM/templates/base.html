@@ -21,8 +21,7 @@
           rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
           crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'css/app.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/main/index.css' %}" />
+    {% vite_asset 'assets/css/app.css' %}
     {% block css_files %}
     {% endblock css_files %}
 
