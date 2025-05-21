@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load django_vite %}
 
 {% block title %}
   UMIL
 {% endblock title %}
 
 {% block css_files %}
-  <link rel="stylesheet" href="{% static "css/main/index.css" %}" />
+  {% vite_asset 'assets/css/main/index.css' %}
 {% endblock css_files %}
 
 {% block content %}
