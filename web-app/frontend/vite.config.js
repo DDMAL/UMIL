@@ -3,7 +3,6 @@ import { resolve } from 'path';
 import FullReload from 'vite-plugin-full-reload';
 
 export default defineConfig({
-  // publicDir: 'assets',
   base: '/static/',
   plugins: [FullReload(['./assets/**/*'])],
   build: {
