@@ -15,7 +15,7 @@ server {
   server_name vim.staging.simssa.ca;
 
   // Nginx docs: https://nginx.org/en/docs/http/ngx_http_core_module.html#var_request_uri ($scheme is right below it)
-  return 301 $scheme:${HOST_NAME}$request_uri;
+  return 301 $scheme://${HOST_NAME}$request_uri;
 }
 
 
