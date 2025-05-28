@@ -9,6 +9,8 @@ FROM python:3.11.5 as app-container
 ARG DEVELOPMENT
 ENV DEVELOPMENT=$DEVELOPMENT
 COPY --from=build-container /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
+RUN mkdir -p /virtual-instrument-museum/static/images
+COPY ./web-app/frontend/assets/images /virtual-instrument-museum/static/images
 COPY ./web-app/django-startup.sh /virtual-instrument-museum/
 RUN chmod u+x /virtual-instrument-museum/django-startup.sh
 WORKDIR /virtual-instrument-museum/vim-app

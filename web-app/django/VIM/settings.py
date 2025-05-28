@@ -14,7 +14,9 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# web-app/django:/virtual-instrument-museum/vim-app
 BASE_DIR = Path(__file__).resolve().parent.parent
+# /virtual-instrument-museum/
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -46,10 +48,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "VIM.apps.main",
     "VIM.apps.instruments",
+    "django_vite",
 ]
 
 if IS_DEVELOPMENT:
-    INSTALLED_APPS += ["django_extensions", "debug_toolbar", "django_vite"]
+    INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -131,12 +134,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = "/virtual-instrument-museum/static"
+STATIC_ROOT = "/virtual-instrument-museum/static/"
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "VIM" / "static",
-    ROOT_DIR / "frontend" / "assets",
-]
+# STATICFILES_DIRS = [
+#     ROOT_DIR / "images",
+# ]
 
 DJANGO_VITE = {
     "default": {
