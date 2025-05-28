@@ -9,6 +9,7 @@ services:
     container_name: vim-app
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
+      - ./web-app/frontend/assets/images:/virtual-instrument-museum/static/images
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       postgres:
@@ -47,6 +48,7 @@ services:
     ports:
       - "8000:80"
     volumes:
+      - ./web-app/frontend/assets/images:/virtual-instrument-museum/static/images
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       - app
