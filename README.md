@@ -75,7 +75,7 @@ npm run dev
 
 The Vite dev server will run on `localhost:5173` and work in conjunction with the Django development server. Make sure both servers are running for the full development environment to work properly.
 
-Note: Any changes to the frontend files (TS/CSS) will trigger hot module replacement (HMR) or a full page reload, allowing you to see your changes immediately without manually refreshing the page. HMR doesn't support images yet.
+Note: Any changes to the frontend files will trigger hot module replacement (HMR) or a full page reload, allowing you to see your changes immediately without manually refreshing the page. HMR for TypeScript and CSS files is handled by django-vite, whereas HMR for images is managed by mounting the Nginx Docker volume to the local images folder.
 
 ### Debugging
 
