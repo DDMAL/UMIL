@@ -24,6 +24,6 @@ class InstrumentDetail(DetailView):
         context["active_language"] = (
             Language.objects.get(en_label=active_language_en)
             if active_language_en
-            else Language.objects.get(en_label="english")  # default in English
+            else Language.objects.get(en_label="English")  # default in English
         )
         return context
