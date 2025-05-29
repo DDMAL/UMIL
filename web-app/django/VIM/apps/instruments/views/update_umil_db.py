@@ -20,7 +20,6 @@ def add_name(request):
             {
                 "name": "English label",
                 "source": "Source name",
-                "description": "Description",
                 "alias": "Alias"
             },
     }
@@ -32,8 +31,9 @@ def add_name(request):
         # Parse the JSON request body
         data = json.loads(request.body)
         wikidata_id = data.get("wikidata_id")
+        language_code = data.get("language")
         entry = data.get("entry")
-        if not wikidata_id or not entry:
+        if not wikidata_id or not language_code or not entry:
             return JsonResponse(
                 {
                     "status": "error",
@@ -43,15 +43,15 @@ def add_name(request):
     try:
         # Fetch the instrument from the database
         instrument = Instrument.objects.get(wikidata_id=wikidata_id)
+        # Fetch the language from the database
+        language = Language.objects.get(wikidata_code=language_code)
 
         # Extract data from the entry
-        language_code = entry["language"]
         name = entry["name"]
         source = entry["source"]
-        alias = entry.get("alias", "")
+        alias = entry["alias"]
 
         # Save entries to the local database
-        language = Language.objects.get(wikidata_code=language_code)
         InstrumentName.objects.create(
             instrument=instrument,
             language=language,
@@ -112,8 +112,9 @@ def add_alias(request):
         # Parse the JSON request body
         data = json.loads(request.body)
         wikidata_id = data.get("wikidata_id")
+        language_code = data.get("language")
         entries = data.get("entries", [])
-        if not wikidata_id or not entries:
+        if not wikidata_id or not language_code or not entries:
             return JsonResponse(
                 {
                     "status": "error",
@@ -123,17 +124,16 @@ def add_alias(request):
     try:
         # Fetch the instrument from the database
         instrument = Instrument.objects.get(wikidata_id=wikidata_id)
-
+        # Fetch the language from the database
+        language = Language.objects.get(wikidata_code=language_code)
+        
         # Process each entry: save to UMIL database
         for entry in entries:
-
-            # Extract data from the entry
-            language_code = entry["language"]
+            
             source = entry["source"]
-            alias = entry.get("alias", "")
+            alias = entry["alias"]
 
             # Save entries to the local database
-            language = Language.objects.get(wikidata_code=language_code)
             InstrumentName.objects.create(
                 instrument=instrument,
                 language=language,
