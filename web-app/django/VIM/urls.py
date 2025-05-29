@@ -20,6 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
+from VIM.apps.instruments.views import update_umil_db
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
@@ -27,6 +28,8 @@ urlpatterns = i18n_patterns(
     path("", include("VIM.apps.main.urls", namespace="main")),
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
     path("instrument/<int:pk>/", InstrumentDetail.as_view(), name="instrument-detail"),
+    path("add-name/", update_umil_db.add_name, name='add_name'),
+    path("add-alias/", update_umil_db.add_alias, name='add_alias'),
     prefix_default_language=False,
 )
 
