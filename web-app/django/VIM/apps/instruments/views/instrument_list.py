@@ -1,6 +1,7 @@
 from django.db.models import Prefetch
 from django.views.generic import ListView
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
+import pysolr
 import requests
 
 
@@ -77,6 +78,9 @@ class InstrumentList(ListView):
             context["hbs_facet_name"] = next(
                 (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
             )
+        search_query = self.request.GET.get("q", "").strip()
+        if search_query:
+            context["search_query"] = search_query
         return context
 
     def get(self, request, *args, **kwargs):
@@ -99,22 +103,24 @@ class InstrumentList(ListView):
                 .prefetch_related(instrumentname_prefetch_manager)
             )
 
-        search_query = self.request.GET.get("search_query", "").strip()
-        solr_url = "http://solr:8983/solr/virtual-instrument-museum/select"
-        solr_params = {
-            "q": f"instrument_names_s:*{search_query}* OR wikidata_id_s:*{search_query}*",
-            "wt": "json",
-            "rows": 100,
-            "facet": "false",
-        }
+        search_query = self.request.GET.get("q", "").strip()
+        solr_url = "http://solr:8983/solr/virtual-instrument-museum"
 
         if search_query:
-            # Send query to Solr
-            solr_response = requests.get(solr_url, params=solr_params).json()
-            instrument_ids = [
-                doc["sid"].replace("instrument-", "")
-                for doc in solr_response.get("response", {}).get("docs", [])
-            ]
+            solr = pysolr.Solr(solr_url, timeout=10)
+            solr_params = {
+                "q": f"text:{search_query}",
+                "wt": "json",
+                "rows": 100,
+                "facet": "false",
+                "fl": "sid, instrument_names_s",
+            }
+
+            # Send query to Solr and retrieve results
+            solr_response = solr.search(**solr_params)
+
+            # Select instruments based on Solr results
+            instrument_ids = [result["sid"] for result in solr_response]
             return (
                 Instrument.objects.filter(id__in=instrument_ids)
                 .select_related("thumbnail")

@@ -3,7 +3,7 @@
 from django.core.management.base import BaseCommand
 from django.db.models import F, CharField, Value as V
 from django.db.models.functions import Concat, Left
-import requests
+import pysolr
 from VIM.apps.instruments.models import Instrument, InstrumentName
 
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         instruments = list(
             Instrument.objects.all().values(
-                sid=Concat(V("instrument-"), "id", output_field=CharField()),
+                sid=F("id"),
                 wikidata_id_s=F("wikidata_id"),
                 hornbostel_sachs_class_s=F("hornbostel_sachs_class"),
                 hbs_prim_cat_s=Left(F("hornbostel_sachs_class"), 1),
@@ -38,18 +38,23 @@ class Command(BaseCommand):
                 else ""
             )
 
-            # Get all instrument names in different languages and concatenate them
+            # Get all instrument names in different languages
             instrument_names = InstrumentName.objects.filter(
-                instrument=instrument["sid"].replace("instrument-", "")
+                instrument=instrument["sid"]
             ).values_list("name", flat=True)
-            instrument["instrument_names_s"] = "|".join(instrument_names)
 
-        requests.post(
-            "http://solr:8983/solr/virtual-instrument-museum/update?commit=true",
-            json=instruments,
-            headers={"Content-Type": "application/json"},
+            # Store instrument names as multi-valued field (list)
+            instrument["instrument_names_s"] = list(instrument_names)
+
+        # Initialize Solr client
+        solr = pysolr.Solr(
+            "http://solr:8983/solr/virtual-instrument-museum",
             timeout=10,
+            always_commit=True,
         )
+
+        # Add data to Solr using the pysolr client
+        solr.add(instruments)
 
     def build_hbs_label_map(self):
         """Build a mapping of Hornbostel-Sachs classification codes to labels."""
