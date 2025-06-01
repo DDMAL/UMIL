@@ -64,7 +64,7 @@ header {
 
 .umil-dropdown-menu {
   background-color: #faf1e4;
-  max-height: 80vh;
+  max-height: 50vh;
   overflow-y: auto;
 }
 
