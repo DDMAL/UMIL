@@ -45,7 +45,7 @@ class InstrumentList(ListView):
         context = super().get_context_data(**kwargs)
         context["active_tab"] = "instruments"
         context["instrument_num"] = context["paginator"].count
-        context["languages"] = Language.objects.all()
+        context["languages"] = Language.objects.all().order_by("en_label")
         active_language_en = self.get_active_language_en_label()
         context["active_language"] = Language.objects.get(en_label=active_language_en)
         active_language_code = context["active_language"].wikidata_code
