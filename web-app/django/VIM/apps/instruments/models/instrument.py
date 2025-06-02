@@ -25,3 +25,6 @@ class Instrument(models.Model):
         blank=True,
         help_text="Musical Instrument Museums Online classification",
     )
+
+    def __str__(self):
+        return f"{self.wikidata_id}"
