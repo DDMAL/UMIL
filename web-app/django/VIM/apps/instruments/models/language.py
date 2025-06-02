@@ -9,3 +9,6 @@ class Language(models.Model):
     autonym = models.CharField(
         blank=False, help_text="Language label in the language itself"
     )
+
+    def __str__(self):
+        return f"{self.en_label}"
