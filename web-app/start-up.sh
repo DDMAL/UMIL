@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# python manage.py collectstatic --noinput
+cd /virtual-instrument-museum/vim-app
+python manage.py collectstatic --noinput
 
 if [[ $DEVELOPMENT = "true" ]]
 then
@@ -11,5 +12,6 @@ then
     cd /virtual-instrument-museum/vim-app
     python manage.py runserver_plus 0:8001
 else
+    cd /virtual-instrument-museum/vim-app
     gunicorn -w 2 -b 0:8001 VIM.wsgi
 fi
