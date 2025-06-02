@@ -31,6 +31,7 @@ urlpatterns = i18n_patterns(
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
     path("instrument/<int:pk>/", InstrumentDetail.as_view(), name="instrument-detail"),
     path("instruments/add-name/", MyFormView.as_view(), name="add-name"),
+    path("instruments/edit-wikidata/", InstrumentNameListView.as_view(), name="edit-wikidata"),
     prefix_default_language=False,
 )
 
