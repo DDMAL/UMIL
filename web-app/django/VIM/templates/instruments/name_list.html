@@ -1,0 +1,17 @@
+<h2>New Instrument Names</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Source</th>
+  </tr>
+  {% for instrument in instrument_names %}
+  <tr>
+    <td>{{ instrument.name }}</td>
+    <td>{{ instrument.source_name }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="2">No contacts found.</td>
+  </tr>
+  {% endfor %}
+</table>
