@@ -4,44 +4,21 @@ document.addEventListener('DOMContentLoaded', function () {
   const dropdownItems = dropdownMenu.querySelectorAll('.umil-dropdown-item');
   let searchQuery = '';
 
-  let dropdownVisible = false; // Flag to track visibility
-
-  // Listen for when the dropdown is shown
-  document
-    .getElementById('instrument-language-element')
-    .addEventListener('show.bs.dropdown', function () {
-      dropdownVisible = true;
-
-      // Enable keydown event listener for searching
-      enableSearch();
-    });
+  // Attach keydown event listeners once
+  dropdownBtn.addEventListener('keydown', handleKeydown);
+  dropdownMenu.addEventListener('keydown', handleKeydown);
 
   // Listen for when the dropdown is hidden
   document
     .getElementById('instrument-language-element')
     .addEventListener('hide.bs.dropdown', function () {
-      dropdownVisible = false;
-
-      // Clear the search query and disable keydown event listener
-      searchQuery = '';
-      disableSearch();
+      searchQuery = ''; // Clear search when hidden
     });
-
-  // Function to enable keyboard input for search
-  function enableSearch() {
-    dropdownBtn.addEventListener('keydown', handleKeydown);
-    dropdownMenu.addEventListener('keydown', handleKeydown);
-  }
-
-  // Function to disable keyboard input for search
-  function disableSearch() {
-    dropdownBtn.removeEventListener('keydown', handleKeydown);
-    dropdownMenu.removeEventListener('keydown', handleKeydown);
-  }
 
   // Handle key press events only when the dropdown is visible
   function handleKeydown(event) {
-    if (!dropdownVisible) return; // Don't process key events if dropdown is hidden
+    const isDropdownVisible = dropdownMenu.classList.contains('show');
+    if (!isDropdownVisible) return;
 
     // Backspace: Remove last character in search query
     if (event.key === 'Backspace') {
