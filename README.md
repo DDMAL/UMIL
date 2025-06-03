@@ -50,33 +50,6 @@ The Django development server should now be available at `localhost:8000`. Ensur
 
 NOTE: that it is recommended to bring the containers down with `docker compose down` after you are done developing, testing, and committing your changes. After executing the previous command, the application will no longer be available `localhost:8000`. To once again view the running application, run `docker compose up -d` and ensure all migrations made by you or other developers are up-to-date with `docker compose exec -it app bash` and `python manage.py migrate`. For further clarifications on managing migrations refer to this [section](#managing-database-migrations).
 
-### UI Set-up Instructions
-
-All the UI-related files can be found in `web-app/frontend`. The project uses Vite.js for frontend development with Django integration. To set up the UI:
-
-1. Ensure you have Node.js v18 or higher installed
-2. Open a new terminal and navigate to the frontend directory:
-
-```sh
-cd web-app/frontend
-```
-
-3. Install the frontend dependencies:
-
-```sh
-npm install
-```
-
-4. Start the Vite development server:
-
-```sh
-npm run dev
-```
-
-The Vite dev server will run on `localhost:5173` and work in conjunction with the Django development server. Make sure both servers are running for the full development environment to work properly.
-
-Note: Any changes to the frontend files will trigger hot module replacement (HMR) or a full page reload, allowing you to see your changes immediately without manually refreshing the page. HMR for TypeScript and CSS files is handled by django-vite, whereas HMR for images is managed by mounting the Nginx Docker volume to the local images folder.
-
 ### Debugging
 
 When installed with `DEVELOPMENT=true` in the `.env` file, some additional modules are included in the application container that provide debugging tools: `django-extensions` and `django-debug-toolbar`. The debugging toolbar provided by `django-debug-toolbar` is shown when viewing the development server in the browser. The development installation runs the `runserver_plus` (provided by `django-extensions`) command automatically, which provides an in-browser debug console when errors are raised in the application. `django-extensions` also provides additional tools potentitally useful for development. Further information can be found at [module documentation](https://django-extensions.readthedocs.io/en/latest/command_extensions.html).
@@ -137,3 +110,18 @@ UMIL uses `poetry` to manage python dependencies and a `poetry.lock` file to ens
 3. `dev` - optional dependencies (eg. for code formatting, linting, type checking) that can be useful in the development environment, but are never used in the application container.
 
 NOTE: it is not generally necessary to use `poetry` for development, except when adding additional dependencies.
+
+## Frontend Set-up Explanation
+
+All frontend-related files (except Django templates in `web-app/django/VIM/templates/`) are located in `web-app/frontend/`. These files can be divided into two groups:
+
+- **Static Files**: CSS and images are in `web-app/frontend/assets/`.
+- **Dynamic Files**: TypeScript files are in `web-app/frontend/src/`.
+
+### Static Files
+
+Static files are served through Nginx, aliased as `virtual-instrument-museum/static/assets/`, and can be hot-reloaded in `development` mode.
+
+### Dynamic Files
+
+TypeScript files are built using Vite and served via `localhost:5173` in the background. These files are integrated with Django using `django-vite`. `django-vite` supports hot reload in `development` mode, and maps built files to `virtual-instrument-museum/static/` in `production` mode.
