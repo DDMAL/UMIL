@@ -20,7 +20,7 @@ RUN apt-get update && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 # copy frontend
-COPY --from=frontend-install /virtual-instrument-museum/frontend/ /virtual-instrument-museum/frontend/
+COPY --from=frontend-install /virtual-instrument-museum/frontend/node_modules /virtual-instrument-museum/frontend/node_modules
 # copy django
 COPY --from=build-container /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 COPY ./web-app/start-up.sh /virtual-instrument-museum/

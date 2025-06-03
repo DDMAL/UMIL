@@ -21,7 +21,7 @@
           rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
           crossorigin="anonymous" />
-    {% vite_asset 'assets/css/app.css' %}
+    <link rel="stylesheet" href="{% static 'assets/css/app.css' %}" />
     {% block css_files %}
     {% endblock css_files %}
 
@@ -34,7 +34,7 @@
             <li class="nav-item">
               <a href="{% url "main:home" %}"
                  class="nav-link nav-home px-2 notranslate">
-                <img src="{% static "images/logo.svg" %}" alt="vim icon" />
+                <img src="{% static "assets/images/logo.svg" %}" alt="vim icon" />
                 UMIL
               </a>
             </li>
@@ -96,11 +96,11 @@
     <footer class="d-flex justify-content-center align-items-center py-1 border-top">
       <a href="https://ddmal.music.mcgill.ca/"
          class="my-1 mx-3 link-body-emphasis text-decoration-none">
-        <img src="{% static "images/lab-logo.png" %}" alt="ddmal logo" />
+        <img src="{% static "assets/images/lab-logo.png" %}" alt="ddmal logo" />
       </a>
       <a href="https://linkedmusic.ca/"
          class="my-1 mx-3 pb-3 link-body-emphasis text-decoration-none">
-        <img src="{% static "images/LM_LogoTransparentBlack1.png" %}" alt="linkedmusic logo" style="height: 30px;" />
+        <img src="{% static "assets/images/LM_LogoTransparentBlack1.png" %}" alt="linkedmusic logo" style="height: 30px;" />
       </a>
     </footer>
     <!-- The bundled JS includes bootstrap and our components -->

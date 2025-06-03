@@ -6,8 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "watch": "vite build --watch",
-    "postbuild": "cp -r dist/* ../django/VIM/static/dist/"
+    "watch": "vite build --watch"
   },
   "keywords": [],
   "author": "",

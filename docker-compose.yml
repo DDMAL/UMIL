@@ -12,6 +12,7 @@ services:
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
       - ./web-app/frontend/:/virtual-instrument-museum/frontend
+      - /virtual-instrument-museum/frontend/node_modules
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       postgres:
@@ -50,7 +51,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./web-app/frontend/assets/images:/virtual-instrument-museum/frontend/assets/images
+      - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       - app
