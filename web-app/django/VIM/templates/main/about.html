@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% load django_vite %}
+{% load static %}
 
 {% block title %}
   About
 {% endblock title %}
 
 {% block css_files %}
-  {% vite_asset 'assets/css/main/about.css' %}
+  <link rel="stylesheet" href="{% static 'assets/css/main/about.css' %}" />
 {% endblock css_files %}
 
 {% block content %}

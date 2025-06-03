@@ -15,8 +15,8 @@ server {
   client_max_body_size 4G;
   server_name ${HOST_NAME};
 
-  location /static/images/ {
-    alias /virtual-instrument-museum/frontend/assets/images/;
+  location /static/assets/ {
+    alias /virtual-instrument-museum/frontend/assets/;
   }
 
   location /static/ {

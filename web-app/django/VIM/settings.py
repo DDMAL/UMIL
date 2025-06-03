@@ -136,15 +136,16 @@ USE_TZ = True
 
 STATIC_ROOT = "/virtual-instrument-museum/static/"
 STATIC_URL = "static/"
-# STATICFILES_DIRS = [
-#     ROOT_DIR / "images",
-# ]
+STATICFILES_DIRS = [
+    ROOT_DIR / "frontend" / "dist",
+]
 
 DJANGO_VITE = {
     "default": {
         "dev_mode": IS_DEVELOPMENT,
         "dev_server_port": 5173,
         "dev_server_host": "localhost",
+        "manifest_path": ROOT_DIR / "frontend" / "dist" / "manifest.json",
     }
 }
 

@@ -3,21 +3,32 @@ import { resolve } from 'path';
 import FullReload from 'vite-plugin-full-reload';
 
 export default defineConfig({
-  base: '/static/',
+  base: '/static/', // Same as STATIC_URL in settings.py
   plugins: [FullReload(['./assets/**/*'])],
   build: {
-    outDir: 'static',
+    outDir: 'dist', // Need to be listed in STATICFILES_DIRS in settings.py
     manifest: 'manifest.json',
     emptyOutDir: true,
     sourcemap: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/main.ts'),
+        instrumentDetail: resolve(
+          __dirname,
+          'src/instruments/InstrumentDetail.ts'
+        ),
+        paginationTools: resolve(
+          __dirname,
+          'src/instruments/PaginationTools.ts'
+        ),
+        displaySettings: resolve(
+          __dirname,
+          'src/instruments/DisplaySettings.ts'
+        ),
       },
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '[name]-[hash].js',
-        assetFileNames: '[name].[ext]',
       },
     },
   },
