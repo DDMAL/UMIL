@@ -14,7 +14,10 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# web-app/django:/virtual-instrument-museum/vim-app
 BASE_DIR = Path(__file__).resolve().parent.parent
+# /virtual-instrument-museum/
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "VIM.apps.main",
     "VIM.apps.instruments",
+    "django_vite",
 ]
 
 if IS_DEVELOPMENT:
@@ -130,11 +134,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = "/virtual-instrument-museum/static"
+STATIC_ROOT = "/virtual-instrument-museum/static/"
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    BASE_DIR / "VIM" / "static",
+    ROOT_DIR / "frontend" / "dist",
 ]
+
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": IS_DEVELOPMENT,
+        "dev_server_port": 5173,
+        "dev_server_host": "localhost",
+        "manifest_path": ROOT_DIR / "frontend" / "dist" / "manifest.json",
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

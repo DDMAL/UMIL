@@ -7,8 +7,12 @@ services:
       args:
         - DEVELOPMENT=$DEVELOPMENT
     container_name: vim-app
+    ports:
+      - "5173:5173"
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
+      - ./web-app/frontend/:/virtual-instrument-museum/frontend
+      - /virtual-instrument-museum/frontend/node_modules
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       postgres:
@@ -19,7 +23,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - HOST_NAME=${HOST_NAME}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-    command: /virtual-instrument-museum/django-startup.sh
+    command: /virtual-instrument-museum/start-up.sh
 
   postgres:
     image: postgres:15.4
@@ -47,6 +51,7 @@ services:
     ports:
       - "8000:80"
     volumes:
+      - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       - app
@@ -60,7 +65,6 @@ services:
 
 networks:
   vim-net:
-
 
 volumes:
   vim-static:
