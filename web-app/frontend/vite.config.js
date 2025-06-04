@@ -25,6 +25,7 @@ export default defineConfig({
           __dirname,
           'src/instruments/DisplaySettings.ts'
         ),
+        languageList: resolve(__dirname, 'src/LanguageList.ts'),
       },
       output: {
         entryFileNames: '[name].js',
