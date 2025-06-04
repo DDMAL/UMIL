@@ -89,14 +89,17 @@
                       type="button"
                       aria-expanded="false"
                       data-bs-toggle="dropdown"
-                      data-bs-title="Instrument name language">
+                      data-bs-title="Instrument name language"
+                      id="language-dropdown-btn">
                 {{ active_language.autonym|title }}
               </button>
-              <ul class="dropdown-menu umil-dropdown-menu">
+              <ul class="dropdown-menu umil-dropdown-menu" id="language-dropdown-list">
                 {% for language in languages %}
                   <li>
                     <a class="dropdown-item umil-dropdown-item"
-                       href="?language={{ language.en_label }}">{{ language.autonym|title }}</a>
+                       href="?language={{ language.en_label }}"
+                       data-language="{{ language.en_label }}">
+                    {{ language.en_label|title }} ({{ language.autonym|title }})</a>
                   </li>
                 {% endfor %}
               </ul>
@@ -205,4 +208,5 @@
   <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
   <script src="{% static "js/instruments/DisplaySettings.js" %}"></script>
   <script src="{% static "js/instruments/PaginationTools.js" %}"></script>
+  <script src="{% static "js/LanguageList.js" %}"></script>
 {% endblock scripts %}
