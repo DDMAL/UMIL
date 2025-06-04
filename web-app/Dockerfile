@@ -1,9 +1,3 @@
-# Frontend dependency install
-FROM node:20 as frontend-install
-COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
-WORKDIR /virtual-instrument-museum/frontend
-RUN npm install
-
 # Django container
 FROM python:3.11.5 as build-container
 ARG DEVELOPMENT
@@ -19,8 +13,10 @@ ENV DEVELOPMENT=$DEVELOPMENT
 RUN apt-get update && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
-# copy frontend
-COPY --from=frontend-install /virtual-instrument-museum/frontend/node_modules /virtual-instrument-museum/frontend/node_modules
+# copy frontend and install dependencies
+COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
+WORKDIR /virtual-instrument-museum/frontend
+RUN npm install
 # copy django
 COPY --from=build-container /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 COPY ./web-app/start-up.sh /virtual-instrument-museum/
