@@ -106,3 +106,7 @@ venv
 # in case you're working on importing data from a database dump
 *.sql
 
+
+# Frontend
+web-app/frontend/dist/
+web-app/frontend/node_modules/

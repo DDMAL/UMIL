@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load django_vite %}
 
 {% block title %}
   Instrument Detail
 {% endblock title %}
 
+{% block ts_files %}
+  {% vite_asset 'src/instruments/InstrumentDetail.ts' %}
+{% endblock ts_files %}
+
 {% block css_files %}
-  <link rel="stylesheet" href="{% static "css/instruments/index.css" %}" />
-  <link rel="stylesheet" href="{% static "css/instruments/detail.css" %}" />
+  <link rel="stylesheet"
+        href="{% static 'assets/css/instruments/detail.css' %}" />
+  <link rel="stylesheet"
+        href="{% static 'assets/css/instruments/index.css' %}" />
 {% endblock css_files %}
 
 {% block content %}
@@ -151,7 +158,3 @@
     </div>
   </div>
 {% endblock content %}
-
-{% block scripts %}
-  <script src="{% static "js/instruments/InstrumentDetail.js" %}"></script>
-{% endblock scripts %}
