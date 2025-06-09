@@ -151,6 +151,15 @@ DJANGO_VITE = {
     }
 }
 
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": IS_DEVELOPMENT,
+        "dev_server_port": 5173,
+        "dev_server_host": "localhost",
+        "manifest_path": ROOT_DIR / "frontend" / "dist" / "manifest.json",
+    }
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
