@@ -20,9 +20,13 @@ from django.urls import path, include
 from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
-from VIM.apps.instruments.views import update_umil_db
 from VIM.apps.instruments.views.name_form import MyFormView
 from VIM.apps.instruments.views.edit_wikidata import InstrumentNameListView
+from VIM.apps.instruments.views.wiki_apis import (
+    wikidata_callback,
+    wikidata_authorize,
+    get_wikidata_access_token,
+)
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
@@ -32,6 +36,13 @@ urlpatterns = i18n_patterns(
     path("instrument/<int:pk>/", InstrumentDetail.as_view(), name="instrument-detail"),
     path("instruments/add-name/", MyFormView.as_view(), name="add-name"),
     path("instruments/edit-wikidata/", InstrumentNameListView.as_view(), name="edit-wikidata"),
+    path("oauth/authorize/", wikidata_authorize, name="wikidata_authorize"),
+    path("oauth/callback/", wikidata_callback, name="wikidata_callback"),
+    path(
+        "get_wikidata_access_token/",
+        get_wikidata_access_token,
+        name="get_wikidata_access_token",
+    ),
     prefix_default_language=False,
 )
 
