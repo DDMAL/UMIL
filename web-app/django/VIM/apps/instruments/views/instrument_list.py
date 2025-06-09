@@ -118,14 +118,24 @@ class InstrumentList(ListView):
 
             # Send query to Solr and retrieve results
             solr_response = solr.search(**solr_params)
+            print(f"Found {len(solr_response)} instruments matching '{search_query}'")
+            # print
+            for result in solr_response:
+                print(
+                    f"Found instrument: {result['sid']} with names: {result['instrument_names_s']}"
+                )
 
-            # Select instruments based on Solr results
-            instrument_ids = [result["sid"] for result in solr_response]
-            return (
-                Instrument.objects.filter(id__in=instrument_ids)
-                .select_related("thumbnail")
-                .prefetch_related(instrumentname_prefetch_manager)
-            )
+            results = [
+                {
+                    "id": result["sid"],
+                    "wikidata_id": result["wikidata_id_s"],
+                    "hornbostel_sachs_class": result["hornbostel_sachs_class_s"],
+                    "category": result["hbs_prim_cat_label_en_s"],
+                }
+                for result in solr_response
+            ]
+            return results
+
         return Instrument.objects.select_related("thumbnail").prefetch_related(
             instrumentname_prefetch_manager
         )
