@@ -19,8 +19,20 @@ jobs:
       - name: Install dependencies with Poetry
         run: poetry install --no-root
 
-      - name: Run Prettier
-        run: npx prettier --check "**/*.css" "**/*.js" --trailing-comma es5
-
       - name: Run djlint via Poetry
         run: poetry run djlint . --check --extension html --exclude "migrations/*"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "web-app/frontend/package-lock.json"
+
+      - name: Install frontend dependencies
+        run: |
+          cd web-app/frontend
+          npm ci
+
+      - name: Run Prettier
+        run: npx prettier --check "**/*.css" "**/*.js" "**/*.ts"

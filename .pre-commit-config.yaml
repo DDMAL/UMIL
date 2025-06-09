@@ -4,12 +4,14 @@ repos:
     hooks:
       - id: black
 
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.3.2
+  - repo: local
     hooks:
       - id: prettier
-        additional_dependencies: ["prettier@2.3.2"]
-        files: "\\.(js|jsx|ts|tsx|css|scss|less|json|yaml|yml|md)$"
+        name: prettier
+        entry: npx --yes prettier --write
+        language: system
+        files: \.(js|jsx|ts|tsx|css|scss|less|json|yaml|yml|md)$
+        require_serial: false
 
   - repo: https://github.com/djlint/djLint
     rev: v1.34.1
