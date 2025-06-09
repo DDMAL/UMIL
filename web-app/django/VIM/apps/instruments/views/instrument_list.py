@@ -5,6 +5,33 @@ import pysolr
 import requests
 
 
+# Helper classes to normalize Solr results
+class SolrInstrument:
+    def __init__(self, data, lang_code="en"):
+        self.pk = data.get("sid")
+        self.thumbnail = ThumbnailStub(data.get("thumbnail_url", None))
+        name_field = f"instrument_name_{lang_code}_ss"
+        self.instrumentname_set = InstrumentNameSet(data.get(name_field, []))
+
+
+class ThumbnailStub:
+    def __init__(self, url):
+        self.url = url  # e.g., "instruments/images/instrument_imgs/thumbnail/Q6607.png"
+
+
+class InstrumentNameSet:
+    def __init__(self, names):
+        self._names = names if isinstance(names, list) else [names]
+
+    def all(self):
+        return [InstrumentNameStub(name) for name in self._names]
+
+
+class InstrumentNameStub:
+    def __init__(self, name):
+        self.name = name
+
+
 class InstrumentList(ListView):
     """
     Provides a paginated list of all instruments in the database.
@@ -108,33 +135,21 @@ class InstrumentList(ListView):
 
         if search_query:
             solr = pysolr.Solr(solr_url, timeout=10)
+            lang_code = Language.objects.get(en_label=language_en).wikidata_code
+            name_field = f"instrument_name_{lang_code}_ss"
             solr_params = {
-                "q": f"text:{search_query}",
+                "q": search_query,
                 "wt": "json",
                 "rows": 100,
                 "facet": "false",
-                "fl": "sid, instrument_names_s",
+                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
             }
 
             # Send query to Solr and retrieve results
             solr_response = solr.search(**solr_params)
-            print(f"Found {len(solr_response)} instruments matching '{search_query}'")
-            # print
-            for result in solr_response:
-                print(
-                    f"Found instrument: {result['sid']} with names: {result['instrument_names_s']}"
-                )
-
-            results = [
-                {
-                    "id": result["sid"],
-                    "wikidata_id": result["wikidata_id_s"],
-                    "hornbostel_sachs_class": result["hornbostel_sachs_class_s"],
-                    "category": result["hbs_prim_cat_label_en_s"],
-                }
-                for result in solr_response
+            return [
+                SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
             ]
-            return results
 
         return Instrument.objects.select_related("thumbnail").prefetch_related(
             instrumentname_prefetch_manager

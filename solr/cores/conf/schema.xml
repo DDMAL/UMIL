@@ -82,17 +82,17 @@
   
    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
 
-    <!-- Multi-valued field for instrument names (e.g., in different languages) -->
-    <field name="instrument_names_s" type="string" indexed="true" stored="true" multiValued="true"/>
-    
     <!-- Field for wikidata ID -->
     <field name="wikidata_id_s" type="string" indexed="true" stored="true"/>
 
     <!-- Define the new text field for queries -->
     <field name="text" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
+    <!-- Field for storing thumbnail urls -->
+    <field name="thumbnail_url" type="string" indexed="true" stored="true"/>
+
     <!-- Copy field directives for aggregating values into the text field -->
     <copyField source="sid" dest="text"/>
-    <copyField source="instrument_names_s" dest="text"/>
     <copyField source="wikidata_id_s" dest="text"/>
+    <copyField source="*_ss" dest="text" />
 </schema>
