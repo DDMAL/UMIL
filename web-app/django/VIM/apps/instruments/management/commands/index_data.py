@@ -1,9 +1,11 @@
 """This module indexes instrument data in the database in Solr."""
 
-from django.core.management.base import BaseCommand
-from django.db.models import F, CharField, Value as V
-from django.db.models.functions import Concat, Left
 import pysolr
+from django.core.management.base import BaseCommand
+from django.db.models import F
+from django.db.models import Value as V
+from django.db.models.functions import Left
+
 from VIM.apps.instruments.models import Instrument, InstrumentName
 
 
@@ -23,6 +25,7 @@ class Command(BaseCommand):
                 hbs_prim_cat_s=Left(F("hornbostel_sachs_class"), 1),
                 mimo_class_s=F("mimo_class"),
                 type=V("instrument"),
+                thumbnail_url=F("thumbnail__url"),
             )
         )
         hbs_label_map = self.build_hbs_label_map()
@@ -41,10 +44,17 @@ class Command(BaseCommand):
             # Get all instrument names in different languages
             instrument_names = InstrumentName.objects.filter(
                 instrument=instrument["sid"]
-            ).values_list("name", flat=True)
+            ).values_list("name", "language__wikidata_code")
 
-            # Store instrument names as multi-valued field (list)
-            instrument["instrument_names_s"] = list(instrument_names)
+            for name, lang_code in instrument_names:
+                field = f"instrument_name_{lang_code}_ss"
+                if field not in instrument:
+                    instrument[field] = [name]
+                else:
+                    instrument[field].append(name)
+
+            if instrument.get("thumbnail_url"):
+                instrument["thumbnail_url"] = instrument["thumbnail_url"]
 
         # Initialize Solr client
         solr = pysolr.Solr(
