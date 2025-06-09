@@ -136,9 +136,11 @@ USE_TZ = True
 
 STATIC_ROOT = "/virtual-instrument-museum/static/"
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    ROOT_DIR / "frontend" / "dist",
-]
+
+if not IS_DEVELOPMENT:
+    STATICFILES_DIRS = [
+        ROOT_DIR / "frontend" / "dist",
+    ]
 
 DJANGO_VITE = {
     "default": {
