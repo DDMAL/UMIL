@@ -3,7 +3,6 @@ from django.views.generic.list import ListView
 
 from VIM.apps.instruments.models import InstrumentName
 
-
 class InstrumentNameListView(ListView):
     model = InstrumentName
     template_name = "instruments/name_list.html"
@@ -12,4 +11,3 @@ class InstrumentNameListView(ListView):
 
     def get_queryset(self):
         return InstrumentName.objects.filter(status="verified")
-    
