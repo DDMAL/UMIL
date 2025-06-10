@@ -9,7 +9,7 @@ class PaginationManager {
   constructor() {
     const instrumentNumElement = document.getElementById('instrumentNum');
     this.instrumentNum = parseInt(
-      instrumentNumElement.getAttribute('data-instrument-num')
+      instrumentNumElement.getAttribute('data-instrument-num'),
     );
     this.pageNumInput = document.getElementById('page-num') as HTMLInputElement;
     this.pageBtns = document.querySelectorAll('.page-link');
@@ -32,11 +32,11 @@ class PaginationManager {
           const selectedOptionInt = parseInt(radio.id);
           this.setPaginateBy(selectedOptionInt as PaginateBy);
           const maxPageNum = Math.ceil(
-            this.instrumentNum / this.getPaginateBy()
+            this.instrumentNum / this.getPaginateBy(),
           );
           const validPageNum = Math.min(
             Math.max(parseInt(this.getPage()), 1),
-            maxPageNum
+            maxPageNum,
           );
 
           if (validPageNum !== parseInt(this.getPage())) {
@@ -53,7 +53,7 @@ class PaginationManager {
         const maxPageNum = Math.ceil(this.instrumentNum / this.getPaginateBy());
         const validPageNum = Math.min(
           Math.max(parseInt(this.pageNumInput.value), 1),
-          maxPageNum
+          maxPageNum,
         );
 
         this.pageNumInput.value = validPageNum.toString();
@@ -81,7 +81,7 @@ class PaginationManager {
     this.setPage(page);
     this.setPaginateBy(this.parsePaginateBy(paginateByStr));
     this.pageNumInput.max = Math.ceil(
-      this.instrumentNum / parseInt(paginateByStr)
+      this.instrumentNum / parseInt(paginateByStr),
     ).toString();
   }
 

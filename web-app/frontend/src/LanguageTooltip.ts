@@ -9,8 +9,8 @@ declare global {
 }
 
 const tooltipTriggerList = document.querySelectorAll(
-  '[data-bs-toggle="tooltip"]'
+  '[data-bs-toggle="tooltip"]',
 );
 const tooltipList = [...tooltipTriggerList].map(
-  (tooltipTriggerEl) => new (window as any).bootstrap.Tooltip(tooltipTriggerEl)
+  (tooltipTriggerEl) => new (window as any).bootstrap.Tooltip(tooltipTriggerEl),
 );

@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function (): void {
   const dropdownBtn: HTMLElement = document.getElementById(
-    'language-dropdown-btn'
+    'language-dropdown-btn',
   )!;
   const dropdownMenu: HTMLElement = document.getElementById(
-    'language-dropdown-list'
+    'language-dropdown-list',
   )!;
   const dropdownItems: NodeListOf<HTMLElement> = dropdownMenu.querySelectorAll(
-    '.umil-dropdown-item'
+    '.umil-dropdown-item',
   );
   let searchQuery: string = '';
 
@@ -16,14 +16,14 @@ document.addEventListener('DOMContentLoaded', function (): void {
 
   // Listen for when the dropdown is hidden
   const instrumentLanguageElement: HTMLElement | null = document.getElementById(
-    'instrument-language-element'
+    'instrument-language-element',
   );
   if (instrumentLanguageElement) {
     instrumentLanguageElement.addEventListener(
       'hide.bs.dropdown',
       function (): void {
         searchQuery = ''; // Clear search when hidden
-      }
+      },
     );
   }
 
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function (): void {
           item.textContent?.trim().toLowerCase() || '';
         const isMatch: boolean = languageName.startsWith(searchQuery);
         return isMatch;
-      }
+      },
     );
 
     // If there are matching items, highlight the first match

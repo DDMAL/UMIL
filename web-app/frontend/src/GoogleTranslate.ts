@@ -6,7 +6,7 @@ declare namespace google {
           pageLanguage: string;
           layout: any;
         },
-        elementId: string
+        elementId: string,
       );
 
       static InlineLayout: {
@@ -26,11 +26,11 @@ function googleTranslateElementInit() {
       pageLanguage: 'en',
       layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
     },
-    'google_translate_element'
+    'google_translate_element',
   );
 
   const googleSelect = document.getElementsByClassName(
-    'goog-te-combo'
+    'goog-te-combo',
   )[0] as HTMLSelectElement;
   googleSelect.classList.add('btn', 'p-0', 'm-0', 'h-100');
 
