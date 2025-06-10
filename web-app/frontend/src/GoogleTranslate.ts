@@ -18,31 +18,61 @@ declare namespace google {
   }
 }
 
-const pageLanguage = document.querySelector('#google_translate_element');
-
 function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    {
-      pageLanguage: 'en',
-      layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
-    },
-    'google_translate_element',
-  );
+  // Wait for DOM if still loading
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', googleTranslateElementInit);
+    return;
+  }
 
-  const googleSelect = document.getElementsByClassName(
-    'goog-te-combo',
-  )[0] as HTMLSelectElement;
-  googleSelect.classList.add('btn', 'p-0', 'm-0', 'h-100');
+  // Check prerequisites and retry if not ready
+  if (
+    !google?.translate ||
+    !document.getElementById('google_translate_element')
+  ) {
+    setTimeout(googleTranslateElementInit, 100);
+    return;
+  }
 
-  const parent = googleSelect.parentElement;
-  parent.classList.add('h-100', 'd-flex', 'align-items-center');
+  try {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+      },
+      'google_translate_element',
+    );
 
-  const grandparent = parent.parentElement;
-  grandparent.classList.add('h-100', 'd-flex', 'align-items-center');
+    // Apply styling after widget renders
+    setTimeout(() => {
+      const googleSelect = document.querySelector(
+        '.goog-te-combo',
+      ) as HTMLSelectElement;
+      if (googleSelect) {
+        googleSelect.classList.add('btn', 'p-0', 'm-0', 'h-100');
+        googleSelect.parentElement?.classList.add(
+          'h-100',
+          'd-flex',
+          'align-items-center',
+        );
+        googleSelect.parentElement?.parentElement?.classList.add(
+          'h-100',
+          'd-flex',
+          'align-items-center',
+        );
+      }
+    }, 50);
+  } catch (error) {
+    console.error('Google Translate initialization failed:', error);
+    setTimeout(googleTranslateElementInit, 200);
+  }
 }
 
-// Export the initialization function so it's globally accessible
+// Export the initialization function so it's globally accessible for backwards compatibility
 window.googleTranslateElementInit = googleTranslateElementInit;
+
+// Start the initialization process
+googleTranslateElementInit();
 
 // Add the type definition to the Window interface
 declare global {
