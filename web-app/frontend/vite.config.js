@@ -15,15 +15,15 @@ export default defineConfig({
         main: resolve(__dirname, 'src/main.ts'),
         instrumentDetail: resolve(
           __dirname,
-          'src/instruments/InstrumentDetail.ts'
+          'src/instruments/InstrumentDetail.ts',
         ),
         paginationTools: resolve(
           __dirname,
-          'src/instruments/PaginationTools.ts'
+          'src/instruments/PaginationTools.ts',
         ),
         displaySettings: resolve(
           __dirname,
-          'src/instruments/DisplaySettings.ts'
+          'src/instruments/DisplaySettings.ts',
         ),
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
       },
