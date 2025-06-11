@@ -3,6 +3,7 @@ import urllib.parse
 from django.shortcuts import redirect
 from django.conf import settings
 from django.http import JsonResponse
+from VIM.apps.instruments.models import InstrumentName
 
 WIKIDATA_URL = settings.WIKIDATA_URL
 WIKIDATA_OAUTH_URL = settings.WIKIDATA_OAUTH_URL
@@ -62,3 +63,70 @@ def wikidata_authorize(request):
     }
     authorization_url = f"{base_url}?{urllib.parse.urlencode(params)}"
     return redirect(authorization_url)
+
+def add_info_to_wikidata_entity(action, access_token, wikidata_id, value, language):
+    """
+    Adds information to a Wikidata entity using OAuth.
+
+    Args:
+        action (str): The action to perform (e.g., "add_label", "add_description", "add_aliases").
+        access_token (str): The OAuth access token.
+        wikidata_id (str): The Wikidata ID of the entity.
+        value (str): The value to add.
+        language (str): The language code.
+
+    Returns:
+        dict: The response from the Wikidata API or an error message if failed.
+    """
+    try:
+        # Authorization header with OAuth access token
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json",
+        }
+        if action == "label":
+            body = {"label": value}
+            url = f"{WIKIDATA_URL}/entities/items/{wikidata_id}/labels/{language}"
+        elif action == "alias":
+            body = {"aliases": [value]}
+            url = f"{WIKIDATA_URL}/entities/items/{wikidata_id}/aliases/{language}"
+        else:
+            return {"errors": f"Invalid action: {action}"}  # Invalid action
+
+        if action == "add_aliases":
+            response = session.post(url, headers=headers, json=body)
+        else:
+            response = session.put(url, headers=headers, json=body)
+        response.raise_for_status()
+        data = response.json()
+        if "errorKey" in data:
+            return {
+                "errors": f"Error adding label to Wikidata: {data['messageTranslations']['en']}"
+            }
+        return data
+
+    except requests.RequestException as e:
+        return {"errors": f"HTTP error occurred: {e}"}
+    except ValueError as ve:
+        return {"errors": f"Value error occurred: {ve}"}
+    
+def edit_wikidata(request):
+    """
+    This method is intended to be called to edit Wikidata entries for verified instrument names.
+    It can be triggered by a button in the template.
+    """
+        # retrieve all instrument names that are currently verified
+    verified = InstrumentName.objects.filter(status="verified")
+    access_token = get_wikidata_access_token(request)
+
+    for instrument_name in verified:
+        print(f"Processing instrument name: {instrument_name.name} in language {instrument_name.language}")
+        # # post to wikidata
+        # if instrument_name.is_alias:
+        #     add_info_to_wikidata_entity("alias", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language)
+        # else:
+        #     add_info_to_wikidata_entity("label", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language)
+
+    InstrumentName.objects.filter(status="verified").update(
+        status="uploaded"
+    )
