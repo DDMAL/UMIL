@@ -28,63 +28,73 @@
   <body>
     <header class="p-3 sticky-top align-content-center">
       <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <ul class="nav nav-underline col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li class="nav-item">
-              <a href="{% url "main:home" %}"
-                 class="nav-link nav-home px-2 notranslate">
-                <img src="{% static "assets/images/logo.svg" %}" alt="vim icon" />
-                UMIL
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url "main:home" %}"
-                 class="nav-link px-2 text-decoration-none {% if active_tab == 'home' %}active{% endif %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url "instrument-list" %}"
-                 class="nav-link px-2 text-decoration-none {% if active_tab == 'instruments' %}active{% endif %}">Instruments</a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url "main:about" %}"
-                 class="nav-link px-2 text-decoration-none {% if active_tab == 'about' %}active{% endif %}">About</a>
-            </li>
-          </ul>
-          {% comment %} <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search" class="form-control search-input" placeholder="Search..." aria-label="Search" />
-          </form> {% endcomment %}
-          <div class="text-end d-flex">
-            {% if user.is_authenticated %}
-              <div class="dropdown me-2">
-                <button class="btn dropdown-toggle login-btn"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">{{ user.username }}</button>
-                <ul class="dropdown-menu umil-dropdown-menu"
-                    aria-labelledby="userDropdown">
-                  <li>
-                    <a class="dropdown-item umil-dropdown-item"
-                       href="{% url 'main:change_password' %}">Change Password</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item umil-dropdown-item"
-                       href="{% url 'main:logout' %}">Log out</a>
-                  </li>
-                </ul>
-              </div>
-            {% else %}
-              <a href="{% url 'main:login' %}">
-                <button type="button" class="btn me-2 login-btn">Login</button>
-              </a>
-            {% endif %}
-            <div id="google_translate_element"
-                 class="d-flex align-items-center position-relative"
-                 data-bs-toggle="tooltip"
-                 data-bs-title="Web Page Language"
-                 aria-label="Web Page Language"
-                 aria-pressed="true"></div>
+        <nav class="navbar navbar-expand-lg">
+          <!-- Brand/Logo - always visible -->
+          <a class="navbar-brand nav-home notranslate"
+             href="{% url "main:home" %}">
+            <img src="{% static "assets/images/logo.svg" %}" alt="vim icon" />
+            UMIL
+          </a>
+          <!-- Hamburger toggle button - only visible on mobile -->
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNav"
+                  aria-controls="navbarNav"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- Collapsible content -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-lg-auto mx-auto mx-lg-0 text-center text-lg-start">
+              <li class="nav-item">
+                <a href="{% url "main:home" %}"
+                   class="nav-link {% if active_tab == 'home' %}active{% endif %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url "instrument-list" %}"
+                   class="nav-link {% if active_tab == 'instruments' %}active{% endif %}">Instruments</a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url "main:about" %}"
+                   class="nav-link {% if active_tab == 'about' %}active{% endif %}">About</a>
+              </li>
+            </ul>
+            <!-- Right side content (user menu + translate) -->
+            <div class="d-flex align-items-center justify-content-center justify-content-lg-end">
+              {% if user.is_authenticated %}
+                <div class="dropdown me-2">
+                  <button class="btn dropdown-toggle login-btn"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">{{ user.username }}</button>
+                  <ul class="dropdown-menu umil-dropdown-menu"
+                      aria-labelledby="userDropdown">
+                    <li>
+                      <a class="dropdown-item umil-dropdown-item"
+                         href="{% url 'main:change_password' %}">Change Password</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item umil-dropdown-item"
+                         href="{% url 'main:logout' %}">Log out</a>
+                    </li>
+                  </ul>
+                </div>
+              {% else %}
+                <a href="{% url 'main:login' %}">
+                  <button type="button" class="btn me-2 login-btn">Login</button>
+                </a>
+              {% endif %}
+              <div id="google_translate_element"
+                   class="d-flex align-items-center position-relative btn"
+                   data-bs-toggle="tooltip"
+                   data-bs-title="Web Page Language"
+                   aria-label="Web Page Language"
+                   aria-pressed="true"></div>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
     </header>
     <main>
