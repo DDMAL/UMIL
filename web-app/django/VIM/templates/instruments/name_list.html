@@ -25,11 +25,13 @@
     fetch("{% url 'get_wikidata_access_token' %}")
       .then((response) => response.json())
       .then((data) => {
-        if (data.access_token) // Check if access token is available
+        // Check if access token is available
+        if (data.access_token) {
           fetch("{% url 'publish' %}"); // Call the publish endpoint
           alert("Instrument names submitted to Wikidata successfully.");
           window.location.reload();
-        } else { // If access token is not available, redirect to authorization
+        } else {
+          // If access token is not available, redirect to authorization
           window.location.href = "{% url 'wikidata_authorize' %}";
         }
       });
