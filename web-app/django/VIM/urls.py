@@ -21,11 +21,12 @@ from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
 from VIM.apps.instruments.views.name_form import MyFormView
-from VIM.apps.instruments.views.edit_wikidata import InstrumentNameListView
+from VIM.apps.instruments.views.verified_instruments import InstrumentNameListView
 from VIM.apps.instruments.views.wiki_apis import (
     wikidata_callback,
     wikidata_authorize,
     get_wikidata_access_token,
+    edit_wikidata
 )
 from django.conf.urls.i18n import i18n_patterns
 
@@ -43,6 +44,7 @@ urlpatterns = i18n_patterns(
         get_wikidata_access_token,
         name="get_wikidata_access_token",
     ),
+    path("publish/", edit_wikidata, name="publish"),
     prefix_default_language=False,
 )
 
