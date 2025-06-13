@@ -15,9 +15,46 @@
   <div class="container py-0 py-md-5">
     <div class="row">
       <div class="col-12">
-        {% block registration_content %}
-        {% endblock registration_content %}
+        <div class="container content-container px-0 px-md-4 py-4 d-flex justify-content-center align-items-center">
+          <div class="col-12 p-4 align-content-center account-container position-relative">
+            {% if form.errors %}
+              <div class="alert alert-danger p-2 z-2 message-container">
+                {% for field, error in form.errors.items %}{{ error }}{% endfor %}
+              </div>
+            {% endif %}
+            <!-- Mobile background image (visible only on small screens) -->
+            <div class="d-md-none position-absolute top-50 start-50 translate-middle z-0 w-100 h-100 d-flex justify-content-center align-items-center">
+              <img src="{% static "assets/images/sign-up.svg" %}" alt="" class="img-fluid opacity-50 w-100 h-100" style="max-width: 80%; max-height: 80%;" />
+            </div>
+            <div class="container z-1 position-relative">
+              <div class="row flex-column flex-md-row">
+                <!-- Left Column -->
+                <div class="col-12 col-md-6 my-4 px-0 px-md-4">
+                  {% block left_column %}
+                  {% endblock left_column %}
 
+                </div>
+                <!-- Right Column (hidden on mobile) -->
+                <div class="col-12 col-md-6 my-4 create-account-link d-flex align-items-center">
+                  <div id="signup-option-separator" class="flex-fill d-none d-md-block">
+                    <div class="text-center" id="error">
+                      <img src="{% static "assets/images/sign-up.svg" %}" alt="sign up image" id="signup-decor" class="my-4" />
+                      {% block right_column %}
+                      {% endblock right_column %}
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Mobile Sign Up Link (visible only on small screens) -->
+                <div class="col-12 d-md-none text-center">
+                  {% block mobile_link %}
+                  {% endblock mobile_link %}
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
