@@ -11,10 +11,15 @@ class InstrumentName(models.Model):
         choices=[
             ("verified", "Verified"),
             ("unverified", "Unverified"),
-            ("uploaded", "Uploaded"),
+            ("needs_review", "Needs Review"),
+            ("rejected", "Rejected"),
         ],
         default="unverified",
         help_text="Status of the name entry",
+    )
+    is_approved = models.BooleanField(
+        default=False,
+        help_text="When a name is approved to be visible on UMIL and uploaded to Wikidata.",
     )
     is_alias = models.BooleanField(
         default=False,
@@ -26,6 +31,10 @@ class InstrumentName(models.Model):
         null=True,
         blank=True,
         help_text="User who contributed this name",
+    )
+    on_wikidata = models.BooleanField(
+        default=False,
+        help_text="Is this name already on Wikidata?",
     )
     # TODO: add verified_by field to track who verified the name
     def __str__(self):
