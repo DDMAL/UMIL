@@ -1,4 +1,4 @@
-<form action="/instruments/add-name/" method="post">
+<form action="/instrument/<int:pk>/add-name/" method="post">
   {% csrf_token %} {{ form }}
   <input type="submit" value="Submit" />
 </form>
