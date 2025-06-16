@@ -10,4 +10,4 @@ class InstrumentNameListView(ListView):
     context_object_name = "instrument_names"
 
     def get_queryset(self):
-        return InstrumentName.objects.filter(status="verified")
+        return InstrumentName.objects.filter(is_approved=True, on_wikidata=False)
