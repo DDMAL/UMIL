@@ -115,11 +115,11 @@ def edit_wikidata(request):
     This method is intended to be called to edit Wikidata entries for verified instrument names.
     It can be triggered by a button in the template.
     """
-        # retrieve all instrument names that are currently verified
-    verified = InstrumentName.objects.filter(status="verified")
+    # retrieve all instrument names that are currently approved AND not yet on Wikidata
+    approved = InstrumentName.objects.filter(is_approved=True).filter(on_wikidata=False)
     access_token = get_wikidata_access_token(request)
 
-    for instrument_name in verified:
+    for instrument_name in approved:
         print(f"Processing instrument name: {instrument_name.name} in language {instrument_name.language}")
         # # post to wikidata
         # if instrument_name.is_alias:
@@ -127,6 +127,6 @@ def edit_wikidata(request):
         # else:
         #     add_info_to_wikidata_entity("label", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language)
 
-    InstrumentName.objects.filter(status="verified").update(
-        status="uploaded"
+    InstrumentName.objects.filter(is_approved = True).update(
+        on_wikidata=True
     )
