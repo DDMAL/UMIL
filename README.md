@@ -37,6 +37,7 @@ If you are not running docker containers in detatched mode (e.g `docker compose 
 
 ```sh
 docker compose exec -it app bash
+cd /virtual-instrument-museum/vim-app
 python manage.py makemigrations
 python manage.py migrate
 python manage.py import_languages
@@ -76,6 +77,7 @@ If your development changes any application models, be sure to make and commit m
 
 ```sh
 docker compose exec -it app bash
+cd /virtual-instrument-museum/vim-app
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -86,6 +88,7 @@ If changes you make require migrations, or you merge migrations made by others i
 
 ```sh
 docker compose exec -it app bash
+cd /virtual-instrument-museum/vim-app
 python manage.py migrate
 ```
 
@@ -97,6 +100,7 @@ Two django management commands are provided to load these initial instruments. T
 
 ```sh
 docker compose exec -it app bash
+cd /virtual-instrument-museum/vim-app
 python manage.py import_languages
 python manage.py import_instruments
 ```
