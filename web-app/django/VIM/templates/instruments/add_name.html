@@ -1,4 +1,28 @@
-<form action="/instrument/<int:pk>/add-name/" method="post">
-  {% csrf_token %} {{ form }}
-  <input type="submit" value="Submit" />
-</form>
+Modal Structure
+<div class="modal fade"
+     id="addNameModal"
+     tabindex="-1"
+     aria-labelledby="addNameModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addNameModalLabel">
+          Add New Name for <span id="instrumentNameInModal"></span>
+        </h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'instrument-detail' instrument.pk %}" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <br>
+          <input type="submit" value="Submit" />
+        </form> 
+      </div>
+    </div>
+  </div>
+</div>
