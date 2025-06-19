@@ -4,39 +4,34 @@
   Register
 {% endblock registration_title %}
 
-{% block registration_content %}
-  <div class="container content-container d-flex justify-content-center align-items-center">
-    <div class="col-10 p-4 align-content-center account-container">
-      {% if form.errors %}
-        <div class="alert alert-danger p-2 z-2 message-container">
-          {% for field, error in form.errors.items %}{{ error }}{% endfor %}
-        </div>
-      {% endif %}
-      <div class="container z-1">
-        <div class="row">
-          <div class="col-6 my-4" id="registration">
-            <h5 class="mb-4">
-              <strong>Create a New Account</strong>
-            </h5>
-            <form method="post">
-              {% csrf_token %}
-              <div class="mt-4 mb-4">
-                <label for="exampleInputEmail" class="form-label">Email Address</label>
-                <div>{{ form.username }}</div>
-              </div>
-              <div class="mb-4">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <div>{{ form.password1 }}</div>
-              </div>
-              <div class="mb-4">
-                <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
-                <div>{{ form.password2 }}</div>
-              </div>
-              <button type="submit" class="btn btn-primary account-btn">Register</button>
-            </form>
-          </div>
-        </div>
-      </div>
+{% block left_column %}
+  <h5 class="mb-4">
+    <strong>Create a New Account</strong>
+  </h5>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mt-4 mb-4">
+      <label for="exampleInputEmail" class="form-label">Email Address</label>
+      <div class="col-12">{{ form.username }}</div>
     </div>
-  </div>
-{% endblock registration_content %}
+    <div class="mb-4">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <div class="col-12">{{ form.password1 }}</div>
+    </div>
+    <div class="mb-4">
+      <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
+      <div class="col-12">{{ form.password2 }}</div>
+    </div>
+    <button type="submit" class="btn btn-primary account-btn">Register</button>
+  </form>
+{% endblock left_column %}
+
+{% block right_column %}
+  <p class="mb-1">Already have an account?</p>
+  <a href="{% url 'main:login' %}">Login</a>
+{% endblock right_column %}
+
+{% block mobile_link %}
+  <p class="mb-1">Already have an account?</p>
+  <a href="{% url 'main:login' %}">Login</a>
+{% endblock mobile_link %}

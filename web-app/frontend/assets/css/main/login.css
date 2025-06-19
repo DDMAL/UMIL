@@ -1,14 +1,13 @@
 .content-container {
-  height: 80vh;
-  width: 80vw;
+  min-height: 80vh;
+  min-width: 80vw;
 }
 
 .account-container {
   background-color: white;
   border: 3px solid #9eb384;
   border-radius: 30px;
-  height: 60vh;
-  min-height: 400px;
+  min-height: 60vh;
   position: relative;
   color: #435334;
 }
