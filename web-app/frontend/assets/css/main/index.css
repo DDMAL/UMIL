@@ -35,7 +35,7 @@
 }
 
 .content-container {
-  height: 80vh;
+  min-height: 80vh;
   position: relative;
 }
 
@@ -74,4 +74,28 @@
 .start-btn:hover {
   color: #435334;
   animation: pulse 0.5s both;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .content-container h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .content-container p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 2;
+  }
+
+  #bg-decor {
+    position: fixed;
+    bottom: 25%;
+    left: 0;
+    width: 100%;
+    max-height: 45vh;
+    object-fit: contain;
+  }
 }

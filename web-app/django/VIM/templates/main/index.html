@@ -13,41 +13,81 @@
 {% block content %}
   <div class="container content-container d-flex align-items-center justify-content-center">
     <div class="z-2">
-      <div class="row">
-        <div class="col-6">
+      <!-- Desktop Layout -->
+      <div class="d-none d-md-block">
+        <div class="row">
+          <div class="col-6">
+            <h1>
+              <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
+            </h1>
+          </div>
+          <div class="col-6 notranslate">
+            <h1>
+              Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
+            </h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <p>
+              Where the past and present of music collide.
+              <br />
+              Explore, share, connect musical instruments in every language.
+            </p>
+          </div>
+          <div class="col-6 notranslate">
+            <p>
+              Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <a href="{% url "instrument-list" %}?language=English">
+              <button class="btn btn-warning rounded-pill start-btn">
+                Visit English Site
+              </button>
+            </a>
+          </div>
+          <div class="col-6 notranslate">
+            <a href="{% url "instrument-list" %}?language=French">
+              <button class="btn btn-warning rounded-pill start-btn">
+                Visitez le site en francais
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile Layout -->
+      <div class="d-md-none my-5 px-2">
+        <p class="notranslate">
+          <em>La version française suit.</em>
+        </p>
+        <!-- English Content -->
+        <div class="mb-5">
           <h1>
             <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
           </h1>
-        </div>
-        <div class="col-6 notranslate">
-          <h1>
-            Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
-          </h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
           <p>
             Where the past and present of music collide.
             <br />
             Explore, share, connect musical instruments in every language.
           </p>
-        </div>
-        <div class="col-6 notranslate">
-          <p>
-            Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
           <a href="{% url "instrument-list" %}?language=English">
             <button class="btn btn-warning rounded-pill start-btn">
               Visit English Site
             </button>
           </a>
         </div>
-        <div class="col-6 notranslate">
+        <hr class="my-4" style="border-color: #876445; border-width: 2px;" />
+        <!-- French Content -->
+        <div class="mt-5 notranslate">
+          <h1>
+            Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
+          </h1>
+          <p>
+            Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
+          </p>
           <a href="{% url "instrument-list" %}?language=French">
             <button class="btn btn-warning rounded-pill start-btn">
               Visitez le site en francais
@@ -56,6 +96,6 @@
         </div>
       </div>
     </div>
-    <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1" />
+    <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1 opacity-50 img-fluid w-100 w-md-auto" />
   </div>
 {% endblock content %}
