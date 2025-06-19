@@ -22,14 +22,26 @@
   <div class="instrument-detail">
     <div class="detail-header">
       <h2>
-        {% for instrumentname in instrument_names %}
-          {% if instrumentname.language.en_label == active_language.en_label %}
-            {{ instrumentname.name|title }}
-          {% endif %}
+        {% for instrumentname in active_instrument_name %}
+          {{ instrumentname.name|title }}
         {% endfor %}
       </h2>
       <hr />
     </div>
+    <br>
+    <div class="button group">
+      {% include "instruments/add_name.html" %}
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        data-bs-toggle="modal" 
+        data-bs-target="#addNameModal" 
+        data-instrument-name="{{ active_instrument_name.first.name | title}}" 
+        data-instrument-wikidata-id="{{ instrument.wikidata_id }}">
+          Add Instrument Name
+      </button>
+    </div>
+    <br>
     <div class="detail-body">
       <div class="instrument-forms">
         <table class="table table-sm table-striped table-bordered">
@@ -62,7 +74,7 @@
                 <div class="name-form-item">
                   <div class="name-field">
                     <a class="view-field"
-                       href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ mimo_class }}"
+                       href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
                        target="_blank">{{ instrument.mimo_class }}</a>
                   </div>
                 </div>
@@ -96,11 +108,6 @@
                                      type="text"
                                      value="{{ instrumentname.language.en_label }}" />
                             </div>
-                            <div class="button-group">
-                              <button class="btn edit">Edit</button>
-                              <button class="btn cancel">Cancel</button>
-                              <button class="btn publish">Publish</button>
-                            </div>
                           </div>
                         </td>
                         <td>
@@ -108,11 +115,6 @@
                             <div class="name-field">
                               <span class="view-field">{{ instrumentname.name }}</span>
                               <input class="edit-field" type="text" value="{{ instrumentname.name }}" />
-                            </div>
-                            <div class="button-group">
-                              <button class="btn edit">Edit</button>
-                              <button class="btn cancel">Cancel</button>
-                              <button class="btn publish">Publish</button>
                             </div>
                           </div>
                         </td>
@@ -123,11 +125,6 @@
                               <input class="edit-field"
                                      type="text"
                                      value="{{ instrumentname.source_name }}" />
-                            </div>
-                            <div class="button-group">
-                              <button class="btn edit">Edit</button>
-                              <button class="btn cancel">Cancel</button>
-                              <button class="btn publish">Publish</button>
                             </div>
                           </div>
                         </td>
