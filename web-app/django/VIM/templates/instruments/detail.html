@@ -79,44 +79,40 @@
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.language.en_label }}" />
-                            <div class="d-flex flex-row gap-1">
-                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                            </div>
                           </div>
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1 notranslate">{{ instrumentname.name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.name }}" />
-                            <div class="d-flex flex-row gap-1">
-                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                            </div>
                           </div>
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.source_name }}" />
-                            <div class="d-flex flex-row gap-1">
-                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                            </div>
                           </div>
                         </td>
                       </tr>
                     {% endfor %}
+                    <tr>
+                      <td colspan="4">
+                        <div class="add-name-container">
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addNameModal"
+                                    data-instrument-name="{{ active_instrument_label.name | title }}"
+                                    data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                                    data-instrument-pk="{{ instrument.pk }}">
+                              Add Instrument Name
+                            </button>
+                          {% else %}
+                            <a href="{% url 'main:login' %}?next={{ request.path }}"
+                               class="btn btn-primary"
+                               role="button">Add Instrument Name</a>
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
                 <!-- Stacked layout for small screens only -->
@@ -129,12 +125,6 @@
                           <div class="fw-bold text-muted small mb-1">Language</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.language.en_label }}" />
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
                           </div>
                         </div>
                         <!-- Name column -->
@@ -142,12 +132,6 @@
                           <div class="fw-bold text-muted small mb-1">Name</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1 notranslate">{{ instrumentname.name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.name }}" />
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
                           </div>
                         </div>
                         <!-- Source column -->
@@ -155,17 +139,27 @@
                           <div class="fw-bold text-muted small mb-1">Source</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.source_name }}" />
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
                           </div>
                         </div>
                       </div>
                     </div>
                   {% endfor %}
+                  <div class="add-name-container">
+                      <button type="button"
+                              class="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addNameModal"
+                              data-instrument-name="{{ active_instrument_name.first.name | title }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                              data-instrument-pk="{{ instrument.pk }}">
+                        Add Instrument Name
+                      </button>
+                    {% else %}
+                      <a href="{% url 'main:login' %}?next={{ request.path }}"
+                         class="btn btn-primary"
+                         role="button">Add Instrument Name</a>
+                    {% endif %}
+                  </div>
                 </div>
                 <!-- Button below the table -->
                 <div class="text-start mt-2">
