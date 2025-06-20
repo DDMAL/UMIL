@@ -15,6 +15,10 @@
     {% block ts_files %}
     {% endblock ts_files %}
 
+    <!-- Keep the Google Translate external script -->
+    <script type="text/javascript"
+            src="//translate.google.com/translate_a/element.js"></script>
+    {% vite_asset 'src/main.ts' %}
     <link rel="stylesheet" href="{% static 'assets/css/app.css' %}" />
     {% block css_files %}
     {% endblock css_files %}
@@ -126,9 +130,5 @@
         <img src="{% static "assets/images/Wikidata_logo.png" %}" alt="wikidata logo" style="height: 30px;" />
       </a>
     </footer>
-    <!-- Keep the Google Translate external script -->
-    <script type="text/javascript"
-            src="//translate.google.com/translate_a/element.js"></script>
-    {% vite_asset 'src/main.ts' %}
   </body>
 </html>
