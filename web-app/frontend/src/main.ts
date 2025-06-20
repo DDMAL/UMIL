@@ -1,5 +1,5 @@
 // Import our custom CSS
-import '../assets/scss/styles.scss';
+import '../assets/scss/global.scss';
 
 // Import core components
 import './LanguageTooltip';

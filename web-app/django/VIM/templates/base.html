@@ -25,7 +25,7 @@
 
   </head>
   <body>
-    <header class="p-3 sticky-top align-content-center">
+    <header class="p-3 sticky-top align-content-center bg-primary vh-10">
       <div class="container">
         <nav class="navbar navbar-expand-lg">
           <!-- Brand/Logo - always visible -->
@@ -64,7 +64,7 @@
             <div class="d-flex align-items-center justify-content-center justify-content-lg-end">
               {% if user.is_authenticated %}
                 <div class="dropdown me-2">
-                  <button class="btn dropdown-toggle login-btn"
+                  <button class="btn dropdown-toggle btn-outline-light"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false">
@@ -97,11 +97,11 @@
                 </div>
               {% else %}
                 <a href="{% url 'main:login' %}">
-                  <button type="button" class="btn me-2 login-btn">Login</button>
+                  <button type="button" class="btn me-2 btn-outline-light">Login</button>
                 </a>
               {% endif %}
               <div id="google_translate_element"
-                   class="d-flex align-items-center position-relative btn"
+                   class="d-flex align-items-center position-relative btn btn-outline-light"
                    data-bs-toggle="tooltip"
                    data-bs-title="Web Page Language"
                    aria-label="Web Page Language"
@@ -111,12 +111,12 @@
         </nav>
       </div>
     </header>
-    <main>
+    <main class="bg-light min-vh-80">
       {% block content %}
       {% endblock content %}
 
     </main>
-    <footer class="d-flex flex-column flex-md-row justify-content-center align-items-center py-1 border-top">
+    <footer class="d-flex bg-light flex-column flex-md-row justify-content-center align-items-center py-1 border-top vh-10">
       <a href="https://ddmal.music.mcgill.ca/"
          class="my-1 mx-3 link-body-emphasis text-decoration-none">
         <img src="{% static "assets/images/lab-logo.png" %}" alt="ddmal logo" />
