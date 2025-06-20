@@ -1,0 +1,42 @@
+// Import shared variables
+@use "variables" as *;
+
+// Bootstrap variable overrides (MUST come before importing Bootstrap)
+$primary: $umil-green-primary;
+$secondary: $umil-green-dark;
+$light: $umil-cream;
+$success: $umil-green-light;
+
+// Typography overrides
+$font-family-sans-serif: "Noto Sans", sans-serif;
+$font-weight-base: 400;
+$font-weight-bold: 700;
+
+// Component overrides
+$navbar-brand-font-size: 1.25rem;
+$navbar-nav-link-padding-x: 1rem;
+$navbar-light-color: $umil-cream;
+$navbar-light-active-color: $umil-green-dark;
+
+// Import Bootstrap functions, variables, and mixins
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// After Bootstrap import
+.btn-outline-light {
+  @include button-outline-variant(
+    $color: $umil-cream,
+    // --bs-btn-color
+    $color-hover: $umil-green-dark,
+    // --bs-btn-hover-color
+    $active-background: $umil-cream,
+    // --bs-btn-hover-bg & --bs-btn-active-bg
+    $active-border: $umil-cream,
+    // --bs-btn-hover-border-color & --bs-btn-active-border-color
+    $active-color: $umil-green-dark // --bs-btn-active-color
+  );
+}
