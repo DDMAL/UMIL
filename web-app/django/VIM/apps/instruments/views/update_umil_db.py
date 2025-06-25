@@ -15,93 +15,17 @@ def add_name(request):
     This view expects a POST request with the JSON body:
     {
         "wikidata_id": "Q12345",
-        "language": "en",
-        "entry":
-            {
-                "name": "English label",
-                "source": "Source name",
-                "alias": "Alias"
-            },
-    }
-
-    Returns:
-        JsonResponse: JSON response with status and message
-    """
-    if request.method == "POST":
-        # Parse the JSON request body
-        data = json.loads(request.body)
-        wikidata_id = data.get("wikidata_id")
-        language_code = data.get("language")
-        entry = data.get("entry")
-        if not wikidata_id or not language_code or not entry:
-            return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "Missing required data",
-                }
-            )     
-    try:
-        # Fetch the instrument from the database
-        instrument = Instrument.objects.get(wikidata_id=wikidata_id)
-        # Fetch the language from the database
-        language = Language.objects.get(wikidata_code=language_code)
-
-        # Extract data from the entry
-        name = entry["name"]
-        source = entry["source"]
-        alias = entry["alias"]
-
-        # Save entries to the local database
-        InstrumentName.objects.create(
-            instrument=instrument,
-            language=language,
-            name=name,
-            source_name=source,
-            is_verified=False,
-            is_alias=False
-        )
-        # Save to the InstrumentAlias table if alias is provided 
-        if alias:
-            InstrumentName.objects.create(
-                instrument_name=instrument,
-                alias=alias,
-                source_name=source,
-                is_verified=False,
-                is_alias=True
-            )
-            
-        return JsonResponse(
-                {
-                    "status": "success",
-                    "message": "Data saved successfully!",
-                }
-            )
-
-    except Instrument.DoesNotExist:
-        return JsonResponse({"status": "error", "message": "Instrument not found"})
-    except Exception as e:
-        return JsonResponse({"status": "error", "message": "" + str(e)})
-    
-@login_required
-def add_alias(request):
-    """
-    View to add new instrument alias to UMIL database.
-
-    This view expects a POST request with the JSON body:
-    {
-        "wikidata_id": "Q12345",
-        "language": "en",
         "entries": [
             {
-                "alias": "Alias"
+                "language": "en",
+                "name": "English label",
                 "source": "Source name",
-                
             },
             {
-                "alias": "Alias"
-                "source": "Source name",
-            },
-            ...
+                "language": "fr",
+                "name": "French label",
+                ...
+            }
         ],
     }
 
@@ -112,9 +36,8 @@ def add_alias(request):
         # Parse the JSON request body
         data = json.loads(request.body)
         wikidata_id = data.get("wikidata_id")
-        language_code = data.get("language")
         entries = data.get("entries", [])
-        if not wikidata_id or not language_code or not entries:
+        if not wikidata_id or not entries:
             return JsonResponse(
                 {
                     "status": "error",
@@ -124,23 +47,36 @@ def add_alias(request):
     try:
         # Fetch the instrument from the database
         instrument = Instrument.objects.get(wikidata_id=wikidata_id)
-        # Fetch the language from the database
-        language = Language.objects.get(wikidata_code=language_code)
         
         # Process each entry: save to UMIL database
         for entry in entries:
-            
-            source = entry["source"]
-            alias = entry["alias"]
 
-            # Save entries to the local database
-            InstrumentName.objects.create(
+            # Extract data from the entry
+            language_code = entry["language"]
+            language = Language.objects.get(wikidata_code=language_code)
+
+            name = entry["name"]
+            source = entry["source"]
+
+            # If the instrument already has a name in specified language, save as alias
+            if instrument.instrumentname_set.filter(language=language).exists():
+                InstrumentName.objects.create(
                 instrument=instrument,
                 language=language,
-                name=alias,
+                name=name,
                 source_name=source,
-                is_verified=False,
-                is_alias=True
+                is_alias= True,
+                contributor=request.user,
+            )
+            # If the instrument does not have a name in specified language, save as primary name    
+            else:
+                InstrumentName.objects.create(
+                instrument=instrument,
+                language=language,
+                name=name,
+                source_name=source,
+                is_alias= False,
+                contributor=request.user,
             )
             
         return JsonResponse(
@@ -154,4 +90,3 @@ def add_alias(request):
         return JsonResponse({"status": "error", "message": "Instrument not found"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": "" + str(e)})
-    
