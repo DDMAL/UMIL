@@ -9,6 +9,7 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
     var instrumentWikidataId = button.getAttribute(
       'data-instrument-wikidata-id',
     );
+
     addNameModal.querySelector('#instrumentNameInModal').textContent =
       instrumentName;
     addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
@@ -32,8 +33,8 @@ function storeFormData() {
       language: row.querySelector('.language-input input').value,
       name: row.querySelector('.name-input input').value,
       source: row.querySelector('.source-input input').value,
-      description: row.querySelector('.description-input input').value,
-      alias: row.querySelector('.alias-input input').value,
+      // description: row.querySelector('.description-input input').value,
+      // alias: row.querySelector('.alias-input input').value,
     };
     storedData['nameRows'].push(rowData);
   });
@@ -68,9 +69,9 @@ function restoreFormData(storedData) {
       newRow.querySelector('.language-input input').value = rowData.language;
       newRow.querySelector('.name-input input').value = rowData.name;
       newRow.querySelector('.source-input input').value = rowData.source;
-      newRow.querySelector('.description-input input').value =
-        rowData.description;
-      newRow.querySelector('.alias-input input').value = rowData.alias;
+      // newRow.querySelector('.description-input input').value =
+      //   rowData.description;
+      // newRow.querySelector('.alias-input input').value = rowData.alias;
     });
   }
 
@@ -107,7 +108,7 @@ function isValidLanguage(inputElement) {
 }
 
 // Function to check if a name already exists in Wikidata for the given language
-async function checkNameInWikidata(wikidataId, languageCode, languageLabel) {
+async function isAlias(wikidataId, languageCode, languageLabel) {
   const sparqlQuery = `
     SELECT ?nameLabel WHERE {
       wd:${wikidataId} rdfs:label ?nameLabel .
@@ -123,6 +124,40 @@ async function checkNameInWikidata(wikidataId, languageCode, languageLabel) {
   try {
     const response = await fetch(queryUrl);
     const data = await response.json();
+
+    if (data.results.bindings.length > 0) {
+      return { exists: true, name: data.results.bindings[0].nameLabel.value };
+    } else {
+      return { exists: false };
+    }
+  } catch (error) {
+    console.error('Error querying Wikidata:', error);
+    throw new Error('Wikidata query failed');
+  }
+}
+
+// Function to check if a name already exists in Wikidata for the given language
+async function existOnWikidata(wikidataId, languageCode, languageLabel, nameInput) {
+  console.log(languageCode)
+  console.log(nameInput)
+
+  const sparqlQuery = `
+     SELECT ?nameLabel WHERE {
+      wd:${wikidataId} (rdfs:label|skos:altLabel) ?nameLabel .
+      FILTER(LANG(?nameLabel) = "${languageCode}" && CONTAINS(LCASE(?nameLabel),"${nameInput.toLowerCase()}"))
+    } LIMIT 1
+  `;
+
+  const endpointUrl = 'https://query.wikidata.org/sparql';
+  const queryUrl = `${endpointUrl}?query=${encodeURIComponent(
+    sparqlQuery,
+  )}&format=json`;
+
+  try {
+    const response = await fetch(queryUrl);
+    const data = await response.json();
+
+    console.log('Wikidata query result:', data);
 
     if (data.results.bindings.length > 0) {
       return { exists: true, name: data.results.bindings[0].nameLabel.value };
@@ -156,8 +191,8 @@ function createRow(index) {
       <datalist id="languages${index}">
         ${datalistOptions}
       </datalist>
-      <div class="valid-feedback">This instrument does not have a name in this language yet. You can add a new name.</div>
-      <div class="invalid-feedback">This instrument already has a name in this language.</div>
+      <div class="valid-feedback"></div>
+      <div class="invalid-feedback"></div>
     </div>
     <div class="col-md-2 name-input">
       <label for="name${index}" class="form-label-sm">Name</label>
@@ -171,8 +206,9 @@ function createRow(index) {
       <div class="valid-feedback"></div>
       <div class="invalid-feedback"></div>
     </div>
+    <input type="hidden" class="alias-status" id="alias${index}" name="alias[]" values="false" />
     <div class="col-md-1 d-flex align-items-center">
-      <button type="button" class="btn btn-outline-danger btn-sm remove-row-btn">Remove</button>
+      <button type="button" class="btn cancel btn-sm remove-row-btn">Remove</button>
     </div>
   `;
 
@@ -209,15 +245,12 @@ document
     let allValid = true;
     let publishResults = ''; // Collect the results for confirmation
 
-    // Iterate over each row and check if the name already exists in Wikidata
+    // // Iterate over each row and check if the name already exists in Wikidata
     for (let row of nameRows) {
       const languageInput = row.querySelector('input[list]');
       const nameInput = row.querySelector('.name-input input[type="text"]');
       const sourceInput = row.querySelector('.source-input input[type="text"]');
-      const descriptionInput = row.querySelector(
-        '.description-input input[type="text"]',
-      );
-      const aliasInput = row.querySelector('.alias-input input[type="text"]');
+      const aliasStatus = row.querySelector('.alias-status');
 
       const languageCode = languageInput.value;
       const selectedOption = row.querySelector(
@@ -231,6 +264,9 @@ document
       );
       const languageFeedbackInvalid = row.querySelector(
         '.language-input .invalid-feedback',
+      );
+      const nameFeedbackValid = row.querySelector(
+        '.name-input .valid-feedback',
       );
       const nameFeedbackInvalid = row.querySelector(
         '.name-input .invalid-feedback',
@@ -251,56 +287,88 @@ document
         continue;
       }
 
-      try {
-        const result = await checkNameInWikidata(
+      // check if name is empty
+      if (nameInput.value.trim() === '') {
+        nameInput.classList.add('is-invalid');
+        nameInput.classList.remove('is-valid');
+        nameFeedbackInvalid.textContent =
+          'Please enter a name for this instrument in the selected language.';
+        allValid = false;
+      } else {
+        try {
+        // Check if name is already an alias or label on Wikidata
+        const result = await existOnWikidata(
           wikidataId,
           languageCode,
           languageLabel,
-        );
+          nameInput.value,
+        )
         if (result.exists) {
-          languageInput.classList.add('is-invalid');
-          languageInput.classList.remove('is-valid');
-          languageFeedbackInvalid.textContent = `This instrument already has a name in ${languageLabel} (${languageCode}): ${result.name}`;
+          nameInput.classList.add('is-invalid');
+          nameFeedbackInvalid.textContent =
+            `This instrument already has this name on Wikidata in ${languageLabel} (${languageCode}).`;
           allValid = false;
+          continue; // Skip to the next row if the name already exists
         } else {
+          nameInput.classList.add('is-valid');
+          nameInput.classList.remove('is-invalid');
           languageInput.classList.add('is-valid');
           languageInput.classList.remove('is-invalid');
-          languageFeedbackValid.textContent = `This instrument does not have a name in ${languageLabel} (${languageCode}) yet. You can add a new name.`;
-
-          // check if name is empty
-          if (nameInput.value.trim() === '') {
-            nameInput.classList.add('is-invalid');
-            nameInput.classList.remove('is-valid');
-            nameFeedbackInvalid.textContent =
-              'Please enter a name for this instrument in the selected language.';
-            allValid = false;
-          } else {
-            nameInput.classList.add('is-valid');
-            nameInput.classList.remove('is-invalid');
-          }
-
-          // check if source is empty
-          if (sourceInput.value.trim() === '') {
-            sourceInput.classList.add('is-invalid');
-            sourceInput.classList.remove('is-valid');
-            sourceFeedbackInvalid.textContent =
-              'Please enter the source of this name.';
-            allValid = false;
-          } else {
-            sourceInput.classList.add('is-valid');
-            sourceInput.classList.remove('is-invalid');
-          }
-
-          // Add the result to the confirmation message
-          publishResults += `<br />${languageLabel} (${languageCode}): ${nameInput.value}; Source: ${sourceInput.value}; Description: ${descriptionInput.value}; Alias: ${aliasInput.value}`;
+          nameFeedbackValid.textContent =
+            'This instrument does not have this name listed on Wikidata yet ! You can add a new name.';
         }
-      } catch (error) {
-        displayMessage(
-          'There was an error checking Wikidata. Please try again later.',
-          'danger',
-        );
-        return; // Stop further processing
+        } catch (error) {
+          displayMessage(
+            'There was an error checking Wikidata. Please try again later.',
+            'danger',
+          );
+          return; // Stop further processing
+        }
+
+        try {
+          const result = await isAlias(
+            wikidataId,
+            languageCode,
+            languageLabel,
+          );
+
+          // If language has a label, input is an Alias
+          if (result.exists) {
+            aliasStatus.value = "true";
+          } else {
+            aliasStatus.value = "false";
+          } 
+        } catch (error) {
+          displayMessage(
+            'There was an error checking Wikidata. Please try again later.',
+            'danger',
+          );
+          return; // Stop further processing
+        }
       }
+
+      // check if source is empty
+      if (sourceInput.value.trim() === '') {
+        sourceInput.classList.add('is-invalid');
+        sourceInput.classList.remove('is-valid');
+        sourceFeedbackInvalid.textContent =
+          'Please enter the source of this name.';
+        allValid = false;
+      } else {
+        sourceInput.classList.add('is-valid');
+        sourceInput.classList.remove('is-invalid');
+      }
+
+      console.log('Checking naming:', nameInput.value);
+
+      
+
+      // Add the result to the confirmation message
+      publishResults += `<br />Language: ${languageLabel} (${languageCode})
+      <br>Name: ${nameInput.value} 
+      <br>Source: ${sourceInput.value}
+      <br /> The entry will be saved as an ${aliasStatus.value === "true" ? 'alias' : 'label'} on Wikidata.`;
+    
     }
 
     // If all rows are valid, show the confirmation modal
@@ -369,23 +437,26 @@ document
       const languageInput = row.querySelector('input[list]');
       const nameInput = row.querySelector('.name-input input[type="text"]');
       const sourceInput = row.querySelector('.source-input input[type="text"]');
-      const descriptionInput = row.querySelector(
-        '.description-input input[type="text"]',
-      );
-      const aliasInput = row.querySelector('.alias-input input[type="text"]');
+      const aliasStatus = row.querySelector('.alias-status');
+      // const descriptionInput = row.querySelector(
+      //   '.description-input input[type="text"]',
+      // );
+      // const aliasInput = row.querySelector('.alias-input input[type="text"]');
 
       const languageCode = languageInput.value;
       const nameValue = nameInput.value;
       const sourceValue = sourceInput.value;
-      const descriptionValue = descriptionInput.value || '';
-      const aliasValue = aliasInput.value || '';
+      const aliasValue = aliasStatus.value;
+      // const descriptionValue = descriptionInput.value || '';
+      // const aliasValue = aliasInput.value || '';
 
       entries.push({
         language: languageCode,
         name: nameValue,
         source: sourceValue,
-        description: descriptionValue,
         alias: aliasValue,
+        // description: descriptionValue,
+        // alias: aliasValue,
       });
     });
 
@@ -395,7 +466,7 @@ document
     ).value;
 
     // Send the request to publish
-    fetch('/instrument-detail/', {
+    fetch(`/add-name/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
