@@ -49,7 +49,7 @@ function googleTranslateElementInit() {
         '.goog-te-combo',
       ) as HTMLSelectElement;
       if (googleSelect) {
-        googleSelect.classList.add('btn', 'p-0', 'm-0', 'h-100');
+        googleSelect.classList.add('p-0', 'm-0', 'h-100');
         googleSelect.parentElement?.classList.add(
           'h-100',
           'd-flex',

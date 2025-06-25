@@ -60,9 +60,13 @@ header {
   text-align: center;
   width: max-content;
   min-width: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
 
   &:hover {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23435334'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    color: $umil-green-dark;
   }
 }
 
