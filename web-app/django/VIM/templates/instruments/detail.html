@@ -33,7 +33,7 @@
       {% include "instruments/add_name.html" %}
       <button 
         type="button" 
-        class="btn btn-primary" 
+        class="btn add-name" 
         data-bs-toggle="modal" 
         data-bs-target="#addNameModal" 
         data-instrument-name="{{ active_instrument_name.first.name | title}}" 
@@ -104,9 +104,6 @@
                           <div class="name-form-item">
                             <div class="name-field">
                               <span class="view-field">{{ instrumentname.language.en_label }}</span>
-                              <input class="edit-field"
-                                     type="text"
-                                     value="{{ instrumentname.language.en_label }}" />
                             </div>
                           </div>
                         </td>
@@ -114,7 +111,6 @@
                           <div class="name-form-item">
                             <div class="name-field">
                               <span class="view-field">{{ instrumentname.name }}</span>
-                              <input class="edit-field" type="text" value="{{ instrumentname.name }}" />
                             </div>
                           </div>
                         </td>
@@ -122,9 +118,6 @@
                           <div class="name-form-item">
                             <div class="name-field">
                               <span class="view-field">{{ instrumentname.source_name }}</span>
-                              <input class="edit-field"
-                                     type="text"
-                                     value="{{ instrumentname.source_name }}" />
                             </div>
                           </div>
                         </td>
