@@ -1,3 +1,4 @@
+<!-- prettier-ignore-->
 {% extends "base.html" %}
 
 {% load static %}
@@ -12,139 +13,153 @@
 {% endblock ts_files %}
 
 {% block css_files %}
-  <link rel="stylesheet"
-        href="{% static 'assets/css/instruments/detail.css' %}" />
-  <link rel="stylesheet"
-        href="{% static 'assets/css/instruments/index.css' %}" />
-{% endblock css_files %}
-
-{% block content %}
-  <div class="instrument-detail">
-    <div class="detail-header">
-      <h2>
-        {% for instrumentname in active_instrument_name %}
-          {{ instrumentname.name|title }}
-        {% endfor %}
-      </h2>
-      <hr />
-    </div>
-    <br>
-    <div class="button group">
-      {% include "instruments/add_name.html" %}
-      <button 
-        type="button" 
-        class="btn add-name" 
-        data-bs-toggle="modal" 
-        data-bs-target="#addNameModal" 
-        data-instrument-name="{{ active_instrument_name.first.name | title}}" 
-        data-instrument-wikidata-id="{{ instrument.wikidata_id }}">
-          Add Instrument Name
-      </button>
-    </div>
-    <br>
-    <div class="detail-body">
-      <div class="instrument-forms">
-        <table class="table table-sm table-striped table-bordered">
-          <tbody>
-            <tr>
-              <th scope="row">Wikidata ID</th>
-              <td>
-                <div class="name-form-item">
-                  <div class="name-field">
-                    <a class="view-field"
-                       href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
-                       target="_blank">{{ instrument.wikidata_id }}</a>
+<link
+  rel="stylesheet"
+  href="{% static 'assets/css/instruments/detail.css' %}"
+/>
+<link rel="stylesheet" href="{% static 'assets/css/instruments/index.css' %}" />
+{% endblock css_files %} {% block content %}
+<div class="instrument-detail">
+  <div class="detail-header">
+    <h2>{{ active_instrument_label.name|title }}</h2>
+    <hr />
+  </div>
+  <br />
+  <div class="button group">
+    {% include "instruments/add_name.html" %}
+    <button
+      type="button"
+      class="btn add-name"
+      data-bs-toggle="modal"
+      data-bs-target="#addNameModal"
+      data-instrument-name="{{ active_instrument_label.name | title}}"
+      data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+    >
+      Add Instrument Name
+    </button>
+  </div>
+  <br />
+  <div class="detail-body">
+    <div class="instrument-forms">
+      <table class="table table-sm table-striped table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row">Wikidata ID</th>
+            <td>
+              <div class="name-form-item">
+                <div class="name-field">
+                  <a
+                    class="view-field"
+                    href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
+                    target="_blank"
+                    >{{ instrument.wikidata_id }}</a
+                  >
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Hornbostel-Sachs Classification</th>
+            <td>
+              <div class="name-form-item">
+                <div class="name-field">
+                  <span class="view-field"
+                    >{{ instrument.hornbostel_sachs_class }}</span
+                  >
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">MIMO Classification</th>
+            <td>
+              <div class="name-form-item">
+                <div class="name-field">
+                  <a
+                    class="view-field"
+                    href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
+                    target="_blank"
+                    >{{ instrument.mimo_class }}</a
+                  >
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Instrument Names in Different Languages</th>
+            <td>
+              <table class="table table-sm table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span class="name-form-item">Language</span>
+                    </th>
+                    <th scope="col">
+                      <span class="name-form-item">Name</span>
+                    </th>
+                    <th scope="col">
+                      <span class="name-form-item">Source</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for instrumentname in instrument_names %}
+                  <tr>
+                    <td>
+                      <div class="name-form-item">
+                        <div class="name-field">
+                          <span class="view-field"
+                            >{{ instrumentname.language.en_label }}</span
+                          >
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="name-form-item">
+                        <div class="name-field">
+                          <span class="view-field"
+                            >{{ instrumentname.name }}</span
+                          >
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="name-form-item">
+                        <div class="name-field">
+                          <span class="view-field"
+                            >{{ instrumentname.source_name }}</span
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Image</th>
+            <td>
+              <div class="name-form-item">
+                <div class="detail-image">
+                  <img
+                    src="{{ instrument.default_image.url }}"
+                    alt="{{ instrument.default_image.url }}"
+                    class="figure-img img-fluid rounded instrument-image"
+                  />
+                  <div class="detail-image-caption">
+                    <a href="{{ instrument.default_image.url }}" target="_blank"
+                      >View image in full size</a
+                    >
                   </div>
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">Hornbostel-Sachs Classification</th>
-              <td>
-                <div class="name-form-item">
-                  <div class="name-field">
-                    <span class="view-field">{{ instrument.hornbostel_sachs_class }}</span>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">MIMO Classification</th>
-              <td>
-                <div class="name-form-item">
-                  <div class="name-field">
-                    <a class="view-field"
-                       href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
-                       target="_blank">{{ instrument.mimo_class }}</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">Instrument Names in Different Languages</th>
-              <td>
-                <table class="table table-sm table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th scope="col">
-                        <span class="name-form-item">Language</span>
-                      </th>
-                      <th scope="col">
-                        <span class="name-form-item">Name</span>
-                      </th>
-                      <th scope="col">
-                        <span class="name-form-item">Source</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for instrumentname in instrument_names %}
-                      <tr>
-                        <td>
-                          <div class="name-form-item">
-                            <div class="name-field">
-                              <span class="view-field">{{ instrumentname.language.en_label }}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="name-form-item">
-                            <div class="name-field">
-                              <span class="view-field">{{ instrumentname.name }}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="name-form-item">
-                            <div class="name-field">
-                              <span class="view-field">{{ instrumentname.source_name }}</span>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">Image</th>
-              <td>
-                <div class="name-form-item">
-                  <div class="detail-image">
-                    <img src="{{ instrument.default_image.url }}"
-                         alt="{{ instrument.default_image.url }}"
-                         class="figure-img img-fluid rounded instrument-image" />
-                    <div class="detail-image-caption">
-                      <a href="{{ instrument.default_image.url }}" target="_blank">View image in full size</a>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 {% endblock content %}
