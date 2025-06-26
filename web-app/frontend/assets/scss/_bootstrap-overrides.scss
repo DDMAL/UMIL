@@ -18,10 +18,24 @@ $navbar-nav-link-padding-x: 1rem;
 $navbar-light-color: $umil-cream;
 $navbar-light-active-color: $umil-green-dark;
 
-// Import Bootstrap functions, variables, and mixins
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
+$utilities: (
+  "min-viewport-height": (
+    property: min-height,
+    class: min-vh,
+    values: (
+      100: 100vh,
+      80: 80vh,
+    ),
+  ),
+  "viewport-height": (
+    property: height,
+    class: vh,
+    values: (
+      100: 100vh,
+      10: 10vh,
+    ),
+  ),
+);
 
 // Import Bootstrap
 @import "bootstrap/scss/bootstrap";

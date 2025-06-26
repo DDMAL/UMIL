@@ -1,0 +1,83 @@
+@use "../variables" as *;
+
+@keyframes settleDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+  }
+
+  70% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.95);
+  }
+}
+
+#bg-decor {
+  animation: fadeInUp 0.7s ease-in-out 0s forwards;
+}
+
+.content-container h1 {
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  animation: settleDown 0.7s ease-in-out 0s forwards;
+  color: $umil-green-dark;
+}
+
+.content-container p {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: $umil-green-dark;
+}
+
+.start-btn:hover {
+  animation: pulse 0.5s both;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .content-container h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .content-container p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 2;
+  }
+
+  #bg-decor {
+    position: fixed;
+    bottom: 25%;
+    left: 0;
+    width: 100%;
+    max-height: 45vh;
+    object-fit: contain;
+  }
+}
