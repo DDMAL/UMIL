@@ -1,39 +1,66 @@
-<h2>New Instrument Names</h2>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Source</th>
-  </tr>
-  {% for instrument in instrument_names %}
-  <tr>
-    <td>{{ instrument.name }}</td>
-    <td>{{ instrument.source_name }}</td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td colspan="2">No contacts found.</td>
-  </tr>
-  {% endfor %}
-</table>
-<button type="button" class="btn btn-secondary" id="authorizeBtn">
-  Submit to Wikidata
-</button>
+<!-- prettier-ignore -->
+{% extends "base.html" %}
 
+{% load static %}
+{% load django_vite %}
+
+{% block title %}
+  Instrument Detail
+{% endblock title %}
+
+{% block css_files %}
+<link
+  rel="stylesheet"
+  href="{% static 'assets/css/instruments/detail.css' %}"
+/>
+<link rel="stylesheet" href="{% static 'assets/css/instruments/index.css' %}" />
+{% endblock css_files %} {% block content %}
+<div class="instrument-detail">
+  <div class="detail-header">
+    <h2>New Instrument Names</h2>
+    <hr />
+  </div>
+  <br />
+  <div class="detail-body">
+    <table class="table table-sm table-striped table-bordered">
+      <tr>
+        <th>Language</th>
+        <th>Name</th>
+        <th>Source</th>
+      </tr>
+      {% for instrument in instrument_names %}
+      <tr>
+        <td>{{ instrument.language.en_label }}</td>
+        <td>{{ instrument.name }}</td>
+        <td>{{ instrument.source_name }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3">No new names found.</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <button type="button" class="btn btn-secondary" id="authorizeBtn">
+    Submit to Wikidata
+  </button>
+  <script>
+    document.getElementById("authorizeBtn").onclick = function () {
+      fetch("{% url 'get_wikidata_access_token' %}")
+        .then((response) => response.json())
+        .then((data) => {
+          // Check if access token is available
+          if (data.access_token) {
+            fetch("{% url 'publish' %}"); // Call the publish endpoint
+            alert("Instrument names submitted to Wikidata successfully.");
+            window.location.reload();
+          } else {
+            // If access token is not available, redirect to authorization
+            window.location.href = "{% url 'wikidata_authorize' %}";
+          }
+        });
+    };
+  </script>
+</div>
+{% endblock content %}
 <!--script to handle the button click and submit data to Wikidata-->
-<script>
-  document.getElementById("authorizeBtn").onclick = function () {
-    fetch("{% url 'get_wikidata_access_token' %}")
-      .then((response) => response.json())
-      .then((data) => {
-        // Check if access token is available
-        if (data.access_token) {
-          fetch("{% url 'publish' %}"); // Call the publish endpoint
-          alert("Instrument names submitted to Wikidata successfully.");
-          window.location.reload();
-        } else {
-          // If access token is not available, redirect to authorization
-          window.location.href = "{% url 'wikidata_authorize' %}";
-        }
-      });
-  };
-</script>
