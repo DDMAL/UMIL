@@ -23,11 +23,7 @@
     <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
       <div class="w-100">
         <h2 class="notranslate">
-          {% for instrumentname in instrument_names %}
-            {% if instrumentname.language.en_label == active_language.en_label %}
-              {{ instrumentname.name|title }}
-            {% endif %}
-          {% endfor %}
+          {{ active_instrument_label.name|title }}
         </h2>
         <hr class="w-100 mt-0" />
       </div>
