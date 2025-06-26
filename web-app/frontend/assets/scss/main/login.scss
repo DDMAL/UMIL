@@ -1,0 +1,62 @@
+@use "../variables" as *;
+
+.account-container {
+  background-color: white;
+  border: 3px solid $umil-green-primary;
+  border-radius: 30px;
+  min-height: 60vh;
+  color: $umil-green-dark;
+}
+
+#signup-option-separator {
+  border-left: 2px solid rgb(232 232 232);
+}
+
+input {
+  border: 1px solid $umil-green-primary;
+  border-radius: 4px;
+  background-color: $umil-cream;
+  padding: 5px;
+  color: $umil-green-dark;
+  width: 80%;
+}
+
+input:hover {
+  border: 1px solid $umil-green-dark;
+  background-color: $umil-cream;
+  color: $umil-green-dark;
+}
+
+input:focus {
+  border: 1px solid $umil-green-dark;
+  box-shadow: 0 0 5px $umil-green-primary;
+  outline: none;
+}
+
+input::placeholder {
+  color: $umil-green-primary;
+}
+
+p {
+  color: $umil-green-dark;
+}
+
+a {
+  color: $umil-green-dark;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: $umil-green-primary;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.errorlist {
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+}
