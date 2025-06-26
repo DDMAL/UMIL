@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "watch": "vite build --watch"
+    "watch": "vite build --watch",
+    "sass:watch": "sass assets/scss:assets/css --watch",
+    "sass:build": "sass assets/scss:assets/css"
   },
   "keywords": [],
   "author": "",

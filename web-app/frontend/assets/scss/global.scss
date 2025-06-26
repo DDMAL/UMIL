@@ -11,23 +11,6 @@ body {
 }
 
 // Header styles - appears on all pages
-header {
-  .search-input {
-    background-color: $umil-cream;
-    color: $umil-green-dark;
-
-    &::placeholder {
-      color: $umil-green-dark;
-    }
-
-    &:focus {
-      background-color: $umil-cream;
-      outline: none;
-      border: 1px solid $umil-cream;
-    }
-  }
-}
-
 // Dropdown customization - used in header
 .umil-dropdown-menu {
   background-color: $umil-cream;
