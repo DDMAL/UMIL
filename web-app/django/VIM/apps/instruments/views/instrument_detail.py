@@ -26,8 +26,8 @@ class InstrumentDetail(DetailView):
             else Language.objects.get(en_label="English")  # default in English
         )
 
-        context["active_instrument_name"] = (context["instrument_names"].filter(
-            language=context["active_language"]))
+        context["active_instrument_label"] = (context["instrument_names"].filter(
+            language=context["active_language"])).filter(is_alias=False).first()
 
         context["languages"] = Language.objects.all()
 
