@@ -4,6 +4,7 @@
 // Bootstrap variable overrides (MUST come before importing Bootstrap)
 $primary: $umil-green-primary;
 $secondary: $umil-green-dark;
+$dark: $umil-green-dark;
 $light: $umil-cream;
 $success: $umil-green-light;
 
@@ -18,23 +19,53 @@ $navbar-nav-link-padding-x: 1rem;
 $navbar-light-color: $umil-cream;
 $navbar-light-active-color: $umil-green-dark;
 
-$utilities: (
-  "min-viewport-height": (
-    property: min-height,
-    class: min-vh,
-    values: (
-      100: 100vh,
-      80: 80vh,
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$position-values: map-merge(
+  $position-values,
+  (
+    5: 5%,
+  )
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "min-viewport-height": (
+      property: min-height,
+      class: min-vh,
+      values: (
+        100: 100vh,
+        80: 80vh,
+        10: 10vh,
+      ),
     ),
-  ),
-  "viewport-height": (
-    property: height,
-    class: vh,
-    values: (
-      100: 100vh,
-      10: 10vh,
+    "viewport-height": (
+      property: height,
+      class: vh,
+      values: (
+        100: 100vh,
+        20: 20vh,
+      ),
     ),
-  ),
+    "min-viewport-width": (
+      property: min-width,
+      class: min-vw,
+      values: (
+        100: 100vw,
+        80: 80vw,
+      ),
+    ),
+    "top": (
+      property: top,
+      class: top,
+      values: $position-values,
+    ),
+  )
 );
 
 // Import Bootstrap
