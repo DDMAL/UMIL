@@ -304,6 +304,7 @@ document
           nameInput.value,
         )
         if (result.exists) {
+          nameInput.classList.remove('is-valid');
           nameInput.classList.add('is-invalid');
           nameFeedbackInvalid.textContent =
             `This instrument already has this name on Wikidata in ${languageLabel} (${languageCode}).`;
@@ -367,7 +368,7 @@ document
       publishResults += `<br />Language: ${languageLabel} (${languageCode})
       <br>Name: ${nameInput.value} 
       <br>Source: ${sourceInput.value}
-      <br /> The entry will be saved as an ${aliasStatus.value === "true" ? 'alias' : 'label'} on Wikidata.`;
+      <br> The entry will be saved as an ${aliasStatus.value === "true" ? 'alias' : 'label'} on Wikidata.<br />`;
     
     }
 
