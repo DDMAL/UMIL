@@ -12,6 +12,8 @@ $success: $umil-green-light;
 $font-family-sans-serif: "Noto Sans", sans-serif;
 $font-weight-base: 400;
 $font-weight-bold: 700;
+$headings-color: $umil-green-dark; // All heading colors (h1-h6)
+$body-color: $umil-green-dark; // Default text color including paragraphs
 
 // Component overrides
 $navbar-brand-font-size: 1.25rem;
@@ -41,6 +43,7 @@ $utilities: map-merge(
       values: (
         100: 100vh,
         80: 80vh,
+        60: 60vh,
         10: 10vh,
       ),
     ),
