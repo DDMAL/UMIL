@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-12">
         <div class="container content-container px-0 px-md-4 py-4 d-flex justify-content-center align-items-center min-vh-80 min-vw-80">
-          <div class="col-12 p-4 align-content-center account-container position-relative">
+          <div class="col-12 p-4 align-content-center position-relative min-vh-60 account-container">
             {% if form.errors %}
               <div class="alert alert-danger p-2 z-2 position-absolute top-5">
                 {% for field, error in form.errors.items %}{{ error }}{% endfor %}
