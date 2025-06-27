@@ -1,0 +1,96 @@
+@use "../variables" as *;
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
+h4 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  margin-bottom: 0 !important;
+}
+
+.container-border {
+  border: 3px solid $umil-green-primary;
+  border-radius: 30px;
+}
+
+/* sidebar */
+.info-block {
+  border: 1.5px solid $umil-green-light;
+  border-radius: 10px;
+}
+
+// TODO: Clean up
+.list-group-item {
+  border: none !important;
+  background-color: transparent !important;
+  color: $umil-green-dark;
+}
+
+.list-group-item:hover {
+  color: $umil-green-primary;
+}
+
+.selected {
+  color: $umil-green-dark;
+  font-weight: bold;
+}
+
+.toggle-more {
+  color: #0b0f07;
+}
+
+.toggle-more:hover {
+  cursor: pointer;
+  color: $umil-green-primary;
+}
+
+/* body */
+.display-btn {
+  font-weight: bold !important;
+  color: $umil-green-primary !important;
+  width: 30px !important;
+  border: none !important;
+}
+
+.masonry-btn {
+  font-size: 20px !important;
+}
+
+.std-btn {
+  font-size: 23px !important;
+}
+
+.highlighted-btn {
+  color: $umil-green-dark !important;
+}
+
+/* list view */
+// .list-item-container {
+//   min-height: 200px;
+//   max-height: 300px;
+//   overflow: hidden;
+// }
+
+// .more-info {
+//   color: #435334;
+// }
+
+// .more-info:hover {
+//   border: 1px solid #435334;
+// }
+
+/* standard view */
+.square-box {
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.square-box img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

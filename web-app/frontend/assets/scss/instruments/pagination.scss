@@ -1,0 +1,33 @@
+@use "../variables" as *;
+
+input[type="number"] {
+  border: 1px solid $umil-green-primary;
+  border-radius: 4px;
+  padding: 5px;
+  width: 50px;
+  color: $umil-green-dark;
+  margin: 0 0.3rem;
+}
+
+input[type="number"]:hover {
+  border: 1px solid $umil-green-dark;
+  color: $umil-green-dark;
+}
+
+input[type="number"]:focus {
+  border: 1px solid $umil-green-dark;
+  box-shadow: 0 0 5px $umil-green-primary;
+  outline: none;
+}
+
+.btn-check:checked + .btn {
+  color: $umil-green-dark;
+  border: none;
+  padding: 0.1rem 0.2rem;
+}
+
+.btn-check:not(:checked) + .btn {
+  color: $umil-green-primary;
+  border: none;
+  padding: 0.1rem 0.2rem;
+}
