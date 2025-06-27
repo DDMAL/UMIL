@@ -16,10 +16,16 @@ $headings-color: $umil-green-dark; // All heading colors (h1-h6)
 $body-color: $umil-green-dark; // Default text color including paragraphs
 
 // Component overrides
+// Navbar
 $navbar-brand-font-size: 1.25rem;
 $navbar-nav-link-padding-x: 1rem;
 $navbar-light-color: $umil-cream;
 $navbar-light-active-color: $umil-green-dark;
+// Card
+$card-bg: $umil-cream;
+// Pagination
+$pagination-color: $umil-green-dark;
+$pagination-hover-color: $umil-green-primary;
 
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
