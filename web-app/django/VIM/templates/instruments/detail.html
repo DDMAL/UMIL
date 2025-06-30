@@ -67,6 +67,11 @@
                       <th scope="col" class="w-30">
                         <span>Source</span>
                       </th>
+                      {% if user.is_authenticated %}
+                        <th scope="col">
+                          <span class="name-form-item">Actions</span>
+                        </th>
+                      {% endif %}
                     </tr>
                   </thead>
                   <tbody id="languageTableBody">
@@ -85,6 +90,20 @@
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="action-buttons">
+                            <button class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteNameModal"
+                                    data-instrument-language="{{ instrumentname.language.en_label }}"
+                                    data-instrument-name="{{ instrumentname.name }}"
+                                    data-instrument-source="{{ instrumentname.source_name }}"
+                                    data-instrument-id="{{ instrumentname.id }}"
+                                    data-instrument-pk="{{ instrument.pk }}">
+                              Delete
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -138,6 +157,18 @@
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div class="action-buttons">
+                      <button class="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteNameModal"
+                              data-instrument-language="{{ instrumentname.language.en_label }}"
+                              data-instrument-name="{{ instrumentname.name }}"
+                              data-instrument-source="{{ instrumentname.source_name }}"
+                              data-instrument-id="{{ instrumentname.id }}"
+                              data-instrument-pk="{{ instrument.pk }}">
+                        Delete
+                      </button>
                     </div>
                   {% endfor %}
                   <div class="add-name-container">
