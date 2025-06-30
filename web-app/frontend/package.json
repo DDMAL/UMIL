@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "watch": "vite build --watch",
-    "sass:watch": "sass assets/scss:assets/css --watch",
-    "sass:build": "sass assets/scss:assets/css"
+    "sass:watch": "sass assets/scss:assets/css --watch --load-path=node_modules",
+    "sass:build": "sass assets/scss:assets/css --load-path=node_modules"
   },
   "keywords": [],
   "author": "",
