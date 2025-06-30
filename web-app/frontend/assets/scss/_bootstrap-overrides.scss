@@ -6,7 +6,6 @@ $primary: $umil-green-primary;
 $secondary: $umil-green-dark;
 $dark: $umil-green-dark;
 $light: $umil-cream;
-$success: $umil-green-light;
 
 // Typography overrides
 $font-family-sans-serif: "Noto Sans", sans-serif;
@@ -59,6 +58,27 @@ $utilities: map-merge(
       values: (
         100: 100vh,
         20: 20vh,
+      ),
+    ),
+    "width": (
+      property: width,
+      class: w,
+      values: (
+        20: 20%,
+        30: 30%,
+        25: 25%,
+        50: 50%,
+        75: 75%,
+        100: 100%,
+        auto: auto,
+      ),
+    ),
+    "max-width": (
+      property: max-width,
+      class: mw,
+      values: (
+        100: 100%,
+        50: 50%,
       ),
     ),
     "min-viewport-width": (
