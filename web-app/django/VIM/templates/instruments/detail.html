@@ -100,6 +100,9 @@
                     <th scope="col">
                       <span class="name-form-item">Source</span>
                     </th>
+                    <th scope="col">
+                      <span class="name-form-item">Actions</span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -130,6 +133,23 @@
                             >{{ instrumentname.source_name }}</span
                           >
                         </div>
+                      </div>
+                    </td>
+                    <td>
+                      {% include "instruments/delete_name.html" %}
+                      <div class="button-group">
+                        {% if instrumentname.contributor == request.user %}
+                        <button
+                          class="btn delete"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteNameModal"
+                          data-instrument-name="{{ instrumentname.name }}"
+                          data-instrument-source="{{ instrumentname.source_name }}"
+                          data-instrument-id="{{ instrumentname.id }}"
+                        >
+                          Delete
+                        </button>
+                        {% endif %}
                       </div>
                     </td>
                   </tr>
