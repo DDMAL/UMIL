@@ -2,97 +2,163 @@ import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import { DisplayMode } from './Types';
 
-const masonryBtn = document.getElementById('masonry-btn');
-const stdBtn = document.getElementById('std-btn');
+class DisplayManager {
+  private masonryBtn: HTMLElement;
+  private stdBtn: HTMLElement;
+  private masonryView: HTMLElement;
+  private stdView: HTMLElement;
+  private currentMasonry: Masonry | null = null; // Keep track of the current masonry instance
 
-const masonryView = document.getElementById('masonry-view');
-const stdView = document.getElementById('std-view');
+  constructor() {
+    // Initialize DOM elements
+    this.masonryBtn = document.getElementById('masonry-btn');
+    this.stdBtn = document.getElementById('std-btn');
+    this.masonryView = document.getElementById('masonry-view');
+    this.stdView = document.getElementById('std-view');
 
-updateDisplayMode();
-
-function setDisplayMode(displayMode: DisplayMode) {
-  localStorage.setItem('displayMode', displayMode);
-}
-
-function getDisplayMode() {
-  return localStorage.getItem('displayMode');
-}
-
-function updateDisplayMode() {
-  const currentDisplayMode = getDisplayMode() || 'masonry';
-  switch (currentDisplayMode) {
-    case 'masonry':
-      setMasonryView();
-      masonryView.style.display = '';
-      stdView.style.display = 'none';
-      masonryBtn.classList.toggle('highlighted-btn');
-      stdBtn.classList.remove('highlighted-btn');
-      break;
-    case 'standard':
-      masonryView.style.display = 'none';
-      stdView.style.display = '';
-      stdBtn.classList.toggle('highlighted-btn');
-      masonryBtn.classList.remove('highlighted-btn');
-      break;
-    default:
-      break;
-  }
-}
-
-// Switch to the next mode
-masonryBtn.addEventListener('click', () => {
-  if (getDisplayMode() !== 'masonry') {
-    setDisplayMode('masonry');
-    updateDisplayMode();
-  }
-});
-
-stdBtn.addEventListener('click', () => {
-  if (getDisplayMode() !== 'standard') {
-    setDisplayMode('standard');
-    updateDisplayMode();
-  }
-});
-
-function setMasonryView() {
-  // Initialize Masonry
-  let masonryGrid = document.getElementById('masonry-view');
-  let masonry = new Masonry(masonryGrid, {
-    percentPosition: true,
-  });
-
-  // Initialize ImagesLoaded
-  let imgLoad = imagesLoaded(masonryGrid);
-
-  // When all images are loaded, relayout Masonry
-  imgLoad.on('always', function () {
-    masonry.layout();
-  });
-}
-
-// HBS facet settings
-const items = document.querySelectorAll('.list-group-item');
-
-updateHbsFacet();
-
-function updateHbsFacet() {
-  const url = new URL(window.location.href);
-  const selectedHbsFacet = url.searchParams.get('hbs_facet') || '';
-  localStorage.setItem('selectedHbsFacet', selectedHbsFacet);
-  items.forEach((item) => {
-    const current_item = item.getAttribute('current-value');
-    if (current_item === selectedHbsFacet) {
-      item.classList.add('selected');
-    } else {
-      item.classList.remove('selected');
+    if (
+      !this.masonryBtn ||
+      !this.stdBtn ||
+      !this.masonryView ||
+      !this.stdView
+    ) {
+      console.error('Required DOM elements not found');
+      return;
     }
-  });
+
+    this.initializeEventListeners();
+    this.updateDisplayMode();
+  }
+
+  private initializeEventListeners(): void {
+    // Switch to masonry mode
+    this.masonryBtn.addEventListener('click', () => {
+      if (this.getDisplayMode() !== 'masonry') {
+        this.setDisplayMode('masonry');
+        this.updateDisplayMode();
+      }
+    });
+
+    // Switch to standard mode
+    this.stdBtn.addEventListener('click', () => {
+      if (this.getDisplayMode() !== 'standard') {
+        this.setDisplayMode('standard');
+        this.updateDisplayMode();
+      }
+    });
+
+    // Handle window resize for masonry layout
+    window.addEventListener('resize', () => {
+      if (this.getDisplayMode() === 'masonry' && this.currentMasonry) {
+        this.currentMasonry.layout();
+      }
+    });
+  }
+
+  private setDisplayMode(displayMode: DisplayMode): void {
+    localStorage.setItem('displayMode', displayMode);
+  }
+
+  private getDisplayMode(): DisplayMode {
+    return (localStorage.getItem('displayMode') || 'masonry') as DisplayMode;
+  }
+
+  private updateDisplayMode(): void {
+    const currentDisplayMode = this.getDisplayMode();
+
+    // Update button states
+    this.masonryBtn.classList.remove('highlighted-btn');
+    this.stdBtn.classList.remove('highlighted-btn');
+
+    switch (currentDisplayMode) {
+      case 'masonry':
+        this.initializeMasonryView();
+        this.masonryView.style.display = '';
+        this.stdView.style.display = 'none';
+        this.masonryBtn.classList.add('highlighted-btn');
+        break;
+      case 'standard':
+        this.destroyMasonryView();
+        this.masonryView.style.display = 'none';
+        this.stdView.style.display = '';
+        this.stdBtn.classList.add('highlighted-btn');
+        break;
+    }
+  }
+
+  private initializeMasonryView(): void {
+    // Clean up any existing masonry instance
+    this.destroyMasonryView();
+
+    // Initialize new masonry instance
+    this.currentMasonry = new Masonry(this.masonryView, {
+      itemSelector: '.col',
+      percentPosition: true,
+      transitionDuration: 0,
+    });
+
+    // Handle image loading
+    const imgLoad = imagesLoaded(this.masonryView);
+
+    // Update layout as each image loads
+    imgLoad.on('progress', () => {
+      this.currentMasonry?.layout();
+    });
+
+    // Final layout update when all images are loaded
+    imgLoad.on('always', () => {
+      this.currentMasonry?.layout();
+    });
+  }
+
+  private destroyMasonryView(): void {
+    if (this.currentMasonry) {
+      this.currentMasonry.destroy();
+      this.currentMasonry = null;
+    }
+  }
 }
 
-items.forEach((item) => {
-  item.addEventListener('click', function () {
-    const current_item = item.getAttribute('current-value');
-    localStorage.setItem('selectedHbsFacet', current_item);
-    updateHbsFacet();
-  });
+// Initialize HBS facet functionality
+class HbsFacetManager {
+  private items: NodeListOf<Element>;
+
+  constructor() {
+    this.items = document.querySelectorAll('.list-group-item');
+    this.initializeEventListeners();
+    this.updateHbsFacet();
+  }
+
+  private initializeEventListeners(): void {
+    this.items.forEach((item) => {
+      item.addEventListener('click', () => {
+        const currentItem = item.getAttribute('current-value');
+        if (currentItem) {
+          localStorage.setItem('selectedHbsFacet', currentItem);
+          this.updateHbsFacet();
+        }
+      });
+    });
+  }
+
+  private updateHbsFacet(): void {
+    const url = new URL(window.location.href);
+    const selectedHbsFacet = url.searchParams.get('hbs_facet') || '';
+    localStorage.setItem('selectedHbsFacet', selectedHbsFacet);
+
+    this.items.forEach((item) => {
+      const currentItem = item.getAttribute('current-value');
+      if (currentItem === selectedHbsFacet) {
+        item.classList.add('selected');
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+  }
+}
+
+// Initialize managers when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new DisplayManager();
+  new HbsFacetManager();
 });
