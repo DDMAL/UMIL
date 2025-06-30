@@ -1,0 +1,35 @@
+{% load static %}
+
+<!-- Confirmation Modal Structure -->
+<div
+  class="modal fade"
+  id="deleteNameModal"
+  tabindex="-1"
+  aria-labelledby="deleteNameModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteNameModalLabel">Confirm Deletion</h5>
+      </div>
+      <div class="modal-body">
+        <p id="deleteName"></p>
+        <p>Are you sure you want to delete the following from UMIL ?</p>
+        <p>
+          Name: <span id="instrumentNameInModal"></span>
+          <br />
+          Source: <span id="instrumentSourceInModal"></span>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmDeleteBtn">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
