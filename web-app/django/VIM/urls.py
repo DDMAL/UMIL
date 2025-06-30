@@ -27,7 +27,7 @@ from VIM.apps.instruments.views.wiki_apis import (
     get_wikidata_access_token,
     edit_wikidata
 )
-from VIM.apps.instruments.views.update_umil_db import add_name
+from VIM.apps.instruments.views.update_umil_db import (add_name, delete_name)
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
@@ -37,6 +37,7 @@ urlpatterns = i18n_patterns(
     path("instrument/<int:pk>/", InstrumentDetail.as_view(), name="instrument-detail"),
     path("instruments/edit-wikidata/", InstrumentNameListView.as_view(), name="edit-wikidata"),
     path("add-name/", add_name, name="add-name"),
+    path("delete-name/", delete_name, name="delete-name"),
     path("oauth/authorize/", wikidata_authorize, name="wikidata_authorize"),
     path("oauth/callback/", wikidata_callback, name="wikidata_callback"),
     path(
