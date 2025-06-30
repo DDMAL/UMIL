@@ -86,18 +86,22 @@ th[scope='row'] {
   border: none;
   border-radius: 3px;
   margin-right: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .btn.add-name {
   background-color: #ffc107;
+  border: #e0a800;
 }
 
 .btn.add-name:hover {
   background-color: #e0a800;
 }
 
-.btn.cancel {
+.btn.delete {
   background-color: #dc3545;
+  border: #c82333
 }
-.btn.publish {
-  background-color: #28a745;
+
+.btn.delete:hover {
+  background-color: #c82333;
 }

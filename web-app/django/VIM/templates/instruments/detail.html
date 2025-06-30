@@ -82,6 +82,9 @@ block css_files %}
                     <th scope="col" class="w-30">
                       <span>Source</span>
                     </th>
+                    <th scope="col">
+                      <span class="name-form-item">Actions</span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -112,6 +115,23 @@ block css_files %}
                         <span class="view-field flex-grow-1"
                           >{{ instrumentname.source_name }}</span
                         >
+                      </div>
+                    </td>
+                    <td>
+                      {% include "instruments/delete_name.html" %}
+                      <div class="button-group">
+                        {% if instrumentname.contributor == request.user %}
+                        <button
+                          class="btn delete"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteNameModal"
+                          data-instrument-name="{{ instrumentname.name }}"
+                          data-instrument-source="{{ instrumentname.source_name }}"
+                          data-instrument-id="{{ instrumentname.id }}"
+                        >
+                          Delete
+                        </button>
+                        {% endif %}
                       </div>
                     </td>
                   </tr>
