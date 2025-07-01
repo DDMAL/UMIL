@@ -1,0 +1,116 @@
+// Import shared variables
+@use "variables" as *;
+
+// Bootstrap variable overrides (MUST come before importing Bootstrap)
+$primary: $umil-green-primary;
+$secondary: $umil-green-dark;
+$dark: $umil-green-dark;
+$light: $umil-cream;
+
+// Typography overrides
+$font-family-sans-serif: "Noto Sans", sans-serif;
+$font-weight-base: 400;
+$font-weight-bold: 700;
+$headings-color: $umil-green-dark; // All heading colors (h1-h6)
+$body-color: $umil-green-dark; // Default text color including paragraphs
+
+// Component overrides
+// Navbar
+$navbar-brand-font-size: 1.25rem;
+$navbar-nav-link-padding-x: 1rem;
+$navbar-light-color: $umil-cream;
+$navbar-light-active-color: $umil-green-dark;
+// Card
+$card-bg: $umil-cream;
+// Pagination
+$pagination-color: $umil-green-dark;
+$pagination-hover-color: $umil-green-primary;
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+$position-values: map-merge(
+  $position-values,
+  (
+    5: 5%,
+  )
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "min-viewport-height": (
+      property: min-height,
+      class: min-vh,
+      values: (
+        100: 100vh,
+        80: 80vh,
+        60: 60vh,
+        10: 10vh,
+      ),
+    ),
+    "viewport-height": (
+      property: height,
+      class: vh,
+      values: (
+        100: 100vh,
+        20: 20vh,
+      ),
+    ),
+    "width": (
+      property: width,
+      class: w,
+      values: (
+        20: 20%,
+        30: 30%,
+        25: 25%,
+        50: 50%,
+        75: 75%,
+        100: 100%,
+        auto: auto,
+      ),
+    ),
+    "max-width": (
+      property: max-width,
+      class: mw,
+      values: (
+        100: 100%,
+        50: 50%,
+      ),
+    ),
+    "min-viewport-width": (
+      property: min-width,
+      class: min-vw,
+      values: (
+        100: 100vw,
+        80: 80vw,
+      ),
+    ),
+    "top": (
+      property: top,
+      class: top,
+      values: $position-values,
+    ),
+  )
+);
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// After Bootstrap import
+.btn-outline-light {
+  @include button-outline-variant(
+    $color: $umil-cream,
+    // --bs-btn-color
+    $color-hover: $umil-green-dark,
+    // --bs-btn-hover-color
+    $active-background: $umil-cream,
+    // --bs-btn-hover-bg & --bs-btn-active-bg
+    $active-border: $umil-cream,
+    // --bs-btn-hover-border-color & --bs-btn-active-border-color
+    $active-color: $umil-green-dark // --bs-btn-active-color
+  );
+}

@@ -35,4 +35,4 @@ jobs:
           npm ci
 
       - name: Run Prettier
-        run: npx prettier --check "**/*.css" "**/*.js" "**/*.ts"
+        run: npx prettier --check "**/*.scss" "**/*.js" "**/*.ts"

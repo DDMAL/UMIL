@@ -1,0 +1,39 @@
+@use "../variables" as *;
+
+.account-container {
+  background-color: white;
+  border: 3px solid $umil-green-primary;
+  border-radius: 30px;
+}
+
+#signup-option-separator {
+  border-left: 2px solid rgb(232 232 232);
+}
+
+input {
+  border: 1px solid $umil-green-primary;
+  border-radius: 4px;
+  background-color: $umil-cream;
+  padding: 5px;
+  width: 80%;
+}
+
+input:hover {
+  border: 1px solid $umil-green-dark;
+}
+
+input:focus {
+  border: 1px solid $umil-green-dark;
+  box-shadow: 0 0 5px $umil-green-primary;
+  outline: none;
+}
+
+input::placeholder {
+  color: $umil-green-primary;
+}
+
+ul.errorlist {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0.5em;
+}

@@ -1,0 +1,63 @@
+// Import shared variables
+@use "variables" as *;
+@use "bootstrap-overrides" as *;
+
+// Custom variables (override Bootstrap's default variables)
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&display=swap");
+
+// Global styles - shared across all pages
+body {
+  font-family: $font-family-sans-serif;
+}
+
+// Header styles - appears on all pages
+// Dropdown customization - used in header
+.umil-dropdown-menu {
+  background-color: $umil-cream;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.umil-dropdown-item {
+  color: $umil-green-dark;
+
+  &:hover {
+    background-color: $umil-green-light;
+  }
+}
+
+// Google Translate styling - appears in header
+.goog-te-combo,
+.goog-te-combo:valid {
+  color: $umil-cream;
+  font-size: 16px;
+  font-family: $font-family-sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23faf1e4'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.2em center;
+  background-size: 1.5em;
+  text-align-last: center;
+  text-align: center;
+  width: max-content;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+
+  &:hover {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23435334'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    color: $umil-green-dark;
+  }
+}
+
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  font-size: 0 !important;
+}
