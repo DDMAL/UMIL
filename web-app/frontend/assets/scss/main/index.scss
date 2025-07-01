@@ -1,3 +1,5 @@
+@use "../variables" as *;
+
 @keyframes settleDown {
   0% {
     opacity: 0;
@@ -11,11 +13,11 @@
 
 @keyframes fadeInUp {
   0% {
-    opacity: 0.2;
+    opacity: 0;
     transform: translateY(100%);
   }
   100% {
-    opacity: 1;
+    opacity: 0.5;
     transform: translateY(0px);
   }
 }
@@ -34,14 +36,7 @@
   }
 }
 
-.content-container {
-  min-height: 80vh;
-  position: relative;
-}
-
 #bg-decor {
-  position: absolute;
-  bottom: 0;
   animation: fadeInUp 0.7s ease-in-out 0s forwards;
 }
 
@@ -49,30 +44,15 @@
   margin-bottom: 1rem;
   font-size: 3rem;
   animation: settleDown 0.7s ease-in-out 0s forwards;
-  color: #435334;
 }
 
 .content-container p {
   margin-bottom: 2rem;
   font-size: 1.5rem;
   line-height: 1.5;
-  color: #435334;
-}
-
-.start-btn {
-  font-family: 'Noto Sans', sans-serif;
-}
-
-.start-btn {
-  padding: 1rem 3rem;
-  font-size: 1rem;
-  border: none;
-  color: #435334;
-  cursor: pointer;
 }
 
 .start-btn:hover {
-  color: #435334;
   animation: pulse 0.5s both;
 }
 

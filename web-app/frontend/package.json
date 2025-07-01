@@ -6,22 +6,28 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
-    "watch": "vite build --watch"
+    "watch": "vite build --watch",
+    "sass:watch": "sass assets/scss:assets/css --watch --load-path=node_modules",
+    "sass:build": "sass assets/scss:assets/css --load-path=node_modules"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "@types/imagesloaded": "^4.1.6",
     "@types/masonry-layout": "^4.2.8",
     "@types/node": "^22.15.18",
     "prettier": "^3.5.3",
+    "sass": "^1.89.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-full-reload": "^1.2.0"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.7",
     "imagesloaded": "^5.0.0",
     "masonry-layout": "^4.2.2"
   }

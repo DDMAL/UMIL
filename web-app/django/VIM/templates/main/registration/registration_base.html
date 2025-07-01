@@ -12,13 +12,13 @@
 {% endblock css_files %}
 
 {% block content %}
-  <div class="container py-0 py-md-5">
+  <div class="container py-0">
     <div class="row">
       <div class="col-12">
-        <div class="container content-container px-0 px-md-4 py-4 d-flex justify-content-center align-items-center">
-          <div class="col-12 p-4 align-content-center account-container position-relative">
+        <div class="container content-container px-0 px-md-4 py-4 d-flex justify-content-center align-items-center min-vh-80 min-vw-80">
+          <div class="col-12 p-4 align-content-center position-relative min-vh-60 account-container">
             {% if form.errors %}
-              <div class="alert alert-danger p-2 z-2 message-container">
+              <div class="alert alert-danger p-2 z-2 position-absolute top-5">
                 {% for field, error in form.errors.items %}{{ error }}{% endfor %}
               </div>
             {% endif %}
@@ -38,7 +38,7 @@
                 <div class="col-12 col-md-6 my-4 create-account-link d-flex align-items-center">
                   <div id="signup-option-separator" class="flex-fill d-none d-md-block">
                     <div class="text-center" id="error">
-                      <img src="{% static "assets/images/sign-up.svg" %}" alt="sign up image" id="signup-decor" class="my-4" />
+                      <img src="{% static "assets/images/sign-up.svg" %}" alt="sign up image" class="my-4 vh-20" />
                       {% block right_column %}
                       {% endblock right_column %}
 

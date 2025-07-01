@@ -110,3 +110,4 @@ venv
 # Frontend
 web-app/frontend/dist/
 web-app/frontend/node_modules/
+web-app/frontend/assets/css/

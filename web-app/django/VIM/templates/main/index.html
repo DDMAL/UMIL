@@ -11,7 +11,7 @@
 {% endblock css_files %}
 
 {% block content %}
-  <div class="container content-container d-flex align-items-center justify-content-center">
+  <div class="container content-container d-flex align-items-center justify-content-center min-vh-80 position-relative">
     <div class="z-2">
       <!-- Desktop Layout -->
       <div class="d-none d-md-block">
@@ -96,6 +96,6 @@
         </div>
       </div>
     </div>
-    <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1 opacity-50 img-fluid w-100 w-md-auto" />
+    <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1 opacity-50 img-fluid w-100 position-absolute bottom-0" />
   </div>
 {% endblock content %}

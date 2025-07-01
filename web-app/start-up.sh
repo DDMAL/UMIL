@@ -4,6 +4,7 @@ if [[ $DEVELOPMENT = "true" ]]
 then
     # run frontend dev server in background
     cd /virtual-instrument-museum/frontend
+    npm run sass:watch &
     npm run dev -- --host 0.0.0.0 &
     # run django dev server
     cd /virtual-instrument-museum/vim-app
@@ -12,6 +13,7 @@ then
 else
     # run frontend build
     cd /virtual-instrument-museum/frontend
+    npm run sass:build
     npm run build
     # run django server
     cd /virtual-instrument-museum/vim-app
