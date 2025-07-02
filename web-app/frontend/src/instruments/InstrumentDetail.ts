@@ -482,7 +482,7 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 'success') {
-          alert('Data published successfully!');
+          // alert('Data published successfully!');
           // Close both modals
           const addNameModal = bootstrap.Modal.getInstance(
             document.getElementById('addNameModal'),
@@ -517,17 +517,21 @@ let instrumentNameId = null; // Variable to store the instrument name ID
 deleteNameModal.addEventListener('show.bs.modal', function (event) {
   var button = event.relatedTarget;
   if (button != undefined) {
+    var instrumentNameLanguage = button.getAttribute(
+      'data-instrument-language',
+    );
     var instrumentName = button.getAttribute('data-instrument-name');
     var instrumentSource = button.getAttribute(
       'data-instrument-source');
     instrumentNameId = button.getAttribute(
       'data-instrument-id');
-    console.log('Instrument Name ID:', instrumentNameId);
 
     deleteNameModal.querySelector('#instrumentNameInModal').textContent =
       instrumentName;
     deleteNameModal.querySelector('#instrumentSourceInModal').textContent =
       instrumentSource;
+    deleteNameModal.querySelector('#instrumentLanguageInModal').textContent =
+      instrumentNameLanguage;
   }
 
 });
@@ -552,7 +556,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function (
     .then((response) => response.json())
     .then((data) => {
       if (data.status === 'success') {
-        alert('Name deleted successfully!');
+        // alert('Name deleted successfully!');
         // Close both modals
         const deleteNameModal = bootstrap.Modal.getInstance(
           document.getElementById('deleteNameModal'),
