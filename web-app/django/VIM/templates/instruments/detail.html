@@ -26,7 +26,7 @@
   </div>
   <br />
   <div class="button group">
-    {% include "instruments/add_name.html" %}
+    {% include "instruments/add_name.html" %} {% if user.is_authenticated %}
     <button
       type="button"
       class="btn add-name"
@@ -37,6 +37,15 @@
     >
       Add Instrument Name
     </button>
+    {% else %}
+    <a
+      href="{% url 'main:login' %}?next={{ request.path }}"
+      class="btn add-name"
+      role="button"
+    >
+      Add Instrument Name
+    </a>
+    {% endif %}
   </div>
   <br />
   <div class="detail-body">
