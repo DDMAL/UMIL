@@ -18,7 +18,7 @@ block css_files %}
       <hr class="w-100 mt-0" />
     </div>
     <div class="button group">
-      {% include "instruments/add_name.html" %}
+      {% include "instruments/add_name.html" %} {% if user.is_authenticated %}
       <button
         type="button"
         class="btn btn-primary"
@@ -29,6 +29,15 @@ block css_files %}
       >
         Add Instrument Name
       </button>
+      {% else %}
+      <a
+        href="{% url 'main:login' %}?next={{ request.path }}"
+        class="btn add-name"
+        role="button"
+      >
+        Add Instrument Name
+      </a>
+      {% endif %}
     </div>
     <div class="w-100">
       <table class="table table-sm table-striped table-bordered">
