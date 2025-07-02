@@ -17,122 +17,172 @@
 {% endblock css_files %}
 
 {% block content %}
-  <div class="container-border bg-white m-2 p-4 d-flex flex-column align-items-center flex-nowrap">
-    <div class="w-100">
-      <h2>
-        {% for instrumentname in instrument_names %}
-          {% if instrumentname.language.en_label == active_language.en_label %}
-            {{ instrumentname.name|title }}
-          {% endif %}
-        {% endfor %}
-      </h2>
-      <hr class="w-100 mt-0" />
-    </div>
-    <div class="w-100">
-      <table class="table table-sm table-striped table-bordered">
-        <tbody>
-          <tr>
-            <th scope="row" class="w-20">Wikidata ID</th>
-            <td>
-              <a class="view-field"
-                 href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
-                 target="_blank">{{ instrument.wikidata_id }}</a>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="w-20">Hornbostel-Sachs Classification</th>
-            <td>
-              <span class="view-field">{{ instrument.hornbostel_sachs_class }}</span>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="w-20">MIMO Classification</th>
-            <td>
-              <a class="view-field"
-                 href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ mimo_class }}"
-                 target="_blank">{{ instrument.mimo_class }}</a>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" class="w-20">Instrument Names in Different Languages</th>
-            <td>
-              <table class="table table-sm table-striped table-bordered mb-0">
-                <thead>
-                  <tr>
-                    <th scope="col" class="w-30">
-                      <span>Language</span>
-                    </th>
-                    <th scope="col" class="w-30">
-                      <span>Name</span>
-                    </th>
-                    <th scope="col" class="w-30">
-                      <span>Source</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for instrumentname in instrument_names %}
+  <div class="container d-flex align-items-center justify-content-center min-vh-80 py-4">
+    <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
+      <div class="w-100">
+        <h2>
+          {% for instrumentname in instrument_names %}
+            {% if instrumentname.language.en_label == active_language.en_label %}
+              {{ instrumentname.name|title }}
+            {% endif %}
+          {% endfor %}
+        </h2>
+        <hr class="w-100 mt-0" />
+      </div>
+      <div class="w-100">
+        <table class="table table-sm table-striped table-bordered">
+          <tbody>
+            <tr>
+              <th scope="row" class="w-20">Wikidata ID</th>
+              <td>
+                <a class="view-field"
+                   href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
+                   target="_blank">{{ instrument.wikidata_id }}</a>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="w-20">Hornbostel-Sachs Classification</th>
+              <td>
+                <span class="view-field">{{ instrument.hornbostel_sachs_class }}</span>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="w-20">MIMO Classification</th>
+              <td>
+                <a class="view-field"
+                   href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ mimo_class }}"
+                   target="_blank">{{ instrument.mimo_class }}</a>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="w-20">Instrument Names in Different Languages</th>
+              <td>
+                <table class="table table-sm table-striped table-bordered mb-0 d-none d-md-table">
+                  <thead>
                     <tr>
-                      <td>
-                        <div class="d-flex flex-row justify-content-between align-items-center gap-2">
-                          <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
-                          <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                 type="text"
-                                 value="{{ instrumentname.language.en_label }}" />
-                          <div class="d-flex flex-row gap-1">
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex flex-row justify-content-between align-items-center gap-2">
-                          <span class="view-field flex-grow-1">{{ instrumentname.name }}</span>
-                          <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                 type="text"
-                                 value="{{ instrumentname.name }}" />
-                          <div class="d-flex flex-row gap-1">
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="d-flex flex-row justify-content-between align-items-center gap-2">
-                          <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
-                          <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                 type="text"
-                                 value="{{ instrumentname.source_name }}" />
-                          <div class="d-flex flex-row gap-1">
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                          </div>
-                        </div>
-                      </td>
+                      <th scope="col" class="w-30">
+                        <span>Language</span>
+                      </th>
+                      <th scope="col" class="w-30">
+                        <span>Name</span>
+                      </th>
+                      <th scope="col" class="w-30">
+                        <span>Source</span>
+                      </th>
                     </tr>
+                  </thead>
+                  <tbody>
+                    {% for instrumentname in instrument_names %}
+                      <tr>
+                        <td>
+                          <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
+                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
+                                   type="text"
+                                   value="{{ instrumentname.language.en_label }}" />
+                            <div class="d-flex flex-row gap-1">
+                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
+                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
+                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.name }}</span>
+                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
+                                   type="text"
+                                   value="{{ instrumentname.name }}" />
+                            <div class="d-flex flex-row gap-1">
+                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
+                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
+                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
+                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
+                                   type="text"
+                                   value="{{ instrumentname.source_name }}" />
+                            <div class="d-flex flex-row gap-1">
+                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
+                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
+                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <!-- Stacked layout for small screens only -->
+                <div class="d-md-none">
+                  {% for instrumentname in instrument_names %}
+                    <div class="border rounded p-2 mb-2">
+                      <div class="row g-2">
+                        <!-- Language column -->
+                        <div class="col-12">
+                          <div class="fw-bold text-muted small mb-1">Language</div>
+                          <div class="d-flex flex-wrap gap-2 align-items-center edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
+                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
+                                   type="text"
+                                   value="{{ instrumentname.language.en_label }}" />
+                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
+                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
+                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
+                          </div>
+                        </div>
+                        <!-- Name column -->
+                        <div class="col-12">
+                          <div class="fw-bold text-muted small mb-1">Name</div>
+                          <div class="d-flex flex-wrap gap-2 align-items-center edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.name }}</span>
+                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
+                                   type="text"
+                                   value="{{ instrumentname.name }}" />
+                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
+                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
+                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
+                          </div>
+                        </div>
+                        <!-- Source column -->
+                        <div class="col-12">
+                          <div class="fw-bold text-muted small mb-1">Source</div>
+                          <div class="d-flex flex-wrap gap-2 align-items-center edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
+                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
+                                   type="text"
+                                   value="{{ instrumentname.source_name }}" />
+                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
+                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
+                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   {% endfor %}
-                </tbody>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row" style="width: 20%">Image</th>
-            <td>
-              <div class="d-flex flex-row flex-wrap">
-                <img src="{% static instrument.default_image.url %}"
-                     alt="{{ instrument.default_image.url }}"
-                     class="rounded mw-50" />
-                <a class="ms-2"
-                   href="{% static instrument.default_image.url %}"
-                   target="_blank">View image in full size</a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" style="width: 20%">Image</th>
+              <td>
+                <div class="d-flex flex-row flex-wrap">
+                  <img src="{% static instrument.default_image.url %}"
+                       alt="{{ instrument.default_image.url }}"
+                       class="rounded mw-50" />
+                  <a class="ms-2"
+                     href="{% static instrument.default_image.url %}"
+                     target="_blank">View image in full size</a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 {% endblock content %}
