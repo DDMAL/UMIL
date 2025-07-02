@@ -207,7 +207,7 @@ function createRow(index) {
       <div class="invalid-feedback"></div>
     </div>
     <input type="hidden" class="alias-status" id="alias${index}" name="alias[]" values="false" />
-    <div class="col-md-1 d-flex align-items-center">
+    <div class="col-md-1 d-flex align-items-end">
       <button type="button" class="btn delete btn-sm remove-row-btn">Remove</button>
     </div>
   `;
