@@ -57,7 +57,7 @@
             <tr>
               <th scope="row" class="w-20">Instrument Names in Different Languages</th>
               <td>
-                <table class="table table-sm table-striped table-bordered mb-0 d-none d-md-table">
+                <table class="table table-sm table-striped table-bordered mb-0 d-none d-lg-table">
                   <thead>
                     <tr>
                       <th scope="col" class="w-30">
@@ -118,14 +118,14 @@
                   </tbody>
                 </table>
                 <!-- Stacked layout for small screens only -->
-                <div class="d-md-none">
+                <div class="d-lg-none">
                   {% for instrumentname in instrument_names %}
                     <div class="border rounded p-2 mb-2">
                       <div class="row g-2">
                         <!-- Language column -->
                         <div class="col-12">
                           <div class="fw-bold text-muted small mb-1">Language</div>
-                          <div class="d-flex flex-wrap gap-2 align-items-center edit-container">
+                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
                             <input class="edit-field form-control form-control-sm d-none flex-grow-1"
                                    type="text"
@@ -138,7 +138,7 @@
                         <!-- Name column -->
                         <div class="col-12">
                           <div class="fw-bold text-muted small mb-1">Name</div>
-                          <div class="d-flex flex-wrap gap-2 align-items-center edit-container">
+                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.name }}</span>
                             <input class="edit-field form-control form-control-sm d-none flex-grow-1"
                                    type="text"
@@ -151,7 +151,7 @@
                         <!-- Source column -->
                         <div class="col-12">
                           <div class="fw-bold text-muted small mb-1">Source</div>
-                          <div class="d-flex flex-wrap gap-2 align-items-center edit-container">
+                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
                             <input class="edit-field form-control form-control-sm d-none flex-grow-1"
                                    type="text"
