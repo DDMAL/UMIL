@@ -1,4 +1,6 @@
 from django.db import models
+
+
 class InstrumentName(models.Model):
     instrument = models.ForeignKey("Instrument", on_delete=models.CASCADE)
     language = models.ForeignKey("Language", on_delete=models.PROTECT)
@@ -36,6 +38,7 @@ class InstrumentName(models.Model):
         default=False,
         help_text="Is this name already on Wikidata?",
     )
+
     # TODO: add verified_by field to track who verified the name
     def __str__(self):
         return f"{self.name} ({self.language.en_label}) - {self.instrument.wikidata_id}"
