@@ -25,7 +25,7 @@
         <hr class="w-100 mt-0" />
       </div>
       <div class="button group">
-        {% include "instruments/add_name.html" %}
+        {% include "instruments/includes/addName.html" %}
 
         {% if user.is_authenticated %}
           <button type="button"
@@ -125,7 +125,7 @@
                     {% endfor %}
                   </tbody>
                 </table>
-                {% include "instruments/delete_name.html" %}
+                {% include "instruments/includes/deleteName.html" %}
 
                 <!-- Stacked layout for small screens only -->
                 <div class="d-lg-none">
