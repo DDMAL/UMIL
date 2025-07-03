@@ -1,10 +1,22 @@
+import { Modal } from 'bootstrap';
+
 // Get the modal element
 var deleteNameModal = document.getElementById('deleteNameModal');
-let instrumentNameId = null; // Variable to store the instrument name ID
+let instrumentNameId: string | null = null; // Variable to store the instrument name ID
+
+interface DeleteNameModalEvent extends Event {
+  relatedTarget?: HTMLElement | null;
+}
+
+interface DeleteNameResponse {
+  status: string;
+  message: string;
+}
 
 // Handle modal show event
 deleteNameModal.addEventListener('show.bs.modal', function (event) {
-  var button = event.relatedTarget;
+  const modalEvent = event as DeleteNameModalEvent;
+  var button = modalEvent.relatedTarget;
   if (button != undefined) {
     var instrumentNameLanguage = button.getAttribute(
       'data-instrument-language',
@@ -26,9 +38,7 @@ deleteNameModal.addEventListener('show.bs.modal', function (event) {
 });
 
 document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-  console.log('Deleting instrument name with ID:', instrumentNameId);
+  const csrftoken = (document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement).value;
 
   // Send the request to publish
   fetch(`/delete-name/`, {
@@ -46,7 +56,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function (
     .then((data) => {
       if (data.status === 'success') {
         // Close both modals
-        const deleteNameModal = bootstrap.Modal.getInstance(
+        const deleteNameModal = Modal.getInstance(
           document.getElementById('deleteNameModal'),
         );
 
