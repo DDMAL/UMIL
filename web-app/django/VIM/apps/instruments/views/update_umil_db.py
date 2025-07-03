@@ -1,4 +1,4 @@
-""" Django view to handle user input to UMIl database """
+"""Django view to handle user input to UMIl database"""
 
 import json
 from django.contrib.auth.decorators import login_required
