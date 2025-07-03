@@ -1,3 +1,5 @@
+import { Modal } from 'bootstrap';
+
 // Get the modal element
 var addNameModal = document.getElementById('addNameModal');
 
@@ -197,8 +199,6 @@ async function existOnWikidata(
   languageLabel: string,
   nameInput: string
 ): Promise<ExistOnWikidataResult> {
-  console.log(languageCode)
-  console.log(nameInput)
 
   const sparqlQuery = `
      SELECT ?nameLabel WHERE {
@@ -215,8 +215,6 @@ async function existOnWikidata(
   try {
     const response = await fetch(queryUrl);
     const data: ExistSparqlResults = await response.json();
-
-    console.log('Wikidata query result:', data);
 
     if (data.results.bindings.length > 0) {
       return { exists: true, name: data.results.bindings[0].nameLabel.value };
@@ -280,7 +278,7 @@ function createRow(index: number): HTMLDivElement {
     </div>
     <input type="hidden" class="alias-status" id="alias${index}" name="alias[]" values="false" />
     <div class="col-md-1 d-flex align-items-end">
-      <button type="button" class="btn delete btn-sm remove-row-btn">Remove</button>
+      <button type="button" class="btn btn-secondary btn-sm remove-row-btn">Remove</button>
     </div>
   `;
 
@@ -431,10 +429,6 @@ document
         sourceInput.classList.remove('is-invalid');
       }
 
-      console.log('Checking naming:', nameInput.value);
-
-      
-
       // Add the result to the confirmation message
       publishResults += `<br />Language: ${languageLabel} (${languageCode})
       <br>Name: ${nameInput.value} 
@@ -447,7 +441,7 @@ document
     if (allValid) {
       document.getElementById('publishResults').innerHTML =
         `You will publish the following:<br />${publishResults}`;
-      const confirmationModal = new bootstrap.Modal(
+      const confirmationModal = new Modal(
         document.getElementById('confirmationModal'),
       );
       confirmationModal.show();
@@ -474,14 +468,11 @@ document.getElementById('addRowBtn').addEventListener('click', function () {
   updateRemoveButtons(); // Update remove buttons after adding a new row
 });
 
-// Add this at the top of your file or before usage if using Bootstrap 5 via CDN or script tag
-declare var bootstrap: any;
-
 document.addEventListener('DOMContentLoaded', function () {
   const storedData = localStorage.getItem('addNameFormData');
   if (storedData) {
     // Show the modal
-    const addNameModal = new bootstrap.Modal(
+    const addNameModal = new Modal(
       document.getElementById('addNameModal'),
     );
     addNameModal.show();
@@ -555,10 +546,10 @@ document
       .then((data) => {
         if (data.status === 'success') {
           // Close both modals
-          const addNameModal = bootstrap.Modal.getInstance(
+          const addNameModal = Modal.getInstance(
             document.getElementById('addNameModal'),
           );
-          const confirmationModal = bootstrap.Modal.getInstance(
+          const confirmationModal = Modal.getInstance(
             document.getElementById('confirmationModal'),
           );
 
