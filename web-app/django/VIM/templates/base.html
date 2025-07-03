@@ -71,12 +71,6 @@
                 <a href="{% url "main:about" %}"
                    class="nav-link {% if active_tab == 'about' %}active{% endif %}">About</a>
               </li>
-              {% if user.is_superuser %}
-              <li class="nav-item">
-                <a href="{% url "edit-wikidata" %}"
-                   class="nav-link {% if active_tab == 'about' %}active{% endif %}">Upload</a>
-              </li>
-              {% endif %}
             </ul>
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
                   role="search"
