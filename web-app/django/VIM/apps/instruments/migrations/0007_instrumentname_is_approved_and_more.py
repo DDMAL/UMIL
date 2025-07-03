@@ -4,25 +4,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('instruments', '0006_instrumentname_contributor_instrumentname_is_alias_and_more'),
+        (
+            "instruments",
+            "0006_instrumentname_contributor_instrumentname_is_alias_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='instrumentname',
-            name='is_approved',
-            field=models.BooleanField(default=False, help_text='When a name is approved to be visible on UMIL and uploaded to Wikidata.'),
+            model_name="instrumentname",
+            name="is_approved",
+            field=models.BooleanField(
+                default=False,
+                help_text="When a name is approved to be visible on UMIL and uploaded to Wikidata.",
+            ),
         ),
         migrations.AddField(
-            model_name='instrumentname',
-            name='on_wikidata',
-            field=models.BooleanField(default=False, help_text='Is this name already on Wikidata?'),
+            model_name="instrumentname",
+            name="on_wikidata",
+            field=models.BooleanField(
+                default=False, help_text="Is this name already on Wikidata?"
+            ),
         ),
         migrations.AlterField(
-            model_name='instrumentname',
-            name='status',
-            field=models.CharField(choices=[('verified', 'Verified'), ('unverified', 'Unverified'), ('needs_review', 'Needs Review'), ('rejected', 'Rejected')], default='unverified', help_text='Status of the name entry', max_length=20),
+            model_name="instrumentname",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("verified", "Verified"),
+                    ("unverified", "Unverified"),
+                    ("needs_review", "Needs Review"),
+                    ("rejected", "Rejected"),
+                ],
+                default="unverified",
+                help_text="Status of the name entry",
+                max_length=20,
+            ),
         ),
     ]

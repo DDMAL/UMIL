@@ -1,6 +1,7 @@
 from django.views.generic import DetailView
 from VIM.apps.instruments.models import Instrument, Language
 
+
 class InstrumentDetail(DetailView):
     """
     Displays details of a specific instrument.
@@ -27,8 +28,11 @@ class InstrumentDetail(DetailView):
         )
 
         # Get the instrument label in the active language
-        context["active_instrument_label"] = (context["instrument_names"].filter(
-            language=context["active_language"])).filter(is_alias=False).first()
+        context["active_instrument_label"] = (
+            (context["instrument_names"].filter(language=context["active_language"]))
+            .filter(is_alias=False)
+            .first()
+        )
 
         # Get all languages for the dropdown
         context["languages"] = Language.objects.all()

@@ -6,26 +6,43 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('instruments', '0005_remove_language_wikidata_id'),
+        ("instruments", "0005_remove_language_wikidata_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='instrumentname',
-            name='contributor',
-            field=models.ForeignKey(blank=True, help_text='User who contributed this name', null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
+            model_name="instrumentname",
+            name="contributor",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="User who contributed this name",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='instrumentname',
-            name='is_alias',
-            field=models.BooleanField(default=False, help_text='Is this an alias for the instrument? If true, it will not be used as the main name.'),
+            model_name="instrumentname",
+            name="is_alias",
+            field=models.BooleanField(
+                default=False,
+                help_text="Is this an alias for the instrument? If true, it will not be used as the main name.",
+            ),
         ),
         migrations.AddField(
-            model_name='instrumentname',
-            name='status',
-            field=models.CharField(choices=[('verified', 'Verified'), ('unverified', 'Unverified'), ('uploaded', 'Uploaded')], default='unverified', help_text='Status of the name entry', max_length=20),
+            model_name="instrumentname",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("verified", "Verified"),
+                    ("unverified", "Unverified"),
+                    ("uploaded", "Uploaded"),
+                ],
+                default="unverified",
+                help_text="Status of the name entry",
+                max_length=20,
+            ),
         ),
     ]
