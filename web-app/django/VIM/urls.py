@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
-from VIM.apps.instruments.views.update_umil_db import (add_name, delete_name)
+from VIM.apps.instruments.views.update_umil_db import add_name, delete_name
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
