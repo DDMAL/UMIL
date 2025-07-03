@@ -8,6 +8,10 @@
   Instrument Detail
 {% endblock title %}
 
+{% block ts_files %}
+  {% vite_asset 'src/instruments/InstrumentDetail.ts' %}
+{% endblock ts_files %}
+
 {% block css_files %}
 <link
   rel="stylesheet"
@@ -27,23 +31,163 @@
         <th>Language</th>
         <th>Name</th>
         <th>Source</th>
+        <th>Actions</th>
       </tr>
       {% for instrument in instrument_names %}
       <tr>
         <td>{{ instrument.language.en_label }}</td>
         <td>{{ instrument.name }}</td>
         <td>{{ instrument.source_name }}</td>
+        <td>
+          <div class="d-flex justify-content-center">
+            <button
+              class="btn delete"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteNameModal"
+              data-instrument-language="{{ instrument.language.en_label }}"
+              data-instrument-name="{{ instrument.name }}"
+              data-instrument-source="{{ instrument.source_name }}"
+              data-instrument-id="{{ instrument.id }}"
+            >
+              Delete
+            </button>
+          </div>
+        </td>
       </tr>
       {% empty %}
       <tr>
-        <td colspan="3">No new names found.</td>
+        <td colspan="4">No new names found.</td>
       </tr>
       {% endfor %}
     </table>
   </div>
-  <button type="button" class="btn btn-secondary" id="authorizeBtn">
+  {% csrf_token %} {% if instrument_names %}
+  <button
+    type="button"
+    class="btn btn-secondary"
+    data-bs-toggle="modal"
+    data-bs-target="#confirmationModal"
+  >
     Submit to Wikidata
   </button>
+  {% endif %}
+
+  <!-- Confirmation Modal Structure -->
+  <div
+    class="modal fade"
+    id="confirmationModal"
+    tabindex="-1"
+    aria-labelledby="confirmationModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">
+            Confirm Publish
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p id="publishResults"></p>
+          <p>Are you sure you want to publish ?</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button type="button" class="btn add-name" id="authorizeBtn">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var deleteNameModal = document.getElementById("deleteNameModal");
+      if (deleteNameModal) {
+        deleteNameModal.addEventListener("show.bs.modal", function (event) {
+          var button = event.relatedTarget;
+          if (button) {
+            var instrumentName = button.getAttribute("data-instrument-name");
+            var instrumentLanguage = button.getAttribute(
+              "data-instrument-language"
+            );
+            var instrumentSource = button.getAttribute(
+              "data-instrument-source"
+            );
+            deleteNameModal.querySelector(
+              "#instrumentNameInModal"
+            ).textContent = instrumentName || "";
+            deleteNameModal.querySelector(
+              "#instrumentLanguageInModal"
+            ).textContent = instrumentLanguage || "";
+            deleteNameModal.querySelector(
+              "#instrumentSourceInModal"
+            ).textContent = instrumentSource || "";
+          }
+        });
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+      var deleteNameModal = document.getElementById("deleteNameModal");
+      var instrumentNameId = null;
+
+      // Set instrumentNameId when modal is shown
+      if (deleteNameModal) {
+        deleteNameModal.addEventListener("show.bs.modal", function (event) {
+          var button = event.relatedTarget;
+          if (button) {
+            instrumentNameId = button.getAttribute("data-instrument-id");
+          }
+        });
+      }
+
+      // Handle delete confirmation
+      if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener("click", function () {
+          if (!instrumentNameId) {
+            alert("No instrument selected for deletion.");
+            return;
+          }
+          fetch("{% url 'delete-name' %}", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": document.querySelector(
+                "[name=csrfmiddlewaretoken]"
+              ).value,
+            },
+            body: JSON.stringify({ instrument_name_id: instrumentNameId }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                window.location.reload();
+              } else {
+                alert("Failed to delete: " + (data.message || "Unknown error"));
+              }
+            });
+        });
+      }
+    });
+  </script>
+
   <script>
     document.getElementById("authorizeBtn").onclick = function () {
       fetch("{% url 'get_wikidata_access_token' %}")
@@ -51,9 +195,25 @@
         .then((data) => {
           // Check if access token is available
           if (data.access_token) {
-            fetch("{% url 'publish' %}"); // Call the publish endpoint
-            alert("Instrument names submitted to Wikidata successfully.");
-            window.location.reload();
+            fetch("{% url 'publish' %}", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",
+              },
+            }) // Call the publish endpoint
+              .then((response) => response.json())
+              .then((data) => {
+                // Only reload after the server confirms success
+                if (data.status === "success") {
+                  window.location.reload();
+                } else {
+                  alert(
+                    "Failed to update Wikidata: " +
+                      (data.message || "Unknown error")
+                  );
+                }
+              });
           } else {
             // If access token is not available, redirect to authorization
             window.location.href = "{% url 'wikidata_authorize' %}";
@@ -62,5 +222,5 @@
     };
   </script>
 </div>
-{% endblock content %}
+{% include "instruments/delete_name.html" %} {% endblock content %}
 <!--script to handle the button click and submit data to Wikidata-->
