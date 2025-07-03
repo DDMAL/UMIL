@@ -1,4 +1,3 @@
-<!-- prettier-ignore-->
 {% extends "base.html" %}
 
 {% load static %}
@@ -10,6 +9,7 @@
 
 {% block ts_files %}
   {% vite_asset 'src/instruments/InstrumentDetail.ts' %}
+  {% vite_asset 'src/instruments/DeleteName.ts'%}
 {% endblock ts_files %}
 
 {% block css_files %}
