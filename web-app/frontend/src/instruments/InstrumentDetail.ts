@@ -3,7 +3,7 @@ var addNameModal = document.getElementById('addNameModal');
 
 // Handle modal show event
 addNameModal.addEventListener('show.bs.modal', function (event) {
-  var button = event.relatedTarget;
+  var button = (event as any).relatedTarget;
   if (button != undefined) {
     var instrumentName = button.getAttribute('data-instrument-name');
     var instrumentWikidataId = button.getAttribute(
@@ -20,7 +20,7 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
 
 // Function to store form data
 function storeFormData() {
-  const storedData = {};
+  const storedData: { [key: string]: any } = {};
   storedData['instrumentName'] = document.getElementById(
     'instrumentNameInModal',
   ).textContent;
@@ -30,11 +30,9 @@ function storeFormData() {
   storedData['nameRows'] = [];
   document.querySelectorAll('.name-row').forEach((row) => {
     const rowData = {
-      language: row.querySelector('.language-input input').value,
-      name: row.querySelector('.name-input input').value,
-      source: row.querySelector('.source-input input').value,
-      // description: row.querySelector('.description-input input').value,
-      // alias: row.querySelector('.alias-input input').value,
+      language: (row.querySelector('.language-input input') as HTMLInputElement).value,
+      name: (row.querySelector('.name-input input') as HTMLInputElement).value,
+      source: (row.querySelector('.source-input input') as HTMLInputElement).value,
     };
     storedData['nameRows'].push(rowData);
   });
@@ -42,45 +40,55 @@ function storeFormData() {
 }
 
 // Function to restore form data
-function restoreFormData(storedData) {
-  const form = document.getElementById('addNameForm');
-  const parsedData = JSON.parse(storedData);
+interface NameRowData {
+  language: string;
+  name: string;
+  source: string;
+}
+
+interface StoredFormData {
+  instrumentName: string;
+  wikidata_id: string;
+  nameRows: NameRowData[];
+  // [key: string]: any; // If you expect more keys
+}
+
+function restoreFormData(storedData: string): void {
+  const form = document.getElementById('addNameForm') as HTMLFormElement;
+  const parsedData: StoredFormData = JSON.parse(storedData);
   // Restore main form values
   for (const key in parsedData) {
-    if (form.elements[key]) {
-      form.elements[key].value = parsedData[key];
+    if ((form.elements as any)[key]) {
+      (form.elements as any)[key].value = (parsedData as any)[key];
     }
   }
 
   // Restore wikidata_id, publish_to_wikidata
-  document.getElementById('instrumentNameInModal').textContent =
+  (document.getElementById('instrumentNameInModal') as HTMLElement).textContent =
     parsedData['instrumentName'];
-  document.getElementById('instrumentWikidataIdInModal').textContent =
+  (document.getElementById('instrumentWikidataIdInModal') as HTMLElement).textContent =
     parsedData['wikidata_id'];
 
   // Restore dynamically added rows
-  const nameRowsContainer = document.getElementById('nameRows');
+  const nameRowsContainer = document.getElementById('nameRows') as HTMLElement;
   nameRowsContainer.innerHTML = ''; // Clear existing rows
 
   if (parsedData['nameRows'] && parsedData['nameRows'].length > 0) {
-    parsedData['nameRows'].forEach((rowData, index) => {
+    parsedData['nameRows'].forEach((rowData: NameRowData, index: number) => {
       const newRow = createRow(index + 1);
       nameRowsContainer.appendChild(newRow);
-      newRow.querySelector('.language-input input').value = rowData.language;
-      newRow.querySelector('.name-input input').value = rowData.name;
-      newRow.querySelector('.source-input input').value = rowData.source;
-      // newRow.querySelector('.description-input input').value =
-      //   rowData.description;
-      // newRow.querySelector('.alias-input input').value = rowData.alias;
+      (newRow.querySelector('.language-input input') as HTMLInputElement).value = rowData.language;
+      (newRow.querySelector('.name-input input') as HTMLInputElement).value = rowData.name;
+      (newRow.querySelector('.source-input input') as HTMLInputElement).value = rowData.source;
     });
   }
 
   // Check rows
   const nameRows = document.querySelectorAll('.name-row');
-  nameRows.forEach((row) => {
-    const languageInput = row.querySelector('input[list]');
-    const nameInput = row.querySelector('.name-input input[type="text"]');
-    const sourceInput = row.querySelector('.source-input input[type="text"]');
+  nameRows.forEach((row: Element) => {
+    const languageInput = row.querySelector('input[list]') as HTMLInputElement;
+    const nameInput = row.querySelector('.name-input input[type="text"]') as HTMLInputElement;
+    const sourceInput = row.querySelector('.source-input input[type="text"]') as HTMLInputElement;
   });
 
 }
@@ -93,22 +101,50 @@ document
   });
 
 // Function to validate that the user has selected a valid language from the datalist
-function isValidLanguage(inputElement) {
+interface ValidLanguageInputElement extends HTMLInputElement {
+  getAttribute(name: 'list'): string | null;
+}
+
+function isValidLanguage(inputElement: ValidLanguageInputElement): boolean {
   const datalistId = inputElement.getAttribute('list');
-  const datalist = document.getElementById(datalistId);
+  if (!datalistId) return false;
+  const datalist = document.getElementById(datalistId) as HTMLDataListElement | null;
+  if (!datalist) return false;
   const options = datalist.querySelectorAll('option');
 
   // Check if the input value matches any option value in the datalist
-  for (let option of options) {
-    if (option.value === inputElement.value) {
+  for (let option of Array.from(options)) {
+    if ((option as HTMLOptionElement).value === inputElement.value) {
       return true; // Valid language selected
     }
   }
   return false; // Invalid language input
 }
 
-// Function to check if a name already exists in Wikidata for the given language
-async function isAlias(wikidataId, languageCode, languageLabel) {
+// Function to check if name entry is a label or an alias in Wikidata
+interface IsAliasResult {
+  exists: boolean;
+  name?: string;
+}
+
+interface SparqlBinding {
+  nameLabel: {
+    type: string;
+    value: string;
+    'xml:lang'?: string;
+  };
+}
+
+interface SparqlResults {
+  head: { vars: string[] };
+  results: { bindings: SparqlBinding[] };
+}
+
+async function isAlias(
+  wikidataId: string,
+  languageCode: string,
+  languageLabel: string
+): Promise<IsAliasResult> {
   const sparqlQuery = `
     SELECT ?nameLabel WHERE {
       wd:${wikidataId} rdfs:label ?nameLabel .
@@ -123,7 +159,7 @@ async function isAlias(wikidataId, languageCode, languageLabel) {
 
   try {
     const response = await fetch(queryUrl);
-    const data = await response.json();
+    const data: SparqlResults = await response.json();
 
     if (data.results.bindings.length > 0) {
       return { exists: true, name: data.results.bindings[0].nameLabel.value };
@@ -137,7 +173,30 @@ async function isAlias(wikidataId, languageCode, languageLabel) {
 }
 
 // Function to check if a name already exists in Wikidata for the given language
-async function existOnWikidata(wikidataId, languageCode, languageLabel, nameInput) {
+interface ExistOnWikidataResult {
+  exists: boolean;
+  name?: string;
+}
+
+interface ExistSparqlBinding {
+  nameLabel: {
+    type: string;
+    value: string;
+    'xml:lang'?: string;
+  };
+}
+
+interface ExistSparqlResults {
+  head: { vars: string[] };
+  results: { bindings: ExistSparqlBinding[] };
+}
+
+async function existOnWikidata(
+  wikidataId: string,
+  languageCode: string,
+  languageLabel: string,
+  nameInput: string
+): Promise<ExistOnWikidataResult> {
   console.log(languageCode)
   console.log(nameInput)
 
@@ -155,7 +214,7 @@ async function existOnWikidata(wikidataId, languageCode, languageLabel, nameInpu
 
   try {
     const response = await fetch(queryUrl);
-    const data = await response.json();
+    const data: ExistSparqlResults = await response.json();
 
     console.log('Wikidata query result:', data);
 
@@ -171,14 +230,27 @@ async function existOnWikidata(wikidataId, languageCode, languageLabel, nameInpu
 }
 
 // Reusable function to create a new row
-function createRow(index) {
-  const row = document.createElement('div');
+interface Language {
+  wikidata_code: string;
+  autonym: string;
+  en_label: string;
+}
+
+interface CreateRowElements {
+  row: HTMLDivElement;
+  removeButton: HTMLButtonElement;
+}
+
+declare const languages: Language[];
+
+function createRow(index: number): HTMLDivElement {
+  const row: HTMLDivElement = document.createElement('div');
   row.classList.add('row', 'mb-1', 'name-row');
 
   // Create datalist options dynamically using the global languages variable
-  let datalistOptions = languages
+  let datalistOptions: string = languages
     .map(
-      (language) => `
+      (language: Language) => `
       <option value="${language.wikidata_code}">${language.autonym} - ${language.en_label}</option>
   `,
     )
@@ -213,7 +285,8 @@ function createRow(index) {
   `;
 
   // Add event listener for remove button
-  row.querySelector('.remove-row-btn').addEventListener('click', function () {
+  const removeButton = row.querySelector('.remove-row-btn') as HTMLButtonElement;
+  removeButton.addEventListener('click', function () {
     row.remove();
     updateRemoveButtons(); // Ensure correct behavior when rows are removed
   });
@@ -228,9 +301,9 @@ function updateRemoveButtons() {
     const removeButton = row.querySelector('.remove-row-btn');
     // Show the remove button only if there are more than one row
     if (rows.length > 1) {
-      removeButton.style.display = 'inline-block';
+      (removeButton as HTMLElement).style.display = 'inline-block';
     } else {
-      removeButton.style.display = 'none'; // Hide the button if only one row remains
+      (removeButton as HTMLElement).style.display = 'none'; // Hide the button if only one row remains
     }
   });
 }
@@ -247,12 +320,12 @@ document
 
     // // Iterate over each row and check if the name already exists in Wikidata
     for (let row of nameRows) {
-      const languageInput = row.querySelector('input[list]');
-      const nameInput = row.querySelector('.name-input input[type="text"]');
-      const sourceInput = row.querySelector('.source-input input[type="text"]');
+      const languageInput = row.querySelector('input[list]') as ValidLanguageInputElement;
+      const nameInput = row.querySelector('.name-input input[type="text"]') as HTMLInputElement;
+      const sourceInput = row.querySelector('.source-input input[type="text"]') as HTMLInputElement;
       const aliasStatus = row.querySelector('.alias-status');
 
-      const languageCode = languageInput.value;
+      const languageCode = (languageInput as HTMLInputElement).value;
       const selectedOption = row.querySelector(
         `option[value="${languageCode}"]`,
       );
@@ -319,9 +392,8 @@ document
             'This instrument does not have this name listed on Wikidata yet ! You can add a new name.';
         }
         } catch (error) {
-          displayMessage(
-            'There was an error checking Wikidata. Please try again later.',
-            'danger',
+          alert(
+            'There was an error checking Wikidata. Please try again later.'
           );
           return; // Stop further processing
         }
@@ -335,14 +407,13 @@ document
 
           // If language has a label, input is an Alias
           if (result.exists) {
-            aliasStatus.value = "true";
+            (aliasStatus as HTMLInputElement).value = "true";
           } else {
-            aliasStatus.value = "false";
+            (aliasStatus as HTMLInputElement).value = "false";
           } 
         } catch (error) {
-          displayMessage(
+          alert(
             'There was an error checking Wikidata. Please try again later.',
-            'danger',
           );
           return; // Stop further processing
         }
@@ -368,7 +439,7 @@ document
       publishResults += `<br />Language: ${languageLabel} (${languageCode})
       <br>Name: ${nameInput.value} 
       <br>Source: ${sourceInput.value}
-      <br> The entry will be saved as an ${aliasStatus.value === "true" ? 'alias' : 'label'} on Wikidata.<br />`;
+      <br> The entry will be saved as an ${(aliasStatus as HTMLInputElement).value === "true" ? 'alias' : 'label'} on Wikidata.<br />`;
     
     }
 
@@ -403,6 +474,9 @@ document.getElementById('addRowBtn').addEventListener('click', function () {
   updateRemoveButtons(); // Update remove buttons after adding a new row
 });
 
+// Add this at the top of your file or before usage if using Bootstrap 5 via CDN or script tag
+declare var bootstrap: any;
+
 document.addEventListener('DOMContentLoaded', function () {
   const storedData = localStorage.getItem('addNameFormData');
   if (storedData) {
@@ -430,7 +504,13 @@ document
     const wikidataId = document
       .getElementById('instrumentWikidataIdInModal')
       .textContent.trim();
-    const entries = [];
+    interface Entry {
+      language: string;
+      name: string;
+      source: string;
+      alias: string;
+    }
+    const entries: Entry[] = [];
 
     // Collect the data to publish
     const nameRows = document.querySelectorAll('.name-row');
@@ -439,32 +519,24 @@ document
       const nameInput = row.querySelector('.name-input input[type="text"]');
       const sourceInput = row.querySelector('.source-input input[type="text"]');
       const aliasStatus = row.querySelector('.alias-status');
-      // const descriptionInput = row.querySelector(
-      //   '.description-input input[type="text"]',
-      // );
-      // const aliasInput = row.querySelector('.alias-input input[type="text"]');
 
-      const languageCode = languageInput.value;
-      const nameValue = nameInput.value;
-      const sourceValue = sourceInput.value;
-      const aliasValue = aliasStatus.value;
-      // const descriptionValue = descriptionInput.value || '';
-      // const aliasValue = aliasInput.value || '';
+      const languageCode = (languageInput as HTMLInputElement).value;
+      const nameValue = (nameInput as HTMLInputElement).value;
+      const sourceValue = (sourceInput as HTMLInputElement).value;
+      const aliasValue = (aliasStatus as HTMLInputElement).value;
 
       entries.push({
         language: languageCode,
         name: nameValue,
         source: sourceValue,
         alias: aliasValue,
-        // description: descriptionValue,
-        // alias: aliasValue,
       });
     });
 
     // Get the CSRF token
-    const csrftoken = document.querySelector(
+    const csrftoken = (document.querySelector(
       '[name=csrfmiddlewaretoken]',
-    ).value;
+    ) as HTMLInputElement).value;
 
     // Send the request to publish
     fetch(`/add-name/`, {
@@ -482,7 +554,6 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 'success') {
-          // alert('Data published successfully!');
           // Close both modals
           const addNameModal = bootstrap.Modal.getInstance(
             document.getElementById('addNameModal'),
@@ -509,69 +580,3 @@ document
       window.location.reload(); // Reload the page to reflect changes
   });
 
-// Get the modal element
-var deleteNameModal = document.getElementById('deleteNameModal');
-let instrumentNameId = null; // Variable to store the instrument name ID
-
-// Handle modal show event
-deleteNameModal.addEventListener('show.bs.modal', function (event) {
-  var button = event.relatedTarget;
-  if (button != undefined) {
-    var instrumentNameLanguage = button.getAttribute(
-      'data-instrument-language',
-    );
-    var instrumentName = button.getAttribute('data-instrument-name');
-    var instrumentSource = button.getAttribute(
-      'data-instrument-source');
-    instrumentNameId = button.getAttribute(
-      'data-instrument-id');
-
-    deleteNameModal.querySelector('#instrumentNameInModal').textContent =
-      instrumentName;
-    deleteNameModal.querySelector('#instrumentSourceInModal').textContent =
-      instrumentSource;
-    deleteNameModal.querySelector('#instrumentLanguageInModal').textContent =
-      instrumentNameLanguage;
-  }
-
-});
-
-document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-  console.log('Deleting instrument name with ID:', instrumentNameId);
-
-  // Send the request to publish
-  fetch(`/delete-name/`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrftoken,
-    },
-    body: JSON.stringify({
-      instrument_name_id: instrumentNameId,
-      // publish_to_wikidata: publishToWikidata,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 'success') {
-        // alert('Name deleted successfully!');
-        // Close both modals
-        const deleteNameModal = bootstrap.Modal.getInstance(
-          document.getElementById('deleteNameModal'),
-        );
-
-        if (deleteNameModal) {
-          deleteNameModal.hide(); // Close the 'Add Name' modal
-        }
-      } else {
-        alert('Error: ' + data.message);
-      }
-    })
-    .catch((error) => {
-      alert('An error occurred while deleting the data: ' + error.message);
-    });
-
-    window.location.reload(); // Reload the page to reflect changes
-});
