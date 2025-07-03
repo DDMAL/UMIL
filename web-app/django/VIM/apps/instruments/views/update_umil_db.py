@@ -93,6 +93,9 @@ def add_name(request):
 
 @login_required
 def delete_name(request):
+    
+    """ View to delete an instrument name from UMIL database."""
+
     if request.method == "DELETE":
         data = json.loads(request.body)
         name_id = data.get("instrument_name_id")
