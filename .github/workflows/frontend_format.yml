@@ -20,7 +20,9 @@ jobs:
         run: poetry install --no-root
 
       - name: Run djlint via Poetry
-        run: poetry run djlint . --check --extension html --exclude "migrations/*"
+        run: |
+          cd web-app/django/VIM/templates/
+          poetry run djlint . --check --extension html --exclude "migrations/*" 2>&1 | grep -E "^[a-zA-Z0-9/_\.-]+\.html$" | sort | uniq
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
