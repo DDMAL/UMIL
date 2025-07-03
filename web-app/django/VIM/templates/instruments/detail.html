@@ -38,7 +38,7 @@
           </button>
         {% else %}
           <a href="{% url 'main:login' %}?next={{ request.path }}"
-             class="btn add-name"
+             class="btn btn-primary"
              role="button">Add Instrument Name</a>
         {% endif %}
       </div>
