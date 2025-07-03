@@ -127,7 +127,6 @@ block css_files %}
                       </div>
                     </td>
                     <td>
-                      {% include "instruments/delete_name.html" %}
                       <div class="button-group">
                         {% if instrumentname.contributor == request.user %}
                         <button
@@ -148,6 +147,7 @@ block css_files %}
                   {% endfor %}
                 </tbody>
               </table>
+              {% include "instruments/delete_name.html" %}
               <!-- Stacked layout for small screens only -->
               <div class="d-lg-none">
                 {% for instrumentname in instrument_names %}
