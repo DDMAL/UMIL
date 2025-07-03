@@ -1,9 +1,21 @@
-{% extends "base.html" %} {% load static %} {% load django_vite %} {% block
-title %} Instrument Detail {% endblock title %} {% block ts_files %} {%
-vite_asset 'src/instruments/InstrumentDetail.ts' %} {% endblock ts_files %} {%
-block css_files %}
+{% extends "base.html" %} 
+
+{% load static %} 
+{% load django_vite %} 
+
+{% block title %} 
+Instrument Detail 
+{% endblock title %} 
+
+{% block ts_files %} 
+{% vite_asset 'src/instruments/InstrumentDetail.ts' %} 
+{% vite_asset 'src/instruments/DeleteName.ts' %}
+{% endblock ts_files %} 
+
+{% block css_files %}
 <link rel="stylesheet" href="{% static 'assets/css/instruments/index.css' %}" />
-{% endblock css_files %} {% block content %}
+{% endblock css_files %} 
+{% block content %}
 <div
   class="container d-flex align-items-center justify-content-center min-vh-80 py-4"
 >
@@ -12,8 +24,7 @@ block css_files %}
   >
     <div class="w-100">
       <h2>
-        {% for instrumentname in active_instrument_name %} {{
-        instrumentname.name|title }} {% endfor %}
+        {{ active_instrument_label.name|title }}
       </h2>
       <hr class="w-100 mt-0" />
     </div>
@@ -39,6 +50,7 @@ block css_files %}
       </a>
       {% endif %}
     </div>
+    <br>
     <div class="w-100">
       <table class="table table-sm table-striped table-bordered">
         <tbody>
@@ -130,7 +142,7 @@ block css_files %}
                       <div class="button-group">
                         {% if instrumentname.contributor == request.user %}
                         <button
-                          class="btn delete"
+                          class="btn btn-primary"
                           data-bs-toggle="modal"
                           data-bs-target="#deleteNameModal"
                           data-instrument-language="{{ instrumentname.language.en_label }}"
