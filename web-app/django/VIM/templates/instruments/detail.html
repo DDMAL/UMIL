@@ -53,7 +53,7 @@
             <tr>
               <th scope="row" class="w-20">Instrument Names in Different Languages</th>
               <td>
-                <table class="table table-sm table-striped table-bordered mb-1 d-none d-lg-table">
+                <table class="table table-sm table-striped table-bordered mb-0 d-none d-lg-table">
                   <thead>
                     <tr>
                       <th scope="col" class="w-30">
@@ -65,9 +65,11 @@
                       <th scope="col" class="w-30">
                         <span>Source</span>
                       </th>
-                      <th scope="col">
-                        <span class="name-form-item">Actions</span>
-                      </th>
+                      {% if user.is_authenticated %}
+                        <th scope="col">
+                          <span class="name-form-item">Actions</span>
+                        </th>
+                      {% endif %}
                     </tr>
                   </thead>
                   <tbody>
@@ -88,9 +90,9 @@
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
                           </div>
                         </td>
-                        <td>
-                          <div class="button-group">
-                            {% if instrumentname.contributor == request.user %}
+                        {% if user.is_authenticated %}
+                          <td>
+                            <div class="action-buttons">
                               <button class="btn btn-primary"
                                       data-bs-toggle="modal"
                                       data-bs-target="#deleteNameModal"
@@ -100,33 +102,33 @@
                                       data-instrument-id="{{ instrumentname.id }}">
                                 Delete
                               </button>
-                            {% endif %}
-                          </div>
-                        </td>
+                            </div>
+                          </td>
+                        {% endif %}
                       </tr>
                     {% endfor %}
+                    <tr>
+                      <td colspan="4">
+                        <div class="add-name-container">
+                          {% if user.is_authenticated %}
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addNameModal"
+                                    data-instrument-name="{{ active_instrument_name.first.name | title }}"
+                                    data-instrument-wikidata-id="{{ instrument.wikidata_id }}">
+                              Add Instrument Name
+                            </button>
+                          {% else %}
+                            <a href="{% url 'main:login' %}?next={{ request.path }}"
+                               class="btn btn-primary"
+                               role="button">Add Instrument Name</a>
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
-                <div class="add-name-container">
-                  {% include "instruments/includes/addName.html" %}
-
-                  {% if user.is_authenticated %}
-                    <button type="button"
-                            class="btn btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#addNameModal"
-                            data-instrument-name="{{ active_instrument_name.first.name | title }}"
-                            data-instrument-wikidata-id="{{ instrument.wikidata_id }}">
-                      Add Instrument Name
-                    </button>
-                  {% else %}
-                    <a href="{% url 'main:login' %}?next={{ request.path }}"
-                       class="btn btn-primary"
-                       role="button">Add Instrument Name</a>
-                  {% endif %}
-                </div>
-                {% include "instruments/includes/deleteName.html" %}
-
                 <!-- Stacked layout for small screens only -->
                 <div class="d-lg-none">
                   {% for instrumentname in instrument_names %}
@@ -153,10 +155,42 @@
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
                           </div>
                         </div>
+                        {% if user.is_authenticated %}
+                          <div class="action-buttons">
+                            <button class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteNameModal"
+                                    data-instrument-language="{{ instrumentname.language.en_label }}"
+                                    data-instrument-name="{{ instrumentname.name }}"
+                                    data-instrument-source="{{ instrumentname.source_name }}"
+                                    data-instrument-id="{{ instrumentname.id }}">
+                              Delete
+                            </button>
+                          </div>
+                        {% endif %}
                       </div>
                     </div>
                   {% endfor %}
+                  <div class="add-name-container">
+                    {% if user.is_authenticated %}
+                      <button type="button"
+                              class="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addNameModal"
+                              data-instrument-name="{{ active_instrument_name.first.name | title }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}">
+                        Add Instrument Name
+                      </button>
+                    {% else %}
+                      <a href="{% url 'main:login' %}?next={{ request.path }}"
+                         class="btn btn-primary"
+                         role="button">Add Instrument Name</a>
+                    {% endif %}
+                  </div>
                 </div>
+                {% include "instruments/includes/deleteName.html" %}
+                {% include "instruments/includes/addName.html" %}
+
               </td>
             </tr>
             <tr>
