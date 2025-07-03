@@ -1,13 +1,11 @@
 {% load static %}
 
 <!-- Confirmation Modal Structure -->
-<div
-  class="modal fade"
-  id="deleteNameModal"
-  tabindex="-1"
-  aria-labelledby="deleteNameModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade"
+     id="deleteNameModal"
+     tabindex="-1"
+     aria-labelledby="deleteNameModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -15,7 +13,9 @@
       </div>
       <div class="modal-body">
         <p id="deleteName"></p>
-        <p>The following will be deleted from the UMIL database. The entry will persist on Wikidata.</p>
+        <p>
+          The following will be deleted from the UMIL database. The entry will persist on Wikidata.
+        </p>
         <p>
           Language: <span id="instrumentLanguageInModal"></span>
           <br />
