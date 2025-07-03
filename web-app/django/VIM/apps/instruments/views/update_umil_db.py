@@ -96,11 +96,8 @@ def delete_name(request):
     if request.method == "DELETE":
         data = json.loads(request.body)
         name_id = data.get("instrument_name_id")
-        print("test")
     try:
         instrument_name = InstrumentName.objects.get(id=name_id, contributor=request.user)
-        print("test")
-        print(instrument_name)
         instrument_name.delete()
         return JsonResponse({"status": "success"})
     except InstrumentName.DoesNotExist:
