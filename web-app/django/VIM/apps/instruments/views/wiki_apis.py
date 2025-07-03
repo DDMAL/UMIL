@@ -10,11 +10,14 @@ WIKIDATA_OAUTH_URL = settings.WIKIDATA_OAUTH_URL
 WIKIDATA_REDIRECT_URI = settings.WIKIDATA_REDIRECT_URI
 WIKIDATA_CLIENT_APP_KEY = settings.WIKIDATA_CLIENT_APP_KEY
 WIKIDATA_CLIENT_APP_SECRET = settings.WIKIDATA_CLIENT_APP_SECRET
+WIKIBASE_ACCESS_TOKEN = settings.WIKIBASE_ACCESS_TOKEN
 
 session = requests.Session()
 
 def get_wikidata_access_token(request):
     access_token = request.COOKIES.get("wikidata_access_token")
+
+    # access_token = WIKIBASE_ACCESS_TOKEN
     return JsonResponse({"access_token": access_token})
 
 
@@ -78,6 +81,9 @@ def add_info_to_wikidata_entity(action, access_token, wikidata_id, value, langua
     Returns:
         dict: The response from the Wikidata API or an error message if failed.
     """
+    # wikidata_id = wikidata_to_wikibase(wikidata_id)
+    wikidata_id= "Q4115189"
+    print(wikidata_id, flush=True)
     try:
         # Authorization header with OAuth access token
         headers = {
@@ -90,11 +96,14 @@ def add_info_to_wikidata_entity(action, access_token, wikidata_id, value, langua
         elif action == "alias":
             body = {"aliases": [value]}
             url = f"{WIKIDATA_URL}/entities/items/{wikidata_id}/aliases/{language}"
+            print(f"DEBUG: Adding alias {value} to {wikidata_id} in {language}", flush=True)
         else:
             return {"errors": f"Invalid action: {action}"}  # Invalid action
 
-        if action == "add_aliases":
+        if action == "alias":
             response = session.post(url, headers=headers, json=body)
+            print(f"DEBUG: url for alias: {url}", flush=True)
+            print(f"DEBUG: Response status code for alias: {response.status_code}", flush=True)
         else:
             response = session.put(url, headers=headers, json=body)
         response.raise_for_status()
@@ -117,16 +126,109 @@ def edit_wikidata(request):
     """
     # retrieve all instrument names that are currently approved AND not yet on Wikidata
     approved = InstrumentName.objects.filter(is_approved=True).filter(on_wikidata=False)
-    access_token = get_wikidata_access_token(request)
+    # access_token = WIKIBASE_ACCESS_TOKEN
+    access_token = request.COOKIES.get("wikidata_access_token")
+
+    print(approved, flush=True)
+    print(access_token, flush=True)
 
     for instrument_name in approved:
-        print(f"Processing instrument name: {instrument_name.name} in language {instrument_name.language}")
-        # # post to wikidata
-        # if instrument_name.is_alias:
-        #     add_info_to_wikidata_entity("alias", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language)
-        # else:
-        #     add_info_to_wikidata_entity("label", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language)
+        print(f"Processing instrument name: {instrument_name.name} in language {instrument_name.language.wikidata_code}")
+        # post to wikidata
+        if instrument_name.is_alias:
+            add_info_to_wikidata_entity("alias", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language.wikidata_code)
+        else:
+            add_info_to_wikidata_entity("label", access_token, instrument_name.instrument.wikidata_id, instrument_name.name, instrument_name.language.wikidata_code)
 
     InstrumentName.objects.filter(is_approved = True).update(
         on_wikidata=True
     )
+    return JsonResponse({"status": "success", "message": "Wikidata entries updated successfully."})
+
+# def get_csrf_token(access_token):
+#     response = session.get(f"{WIKIDATA_URL}", params={
+#         "action": "query", 
+#         "meta": "tokens", 
+#         "format": "json"
+#     }, headers={"Authorization": f"Bearer {access_token}"})
+#     return response.json()["query"]["tokens"]["csrftoken"]
+
+# def wikidata_to_wikibase(wikidata_id):
+#     """
+#     Direct mapping for testing - expand as needed
+#     """
+#     # Known mappings: Wikidata ID -> Your Wikibase ID
+#     known_mappings = {
+#         "Q6607": "Q179",  # Guitar
+#     }
+    
+#     if wikidata_id in known_mappings:
+#         print(f"DEBUG: Found mapping {wikidata_id} -> {known_mappings[wikidata_id]}", flush=True)
+#         return known_mappings[wikidata_id]
+    
+#     print(f"DEBUG: No mapping found for {wikidata_id}, would create new item", flush=True)
+#     # For now, return None or create new item
+#     return None
+
+# def add_info_to_wikidata_entity(action, access_token, wikidata_id, value, language):
+#     """
+#     Adds information to a Wikidata entity using the MediaWiki API.
+
+#     Args:
+#         action (str): The action to perform ("label" or "alias").
+#         access_token (str): The OAuth access token.
+#         wikidata_id (str): The Wikidata ID of the entity.
+#         value (str): The value to add.
+#         language (str): The language code.
+
+#     Returns:
+#         dict: The response from the Wikidata API or an error message if failed.
+#     """
+#     wikidata_id = wikidata_to_wikibase(wikidata_id)
+#     print(wikidata_id, flush=True)
+#     api_url = f"{WIKIDATA_URL}/w/api.php"
+
+#     # # Get CSRF token
+#     csrf_token = "4e900338c46ac7f6ac0dcda4c7ad98ce68657217+\\"
+
+#     # Prepare parameters for the MediaWiki API
+#     if action == "label":
+#         params = {
+#             "action": "wbsetlabel",
+#             "id": wikidata_id,
+#             "value": value,
+#             "language": language,
+#             "token": csrf_token,
+#             "format": "json",
+#         }
+#     elif action == "alias":
+#         params = {
+#             "action": "wbsetaliases",
+#             "id": wikidata_id,
+#             "add": value,
+#             "language": language,
+#             "token": csrf_token,
+#             "format": "json",
+#         }
+#     else:
+#         return {"errors": f"Invalid action: {action}"}
+
+#     headers = {
+#         "Authorization": f"Bearer {access_token}",
+#         "Content-Type": "application/x-www-form-urlencoded",
+#     }
+#     print("DEBUG: MediaWiki API response data:", params, flush=True)
+
+#     try:
+#         response = session.post(api_url, data=params, headers=headers)
+#         print(f"DEBUG: MediaWiki API response status: {response.status_code}", flush=True)
+#         response.raise_for_status()
+#         data = response.json()
+#         if "error" in data:
+#             return {"errors": f"Error from MediaWiki API: {data['error'].get('info', 'Unknown error')}"}
+#         return data
+
+#     except requests.RequestException as e:
+#         return {"errors": f"HTTP error occurred: {e}"}
+#     except ValueError as ve:
+#         return {"errors": f"Value error occurred: {ve}"}
