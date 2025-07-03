@@ -266,7 +266,7 @@ function createRow(index: number): HTMLDivElement {
     .join('');
 
   row.innerHTML = `
-    <div class="col-md-2 language-input">
+    <div class="col-md-3 language-input">
       <label for="language${index}" class="form-label-sm">Language</label>
       <input list="languages${index}" class="form-control" id="language${index}" name="language[]" placeholder="Type to search" required />
       <datalist id="languages${index}">
@@ -275,20 +275,20 @@ function createRow(index: number): HTMLDivElement {
       <div class="valid-feedback"></div>
       <div class="invalid-feedback"></div>
     </div>
-    <div class="col-md-2 name-input">
+    <div class="col-md-3 name-input">
       <label for="name${index}" class="form-label-sm">Name</label>
       <input type="text" class="form-control" id="name${index}" name="name[]" placeholder="Enter name" required />
       <div class="valid-feedback"></div>
       <div class="invalid-feedback"></div>
     </div>
-    <div class="col-md-2 source-input">
+    <div class="col-md-3 source-input">
       <label for="source${index}" class="form-label-sm">Source</label>
       <input type="text" class="form-control" id="source${index}" name="source[]" placeholder="Enter source" required />
       <div class="valid-feedback"></div>
       <div class="invalid-feedback"></div>
     </div>
     <input type="hidden" class="alias-status" id="alias${index}" name="alias[]" values="false" />
-    <div class="col-md-1 d-flex align-items-end">
+    <div class="col-md-2 d-flex align-items-end">
       <button type="button" class="btn btn-secondary btn-sm remove-row-btn">Remove</button>
     </div>
   `;

@@ -56,7 +56,7 @@
             <tr>
               <th scope="row" class="w-20">Instrument Names in Different Languages</th>
               <td>
-                <table class="table table-sm table-striped table-bordered mb-1 d-none d-lg-table">
+                <table class="table table-sm table-striped table-bordered mb-0 d-none d-lg-table">
                   <thead>
                     <tr>
                       <th scope="col" class="w-30">
@@ -158,6 +158,19 @@
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
                           </div>
                         </div>
+                        {% if user.is_authenticated %}
+                          <div class="action-buttons">
+                            <button class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteNameModal"
+                                    data-instrument-language="{{ instrumentname.language.en_label }}"
+                                    data-instrument-name="{{ instrumentname.name }}"
+                                    data-instrument-source="{{ instrumentname.source_name }}"
+                                    data-instrument-id="{{ instrumentname.id }}">
+                              Delete
+                            </button>
+                          </div>
+                        {% endif %}
                       </div>
                     </div>
                     <div class="action-buttons">
@@ -197,6 +210,8 @@
                     View all languages
                   </button>
                 </div>
+                {% include "instruments/includes/deleteName.html" %}
+                {% include "instruments/includes/addName.html" %}
               </td>
             </tr>
             <tr>
@@ -217,8 +232,6 @@
       </div>
     </div>
   </div>
-  {% include "instruments/includes/addName.html" %}
-  {% include "instruments/includes/deleteName.html" %}
   {% include "instruments/includes/jumpToTop.html" %}
 
 {% endblock content %}
