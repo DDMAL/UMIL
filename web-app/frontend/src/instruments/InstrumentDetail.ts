@@ -5,18 +5,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   editButtons.forEach((button) => {
     button.addEventListener('click', function (this: HTMLElement) {
-      const parentTd = this.closest('td');
-      const flexContainer = parentTd.querySelector('.d-flex') as HTMLElement;
-      const viewField = flexContainer.querySelector(
+      // Find the edit container using our custom class
+      const editContainer = this.closest('.edit-container') as HTMLElement;
+
+      const viewField = editContainer.querySelector(
         '.view-field',
       ) as HTMLElement;
-      const editField = flexContainer.querySelector(
+      const editField = editContainer.querySelector(
         '.edit-field',
       ) as HTMLElement;
-      const cancelBtn = flexContainer.querySelector(
+      const cancelBtn = editContainer.querySelector(
         '.btn-cancel',
       ) as HTMLElement;
-      const publishBtn = flexContainer.querySelector(
+      const publishBtn = editContainer.querySelector(
         '.btn-publish',
       ) as HTMLElement;
 
@@ -30,16 +31,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   cancelButtons.forEach((button) => {
     button.addEventListener('click', function (this: HTMLElement) {
-      const parentTd = this.closest('td');
-      const flexContainer = parentTd.querySelector('.d-flex') as HTMLElement;
-      const viewField = flexContainer.querySelector(
+      // Find the edit container using our custom class
+      const editContainer = this.closest('.edit-container') as HTMLElement;
+
+      const viewField = editContainer.querySelector(
         '.view-field',
       ) as HTMLElement;
-      const editField = flexContainer.querySelector(
+      const editField = editContainer.querySelector(
         '.edit-field',
       ) as HTMLElement;
-      const editBtn = flexContainer.querySelector('.btn-edit') as HTMLElement;
-      const publishBtn = flexContainer.querySelector(
+      const editBtn = editContainer.querySelector('.btn-edit') as HTMLElement;
+      const publishBtn = editContainer.querySelector(
         '.btn-publish',
       ) as HTMLElement;
 
@@ -53,16 +55,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   publishButtons.forEach((button) => {
     button.addEventListener('click', function (this: HTMLElement) {
-      const parentTd = this.closest('td');
-      const flexContainer = parentTd.querySelector('.d-flex') as HTMLElement;
-      const viewField = flexContainer.querySelector(
+      // Find the edit container using our custom class
+      const editContainer = this.closest('.edit-container') as HTMLElement;
+
+      const viewField = editContainer.querySelector(
         '.view-field',
       ) as HTMLElement;
-      const editField = flexContainer.querySelector(
+      const editField = editContainer.querySelector(
         '.edit-field',
       ) as HTMLInputElement;
-      const editBtn = flexContainer.querySelector('.btn-edit') as HTMLElement;
-      const cancelBtn = flexContainer.querySelector(
+      const editBtn = editContainer.querySelector('.btn-edit') as HTMLElement;
+      const cancelBtn = editContainer.querySelector(
         '.btn-cancel',
       ) as HTMLElement;
 
