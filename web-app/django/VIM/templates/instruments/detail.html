@@ -145,7 +145,6 @@
                       </div>
                     </td>
                     <td>
-                      {% include "instruments/delete_name.html" %}
                       <div class="button-group">
                         {% if instrumentname.contributor == request.user %}
                         <button
@@ -166,6 +165,7 @@
                   {% endfor %}
                 </tbody>
               </table>
+              {% include "instruments/delete_name.html" %}
             </td>
           </tr>
           <tr>
