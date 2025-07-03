@@ -17,7 +17,6 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
     addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
       instrumentWikidataId;
   }
-
 });
 
 // Function to store form data
@@ -32,9 +31,11 @@ function storeFormData() {
   storedData['nameRows'] = [];
   document.querySelectorAll('.name-row').forEach((row) => {
     const rowData = {
-      language: (row.querySelector('.language-input input') as HTMLInputElement).value,
+      language: (row.querySelector('.language-input input') as HTMLInputElement)
+        .value,
       name: (row.querySelector('.name-input input') as HTMLInputElement).value,
-      source: (row.querySelector('.source-input input') as HTMLInputElement).value,
+      source: (row.querySelector('.source-input input') as HTMLInputElement)
+        .value,
     };
     storedData['nameRows'].push(rowData);
   });
@@ -66,10 +67,12 @@ function restoreFormData(storedData: string): void {
   }
 
   // Restore wikidata_id, publish_to_wikidata
-  (document.getElementById('instrumentNameInModal') as HTMLElement).textContent =
-    parsedData['instrumentName'];
-  (document.getElementById('instrumentWikidataIdInModal') as HTMLElement).textContent =
-    parsedData['wikidata_id'];
+  (
+    document.getElementById('instrumentNameInModal') as HTMLElement
+  ).textContent = parsedData['instrumentName'];
+  (
+    document.getElementById('instrumentWikidataIdInModal') as HTMLElement
+  ).textContent = parsedData['wikidata_id'];
 
   // Restore dynamically added rows
   const nameRowsContainer = document.getElementById('nameRows') as HTMLElement;
@@ -79,9 +82,13 @@ function restoreFormData(storedData: string): void {
     parsedData['nameRows'].forEach((rowData: NameRowData, index: number) => {
       const newRow = createRow(index + 1);
       nameRowsContainer.appendChild(newRow);
-      (newRow.querySelector('.language-input input') as HTMLInputElement).value = rowData.language;
-      (newRow.querySelector('.name-input input') as HTMLInputElement).value = rowData.name;
-      (newRow.querySelector('.source-input input') as HTMLInputElement).value = rowData.source;
+      (
+        newRow.querySelector('.language-input input') as HTMLInputElement
+      ).value = rowData.language;
+      (newRow.querySelector('.name-input input') as HTMLInputElement).value =
+        rowData.name;
+      (newRow.querySelector('.source-input input') as HTMLInputElement).value =
+        rowData.source;
     });
   }
 
@@ -89,10 +96,13 @@ function restoreFormData(storedData: string): void {
   const nameRows = document.querySelectorAll('.name-row');
   nameRows.forEach((row: Element) => {
     const languageInput = row.querySelector('input[list]') as HTMLInputElement;
-    const nameInput = row.querySelector('.name-input input[type="text"]') as HTMLInputElement;
-    const sourceInput = row.querySelector('.source-input input[type="text"]') as HTMLInputElement;
+    const nameInput = row.querySelector(
+      '.name-input input[type="text"]',
+    ) as HTMLInputElement;
+    const sourceInput = row.querySelector(
+      '.source-input input[type="text"]',
+    ) as HTMLInputElement;
   });
-
 }
 
 // Reset modal on close
@@ -110,7 +120,9 @@ interface ValidLanguageInputElement extends HTMLInputElement {
 function isValidLanguage(inputElement: ValidLanguageInputElement): boolean {
   const datalistId = inputElement.getAttribute('list');
   if (!datalistId) return false;
-  const datalist = document.getElementById(datalistId) as HTMLDataListElement | null;
+  const datalist = document.getElementById(
+    datalistId,
+  ) as HTMLDataListElement | null;
   if (!datalist) return false;
   const options = datalist.querySelectorAll('option');
 
@@ -145,7 +157,7 @@ interface SparqlResults {
 async function isAlias(
   wikidataId: string,
   languageCode: string,
-  languageLabel: string
+  languageLabel: string,
 ): Promise<IsAliasResult> {
   const sparqlQuery = `
     SELECT ?nameLabel WHERE {
@@ -197,9 +209,8 @@ async function existOnWikidata(
   wikidataId: string,
   languageCode: string,
   languageLabel: string,
-  nameInput: string
+  nameInput: string,
 ): Promise<ExistOnWikidataResult> {
-
   const sparqlQuery = `
      SELECT ?nameLabel WHERE {
       wd:${wikidataId} (rdfs:label|skos:altLabel) ?nameLabel .
@@ -283,7 +294,9 @@ function createRow(index: number): HTMLDivElement {
   `;
 
   // Add event listener for remove button
-  const removeButton = row.querySelector('.remove-row-btn') as HTMLButtonElement;
+  const removeButton = row.querySelector(
+    '.remove-row-btn',
+  ) as HTMLButtonElement;
   removeButton.addEventListener('click', function () {
     row.remove();
     updateRemoveButtons(); // Ensure correct behavior when rows are removed
@@ -318,9 +331,15 @@ document
 
     // // Iterate over each row and check if the name already exists in Wikidata
     for (let row of nameRows) {
-      const languageInput = row.querySelector('input[list]') as ValidLanguageInputElement;
-      const nameInput = row.querySelector('.name-input input[type="text"]') as HTMLInputElement;
-      const sourceInput = row.querySelector('.source-input input[type="text"]') as HTMLInputElement;
+      const languageInput = row.querySelector(
+        'input[list]',
+      ) as ValidLanguageInputElement;
+      const nameInput = row.querySelector(
+        '.name-input input[type="text"]',
+      ) as HTMLInputElement;
+      const sourceInput = row.querySelector(
+        '.source-input input[type="text"]',
+      ) as HTMLInputElement;
       const aliasStatus = row.querySelector('.alias-status');
 
       const languageCode = (languageInput as HTMLInputElement).value;
@@ -367,48 +386,43 @@ document
         allValid = false;
       } else {
         try {
-        // Check if name is already an alias or label on Wikidata
-        const result = await existOnWikidata(
-          wikidataId,
-          languageCode,
-          languageLabel,
-          nameInput.value,
-        )
-        if (result.exists) {
-          nameInput.classList.remove('is-valid');
-          nameInput.classList.add('is-invalid');
-          nameFeedbackInvalid.textContent =
-            `This instrument already has this name on Wikidata in ${languageLabel} (${languageCode}).`;
-          allValid = false;
-          continue; // Skip to the next row if the name already exists
-        } else {
-          nameInput.classList.add('is-valid');
-          nameInput.classList.remove('is-invalid');
-          languageInput.classList.add('is-valid');
-          languageInput.classList.remove('is-invalid');
-          nameFeedbackValid.textContent =
-            'This instrument does not have this name listed on Wikidata yet ! You can add a new name.';
-        }
+          // Check if name is already an alias or label on Wikidata
+          const result = await existOnWikidata(
+            wikidataId,
+            languageCode,
+            languageLabel,
+            nameInput.value,
+          );
+          if (result.exists) {
+            nameInput.classList.remove('is-valid');
+            nameInput.classList.add('is-invalid');
+            nameFeedbackInvalid.textContent = `This instrument already has this name on Wikidata in ${languageLabel} (${languageCode}).`;
+            allValid = false;
+            continue; // Skip to the next row if the name already exists
+          } else {
+            nameInput.classList.add('is-valid');
+            nameInput.classList.remove('is-invalid');
+            languageInput.classList.add('is-valid');
+            languageInput.classList.remove('is-invalid');
+            nameFeedbackValid.textContent =
+              'This instrument does not have this name listed on Wikidata yet ! You can add a new name.';
+          }
         } catch (error) {
           alert(
-            'There was an error checking Wikidata. Please try again later.'
+            'There was an error checking Wikidata. Please try again later.',
           );
           return; // Stop further processing
         }
 
         try {
-          const result = await isAlias(
-            wikidataId,
-            languageCode,
-            languageLabel,
-          );
+          const result = await isAlias(wikidataId, languageCode, languageLabel);
 
           // If language has a label, input is an Alias
           if (result.exists) {
-            (aliasStatus as HTMLInputElement).value = "true";
+            (aliasStatus as HTMLInputElement).value = 'true';
           } else {
-            (aliasStatus as HTMLInputElement).value = "false";
-          } 
+            (aliasStatus as HTMLInputElement).value = 'false';
+          }
         } catch (error) {
           alert(
             'There was an error checking Wikidata. Please try again later.',
@@ -431,10 +445,9 @@ document
 
       // Add the result to the confirmation message
       publishResults += `<br />Language: ${languageLabel} (${languageCode})
-      <br>Name: ${nameInput.value} 
+      <br>Name: ${nameInput.value}
       <br>Source: ${sourceInput.value}
-      <br> The entry will be saved as an ${(aliasStatus as HTMLInputElement).value === "true" ? 'alias' : 'label'} on Wikidata.<br />`;
-    
+      <br> The entry will be saved as an ${(aliasStatus as HTMLInputElement).value === 'true' ? 'alias' : 'label'} on Wikidata.<br />`;
     }
 
     // If all rows are valid, show the confirmation modal
@@ -472,9 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const storedData = localStorage.getItem('addNameFormData');
   if (storedData) {
     // Show the modal
-    const addNameModal = new Modal(
-      document.getElementById('addNameModal'),
-    );
+    const addNameModal = new Modal(document.getElementById('addNameModal'));
     addNameModal.show();
     // Restore form data
     restoreFormData(storedData);
@@ -525,9 +536,9 @@ document
     });
 
     // Get the CSRF token
-    const csrftoken = (document.querySelector(
-      '[name=csrfmiddlewaretoken]',
-    ) as HTMLInputElement).value;
+    const csrftoken = (
+      document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
+    ).value;
 
     // Send the request to publish
     fetch(`/add-name/`, {
@@ -568,6 +579,5 @@ document
         alert('An error occurred while publishing the data: ' + error.message);
       });
 
-      window.location.reload(); // Reload the page to reflect changes
+    window.location.reload(); // Reload the page to reflect changes
   });
-
