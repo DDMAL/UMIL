@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import F, CharField, Value as V
 from django.db.models.functions import Concat, Left
 import requests
-from VIM.apps.instruments.models import Instrument
+from VIM.apps.instruments.models import Instrument, Language
 
 
 class Command(BaseCommand):
@@ -25,18 +25,13 @@ class Command(BaseCommand):
                 type=V("instrument"),
             )
         )
+        languages = Language.objects.all().values_list("wikidata_code", flat=True)
         hbs_label_map = self.build_hbs_label_map()
         for instrument in instruments:
-            instrument["hbs_prim_cat_label_en_s"] = (
-                hbs_label_map["en"][instrument["hbs_prim_cat_s"]]
-                if instrument["hbs_prim_cat_s"] != ""
-                else ""
-            )
-            instrument["hbs_prim_cat_label_fr_s"] = (
-                hbs_label_map["fr"][instrument["hbs_prim_cat_s"]]
-                if instrument["hbs_prim_cat_s"] != ""
-                else ""
-            )
+            hbs_code = instrument["hbs_prim_cat_s"]
+            for lang_code in languages:
+                label = hbs_label_map.get(lang_code, {}).get(hbs_code, "")
+                instrument[f"hbs_prim_cat_label_{lang_code}_s"] = label
         requests.post(
             "http://solr:8983/solr/virtual-instrument-museum/update?commit=true",
             json=instruments,
@@ -63,6 +58,11 @@ class Command(BaseCommand):
             "5": "Électrophones",
         }
         hbs_label_map = {"en": eng_name_mapping, "fr": fr_name_mapping}
+        # for all other languages, we will use the English names (temporarily)
+        for lang_code in Language.objects.exclude(
+            wikidata_code__in=["en", "fr"]
+        ).values_list("wikidata_code", flat=True):
+            hbs_label_map[lang_code] = eng_name_mapping.copy()
         return hbs_label_map
         # top_concepts = requests.get(
         #     "https://vocabulary.mimo-international.com/rest/v1/HornbostelAndSachs/topConcepts"
