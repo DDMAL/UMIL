@@ -171,3 +171,7 @@ DEFAULT_FROM_EMAIL = "noreply@cantusdatabase.simssa.ca"
 CSRF_COOKIE_SECURE = IS_PRODUCTION
 CSRF_TRUSTED_ORIGINS = [f'https://{os.environ.get("HOST_NAME")}']
 SESSION_COOKIE_SECURE = IS_PRODUCTION
+
+# SOLR SETTINGS
+
+SOLR_URL = "http://solr:8983/solr/virtual-instrument-museum"
