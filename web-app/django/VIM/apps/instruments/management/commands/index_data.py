@@ -2,9 +2,9 @@
 
 import pysolr
 from django.core.management.base import BaseCommand
-from django.db.models import F
+from django.db.models import CharField, F
 from django.db.models import Value as V
-from django.db.models.functions import Left
+from django.db.models.functions import Concat, Left
 
 from VIM.apps.instruments.models import Instrument, InstrumentName
 
@@ -19,13 +19,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         instruments = list(
             Instrument.objects.all().values(
-                sid=F("id"),
+                sid=Concat(V("instrument-"), "id", output_field=CharField()),
                 wikidata_id_s=F("wikidata_id"),
                 hornbostel_sachs_class_s=F("hornbostel_sachs_class"),
                 hbs_prim_cat_s=Left(F("hornbostel_sachs_class"), 1),
                 mimo_class_s=F("mimo_class"),
                 type=V("instrument"),
-                thumbnail_url=F("thumbnail__url"),
+                thumbnail_url_s=F("thumbnail__url"),
             )
         )
         hbs_label_map = self.build_hbs_label_map()
@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
             # Get all instrument names in different languages
             instrument_names = InstrumentName.objects.filter(
-                instrument=instrument["sid"]
+                instrument_id=instrument["sid"].replace("instrument-", "")
             ).values_list("name", "language__wikidata_code")
 
             for name, lang_code in instrument_names:
@@ -52,9 +52,6 @@ class Command(BaseCommand):
                     instrument[field] = [name]
                 else:
                     instrument[field].append(name)
-
-            if instrument.get("thumbnail_url"):
-                instrument["thumbnail_url"] = instrument["thumbnail_url"]
 
         # Initialize Solr client
         solr = pysolr.Solr(

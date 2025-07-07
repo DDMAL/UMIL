@@ -1,15 +1,17 @@
-from django.db.models import Prefetch
-from django.views.generic import ListView
-from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 import pysolr
 import requests
+from django.conf import settings
+from django.db.models import Prefetch, QuerySet
+from django.views.generic import ListView
+
+from VIM.apps.instruments.models import Instrument, InstrumentName, Language
 
 
 # Helper classes to normalize Solr results
 class SolrInstrument:
     def __init__(self, data, lang_code="en"):
-        self.pk = data.get("sid")
-        self.thumbnail = ThumbnailStub(data.get("thumbnail_url", None))
+        self.pk = data.get("sid").replace("instrument-", "")
+        self.thumbnail = ThumbnailStub(data.get("thumbnail_url_s"))
         name_field = f"instrument_name_{lang_code}_ss"
         self.instrumentname_set = InstrumentNameSet(data.get(name_field, []))
 
@@ -116,7 +118,7 @@ class InstrumentList(ListView):
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Instrument]:
         language_en = self.get_active_language_en_label()
         instrumentname_prefetch_manager = Prefetch(
             "instrumentname_set",
@@ -131,10 +133,9 @@ class InstrumentList(ListView):
             )
 
         search_query = self.request.GET.get("q", "").strip()
-        solr_url = "http://solr:8983/solr/virtual-instrument-museum"
 
         if search_query:
-            solr = pysolr.Solr(solr_url, timeout=10)
+            solr = pysolr.Solr(settings.SOLR_URL, timeout=10)
             lang_code = Language.objects.get(en_label=language_en).wikidata_code
             name_field = f"instrument_name_{lang_code}_ss"
             solr_params = {
@@ -142,7 +143,7 @@ class InstrumentList(ListView):
                 "wt": "json",
                 "rows": 100,
                 "facet": "false",
-                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
+                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url_s",
             }
 
             # Send query to Solr and retrieve results
