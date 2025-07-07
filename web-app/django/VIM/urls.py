@@ -21,6 +21,7 @@ from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
 from VIM.apps.instruments.views.update_umil_db import add_name, delete_name
+from VIM.apps.instruments.views.instrument_upload import InstrumentNameListView
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
@@ -30,6 +31,7 @@ urlpatterns = i18n_patterns(
     path("instrument/<int:pk>/", InstrumentDetail.as_view(), name="instrument-detail"),
     path("add-name/", add_name, name="add-name"),
     path("delete-name/", delete_name, name="delete-name"),
+    path("upload/", InstrumentNameListView.as_view(), name="instrument-upload"),
     prefix_default_language=False,
 )
 

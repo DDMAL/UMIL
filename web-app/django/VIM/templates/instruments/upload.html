@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load django_vite %}
+
+{% block title %}
+  Instrument Upload
+{% endblock title %}
+
+{% block ts_files %}
+  {% vite_asset 'src/instruments/DeleteName.ts' %}
+{% endblock ts_files %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'assets/css/instruments/index.css' %}" />
+{% endblock css_files %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center min-vh-80 py-4">
+  <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
+    <div class="w-100">
+      <h2>Upload New Instrument Names</h2>
+      <hr class="w-100 mt-0" />
+    </div>
+    <br />
+    <div class="w-100">
+      <table class="table table-sm table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="w-30">Language</th>
+            <th scope="col" class="w-30">Name</th>
+            <th scope="col" class="w-30">Source</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for instrument in instrument_names %}
+          <tr>
+            <td>
+              <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                <span class="view-field flex-grow-1">{{ instrument.language.en_label }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                <span class="view-field flex-grow-1">{{ instrument.name }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                <span class="view-field flex-grow-1">{{ instrument.source_name }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons d-flex justify-content-center">
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteNameModal"
+                  data-instrument-language="{{ instrument.language.en_label }}"
+                  data-instrument-name="{{ instrument.name }}"
+                  data-instrument-source="{{ instrument.source_name }}"
+                  data-instrument-id="{{ instrument.id }}"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4">No new names found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% csrf_token %}
+      {% if instrument_names %}
+      <div class="add-name-container mt-3">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-toggle="modal"
+          data-bs-target="#confirmationModal"
+        >
+          Submit to Wikidata
+        </button>
+      </div>
+      {% endif %}
+      {% include "instruments/includes/addName.html" %}
+      {% include "instruments/includes/deleteName.html" %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
