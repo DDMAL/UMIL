@@ -2,7 +2,7 @@ import { WikidataLanguage, AddNameForm, NameEntry } from '../Types';
 import { NameValidator } from './NameValidator';
 import { Modal } from 'bootstrap';
 
-export class NameFormManager {
+export class AddNameManager {
   private rowIndex: number = 1;
   private languages: WikidataLanguage[];
   private nameValidator: NameValidator;
@@ -208,34 +208,49 @@ export class NameFormManager {
               <div class="col-9">${sourceInput.value}</div>
             </div>
             <div class="row">
-              <div class="col-3"><strong>Status:</strong></div>
-              <div class="col-9">Will be saved as an <em>${validationResult.isAlias ? 'alias' : 'label'}</em> on Wikidata</div>
+              <div class="col-3"><strong>Type:</strong></div>
+              <div class="col-9">${validationResult.isAlias ? 'Alias' : 'Label'}</div>
             </div>
-          </div>`;
+          </div>
+        `;
       } catch (error) {
-        alert('There was an error checking Wikidata. Please try again later.');
-        return;
+        // Handle validation errors
+        allValid = false;
+        const nameContainer = row.querySelector('.name-input');
+        const sourceContainer = row.querySelector('.source-input');
+
+        this.nameValidator.displayFeedback(nameContainer, {
+          isValid: false,
+          message: 'Error validating name. Please try again.',
+          type: 'error',
+        });
+        this.nameValidator.displayFeedback(sourceContainer, {
+          isValid: false,
+          message: 'Error validating source. Please try again.',
+          type: 'error',
+        });
       }
     }
 
-    // If all rows are valid, show the confirmation modal
+    // If all validation passes, show confirmation modal
     if (allValid) {
-      document.getElementById('publishResults').innerHTML =
-        `<h6 class="mb-3">You will publish the following entries:</h6>${publishResults}`;
       const confirmationModal = new Modal(
         document.getElementById('confirmationModal'),
       );
+      document.getElementById('publishResults').innerHTML = publishResults;
       confirmationModal.show();
     }
   }
 
   /**
-   * Sets up the form submission event listener
+   * Sets up form submission handling
    */
   setupFormSubmission(): void {
     document
       .getElementById('addNameForm')
-      .addEventListener('submit', (event) => this.validateAndSubmitForm(event));
+      .addEventListener('submit', (event) => {
+        this.validateAndSubmitForm(event);
+      });
   }
 
   /**

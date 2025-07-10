@@ -1,12 +1,12 @@
 import { Modal } from 'bootstrap';
 import { WikidataLanguage, NameEntry } from './Types';
 import { NameValidator } from './helpers/NameValidator';
-import { NameFormManager } from './helpers/NameFormManager';
+import { AddNameManager } from './helpers/AddNameManager';
 
 declare const languages: WikidataLanguage[];
 
 let nameValidator: NameValidator;
-let nameFormManager: NameFormManager;
+let addNameManager: AddNameManager;
 
 // Handle modal show event - populate instrument data
 const addNameModal = document.getElementById('addNameModal');
@@ -36,11 +36,11 @@ document
 document.addEventListener('DOMContentLoaded', function () {
   // Initialize services
   nameValidator = new NameValidator(languages);
-  nameFormManager = new NameFormManager(languages, nameValidator);
+  addNameManager = new AddNameManager(languages, nameValidator);
 
   // Setup form event listeners
-  nameFormManager.setupAddRowButton();
-  nameFormManager.setupFormSubmission();
+  addNameManager.setupAddRowButton();
+  addNameManager.setupFormSubmission();
 
   // Handle stored form data
   const storedFormData = localStorage.getItem('addNameFormData');
@@ -49,16 +49,16 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('addNameModal'),
     );
     addNameModalInstance.show();
-    nameFormManager.restoreFormData(storedFormData);
+    addNameManager.restoreFormData(storedFormData);
   } else {
-    nameFormManager.resetModal();
+    addNameManager.resetModal();
   }
 });
 
 // Reset the modal when hidden
 document
   .getElementById('addNameModal')
-  .addEventListener('hide.bs.modal', () => nameFormManager.resetModal());
+  .addEventListener('hide.bs.modal', () => addNameManager.resetModal());
 
 // Publishing functionality
 // Handle confirm publish action
