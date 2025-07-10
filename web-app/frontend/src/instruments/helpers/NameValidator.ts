@@ -4,7 +4,7 @@ import { WikidataService } from './WikidataService';
 export class NameValidator {
   private languages: WikidataLanguage[];
 
-  constructor(languages: WikidataLanguage[]) {
+  constructor(languages: WikidataLanguage[] = []) {
     this.languages = languages;
   }
 
@@ -87,6 +87,74 @@ export class NameValidator {
     return {
       isValid: true,
       message: '',
+      type: 'success',
+    };
+  }
+
+  /**
+   * Validates that we have a valid name ID for deletion
+   */
+  validateNameId(nameId: string | null): ValidationResult {
+    if (!nameId || nameId.trim() === '') {
+      return {
+        isValid: false,
+        message: 'No instrument name ID provided for deletion.',
+        type: 'error',
+      };
+    }
+
+    return {
+      isValid: true,
+      message: 'Valid instrument name ID provided.',
+      type: 'success',
+    };
+  }
+
+  /**
+   * Validates that required modal data is present for deletion
+   */
+  validateModalData(
+    name: string | null,
+    language: string | null,
+    source: string | null,
+  ): ValidationResult {
+    if (!name || !language || !source) {
+      return {
+        isValid: false,
+        message: 'Missing required instrument data for deletion.',
+        type: 'error',
+      };
+    }
+
+    return {
+      isValid: true,
+      message: 'All required data is present.',
+      type: 'success',
+    };
+  }
+
+  /**
+   * Validates that the deletion operation can proceed
+   */
+  validateDeletion(
+    nameId: string | null,
+    name: string | null,
+    language: string | null,
+    source: string | null,
+  ): ValidationResult {
+    const idValidation = this.validateNameId(nameId);
+    if (!idValidation.isValid) {
+      return idValidation;
+    }
+
+    const dataValidation = this.validateModalData(name, language, source);
+    if (!dataValidation.isValid) {
+      return dataValidation;
+    }
+
+    return {
+      isValid: true,
+      message: 'Ready to delete instrument name.',
       type: 'success',
     };
   }
