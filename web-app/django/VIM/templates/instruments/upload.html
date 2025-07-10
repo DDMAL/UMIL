@@ -9,6 +9,7 @@
 
 {% block ts_files %}
   {% vite_asset 'src/instruments/DeleteName.ts' %}
+  {% vite_asset 'src/instruments/UploadName.ts' %}
 {% endblock ts_files %}
 
 {% block css_files %}
@@ -81,15 +82,43 @@
           type="button"
           class="btn btn-secondary"
           data-bs-toggle="modal"
-          data-bs-target="#confirmationModal"
+          data-bs-target="#uploadConfirmationModal"
         >
           Submit to Wikidata
         </button>
       </div>
       {% endif %}
-      {% include "instruments/includes/addName.html" %}
-      {% include "instruments/includes/deleteName.html" %}
     </div>
   </div>
 </div>
+<!-- Confirmation Modal Structure -->
+<div class="modal fade"
+     id="uploadConfirmationModal"
+     tabindex="-1"
+     aria-labelledby="confirmationModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel">Confirm Publish</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to publish these name entries to Wikidata ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" id="confirmUploadBtn">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% include "instruments/includes/deleteName.html" %}
 {% endblock content %}
