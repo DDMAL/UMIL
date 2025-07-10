@@ -25,12 +25,8 @@
     <div class="row">
       <div class="col-xl-3">
         <div class="px-3 pt-3 me-1 mb-3 h-auto bg-white container-border">
-          <div class="info-block bg-light h-auto p-2 mb-3 notranslate">
-            {% if active_language.en_label == "French" %}
-              <h4>Système Hornbostel-Sachs</h4>
-            {% else %}
-              <h4>Hornbostel-Sachs Classification</h4>
-            {% endif %}
+          <div class="info-block bg-light h-auto p-2 mb-3">
+            <h4>Hornbostel-Sachs Classification</h4>
             <hr class="mt-0" />
             <ul class="list-group">
               {% for hbs_facet_item in hbs_facets %}
