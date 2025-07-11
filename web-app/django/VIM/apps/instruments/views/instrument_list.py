@@ -1,3 +1,5 @@
+from typing import Union
+
 import pysolr
 import requests
 from django.conf import settings
@@ -9,29 +11,30 @@ from VIM.apps.instruments.models import Instrument, InstrumentName, Language
 
 # Helper classes to normalize Solr results
 class SolrInstrument:
-    def __init__(self, data, lang_code="en"):
-        self.pk = data.get("sid").replace("instrument-", "")
-        self.thumbnail = ThumbnailStub(data.get("thumbnail_url_s"))
+    def __init__(self, data: dict, lang_code: str = "en"):
+        sid = data.get("sid")
+        self.pk = sid.replace("instrument-", "") if sid else ""
+        self.thumbnail = ThumbnailStub(data.get("thumbnail_url"))
         name_field = f"instrument_name_{lang_code}_ss"
         self.instrumentname_set = InstrumentNameSet(data.get(name_field, []))
 
 
 class ThumbnailStub:
-    def __init__(self, url):
+    def __init__(self, url: Union[str, None]):
         self.url = url  # e.g., "instruments/images/instrument_imgs/thumbnail/Q6607.png"
 
 
+class InstrumentNameStub:
+    def __init__(self, name: str):
+        self.name = name
+
+
 class InstrumentNameSet:
-    def __init__(self, names):
+    def __init__(self, names: Union[list[str], str]):
         self._names = names if isinstance(names, list) else [names]
 
-    def all(self):
+    def all(self) -> list[InstrumentNameStub]:
         return [InstrumentNameStub(name) for name in self._names]
-
-
-class InstrumentNameStub:
-    def __init__(self, name):
-        self.name = name
 
 
 class InstrumentList(ListView):
@@ -115,7 +118,7 @@ class InstrumentList(ListView):
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
 
-    def get_queryset(self) -> QuerySet[Instrument]:
+    def get_queryset(self) -> Union[QuerySet[Instrument], list[SolrInstrument]]:
         language_en = self.get_active_language_en_label()
         instrumentname_prefetch_manager = Prefetch(
             "instrumentname_set",
@@ -140,7 +143,7 @@ class InstrumentList(ListView):
                 "wt": "json",
                 "rows": 100,
                 "facet": "false",
-                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url_s",
+                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
             }
 
             # Send query to Solr and retrieve results
