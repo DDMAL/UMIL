@@ -1,8 +1,40 @@
-from django.db.models import Prefetch
-from django.db.models.query import QuerySet
-from django.views.generic import ListView
-from VIM.apps.instruments.models import Instrument, Language, InstrumentName
+from typing import Union
+
+import pysolr
 import requests
+from django.conf import settings
+from django.db.models import Prefetch, QuerySet
+from django.views.generic import ListView
+
+from VIM.apps.instruments.models import Instrument, InstrumentName, Language
+
+
+# Helper classes to normalize Solr results
+class SolrInstrument:
+    def __init__(self, data: dict, lang_code: str = "en"):
+        sid = data.get("sid")
+        self.pk = sid.replace("instrument-", "") if sid else ""
+        self.thumbnail = ThumbnailStub(data.get("thumbnail_url"))
+        name_field = f"instrument_name_{lang_code}_ss"
+        self.instrumentname_set = InstrumentNameSet(data.get(name_field, []))
+
+
+class ThumbnailStub:
+    def __init__(self, url: Union[str, None]):
+        self.url = url  # e.g., "instruments/images/instrument_imgs/thumbnail/Q6607.png"
+
+
+class InstrumentNameStub:
+    def __init__(self, name: str):
+        self.name = name
+
+
+class InstrumentNameSet:
+    def __init__(self, names: Union[list[str], str]):
+        self._names = names if isinstance(names, list) else [names]
+
+    def all(self) -> list[InstrumentNameStub]:
+        return [InstrumentNameStub(name) for name in self._names]
 
 
 class InstrumentList(ListView):
@@ -75,6 +107,9 @@ class InstrumentList(ListView):
             context["hbs_facet_name"] = next(
                 (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
             )
+        search_query = self.request.GET.get("q", "").strip()
+        if search_query:
+            context["search_query"] = search_query
         return context
 
     def get(self, request, *args, **kwargs):
@@ -83,7 +118,7 @@ class InstrumentList(ListView):
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
 
-    def get_queryset(self) -> QuerySet[Instrument]:
+    def get_queryset(self) -> Union[QuerySet[Instrument], list[SolrInstrument]]:
         language_en = self.get_active_language_en_label()
         instrumentname_prefetch_manager = Prefetch(
             "instrumentname_set",
@@ -96,6 +131,27 @@ class InstrumentList(ListView):
                 .select_related("thumbnail")
                 .prefetch_related(instrumentname_prefetch_manager)
             )
+
+        search_query = self.request.GET.get("q", "").strip()
+
+        if search_query:
+            solr = pysolr.Solr(settings.SOLR_URL, timeout=10)
+            lang_code = Language.objects.get(en_label=language_en).wikidata_code
+            name_field = f"instrument_name_{lang_code}_ss"
+            solr_params = {
+                "q": search_query,
+                "wt": "json",
+                "rows": 100,
+                "facet": "false",
+                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
+            }
+
+            # Send query to Solr and retrieve results
+            solr_response = solr.search(**solr_params)
+            return [
+                SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
+            ]
+
         return Instrument.objects.select_related("thumbnail").prefetch_related(
             instrumentname_prefetch_manager
         )

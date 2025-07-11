@@ -15,6 +15,7 @@ requests = "2.31.0"
 gunicorn = "21.2.0"
 pillow = "^10.4.0"
 django-vite = "^3.1.0"
+pysolr = "^3.10.0"
 
 
 [tool.poetry.group.dev.dependencies]
