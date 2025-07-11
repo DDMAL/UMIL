@@ -43,6 +43,7 @@ python manage.py migrate
 python manage.py import_languages
 python manage.py import_instruments
 python manage.py download_imgs
+python manage.py index_data
 ```
 
 > Note: `download_imgs` might take a while depending on your internet connection. In case the download is interrupted, run the command again inside the container shell.
@@ -104,6 +105,16 @@ cd /virtual-instrument-museum/vim-app
 python manage.py import_languages
 python manage.py import_instruments
 ```
+
+### Indexing Instrument Data to Solr
+
+To index the instrument data to Solr for search, use the `index_data` management command:
+
+```sh
+python manage.py index_data
+```
+
+This will generate and send a structured list of instruments to Solr. The Hornbostel-Sachs category labels are stored in English only, and translation for other languages (if needed) can be handled on the frontend using Google Translate.
 
 ## Additional Tools for Python Development
 
