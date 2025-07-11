@@ -57,6 +57,16 @@
                    class="nav-link {% if active_tab == 'about' %}active{% endif %}">About</a>
               </li>
             </ul>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+                  role="search"
+                  action="{% url 'instrument-list' %}"
+                  method="get">
+              <input type="search"
+                     name="q"
+                     class="form-control search-input"
+                     placeholder="Search..."
+                     aria-label="Search" />
+            </form>
             <!-- Right side content (user menu + translate) -->
             <div class="d-flex align-items-center justify-content-center justify-content-lg-end">
               {% if user.is_authenticated %}

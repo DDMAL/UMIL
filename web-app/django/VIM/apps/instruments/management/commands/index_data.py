@@ -1,10 +1,12 @@
 """This module indexes instrument data in the database in Solr."""
 
-import requests
+import pysolr
+from django.conf import settings
+from django.contrib.postgres.aggregates import JSONBAgg
 from django.core.management.base import BaseCommand
 from django.db.models import CharField, F
 from django.db.models import Value as V
-from django.db.models.functions import Concat, Left
+from django.db.models.functions import Concat, Left, JSONObject
 
 from VIM.apps.instruments.models import Instrument
 
@@ -26,25 +28,49 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         instruments = list(
-            Instrument.objects.all().values(
+            Instrument.objects.annotate(
                 sid=Concat(V("instrument-"), "id", output_field=CharField()),
                 wikidata_id_s=F("wikidata_id"),
                 hornbostel_sachs_class_s=F("hornbostel_sachs_class"),
                 hbs_prim_cat_s=Left(F("hornbostel_sachs_class"), 1),
                 mimo_class_s=F("mimo_class"),
                 type=V("instrument"),
+                thumbnail_url=F("thumbnail__url"),
+                instrument_names_by_language=JSONBAgg(
+                    JSONObject(
+                        lang=F("instrumentname__language__wikidata_code"),
+                        name=F("instrumentname__name"),
+                    ),
+                ),
+            ).values(
+                "sid",
+                "wikidata_id_s",
+                "hornbostel_sachs_class_s",
+                "hbs_prim_cat_s",
+                "mimo_class_s",
+                "type",
+                "thumbnail_url",
+                "instrument_names_by_language",
             )
         )
 
         for instrument in instruments:
             hbs_code = instrument["hbs_prim_cat_s"]
             instrument["hbs_prim_cat_label_s"] = self.HBS_LABEL_MAP.get(hbs_code, "")
-        requests.post(
-            "http://solr:8983/solr/virtual-instrument-museum/update?commit=true",
-            json=instruments,
-            headers={"Content-Type": "application/json"},
-            timeout=10,
-        )
+
+            for name_entry in instrument.pop("instrument_names_by_language", []):
+                field = f"instrument_name_{name_entry['lang']}_ss"
+                if field not in instrument:
+                    instrument[field] = [name_entry["name"]]
+                else:
+                    instrument[field].append(name_entry["name"])
+
+        # Initialize Solr client
+        solr = pysolr.Solr(settings.SOLR_URL, timeout=10, always_commit=True)
+
+        # Add data to Solr using the pysolr client
+        solr.add(instruments)
+
         # top_concepts = requests.get(
         #     "https://vocabulary.mimo-international.com/rest/v1/HornbostelAndSachs/topConcepts"
         # ).json()["topconcepts"]
