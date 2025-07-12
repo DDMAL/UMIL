@@ -62,6 +62,8 @@ services:
     restart: unless-stopped
     ports:
       - "8983:8983"
+    volumes:
+      - ./solr/cores/conf:/var/solr/data/virtual-instrument-museum/conf
 
 networks:
   vim-net:
