@@ -2,7 +2,7 @@
 
 import json
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -95,20 +95,38 @@ def add_name(request):
 
 
 @login_required
-@require_POST
+@require_http_methods(["DELETE"])
 def delete_name(request):
     """View to delete an instrument name from UMIL database."""
 
     if request.method == "DELETE":
         data = json.loads(request.body)
-        name_id = data.get("instrument_name_id")
+        name_id = data.get("data-instrument-id")
+        return JsonResponse(
+                {
+                    "status": "error",
+                    "message": "Missing required data",
+                },
+                status = 400,
+            )
     try:
-        instrument_name = InstrumentName.objects.get(
-            id=name_id, contributor=request.user
-        )
+        instrument_name = InstrumentName.objects.get(id=name_id)
+
+        if instrument_name.contributor != request.user:
+            return JsonResponse(
+                {
+                    "status": "error",
+                    "message": "You are not allowed to delete this name",
+                },
+                status = 403,
+            )
         instrument_name.delete()
         return JsonResponse({"status": "success"})
+    
     except InstrumentName.DoesNotExist:
         return JsonResponse(
-            {"status": "error", "message": "Not found or not allowed"}, status=403
+            {"status": "error", "message": "Instrument name not found"},
+            status = 404,
         )
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": "" + str(e)})
