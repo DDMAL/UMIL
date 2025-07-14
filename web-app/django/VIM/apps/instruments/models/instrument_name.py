@@ -30,8 +30,6 @@ class InstrumentName(models.Model):
     contributor = models.ForeignKey(
         "auth.User",
         on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
         help_text="User who contributed this name",
     )
     on_wikidata = models.BooleanField(
