@@ -2,6 +2,7 @@
 
 import json
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -9,6 +10,7 @@ from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 
 
 @login_required
+@require_POST
 def add_name(request):
     """
     View to add new instrument names to UMIL database.
@@ -93,6 +95,7 @@ def add_name(request):
 
 
 @login_required
+@require_POST
 def delete_name(request):
     """View to delete an instrument name from UMIL database."""
 
