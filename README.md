@@ -95,7 +95,7 @@ python manage.py migrate
 
 ## Loading Data
 
-At present, UMIL supports an initial list of 262 instruments curated from Wikidata, and their names in English and French. These instruments can be found in `web-app/django/startup_data/vim_instruments_with_images-15Sept.csv`.
+At present, UMIL supports an initial list of 262 instruments curated from Wikidata, and their names in English and French. These instruments can be found in `web-app/django/startup_data/umil_instruments_15July_2025.csv`.
 
 Two django management commands are provided to load these initial instruments. These should be run from within the app Docker container by going into its shell.
 
