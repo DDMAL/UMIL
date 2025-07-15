@@ -115,7 +115,10 @@ def delete_name(request):
     try:
         instrument_name = InstrumentName.objects.get(id=name_id)
 
-        if instrument_name.contributor != request.user:
+        # If user is a superuser or created the name, allow deletion
+        if request.user.is_superuser or instrument_name.contributor == request.user:
+            instrument_name.delete() 
+        else: 
             return JsonResponse(
                 {
                     "status": "error",
@@ -123,7 +126,6 @@ def delete_name(request):
                 },
                 status = 403,
             )
-        instrument_name.delete()
         return JsonResponse({"status": "success"})
     
     except InstrumentName.DoesNotExist:
