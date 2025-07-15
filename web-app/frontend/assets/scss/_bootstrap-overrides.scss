@@ -3,7 +3,7 @@
 
 // Bootstrap variable overrides (MUST come before importing Bootstrap)
 $primary: $umil-green-primary;
-$secondary: $umil-green-dark;
+$secondary: $umil-green-light;
 $dark: $umil-green-dark;
 $light: $umil-cream;
 
@@ -47,7 +47,9 @@ $utilities: map-merge(
       class: min-vh,
       values: (
         100: 100vh,
+        90: 90vh,
         80: 80vh,
+        70: 70vh,
         60: 60vh,
         10: 10vh,
       ),
