@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     NOTE: For now, this script only imports instrument names in English and French. It
     also only imports a set of previously-curated instruments that have images available.
-    This list of instruments is stored in startup_data/vim_instruments_with_images-15sept.csv
+    This list of instruments is stored in startup_data/umil_instruments_15July_2025.csv
     """
 
     help = "Imports instrument objects"
@@ -130,7 +130,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options) -> None:
         with open(
-            "startup_data/all_instruments_16aug_2024.csv",
+            "startup_data/umil_instruments_15July_2025.csv",
             encoding="utf-8-sig",
         ) as csvfile:
             reader = csv.DictReader(csvfile)
