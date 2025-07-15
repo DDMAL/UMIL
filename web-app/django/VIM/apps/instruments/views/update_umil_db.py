@@ -35,18 +35,17 @@ def add_name(request):
     Returns:
         JsonResponse: JSON response with status and message
     """
-    if request.method == "POST":
-        # Parse the JSON request body
-        data = json.loads(request.body)
-        wikidata_id = data.get("wikidata_id")
-        entries = data.get("entries", [])
-        if not wikidata_id or not entries:
-            return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "Missing required data",
-                }
-            )
+    # Parse the JSON request body
+    data = json.loads(request.body)
+    wikidata_id = data.get("wikidata_id")
+    entries = data.get("entries", [])
+    if not wikidata_id or not entries:
+        return JsonResponse(
+            {
+                "status": "error",
+                "message": "Missing required data",
+            }
+        )
     try:
         # Fetch the instrument from the database
         instrument = Instrument.objects.get(wikidata_id=wikidata_id)
@@ -99,20 +98,20 @@ def add_name(request):
 def delete_name(request):
     """View to delete an instrument name from UMIL database."""
 
-    if request.method == "DELETE":
-        data = json.loads(request.body)
-        name_id = data.get("instrument_name_id")
-        print(name_id, flush=True)
-        
-        # Check if name_id is provided, if not return 400 error
-        if not name_id:
-            return JsonResponse(
-                    {
-                        "status": "error",
-                        "message": "Missing required data",
-                    },
-                    status = 400,
-                )
+    # Parse the JSON request body
+    data = json.loads(request.body)
+    name_id = data.get("instrument_name_id")
+    print(name_id, flush=True)
+    
+    # Check if name_id is provided, if not return 400 error
+    if not name_id:
+        return JsonResponse(
+                {
+                    "status": "error",
+                    "message": "Missing required data",
+                },
+                status = 400,
+            )
     try:
         instrument_name = InstrumentName.objects.get(id=name_id)
 
