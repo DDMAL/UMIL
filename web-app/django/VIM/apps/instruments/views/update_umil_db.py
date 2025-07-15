@@ -101,14 +101,18 @@ def delete_name(request):
 
     if request.method == "DELETE":
         data = json.loads(request.body)
-        name_id = data.get("data-instrument-id")
-        return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "Missing required data",
-                },
-                status = 400,
-            )
+        name_id = data.get("instrument_name_id")
+        print(name_id, flush=True)
+        
+        # Check if name_id is provided, if not return 400 error
+        if not name_id:
+            return JsonResponse(
+                    {
+                        "status": "error",
+                        "message": "Missing required data",
+                    },
+                    status = 400,
+                )
     try:
         instrument_name = InstrumentName.objects.get(id=name_id)
 
