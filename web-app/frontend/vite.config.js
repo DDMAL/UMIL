@@ -26,6 +26,7 @@ export default defineConfig({
           'src/instruments/DisplaySettings.ts',
         ),
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
+        statsAnimation: resolve(__dirname, 'src/StatsAnimation.ts'),
       },
       output: {
         entryFileNames: '[name].js',
