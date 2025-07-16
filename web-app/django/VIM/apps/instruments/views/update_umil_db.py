@@ -3,15 +3,16 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
+from typing import Any, Dict, List
 
 
 @login_required
 @require_POST
-def add_name(request):
+def add_name(request: HttpRequest) -> JsonResponse:
     """
     View to add new instrument names to UMIL database.
 
@@ -36,9 +37,9 @@ def add_name(request):
         JsonResponse: JSON response with status and message
     """
     # Parse the JSON request body, if it fails return missing data error
-    data = json.loads(request.body)
-    wikidata_id = data.get("wikidata_id")
-    entries = data.get("entries", [])
+    data: Dict[str, Any] = json.loads(request.body)
+    wikidata_id: str = data.get("wikidata_id")
+    entries: List[Dict[str, str]] = data.get("entries", [])
     if not wikidata_id or not entries:
         return JsonResponse(
             {
@@ -65,9 +66,9 @@ def add_name(request):
     instrument_names_to_create = []
 
     for entry in entries:
-        language_code = entry["language"]
-        name = entry["name"]
-        source = entry["source"]
+        language_code : str = entry["language"]
+        name : str = entry["name"]
+        source : str = entry["source"]
         
         # Validate that entry info is provided
         if not name or not source or not language_code:
@@ -80,24 +81,26 @@ def add_name(request):
             )
         
         # Find language object from language code
-        if language.get(language_code) is None:
+        try: 
+            language_obj : Language = language.get(language_code)
+        except Language.DoesNotExist:
             return JsonResponse(
                 {
                     "status": "error",
                     "message": f"Language '{language_code}' not found",
                 },
                 status=400,
-            )
+        )
 
 
         # Check if the instrument already has a name in the specified language
-        is_alias = instrument.instrumentname_set.filter(language__wikidata_code=language_code).exists()
+        is_alias : bool = instrument.instrumentname_set.filter(language__wikidata_code=language_code).exists()
 
         # Prepare the InstrumentName object
         instrument_names_to_create.append(
             InstrumentName(
                 instrument=instrument,
-                language=language.get(language_code),
+                language=language_obj,
                 name=name,
                 source_name=source,
                 is_alias=is_alias,
@@ -118,13 +121,12 @@ def add_name(request):
 
 @login_required
 @require_http_methods(["DELETE"])
-def delete_name(request):
+def delete_name(request: HttpRequest) -> JsonResponse:
     """View to delete an instrument name from UMIL database."""
 
     # Parse the JSON request body
-    data = json.loads(request.body)
-    name_id = data.get("instrument_name_id")
-    print(name_id, flush=True)
+    data : Dict[str, Any] = json.loads(request.body)
+    name_id : str = data.get("instrument_name_id")
     
     # Check if name_id is provided, if not return 400 error
     if not name_id:
@@ -136,7 +138,7 @@ def delete_name(request):
                 status = 400,
             )
     try:
-        instrument_name = InstrumentName.objects.get(id=name_id)
+        instrument_name : Instrument = InstrumentName.objects.get(id=name_id)
 
         # If user is a superuser or created the name, allow deletion
         if request.user.is_superuser or instrument_name.contributor == request.user:
