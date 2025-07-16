@@ -54,7 +54,7 @@ NOTE: that it is recommended to bring the containers down with `docker compose d
 
 ### Debugging
 
-When installed with `DEVELOPMENT=true` in the `.env` file, some additional modules are included in the application container that provide debugging tools: `django-extensions` and `django-debug-toolbar`. The debugging toolbar provided by `django-debug-toolbar` is shown when viewing the development server in the browser. The development installation runs the `runserver_plus` (provided by `django-extensions`) command automatically, which provides an in-browser debug console when errors are raised in the application. `django-extensions` also provides additional tools potentitally useful for development. Further information can be found at [module documentation](https://django-extensions.readthedocs.io/en/latest/command_extensions.html).
+When installed with `MODE=dev` in the `.env` file, some additional modules are included in the application container that provide debugging tools: `django-extensions` and `django-debug-toolbar`. The debugging toolbar provided by `django-debug-toolbar` is shown when viewing the development server in the browser. The development installation runs the `runserver_plus` (provided by `django-extensions`) command automatically, which provides an in-browser debug console when errors are raised in the application. `django-extensions` also provides additional tools potentitally useful for development. Further information can be found at [module documentation](https://django-extensions.readthedocs.io/en/latest/command_extensions.html).
 
 ## Installation for Deployment
 
@@ -62,7 +62,7 @@ UMIL requires Docker Engine with Compose V2. Ensure that the remote server has t
 
 SSH into the server. After cloning the repository, set up a local `.env` file. Copy or rename the `.env.sample` file to `.env` and update it to include uncommented environment variables for database credentials `POSTGRES_USER` and `POSTGRES_PASSWORD`. Ensure that `POSTGRES_PASSWORD` is secure. Additionally, set `DJANGO_SECRET_KEY` with a secure secret key for Django.
 
-Ensure that the `DEVELOPMENT` variable is set to "false", and that `HOST_NAME` is set to the host name where the UMIL instance will be served (for example, "vim.linkedmusic.ca" or "vim.staging.linkedmusic.ca").
+Ensure that the `MODE` variable is set to `dev`, and that `HOST_NAME` is set to the host name where the UMIL instance will be served (for example, "localhost" for local development, or "umil.staging.linkedmusic.ca" for staging server).
 Run the following commands:
 
 ```bash

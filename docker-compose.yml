@@ -4,8 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./web-app/Dockerfile
-      args:
-        - DEVELOPMENT=$DEVELOPMENT
+      target: $MODE
     container_name: vim-app
     ports:
       - "5173:5173"
@@ -23,7 +22,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - HOST_NAME=${HOST_NAME}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-    command: /virtual-instrument-museum/start-up.sh
 
   postgres:
     image: postgres:15.4
