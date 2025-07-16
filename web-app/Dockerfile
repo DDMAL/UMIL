@@ -10,7 +10,7 @@ RUN pip install poetry==1.8.3
 RUN poetry config virtualenvs.in-project true
 RUN poetry config virtualenvs.options.no-pip true
 RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install --without dev
+RUN poetry install --no-cache --without dev --without debug 
 
 # -------- DEVELOPMENT IMAGE --------
 FROM builder AS dev
@@ -29,6 +29,7 @@ RUN apt-get update && \
     npm install
 
 WORKDIR /virtual-instrument-museum/
+RUN poetry install --with debug 
 
 ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
