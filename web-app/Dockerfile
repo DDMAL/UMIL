@@ -10,7 +10,7 @@ RUN pip install poetry==1.8.3
 RUN poetry config virtualenvs.in-project true
 RUN poetry config virtualenvs.options.no-pip true
 RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install
+RUN poetry install --without dev
 
 # -------- DEVELOPMENT IMAGE --------
 FROM builder AS dev
@@ -34,11 +34,10 @@ ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
 
 # Development mode: run frontend dev server in background
-CMD bash -e "\
-    cd /virtual-instrument-museum/frontend \
+CMD bash -c "\
+    cd frontend \
     npm run sass:watch & \
     npm run dev -- --host 0.0.0.0 & \
-    # run django dev server
     cd /virtual-instrument-museum/vim-app \
     python manage.py collectstatic --noinput \
     python manage.py runserver_plus 0:8001"
@@ -69,6 +68,6 @@ ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site
 
 # Production mode: assets already built during Docker build
 # Just run django server with gunicorn
-CMD bash -e "cd /virtual-instrument-museum/vim-app \
+CMD bash -c "cd /virtual-instrument-museum/vim-app \
     python manage.py collectstatic --noinput \
     gunicorn -w 2 -b 0:8001 VIM.wsgi"
