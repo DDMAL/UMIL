@@ -35,11 +35,11 @@ ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site
 
 # Development mode: run frontend dev server in background
 CMD bash -c "\
-    cd frontend \
+    cd frontend && \
     npm run sass:watch & \
     npm run dev -- --host 0.0.0.0 & \
-    cd /virtual-instrument-museum/vim-app \
-    python manage.py collectstatic --noinput \
+    cd /virtual-instrument-museum/vim-app && \
+    python manage.py collectstatic --noinput && \
     python manage.py runserver_plus 0:8001"
 
 
@@ -68,6 +68,6 @@ ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site
 
 # Production mode: assets already built during Docker build
 # Just run django server with gunicorn
-CMD bash -c "cd /virtual-instrument-museum/vim-app \
-    python manage.py collectstatic --noinput \
+CMD bash -c "cd /virtual-instrument-museum/vim-app && \
+    python manage.py collectstatic --noinput && \
     gunicorn -w 2 -b 0:8001 VIM.wsgi"
