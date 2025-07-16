@@ -2,7 +2,7 @@
 FROM python:3.11.5 AS builder
 ARG MODE
 
-WORKDIR /virtual-instrument-museum
+WORKDIR /virtual-instrument-museum/
 COPY ./poetry.lock ./pyproject.toml /virtual-instrument-museum/
 
 RUN pip install poetry==1.8.3
@@ -10,10 +10,10 @@ RUN pip install poetry==1.8.3
 RUN poetry config virtualenvs.in-project true
 RUN poetry config virtualenvs.options.no-pip true
 RUN poetry config virtualenvs.options.no-setuptools true
+RUN poetry install
 
 # -------- DEVELOPMENT IMAGE --------
-# FROM builder AS dev
-FROM python:3.11.5 AS dev
+FROM builder AS dev
 COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
 COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
@@ -29,20 +29,19 @@ RUN apt-get update && \
     npm install
 
 WORKDIR /virtual-instrument-museum/
-RUN poetry install --no-cache --without dev
 
 ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
 
 # Development mode: run frontend dev server in background
-RUN \
+CMD bash -e "\
     cd /virtual-instrument-museum/frontend \
     npm run sass:watch & \
     npm run dev -- --host 0.0.0.0 & \
     # run django dev server
     cd /virtual-instrument-museum/vim-app \
     python manage.py collectstatic --noinput \
-    python manage.py runserver_plus 0:8001
+    python manage.py runserver_plus 0:8001"
 
 
 # ==================================
@@ -54,9 +53,7 @@ RUN npm install && \
         npm run sass:build && \
         npm run build
 
-FROM python:3.11.5 AS prod
-# FROM builder AS prod
-
+FROM builder AS prod
 COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
 COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
@@ -72,6 +69,6 @@ ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site
 
 # Production mode: assets already built during Docker build
 # Just run django server with gunicorn
-RUN cd /virtual-instrument-museum/vim-app \
+CMD bash -e "cd /virtual-instrument-museum/vim-app \
     python manage.py collectstatic --noinput \
-    gunicorn -w 2 -b 0:8001 VIM.wsgi
+    gunicorn -w 2 -b 0:8001 VIM.wsgi"
