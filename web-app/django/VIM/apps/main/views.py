@@ -4,19 +4,21 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
-from VIM.apps.instruments.models import Instrument, Language
+from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 
 
 def home(request):
     # Fetch statistics from database
     total_instruments = Instrument.objects.count()
     total_languages = Language.objects.count()
+    total_names = InstrumentName.objects.count()
     total_editors = User.objects.count()
 
     context = {
         "active_tab": "home",
         "total_instruments": total_instruments,
         "total_languages": total_languages,
+        "total_names": total_names,
         "total_editors": total_editors,
     }
     return render(request, "main/index.html", context)
