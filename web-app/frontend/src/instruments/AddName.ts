@@ -23,8 +23,9 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
       instrumentName;
     addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
       instrumentWikidataId;
-    (addNameModal.querySelector('#instrumentPkInModal') as HTMLInputElement).value =
-      instrumentPk;
+    (
+      addNameModal.querySelector('#instrumentPkInModal') as HTMLInputElement
+    ).value = instrumentPk;
   }
 });
 
@@ -72,7 +73,9 @@ document
       .getElementById('instrumentWikidataIdInModal')
       .textContent.trim();
 
-    const instrumentPk = (document.getElementById('instrumentPkInModal') as HTMLInputElement).value;
+    const instrumentPk = (
+      document.getElementById('instrumentPkInModal') as HTMLInputElement
+    ).value;
 
     const entries: NameEntry[] = [];
 
