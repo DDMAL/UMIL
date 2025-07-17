@@ -23,9 +23,9 @@ class InstrumentName(models.Model):
         default=False,
         help_text="When a name is approved to be visible on UMIL and uploaded to Wikidata.",
     )
-    is_alias = models.BooleanField(
+    umil_label = models.BooleanField(
         default=False,
-        help_text="Is this an alias for the instrument? If true, it will not be used as the main name.",
+        help_text="Is this the label for the instrument? If true, it will be used as the main name.",
     )
     contributor = models.ForeignKey(
         "auth.User",
@@ -36,6 +36,16 @@ class InstrumentName(models.Model):
         default=False,
         help_text="Is this name already on Wikidata?",
     )
+
+    # Custom validation to ensure at most one UMIL label per instrument language
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["instrument", "language"],
+                condition=models.Q(umil_label=True),
+                name="unique_umil_label_per_instrument_language",
+            )
+        ]
 
     # TODO: add verified_by field to track who verified the name
     def __str__(self):

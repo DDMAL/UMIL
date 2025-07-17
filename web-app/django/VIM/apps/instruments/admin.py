@@ -25,7 +25,7 @@ class InstrumentNameAdmin(admin.ModelAdmin):
                 "language",
                 "name",
                 "source_name",
-                "is_alias",
+                "umil_label",
                 "contributor",
                 "on_wikidata",
                 "is_approved",
