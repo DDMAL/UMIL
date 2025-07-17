@@ -17,11 +17,14 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
     const instrumentWikidataId = triggerButton.getAttribute(
       'data-instrument-wikidata-id',
     );
+    const instrumentPk = triggerButton.getAttribute('data-instrument-pk');
 
     addNameModal.querySelector('#instrumentNameInModal').textContent =
       instrumentName;
     addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
       instrumentWikidataId;
+    (addNameModal.querySelector('#instrumentPkInModal') as HTMLInputElement).value =
+      instrumentPk;
   }
 });
 
@@ -69,6 +72,8 @@ document
       .getElementById('instrumentWikidataIdInModal')
       .textContent.trim();
 
+    const instrumentPk = (document.getElementById('instrumentPkInModal') as HTMLInputElement).value;
+
     const entries: NameEntry[] = [];
 
     // Collect form data from all rows
@@ -100,7 +105,7 @@ document
       document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
     ).value;
 
-    fetch('/add-name/', {
+    fetch(`/instrument/${instrumentPk}/names/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
