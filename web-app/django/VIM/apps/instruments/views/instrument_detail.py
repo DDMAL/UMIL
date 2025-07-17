@@ -30,8 +30,7 @@ class InstrumentDetail(DetailView):
         # Get the instrument label in the active language
         context["active_instrument_label"] = (
             (context["instrument_names"].filter(language=context["active_language"]))
-            .filter(is_alias=False)
-            .first()
+            .filter(umil_label=True)
         )
 
         # Get all languages for the dropdown

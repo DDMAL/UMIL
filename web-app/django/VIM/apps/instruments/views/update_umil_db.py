@@ -92,7 +92,8 @@ def add_name(request: HttpRequest) -> JsonResponse:
 
 
         # Check if the instrument already has a name in the specified language
-        is_alias : bool = instrument.instrumentname_set.filter(language__wikidata_code=language_code).exists()
+        # If it does, set umil_label to False
+        umil_label : bool = not (instrument.instrumentname_set.filter(language__wikidata_code=language_code).exists())
 
         # Prepare the InstrumentName object
         instrument_names_to_create.append(
@@ -101,7 +102,7 @@ def add_name(request: HttpRequest) -> JsonResponse:
                 language=language_obj,
                 name=name,
                 source_name=source,
-                is_alias=is_alias,
+                umil_label=umil_label,
                 contributor=request.user,
             )
         )
