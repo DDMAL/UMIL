@@ -1,55 +1,99 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load django_vite %}
 
 {% block title %}
   UMIL
 {% endblock title %}
+
+{% block ts_files %}
+  {% vite_asset 'src/StatsAnimation.ts' %}
+{% endblock ts_files %}
 
 {% block css_files %}
   <link rel="stylesheet" href="{% static 'assets/css/main/index.css' %}" />
 {% endblock css_files %}
 
 {% block content %}
-  <div class="container content-container d-flex align-items-center justify-content-center min-vh-80 position-relative">
-    <div class="z-2">
-      <!-- Desktop Layout -->
-      <div class="d-none d-md-block">
-        <div class="row">
-          <div class="col-6">
+  <div class="container content-container d-flex flex-column justify-content-center min-vh-90 position-relative">
+    <div class="z-2 d-flex align-items-center min-vh-70">
+      <div class="w-100">
+        <!-- Desktop Layout -->
+        <div class="d-none d-md-block">
+          <div class="row">
+            <div class="col-6">
+              <h1>
+                <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
+              </h1>
+            </div>
+            <div class="col-6 notranslate">
+              <h1>
+                Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
+              </h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <p>
+                Where the past and present of music collide.
+                <br />
+                Explore, share, connect musical instruments in every language.
+              </p>
+            </div>
+            <div class="col-6 notranslate">
+              <p>
+                Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <a href="{% url "instrument-list" %}?language=English">
+                <button class="btn btn-warning rounded-pill start-btn">
+                  Visit English Site
+                </button>
+              </a>
+            </div>
+            <div class="col-6 notranslate">
+              <a href="{% url "instrument-list" %}?language=French">
+                <button class="btn btn-warning rounded-pill start-btn">
+                  Visitez le site en francais
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile Layout -->
+        <div class="d-md-none my-5 px-2">
+          <p class="notranslate">
+            <em>La version française suit.</em>
+          </p>
+          <!-- English Content -->
+          <div class="mb-5">
             <h1>
               <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
             </h1>
-          </div>
-          <div class="col-6 notranslate">
-            <h1>
-              Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
-            </h1>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
             <p>
               Where the past and present of music collide.
               <br />
               Explore, share, connect musical instruments in every language.
             </p>
-          </div>
-          <div class="col-6 notranslate">
-            <p>
-              Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
-            </p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
             <a href="{% url "instrument-list" %}?language=English">
               <button class="btn btn-warning rounded-pill start-btn">
                 Visit English Site
               </button>
             </a>
           </div>
-          <div class="col-6 notranslate">
+          <hr class="my-4" style="border-color: #876445; border-width: 2px;" />
+          <!-- French Content -->
+          <div class="mt-5 notranslate">
+            <h1>
+              Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
+            </h1>
+            <p>
+              Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
+            </p>
             <a href="{% url "instrument-list" %}?language=French">
               <button class="btn btn-warning rounded-pill start-btn">
                 Visitez le site en francais
@@ -58,41 +102,31 @@
           </div>
         </div>
       </div>
-      <!-- Mobile Layout -->
-      <div class="d-md-none my-5 px-2">
-        <p class="notranslate">
-          <em>La version française suit.</em>
-        </p>
-        <!-- English Content -->
-        <div class="mb-5">
-          <h1>
-            <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
-          </h1>
-          <p>
-            Where the past and present of music collide.
-            <br />
-            Explore, share, connect musical instruments in every language.
-          </p>
-          <a href="{% url "instrument-list" %}?language=English">
-            <button class="btn btn-warning rounded-pill start-btn">
-              Visit English Site
-            </button>
-          </a>
+    </div>
+    <!-- Statistics Section -->
+    <div class="stats-section z-2 mb-4 bg-secondary bg-opacity-25 border border-secondary py-2 mx-2">
+      <div class="row text-center justify-content-center justify-content-md-between align-items-center">
+        <div class="col-8 col-md-3 mb-3 mb-md-0">
+          <div class="stat-item">
+            <h3 class="stat-number text-warning mb-1">
+              {{ total_instruments|default:"859" }}
+            </h3>
+            <p class="fs-6 mb-0">Instruments</p>
+          </div>
         </div>
-        <hr class="my-4" style="border-color: #876445; border-width: 2px;" />
-        <!-- French Content -->
-        <div class="mt-5 notranslate">
-          <h1>
-            Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
-          </h1>
-          <p>
-            Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
-          </p>
-          <a href="{% url "instrument-list" %}?language=French">
-            <button class="btn btn-warning rounded-pill start-btn">
-              Visitez le site en francais
-            </button>
-          </a>
+        <div class="col-8 col-md-3 mb-3 mb-md-0">
+          <div class="stat-item">
+            <h3 class="stat-number text-warning mb-1">
+              {{ total_languages|default:"623" }}
+            </h3>
+            <p class="fs-6 mb-0">Languages</p>
+          </div>
+        </div>
+        <div class="col-8 col-md-3 mb-3 mb-md-0">
+          <div class="stat-item">
+            <h3 class="stat-number text-warning mb-1">{{ total_editors|default:"2" }}</h3>
+            <p class="fs-6 mb-0">Editors</p>
+          </div>
         </div>
       </div>
     </div>
