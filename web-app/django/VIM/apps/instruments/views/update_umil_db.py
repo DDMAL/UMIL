@@ -10,8 +10,6 @@ from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 from typing import Any, Dict, List
 
 
-@login_required
-@require_POST
 def add_name(request: HttpRequest) -> JsonResponse:
     """
     View to add new instrument names to UMIL database.
@@ -119,8 +117,6 @@ def add_name(request: HttpRequest) -> JsonResponse:
         status=200,
     )
 
-@login_required
-@require_http_methods(["DELETE"])
 def delete_name(request: HttpRequest) -> JsonResponse:
     """View to delete an instrument name from UMIL database."""
 
@@ -150,14 +146,6 @@ def delete_name(request: HttpRequest) -> JsonResponse:
                 },
                 status = 200,
             )
-        elif instrument_name.contributor is None:
-            return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "This name was not created by any user, it cannot be deleted",
-                },
-                status = 403,
-            )
         else: 
             return JsonResponse(
                 {
@@ -175,3 +163,21 @@ def delete_name(request: HttpRequest) -> JsonResponse:
             },
             status = 404,
         )
+    except InstrumentName.contributor.RelatedObjectDoesNotExist:
+        return JsonResponse(
+            {
+                "status": "error",
+                "message": "Instrument name contributor does not exist",
+            },
+            status = 404,
+        )
+    
+@login_required
+@require_http_methods(["POST", "DELETE"])    
+def update_umil_db(request: HttpRequest, pk: int) -> JsonResponse:
+    
+    if request.method == "POST":
+        return add_name(request)
+    
+    elif request.method == "DELETE":
+        return delete_name(request)

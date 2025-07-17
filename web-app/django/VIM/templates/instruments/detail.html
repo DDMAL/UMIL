@@ -93,20 +93,22 @@
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
                           </div>
                         </td>
-                        <td>
-                          <div class="action-buttons">
-                            <button class="btn btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteNameModal"
-                                    data-instrument-language="{{ instrumentname.language.en_label }}"
-                                    data-instrument-name="{{ instrumentname.name }}"
-                                    data-instrument-source="{{ instrumentname.source_name }}"
-                                    data-instrument-id="{{ instrumentname.id }}"
-                                    data-instrument-pk="{{ instrument.pk }}">
-                              Delete
-                            </button>
-                          </div>
-                        </td>
+                        {% if user.is_authenticated %}
+                          <td>
+                            <div class="action-buttons">
+                              <button class="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#deleteNameModal"
+                                      data-instrument-language="{{ instrumentname.language.en_label }}"
+                                      data-instrument-name="{{ instrumentname.name }}"
+                                      data-instrument-source="{{ instrumentname.source_name }}"
+                                      data-instrument-id="{{ instrumentname.id }}"
+                                      data-instrument-pk="{{ instrument.pk }}">
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        {% endif %}
                       </tr>
                     {% endfor %}
                     <tr>

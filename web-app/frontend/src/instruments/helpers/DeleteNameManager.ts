@@ -3,6 +3,7 @@ import { NameValidator } from './NameValidator';
 
 export class DeleteNameManager {
   private nameId: string | null = null;
+  private instrumentPk: string | null = null;
   private nameValidator: NameValidator;
   private deleteNameModal: HTMLElement;
 
@@ -47,6 +48,7 @@ export class DeleteNameManager {
       const language = button.getAttribute('data-instrument-language');
       const name = button.getAttribute('data-instrument-name');
       const source = button.getAttribute('data-instrument-source');
+      this.instrumentPk = button.getAttribute('data-instrument-pk');
       this.nameId = button.getAttribute('data-instrument-id');
 
       // Validate the data before populating
@@ -110,7 +112,7 @@ export class DeleteNameManager {
     try {
       const csrfToken = this.getCsrfToken();
 
-      const response = await fetch('/delete-name/', {
+      const response = await fetch(`/instrument/${this.instrumentPk}/names/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

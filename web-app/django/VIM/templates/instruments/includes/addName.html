@@ -21,10 +21,7 @@
       <div class="modal-body">
         <form id="addNameForm" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
-          <input type="hidden"
-                 id="instrumentWikidataIdInModal"
-                 name="wikidata_id"
-                 value="{{ wikidata_id }}" />
+          <input type="hidden" id="instrumentPkInModal" />
           <div class="mb-3" id="nameRows">
             <!-- Placeholder for dynamically generated rows -->
           </div>
