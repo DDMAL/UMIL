@@ -17,6 +17,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.7",
+    "d3": "^7.9.0",
     "imagesloaded": "^5.0.0",
     "masonry-layout": "^4.2.2"
   },
