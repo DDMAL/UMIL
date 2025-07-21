@@ -12,14 +12,23 @@
 
     </title>
     {% vite_hmr_client %}
-    {% block ts_files %}
-    {% endblock ts_files %}
-
     <!-- Keep the Google Translate external script -->
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CH0Y471LJ9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-CH0Y471LJ9');
+    </script>
     <link rel="stylesheet" href="{% static 'assets/css/global.css' %}" />
     {% vite_asset 'src/main.ts' %}
+    {% block ts_files %}
+    {% endblock ts_files %}
+
     {% block css_files %}
     {% endblock css_files %}
 
