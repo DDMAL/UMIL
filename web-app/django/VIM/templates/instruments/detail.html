@@ -20,7 +20,7 @@
   <div class="container d-flex align-items-center justify-content-center min-vh-80 py-4">
     <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
       <div class="w-100">
-        <h2>
+        <h2 class="notranslate">
           {% for instrumentname in instrument_names %}
             {% if instrumentname.language.en_label == active_language.en_label %}
               {{ instrumentname.name|title }}
