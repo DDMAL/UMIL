@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
 from VIM.apps.instruments.models import Instrument, Language
 
 
@@ -31,7 +32,9 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("main:home")
+            # Add success parameter to the redirect URL for Google Analytics event tracking
+            success_url = f"{reverse('main:home')}?registration=success"
+            return redirect(success_url)
     else:
         form = UserCreationForm()
 
