@@ -9,6 +9,7 @@
 
 {% block ts_files %}
   {% vite_asset 'src/instruments/InstrumentDetail.ts' %}
+  {% vite_asset 'src/instruments/CollapseTable.ts' %}
 {% endblock ts_files %}
 
 {% block css_files %}
@@ -71,9 +72,9 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="languageTableBody">
                     {% for instrumentname in instrument_names %}
-                      <tr>
+                      <tr class="{% if forloop.counter > 5 %}d-none extra-language-row{% endif %}">
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
@@ -118,9 +119,9 @@
                   </tbody>
                 </table>
                 <!-- Stacked layout for small screens only -->
-                <div class="d-lg-none">
+                <div class="d-lg-none" id="languageTableBodyMobile">
                   {% for instrumentname in instrument_names %}
-                    <div class="border rounded p-2 mb-2">
+                    <div class="border rounded p-2 mb-2 {% if forloop.counter > 5 %}d-none extra-language-row{% endif %}">
                       <div class="row g-2">
                         <!-- Language column -->
                         <div class="col-12">
@@ -164,6 +165,12 @@
                       </div>
                     </div>
                   {% endfor %}
+                </div>
+                <!-- Button below the table -->
+                <div class="text-start mt-2">
+                  <button id="toggle-language-table" class="btn btn-link" type="button">
+                    View all languages
+                  </button>
                 </div>
               </td>
             </tr>
