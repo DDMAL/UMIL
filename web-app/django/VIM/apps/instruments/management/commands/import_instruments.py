@@ -80,8 +80,7 @@ class Command(BaseCommand):
         ins_ids_str: str = "|".join(instrument_ids)
         url = (
             "https://www.wikidata.org/w/api.php?action=wbgetentities&"
-            f"ids={ins_ids_str}&format=json&props=labels|descriptions|"
-            "claims&languages=en|fr"
+            f"ids={ins_ids_str}&format=json&props=labels|descriptions|claims"
         )
         response = requests.get(url, timeout=10)
         response_entities = response.json()["entities"]
@@ -104,9 +103,20 @@ class Command(BaseCommand):
         thumbnail_img_path [str]: Path to the thumbnail of the instrument image
         """
         ins_names = instrument_attrs.pop("ins_names")
-        instrument = Instrument.objects.create(**instrument_attrs)
+        instrument, _ = Instrument.objects.update_or_create(**instrument_attrs)
         for lang, name in ins_names.items():
-            InstrumentName.objects.create(
+            # Skip if the language code is not found in the database.
+            # This commonly happens for codes like "mul" (multiple languages),
+            # which are not intended to be used for individual instrument names.
+            # See https://www.wikidata.org/wiki/Help:Default_values_for_labels_and_aliases
+            if lang not in self.language_map:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"Skipping language {lang} for instrument {instrument.wikidata_id} as the language is not found in the database."
+                    )
+                )
+                continue
+            InstrumentName.objects.update_or_create(
                 instrument=instrument,
                 language=self.language_map[lang],
                 name=name,
