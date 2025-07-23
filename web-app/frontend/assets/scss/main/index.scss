@@ -56,6 +56,27 @@
   animation: pulse 0.5s both;
 }
 
+/* Chart responsive styling */
+#instruments-chart,
+#languages-chart {
+  width: 100%;
+  height: auto;
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .bar {
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .content-container h1 {
