@@ -8,7 +8,8 @@
 {% endblock title %}
 
 {% block ts_files %}
-  {% vite_asset 'src/StatsAnimation.ts' %}
+  {% vite_asset 'src/stats/StatsAnimation.ts' %}
+  {% vite_asset 'src/stats/BarCharts.ts' %}
 {% endblock ts_files %}
 
 {% block css_files %}
@@ -24,12 +25,12 @@
           <div class="row">
             <div class="col-6">
               <h1>
-                <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
+                <span class="text-info">Universal</span> Musical Instrument Lexicon
               </h1>
             </div>
             <div class="col-6 notranslate">
               <h1>
-                Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
+                Lexique <span class="text-info">Universel</span> des Instruments de Musique
               </h1>
             </div>
           </div>
@@ -72,7 +73,7 @@
           <!-- English Content -->
           <div class="mb-5">
             <h1>
-              <span style="color: #876445;">Universal</span> Musical Instrument Lexicon
+              <span class="text-info">Universal</span> Musical Instrument Lexicon
             </h1>
             <p>
               Where the past and present of music collide.
@@ -89,7 +90,7 @@
           <!-- French Content -->
           <div class="mt-5 notranslate">
             <h1>
-              Lexique <span style="color: #876445;">Universel</span> des Instruments de Musique
+              Lexique <span class="text-info">Universel</span> des Instruments de Musique
             </h1>
             <p>
               Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
@@ -104,11 +105,11 @@
       </div>
     </div>
     <!-- Statistics Section -->
-    <div class="stats-section z-2 mb-4 bg-secondary bg-opacity-25 border border-secondary py-2 mx-2">
+    <div class="stats-section z-2 mb-4 bg-secondary bg-opacity-25 border border-secondary rounded py-2 mx-2">
       <div class="row text-center justify-content-center justify-content-md-between align-items-center">
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-warning mb-1">
+            <h3 class="stat-number text-info mb-1">
               {{ total_instruments|default:"859" }}
             </h3>
             <p class="fs-6 mb-0">Instruments</p>
@@ -116,15 +117,19 @@
         </div>
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-warning mb-1">
-              {{ total_languages|default:"623" }}
-            </h3>
+            <h3 class="stat-number text-info mb-1">{{ total_languages|default:"623" }}</h3>
             <p class="fs-6 mb-0">Languages</p>
           </div>
         </div>
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-warning mb-1">{{ total_editors|default:"2" }}</h3>
+            <h3 class="stat-number text-info mb-1">{{ total_names|default:"1550" }}</h3>
+            <p class="fs-6 mb-0">Names</p>
+          </div>
+        </div>
+        <div class="col-8 col-md-3 mb-3 mb-md-0">
+          <div class="stat-item">
+            <h3 class="stat-number text-info mb-1">{{ total_editors|default:"2" }}</h3>
             <p class="fs-6 mb-0">Editors</p>
           </div>
         </div>
@@ -132,4 +137,42 @@
     </div>
     <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1 opacity-50 img-fluid w-100 position-absolute bottom-0" />
   </div>
+  <!-- Bar Charts Section -->
+  <div class="container-fluid chart-section py-5 bg-light">
+    <div class="container">
+      <!-- First Chart: Top Instruments by Languages -->
+      <div class="row mb-5 align-items-center">
+        <div class="col-lg-8 order-2 order-lg-1">
+          <div class="chart-container p-4">
+            <div id="instruments-chart"></div>
+          </div>
+        </div>
+        <div class="col-lg-4 order-1 order-lg-2 text-center text-lg-start mb-4 mb-lg-0">
+          <h3 class="text-primary mb-3">Top Instruments by Language Diversity</h3>
+          <p class="text-muted">
+            Discover which musical instruments have names in the most languages,
+            showcasing their global cultural significance and widespread recognition.
+          </p>
+        </div>
+      </div>
+      <!-- Second Chart: Top Languages by Instrument Names -->
+      <div class="row align-items-center">
+        <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
+          <h3 class="text-primary mb-3">Top Languages by Instrument Coverage</h3>
+          <p class="text-muted">
+            Explore which languages contribute the most instrument names to our lexicon,
+            highlighting linguistic diversity in musical terminology.
+          </p>
+        </div>
+        <div class="col-lg-8">
+          <div class="chart-container p-4">
+            <div id="languages-chart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Hidden data containers for charts -->
+  <script type="application/json" id="instruments-chart-data">{{ instruments_chart_data|safe }}</script>
+  <script type="application/json" id="languages-chart-data">{{ languages_chart_data|safe }}</script>
 {% endblock content %}
