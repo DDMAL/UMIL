@@ -31,7 +31,7 @@ export default defineConfig({
         ),
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
         statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
-        barCharts: resolve(__dirname, 'src/charts/BarCharts.ts'),
+        barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
       },
       output: {
         entryFileNames: '[name].js',
