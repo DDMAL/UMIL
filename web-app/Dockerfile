@@ -10,7 +10,7 @@ RUN pip install poetry==1.8.3
 RUN poetry config virtualenvs.in-project true
 RUN poetry config virtualenvs.options.no-pip true
 RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install --no-cache --without dev --without debug 
+RUN poetry install --no-cache --without dev --without debug
 
 # -------- DEVELOPMENT IMAGE --------
 FROM builder AS dev
@@ -29,19 +29,16 @@ RUN apt-get update && \
     npm install
 
 WORKDIR /virtual-instrument-museum/
-RUN poetry install --with debug 
+RUN poetry install --with debug
 
 ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
 
 # Development mode: run frontend dev server in background
-CMD bash -c "\
-    cd frontend && \
-    npm run sass:watch & \
-    npm run dev -- --host 0.0.0.0 & \
-    cd /virtual-instrument-museum/vim-app && \
+CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" ; \
+    bash -c "cd /virtual-instrument-museum/vim-app && \
     python manage.py collectstatic --noinput && \
-    python manage.py runserver_plus 0:8001"
+    python manage.py runserver 0:8001"
 
 
 # ==================================
