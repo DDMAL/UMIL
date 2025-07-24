@@ -17,6 +17,7 @@ export default defineConfig({
           __dirname,
           'src/instruments/InstrumentDetail.ts',
         ),
+        collapseTable: resolve(__dirname, 'src/instruments/CollapseTable.ts'),
         paginationTools: resolve(
           __dirname,
           'src/instruments/PaginationTools.ts',
@@ -26,6 +27,8 @@ export default defineConfig({
           'src/instruments/DisplaySettings.ts',
         ),
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
+        statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
+        barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
       },
       output: {
         entryFileNames: '[name].js',
