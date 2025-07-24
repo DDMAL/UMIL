@@ -29,6 +29,7 @@ export default defineConfig({
           __dirname,
           'src/instruments/DisplaySettings.ts',
         ),
+        jumpToTop: resolve(__dirname, 'src/instruments/JumpToTop.ts'),
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
         statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
         barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),

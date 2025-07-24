@@ -10,6 +10,7 @@
 {% block ts_files %}
   {% vite_asset 'src/instruments/PaginationTools.ts' %}
   {% vite_asset 'src/instruments/DisplaySettings.ts' %}
+  {% vite_asset 'src/instruments/JumpToTop.ts' %}
   {% vite_asset 'src/LanguageList.ts' %}
 {% endblock ts_files %}
 
@@ -210,4 +211,7 @@
         </div>
       </div>
     </div>
-  {% endblock content %}
+  </div>
+  {% include "instruments/includes/jumpToTop.html" %}
+
+{% endblock content %}
