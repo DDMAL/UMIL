@@ -17,10 +17,8 @@ export default defineConfig({
           __dirname,
           'src/instruments/InstrumentDetail.ts',
         ),
-        instrumentDetail: resolve(
-          __dirname,
-          'src/instruments/CollapseTable.ts',
-        ),
+        collapseTable: resolve(__dirname, 'src/instruments/CollapseTable.ts'),
+        jumpToTop: resolve(__dirname, 'src/instruments/JumpToTop.ts'),
         paginationTools: resolve(
           __dirname,
           'src/instruments/PaginationTools.ts',
