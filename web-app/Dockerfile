@@ -14,7 +14,7 @@ FROM builder AS dev
 RUN poetry config virtualenvs.in-project true
 RUN poetry config virtualenvs.options.no-pip true
 RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install --no-cache --without dev
+RUN poetry install
 
 COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
 COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
@@ -29,13 +29,11 @@ RUN apt-get update && \
     cd /virtual-instrument-museum/frontend && \
     npm install
 
-WORKDIR /virtual-instrument-museum/
-RUN poetry install --with debug
-
 ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
 
 # Development mode: run frontend dev server in background
+# Current working directory: /virtual-instrument-museum/
 CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" ; \
     bash -c "cd /virtual-instrument-museum/vim-app && \
     python manage.py collectstatic --noinput && \
