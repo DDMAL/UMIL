@@ -7,14 +7,15 @@ COPY ./poetry.lock ./pyproject.toml /virtual-instrument-museum/
 
 RUN pip install poetry==1.8.3
 
+# -------- DEVELOPMENT IMAGE --------
+FROM builder AS dev
+
+# Install poetry dependencies for development
 RUN poetry config virtualenvs.in-project true
 RUN poetry config virtualenvs.options.no-pip true
 RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install --no-cache --without dev --without debug
+RUN poetry install --no-cache --without dev
 
-# -------- DEVELOPMENT IMAGE --------
-FROM builder AS dev
-COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
 COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
 
@@ -38,7 +39,7 @@ ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site
 CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" ; \
     bash -c "cd /virtual-instrument-museum/vim-app && \
     python manage.py collectstatic --noinput && \
-    python manage.py runserver 0:8001"
+    python manage.py runserver_plus 0:8001"
 
 
 # ==================================
@@ -50,16 +51,19 @@ RUN npm install && \
         npm run sass:build && \
         npm run build
 
+
 FROM builder AS prod
-COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
+# Install poetry dependencies for production: without debug
+RUN poetry config virtualenvs.in-project true
+RUN poetry config virtualenvs.options.no-pip true
+RUN poetry config virtualenvs.options.no-setuptools true
+RUN poetry install --no-cache --without dev --without debug
+
 COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
 COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
 
 COPY --from=prod-frontend /frontend/assets/css /virtual-instrument-museum/frontend/assets/css
 COPY --from=prod-frontend /frontend/dist /virtual-instrument-museum/frontend/dist
-
-# Install poetry dependencies for production: without debug
-RUN poetry install --no-cache --without dev --without debug
 
 ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
