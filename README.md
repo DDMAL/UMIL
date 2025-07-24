@@ -4,3 +4,4 @@ The Universal Musical Instrument Lexicon (UMIL) is a crowd-sourcing website dedi
 
 The ambitious initiative will greatly assist in mapping instrument names and facilitating cross-referencing of instruments across diverse sources. To achieve a multilingual search experience, UMIL employs a thesaurus-like concept, assigning each instrument a unique URI that links all its names together. Furthermore, this system ensures that search results are presented in the user's preferred language when utilizing SESEMMI (Search Engine System for Enhancing Music Metadata Interoperability).
 
+![home page screenshot](/web-app/frontend/assets/images/homepage.png)
