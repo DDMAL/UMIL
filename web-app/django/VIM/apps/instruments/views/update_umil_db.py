@@ -68,18 +68,8 @@ def add_name(request: HttpRequest) -> JsonResponse:
                 status=400,
             )
         
-        # Find language object from language code
-        try: 
-            language_obj : Language = language.get(language_code)
-        except Language.DoesNotExist:
-            return JsonResponse(
-                {
-                    "status": "error",
-                    "message": f"Language '{language_code}' not found",
-                },
-                status=400,
-        )
-
+        # Find language object from language code dictionary
+        language_obj : Language = language.get(language_code)
 
         # Check if the instrument already has a name in the specified language
         # If it does, set umil_label to False
