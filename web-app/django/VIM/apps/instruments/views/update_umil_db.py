@@ -2,10 +2,9 @@
 
 import json
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.http import require_http_methods
 from django.http import HttpRequest, JsonResponse
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 from typing import Any, Dict, List
 
@@ -47,16 +46,7 @@ def add_name(request: HttpRequest) -> JsonResponse:
             status=400,
         )
     # Fetch the instrument from the database, if it does not exist return does not exist error
-    try:   
-        instrument = Instrument.objects.get(wikidata_id=wikidata_id)
-    except Instrument.DoesNotExist:
-        return JsonResponse(
-            {
-                "status": "error", 
-                "message": "Instrument not found"
-            },
-            status=404,    
-        )
+    instrument = get_object_or_404(Instrument, wikidata_id=wikidata_id)
     
     # create dictionary to map language codes to Language objects
     language = {lang.wikidata_code: lang for lang in Language.objects.all()}
@@ -134,8 +124,8 @@ def delete_name(request: HttpRequest) -> JsonResponse:
                 },
                 status = 400,
             )
-    try:
-        instrument_name : Instrument = InstrumentName.objects.get(id=name_id)
+    try:    
+        instrument_name = get_object_or_404(InstrumentName, id=name_id)
 
         # If user is a superuser or created the name, allow deletion
         if request.user.is_superuser or instrument_name.contributor == request.user:
@@ -155,15 +145,6 @@ def delete_name(request: HttpRequest) -> JsonResponse:
                 },
                 status = 403,
             )
-        
-    except InstrumentName.DoesNotExist:
-        return JsonResponse(
-            {
-                "status": "error", 
-                "message": "Instrument name not found",
-            },
-            status = 404,
-        )
     except InstrumentName.contributor.RelatedObjectDoesNotExist:
         return JsonResponse(
             {
