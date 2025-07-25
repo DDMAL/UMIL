@@ -37,7 +37,8 @@ RUN apt-get update && \
 
 # Development mode: run frontend dev server in background
 # Current working directory: /virtual-instrument-museum/
-CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" ; \
+CMD bash -c "cd frontend && npm run sass:watch &" && \
+    bash -c "cd frontend && npm run dev -- --host 0.0.0.0 &" && \
     bash -c "cd /virtual-instrument-museum/vim-app && \
     python manage.py collectstatic --noinput && \
     python manage.py runserver_plus 0:8001"
