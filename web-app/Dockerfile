@@ -49,8 +49,8 @@ FROM node:20-slim AS prod-frontend
 COPY ./web-app/frontend/ /frontend/
 WORKDIR /frontend
 RUN npm install && \
-        npm run sass:build && \
-        npm run build
+    npm run sass:build && \
+    npm run build
 
 # -------- PRODUCTION IMAGE ---------
 FROM builder AS prod
