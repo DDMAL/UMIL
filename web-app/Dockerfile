@@ -15,12 +15,14 @@ RUN poetry install --no-cache --without dev --without debug
 COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
 COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
 
+ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
+    PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
+
 # ===================================
 # -------- DEVELOPMENT IMAGE --------
 FROM builder AS dev
 
 # Install poetry dependencies for development
-COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 RUN poetry install --with debug
 
 RUN mkdir -p /frontend/assets/css /frontend/dist
@@ -33,9 +35,6 @@ RUN apt-get update && \
     cd /virtual-instrument-museum/frontend && \
     npm install
 
-ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
-    PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
-
 # Development mode: run frontend dev server in background
 # Current working directory: /virtual-instrument-museum/
 CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" ; \
@@ -45,7 +44,7 @@ CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" 
 
 
 # ===================================
-# -------- PRODUCTION IMAGE ---------
+# --- PRODUCTION FRONTEND BUILD --- #
 FROM node:20-slim AS prod-frontend
 COPY ./web-app/frontend/ /frontend/
 WORKDIR /frontend
@@ -53,15 +52,10 @@ RUN npm install && \
         npm run sass:build && \
         npm run build
 
-
+# -------- PRODUCTION IMAGE ---------
 FROM builder AS prod
-COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
-
 COPY --from=prod-frontend /frontend/assets/css /virtual-instrument-museum/frontend/assets/css
 COPY --from=prod-frontend /frontend/dist /virtual-instrument-museum/frontend/dist
-
-ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
-    PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
 
 # Production mode: assets already built during Docker build
 # Just run django server with gunicorn
