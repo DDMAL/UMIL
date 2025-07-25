@@ -8,7 +8,7 @@ class InstrumentName(models.Model):
     source_name = models.CharField(
         max_length=50, blank=False, help_text="Who or what called the instrument this?"
     )  # Stand-in for source data; format TBD
-    status = models.CharField(
+    verification_status = models.CharField(
         max_length=20,
         choices=[
             ("verified", "Verified"),
@@ -18,10 +18,6 @@ class InstrumentName(models.Model):
         ],
         default="unverified",
         help_text="Status of the name entry",
-    )
-    is_approved = models.BooleanField(
-        default=False,
-        help_text="When a name is approved to be visible on UMIL and uploaded to Wikidata.",
     )
     umil_label = models.BooleanField(
         default=False,
