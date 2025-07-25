@@ -123,34 +123,26 @@ def delete_name(request: HttpRequest) -> JsonResponse:
                 },
                 status = 400,
             )
-    try:    
-        instrument_name = get_object_or_404(InstrumentName, id=name_id)
+       
+    instrument_name = get_object_or_404(InstrumentName, id=name_id)
 
-        # If user is a superuser or created the name, allow deletion
-        if request.user.is_superuser or instrument_name.contributor == request.user:
-            instrument_name.delete()
-            return JsonResponse(
-                {
-                    "status": "success",
-                    "message": "Instrument name deleted successfully",
-                },
-                status = 200,
-            )
-        else: 
-            return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "You are not allowed to delete this name",
-                },
-                status = 403,
-            )
-    except InstrumentName.contributor.RelatedObjectDoesNotExist:
+    # If user is a superuser or created the name, allow deletion
+    if request.user.is_superuser or instrument_name.contributor == request.user:
+        instrument_name.delete()
+        return JsonResponse(
+            {
+                "status": "success",
+                "message": "Instrument name deleted successfully",
+            },
+            status = 200,
+        )
+    else: 
         return JsonResponse(
             {
                 "status": "error",
-                "message": "Instrument name contributor does not exist",
+                "message": "You are not allowed to delete this name",
             },
-            status = 404,
+            status = 403,
         )
     
 @login_required
