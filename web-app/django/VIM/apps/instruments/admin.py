@@ -8,7 +8,7 @@ admin.site.register(AVResource)
 
 @admin.register(InstrumentName)
 class InstrumentNameAdmin(admin.ModelAdmin):
-    list_filter = ("status", "is_approved", "on_wikidata")  # Filter by status
+    list_filter = ("verification_status", "on_wikidata")  # Filter by status
     search_fields = (
         "name",
         "source_name",
@@ -17,7 +17,7 @@ class InstrumentNameAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         """
-        Make all fields except 'status' read-only for users in the 'reviewer' group.
+        Make all fields except 'verification_status' read-only for users in the 'reviewer' group.
         """
         if request.user.groups.filter(name="reviewer").exists():
             return (
@@ -28,6 +28,5 @@ class InstrumentNameAdmin(admin.ModelAdmin):
                 "umil_label",
                 "contributor",
                 "on_wikidata",
-                "is_approved",
             )
         return super().get_readonly_fields(request, obj)
