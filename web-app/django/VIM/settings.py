@@ -22,8 +22,8 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
-IS_DEVELOPMENT = bool(os.environ.get("DEVELOPMENT") == "true")
-IS_PRODUCTION = not IS_DEVELOPMENT
+IS_DEVELOPMENT = bool(os.environ.get("MODE") == "dev")
+IS_PRODUCTION = bool(os.environ.get("MODE") == "prod")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT

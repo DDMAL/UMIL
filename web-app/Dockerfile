@@ -1,49 +1,64 @@
-# Django container
-FROM python:3.11.5 as build-container
-ARG DEVELOPMENT
-COPY ./poetry.lock ./pyproject.toml ./web-app/install-packages.sh /virtual-instrument-museum/
-WORKDIR /virtual-instrument-museum
-RUN chmod u+x /virtual-instrument-museum/install-packages.sh && \
-    /virtual-instrument-museum/install-packages.sh $DEVELOPMENT
+# -------- Build stage --------
+FROM python:3.11.5 AS builder
+ARG MODE
 
-# Frontend build stage (only for production)
-FROM node:20-slim as frontend-builder
-ARG DEVELOPMENT
-COPY ./web-app/frontend/ /frontend/
-WORKDIR /frontend
-# Only install and build for production
-RUN if [ "$DEVELOPMENT" != "true" ]; then \
-        npm install && \
-        npm run sass:build && \
-        npm run build; \
-    else \
-        # Create empty directories for development mode
-        mkdir -p /frontend/assets/css /frontend/dist; \
-    fi
-
-FROM python:3.11.5 as app-container
-ARG DEVELOPMENT
-ENV DEVELOPMENT=$DEVELOPMENT
-# Copy frontend files
-COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
-# Copy built assets for production (empty directories in dev mode)
-COPY --from=frontend-builder /frontend/assets/css /virtual-instrument-museum/frontend/assets/css
-COPY --from=frontend-builder /frontend/dist /virtual-instrument-museum/frontend/dist
-
-# Install Node.js and frontend dependencies for development only
-RUN if [ "$DEVELOPMENT" = "true" ]; then \
-        apt-get update && \
-        curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-        apt-get install -y nodejs && \
-        rm -rf /var/lib/apt/lists/* && \
-        cd /virtual-instrument-museum/frontend && \
-        npm install; \
-    fi
-# Copy Python virtual environment and Django app
-COPY --from=build-container /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
-COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
-COPY ./web-app/start-up.sh /virtual-instrument-museum/
-RUN chmod u+x /virtual-instrument-museum/start-up.sh
 WORKDIR /virtual-instrument-museum/
+COPY ./poetry.lock ./pyproject.toml /virtual-instrument-museum/
+
+RUN pip install poetry==1.8.3
+RUN poetry config virtualenvs.in-project true
+RUN poetry config virtualenvs.options.no-pip true
+RUN poetry config virtualenvs.options.no-setuptools true
+# Install poetry dependencies. For development, install `debug` dependencies after
+RUN poetry install --no-cache --without dev --without debug
+
+COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
+COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
+
 ENV PYTHONPATH="$PYTHONPATH:/virtual-instrument-museum/.venv/lib/python3.11/site-packages/" \
     PATH="$PATH:/virtual-instrument-museum/.venv/bin/"
+
+# ===================================
+# -------- DEVELOPMENT IMAGE --------
+FROM builder AS dev
+
+# Install poetry dependencies for development
+RUN poetry install --with debug
+
+RUN mkdir -p /frontend/assets/css /frontend/dist
+
+# Install Node.js and frontend dependencies
+RUN apt-get update && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/* && \
+    cd /virtual-instrument-museum/frontend && \
+    npm install
+
+# Development mode: run frontend dev server in background
+# Current working directory: /virtual-instrument-museum/
+CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" ; \
+    bash -c "cd /virtual-instrument-museum/vim-app && \
+    python manage.py collectstatic --noinput && \
+    python manage.py runserver_plus 0:8001"
+
+
+# ===================================
+# --- PRODUCTION FRONTEND BUILD --- #
+FROM node:20-slim AS prod-frontend
+COPY ./web-app/frontend/ /frontend/
+WORKDIR /frontend
+RUN npm install && \
+    npm run sass:build && \
+    npm run build
+
+# -------- PRODUCTION IMAGE ---------
+FROM builder AS prod
+COPY --from=prod-frontend /frontend/assets/css /virtual-instrument-museum/frontend/assets/css
+COPY --from=prod-frontend /frontend/dist /virtual-instrument-museum/frontend/dist
+
+# Production mode: assets already built during Docker build
+# Just run django server with gunicorn
+CMD bash -c "cd /virtual-instrument-museum/vim-app && \
+    python manage.py collectstatic --noinput && \
+    gunicorn -w 2 -b 0:8001 VIM.wsgi"
