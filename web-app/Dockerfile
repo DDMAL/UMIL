@@ -6,18 +6,22 @@ WORKDIR /virtual-instrument-museum/
 COPY ./poetry.lock ./pyproject.toml /virtual-instrument-museum/
 
 RUN pip install poetry==1.8.3
+RUN poetry config virtualenvs.in-project true
+RUN poetry config virtualenvs.options.no-pip true
+RUN poetry config virtualenvs.options.no-setuptools true
+# Install poetry dependencies. For development, install `debug` dependencies after
+RUN poetry install --no-cache --without dev --without debug
 
+COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
+COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
+
+# ===================================
 # -------- DEVELOPMENT IMAGE --------
 FROM builder AS dev
 
 # Install poetry dependencies for development
-RUN poetry config virtualenvs.in-project true
-RUN poetry config virtualenvs.options.no-pip true
-RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install
-
-COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
-COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
+COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
+RUN poetry install --with debug
 
 RUN mkdir -p /frontend/assets/css /frontend/dist
 
@@ -40,8 +44,8 @@ CMD bash -c "cd frontend && npm run sass:watch & npm run dev -- --host 0.0.0.0" 
     python manage.py runserver_plus 0:8001"
 
 
-# ==================================
-# -------- PRODUCTION IMAGE --------
+# ===================================
+# -------- PRODUCTION IMAGE ---------
 FROM node:20-slim AS prod-frontend
 COPY ./web-app/frontend/ /frontend/
 WORKDIR /frontend
@@ -51,14 +55,7 @@ RUN npm install && \
 
 
 FROM builder AS prod
-# Install poetry dependencies for production: without debug
-RUN poetry config virtualenvs.in-project true
-RUN poetry config virtualenvs.options.no-pip true
-RUN poetry config virtualenvs.options.no-setuptools true
-RUN poetry install --no-cache --without dev --without debug
-
-COPY ./web-app/django/ /virtual-instrument-museum/vim-app/
-COPY ./web-app/frontend/ /virtual-instrument-museum/frontend/
+COPY --from=builder /virtual-instrument-museum/.venv /virtual-instrument-museum/.venv
 
 COPY --from=prod-frontend /frontend/assets/css /virtual-instrument-museum/frontend/assets/css
 COPY --from=prod-frontend /frontend/dist /virtual-instrument-museum/frontend/dist
