@@ -172,7 +172,6 @@ export class NameValidator {
     languageResult: ValidationResult;
     nameResult: ValidationResult;
     sourceResult: ValidationResult;
-    isAlias: boolean;
     languageDescription: string;
   }> {
     // Find the selected language
@@ -219,17 +218,9 @@ export class NameValidator {
               type: 'error',
             },
             sourceResult,
-            isAlias: false,
             languageDescription,
           };
         }
-
-        // Check if this would be an alias or label
-        const isAliasResult = await WikidataService.checkIfAlias(
-          wikidataId,
-          languageCode,
-        );
-        isAlias = isAliasResult.exists;
 
         languageResult = {
           isValid: true,
@@ -248,7 +239,6 @@ export class NameValidator {
           languageResult,
           nameResult: wikidataValidationResult,
           sourceResult,
-          isAlias,
           languageDescription,
         };
       } catch (error) {
@@ -265,7 +255,6 @@ export class NameValidator {
             type: 'error',
           },
           sourceResult,
-          isAlias: false,
           languageDescription,
         };
       }
@@ -276,7 +265,6 @@ export class NameValidator {
       languageResult,
       nameResult,
       sourceResult,
-      isAlias,
       languageDescription,
     };
   }
