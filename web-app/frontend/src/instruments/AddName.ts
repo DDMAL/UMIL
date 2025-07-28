@@ -91,15 +91,11 @@ document
       const sourceInput = currentRow.querySelector(
         '.source-input input[type="text"]',
       ) as HTMLInputElement;
-      const aliasStatus = currentRow.querySelector(
-        '.alias-status',
-      ) as HTMLInputElement;
 
       entries.push({
         language: languageInput.value,
         name: nameInput.value,
         source: sourceInput.value,
-        alias: aliasStatus.value,
       });
     });
 

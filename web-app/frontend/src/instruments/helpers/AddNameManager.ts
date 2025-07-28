@@ -50,7 +50,6 @@ export class AddNameManager {
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <input type="hidden" class="alias-status" id="alias${index}" name="alias[]" values="false" />
       <div class="col-md-2">
         <label class="form-label-sm">&nbsp;</label>
         <button type="button" class="btn btn-secondary remove-row-btn w-100">Remove</button>
@@ -143,9 +142,6 @@ export class AddNameManager {
       const sourceInput = row.querySelector(
         '.source-input input[type="text"]',
       ) as HTMLInputElement;
-      const aliasStatus = row.querySelector(
-        '.alias-status',
-      ) as HTMLInputElement;
 
       const languageCode = languageInput.value;
       const wikidataId = document
@@ -189,9 +185,6 @@ export class AddNameManager {
           continue;
         }
 
-        // Set alias status
-        aliasStatus.value = validationResult.isAlias ? 'true' : 'false';
-
         // Add to confirmation message with better formatting
         publishResults += `
           <div class="mb-3 p-2 border rounded bg-light">
@@ -206,10 +199,6 @@ export class AddNameManager {
             <div class="row">
               <div class="col-3"><strong>Source:</strong></div>
               <div class="col-9">${sourceInput.value}</div>
-            </div>
-            <div class="row">
-              <div class="col-3"><strong>Type:</strong></div>
-              <div class="col-9">${validationResult.isAlias ? 'Alias' : 'Label'}</div>
             </div>
           </div>
         `;
