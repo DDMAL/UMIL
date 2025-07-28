@@ -15,15 +15,14 @@
     <!-- Keep the Google Translate external script -->
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CH0Y471LJ9"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-CH0Y471LJ9');
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-M2JTBSHC');
     </script>
+    <!-- End Google Tag Manager -->
     <link rel="stylesheet" href="{% static 'assets/css/global.css' %}" />
     {% vite_asset 'src/main.ts' %}
     {% block ts_files %}
@@ -34,6 +33,13 @@
 
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M2JTBSHC"
+        height="0"
+        width="0"
+        style="display:none;
+               visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <header class="p-3 sticky-top align-content-center bg-primary min-vh-10 vw-100">
       <div class="container">
         <nav class="navbar navbar-expand-lg">
