@@ -13,10 +13,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/main.ts'),
-        instrumentDetail: resolve(
-          __dirname,
-          'src/instruments/AddName.ts',
-        ),
+        instrumentDetail: resolve(__dirname, 'src/instruments/AddName.ts'),
         collapseTable: resolve(__dirname, 'src/instruments/CollapseTable.ts'),
         paginationTools: resolve(
           __dirname,

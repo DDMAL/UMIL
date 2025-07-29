@@ -29,8 +29,8 @@ class InstrumentDetail(DetailView):
 
         # Get the instrument label in the active language
         # Set label to the first instrument name added in the language if there is no "umil_label" set
-        active_labels = (
-            context["instrument_names"].filter(language=context["active_language"])
+        active_labels = context["instrument_names"].filter(
+            language=context["active_language"]
         )
         umil_label = active_labels.filter(umil_label=True)
         if umil_label.exists():
