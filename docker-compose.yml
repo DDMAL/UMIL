@@ -23,7 +23,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - HOST_NAME=${HOST_NAME}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-    command: /virtual-instrument-museum/start-up.sh
 
   postgres:
     image: postgres:15.4
