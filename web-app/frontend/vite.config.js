@@ -13,10 +13,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/main.ts'),
-        instrumentDetail: resolve(
-          __dirname,
-          'src/instruments/InstrumentDetail.ts',
-        ),
+        instrumentDetail: resolve(__dirname, 'src/instruments/AddName.ts'),
         collapseTable: resolve(__dirname, 'src/instruments/CollapseTable.ts'),
         paginationTools: resolve(
           __dirname,
@@ -30,6 +27,7 @@ export default defineConfig({
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
         statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
         barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
+        deleteName: resolve(__dirname, 'src/instruments/DeleteName.ts'),
       },
       output: {
         entryFileNames: '[name].js',
