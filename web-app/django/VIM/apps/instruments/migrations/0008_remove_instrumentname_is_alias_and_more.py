@@ -6,30 +6,41 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('instruments', '0007_instrumentname_is_approved_and_more'),
+        ("instruments", "0007_instrumentname_is_approved_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='instrumentname',
-            name='is_alias',
+            model_name="instrumentname",
+            name="is_alias",
         ),
         migrations.AddField(
-            model_name='instrumentname',
-            name='umil_label',
-            field=models.BooleanField(default=False, help_text='Is this the label for the instrument? If true, it will be used as the main name.'),
+            model_name="instrumentname",
+            name="umil_label",
+            field=models.BooleanField(
+                default=False,
+                help_text="Is this the label for the instrument? If true, it will be used as the main name.",
+            ),
         ),
         migrations.AlterField(
-            model_name='instrumentname',
-            name='contributor',
-            field=models.ForeignKey(default=6, help_text='User who contributed this name', on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            model_name="instrumentname",
+            name="contributor",
+            field=models.ForeignKey(
+                default=6,
+                help_text="User who contributed this name",
+                on_delete=django.db.models.deletion.PROTECT,
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
         migrations.AddConstraint(
-            model_name='instrumentname',
-            constraint=models.UniqueConstraint(condition=models.Q(('umil_label', True)), fields=('instrument', 'language'), name='unique_umil_label_per_instrument_language'),
+            model_name="instrumentname",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("umil_label", True)),
+                fields=("instrument", "language"),
+                name="unique_umil_label_per_instrument_language",
+            ),
         ),
     ]

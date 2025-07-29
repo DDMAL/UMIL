@@ -47,7 +47,7 @@ def add_name(request: HttpRequest) -> JsonResponse:
         )
     # Fetch the instrument from the database, if it does not exist return does not exist error
     instrument = get_object_or_404(Instrument, wikidata_id=wikidata_id)
-    
+
     # create dictionary to map language codes to Language objects
     language = {lang.wikidata_code: lang for lang in Language.objects.all()}
 
@@ -58,10 +58,10 @@ def add_name(request: HttpRequest) -> JsonResponse:
     instrument_names_to_create = []
 
     for entry in entries:
-        language_code : str = entry["language"]
-        name : str = entry["name"]
-        source : str = entry["source"]
-        
+        language_code: str = entry["language"]
+        name: str = entry["name"]
+        source: str = entry["source"]
+
         # Validate that entry info is provided
         if not name or not source or not language_code:
             return JsonResponse(
@@ -71,9 +71,9 @@ def add_name(request: HttpRequest) -> JsonResponse:
                 },
                 status=400,
             )
-        
+
         # Find language object from language code dictionary
-        language_obj : Language = language.get(language_code)
+        language_obj: Language = language.get(language_code)
 
         # Within the entries, check if the language already has a name
         # if it does, set umil_label to False
@@ -81,7 +81,11 @@ def add_name(request: HttpRequest) -> JsonResponse:
         if entry_labels[language_code]:
             umil_label = False
         else:
-            umil_label : bool = not (instrument.instrumentname_set.filter(language__wikidata_code=language_code).exists())
+            umil_label: bool = not (
+                instrument.instrumentname_set.filter(
+                    language__wikidata_code=language_code
+                ).exists()
+            )
             entry_labels[language_code] = True  # Mark that this language now has a name
 
         # Prepare the InstrumentName object
@@ -107,23 +111,24 @@ def add_name(request: HttpRequest) -> JsonResponse:
         status=200,
     )
 
+
 def delete_name(request: HttpRequest) -> JsonResponse:
     """View to delete an instrument name from UMIL database."""
 
     # Parse the JSON request body
-    data : Dict[str, Any] = json.loads(request.body)
-    name_id : str = data.get("instrument_name_id")
-    
+    data: Dict[str, Any] = json.loads(request.body)
+    name_id: str = data.get("instrument_name_id")
+
     # Check if name_id is provided, if not return 400 error
     if not name_id:
         return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "Missing required data",
-                },
-                status = 400,
-            )
-       
+            {
+                "status": "error",
+                "message": "Missing required data",
+            },
+            status=400,
+        )
+
     instrument_name = get_object_or_404(InstrumentName, id=name_id)
 
     # If user is a superuser or created the name, allow deletion
@@ -134,23 +139,23 @@ def delete_name(request: HttpRequest) -> JsonResponse:
                 "status": "success",
                 "message": "Instrument name deleted successfully",
             },
-            status = 200,
+            status=200,
         )
-    else: 
+    else:
         return JsonResponse(
             {
                 "status": "error",
                 "message": "You are not allowed to delete this name",
             },
-            status = 403,
+            status=403,
         )
-    
+
+
 @login_required
-@require_http_methods(["POST", "DELETE"])    
+@require_http_methods(["POST", "DELETE"])
 def update_umil_db(request: HttpRequest, pk: int) -> JsonResponse:
-    
     if request.method == "POST":
         return add_name(request)
-    
+
     elif request.method == "DELETE":
         return delete_name(request)
