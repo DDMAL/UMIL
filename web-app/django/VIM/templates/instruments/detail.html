@@ -8,9 +8,10 @@
 {% endblock title %}
 
 {% block ts_files %}
-  {% vite_asset 'src/instruments/InstrumentDetail.ts' %}
   {% vite_asset 'src/instruments/CollapseTable.ts' %}
   {% vite_asset 'src/instruments/JumpToTop.ts' %}
+  {% vite_asset 'src/instruments/AddName.ts' %}
+  {% vite_asset 'src/instruments/DeleteName.ts' %}
 {% endblock ts_files %}
 
 {% block css_files %}
@@ -23,11 +24,7 @@
     <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
       <div class="w-100">
         <h2 class="notranslate">
-          {% for instrumentname in instrument_names %}
-            {% if instrumentname.language.en_label == active_language.en_label %}
-              {{ instrumentname.name|title }}
-            {% endif %}
-          {% endfor %}
+          {{ active_instrument_label.name|title }}
         </h2>
         <hr class="w-100 mt-0" />
       </div>
@@ -52,7 +49,7 @@
               <th scope="row" class="w-20">MIMO Classification</th>
               <td>
                 <a class="view-field"
-                   href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ mimo_class }}"
+                   href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
                    target="_blank">{{ instrument.mimo_class }}</a>
               </td>
             </tr>
@@ -71,6 +68,11 @@
                       <th scope="col" class="w-30">
                         <span>Source</span>
                       </th>
+                      {% if user.is_authenticated %}
+                        <th scope="col">
+                          <span class="name-form-item">Actions</span>
+                        </th>
+                      {% endif %}
                     </tr>
                   </thead>
                   <tbody id="languageTableBody">
@@ -79,44 +81,57 @@
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.language.en_label }}" />
-                            <div class="d-flex flex-row gap-1">
-                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                            </div>
                           </div>
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1 notranslate">{{ instrumentname.name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.name }}" />
-                            <div class="d-flex flex-row gap-1">
-                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                            </div>
                           </div>
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.source_name }}" />
-                            <div class="d-flex flex-row gap-1">
-                              <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                              <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                              <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
-                            </div>
                           </div>
                         </td>
+                        {% if user.is_authenticated %}
+                          <td>
+                            <div class="action-buttons">
+                              <button class="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#deleteNameModal"
+                                      data-instrument-language="{{ instrumentname.language.en_label }}"
+                                      data-instrument-name="{{ instrumentname.name }}"
+                                      data-instrument-source="{{ instrumentname.source_name }}"
+                                      data-instrument-id="{{ instrumentname.id }}"
+                                      data-instrument-pk="{{ instrument.pk }}">
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        {% endif %}
                       </tr>
                     {% endfor %}
+                    <tr>
+                      <td colspan="4">
+                        <div class="add-name-container">
+                          {% if user.is_authenticated %}
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addNameModal"
+                                    data-instrument-name="{{ active_instrument_label.name | title }}"
+                                    data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                                    data-instrument-pk="{{ instrument.pk }}">
+                              Add Instrument Name
+                            </button>
+                          {% else %}
+                            <a href="{% url 'main:login' %}?next={{ request.path }}"
+                               class="btn btn-primary"
+                               role="button">Add Instrument Name</a>
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
                 <!-- Stacked layout for small screens only -->
@@ -129,12 +144,6 @@
                           <div class="fw-bold text-muted small mb-1">Language</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.language.en_label }}" />
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
                           </div>
                         </div>
                         <!-- Name column -->
@@ -142,12 +151,6 @@
                           <div class="fw-bold text-muted small mb-1">Name</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1 notranslate">{{ instrumentname.name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.name }}" />
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
                           </div>
                         </div>
                         <!-- Source column -->
@@ -155,24 +158,51 @@
                           <div class="fw-bold text-muted small mb-1">Source</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
-                            <input class="edit-field form-control form-control-sm d-none flex-grow-1"
-                                   type="text"
-                                   value="{{ instrumentname.source_name }}" />
-                            <button class="btn btn-warning btn-sm btn-edit">Edit</button>
-                            <button class="btn btn-danger btn-sm btn-cancel d-none">Cancel</button>
-                            <button class="btn btn-success btn-sm btn-publish d-none">Publish</button>
                           </div>
                         </div>
+                        {% if user.is_authenticated %}
+                          <div class="action-buttons">
+                            <button class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteNameModal"
+                                    data-instrument-language="{{ instrumentname.language.en_label }}"
+                                    data-instrument-name="{{ instrumentname.name }}"
+                                    data-instrument-source="{{ instrumentname.source_name }}"
+                                    data-instrument-id="{{ instrumentname.id }}"
+                                    data-instrument-pk="{{ instrument.pk }}">
+                              Delete
+                            </button>
+                          </div>
+                        {% endif %}
                       </div>
                     </div>
                   {% endfor %}
-                </div>
+                  <div class="add-name-container">
+                    {% if user.is_authenticated %}
+                      <button type="button"
+                              class="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addNameModal"
+                              data-instrument-name="{{ active_instrument_name.first.name | title }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                              data-instrument-pk="{{ instrument.pk }}">
+                        Add Instrument Name
+                      </button>
+                    {% else %}
+                      <a href="{% url 'main:login' %}?next={{ request.path }}"
+                          class="btn btn-primary"
+                          role="button">Add Instrument Name</a>
+                    {% endif %}
+                  </div>
+                </div>    
                 <!-- Button below the table -->
                 <div class="text-start mt-2">
                   <button id="toggle-language-table" class="btn btn-link" type="button">
                     View all languages
                   </button>
                 </div>
+                {% include "instruments/includes/deleteName.html" %}
+                {% include "instruments/includes/addName.html" %}
               </td>
             </tr>
             <tr>

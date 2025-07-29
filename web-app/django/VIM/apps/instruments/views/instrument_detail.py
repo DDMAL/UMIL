@@ -26,4 +26,19 @@ class InstrumentDetail(DetailView):
             if active_language_en
             else Language.objects.get(en_label="English")  # default in English
         )
+
+        # Get the instrument label in the active language
+        # Set label to the first instrument name added in the language if there is no "umil_label" set
+        active_labels = context["instrument_names"].filter(
+            language=context["active_language"]
+        )
+        umil_label = active_labels.filter(umil_label=True)
+        if umil_label.exists():
+            context["active_instrument_label"] = umil_label
+        else:
+            context["active_instrument_label"] = active_labels.first()
+
+        # Get all languages for the dropdown
+        context["languages"] = Language.objects.all()
+
         return context

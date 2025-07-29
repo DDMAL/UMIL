@@ -10,3 +10,6 @@ overrides:
   - files: "*.js"
     options:
       trailingComma: "es5"
+  - files: "*.html"
+    options:
+      parser: django
