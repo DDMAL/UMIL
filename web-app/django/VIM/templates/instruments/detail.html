@@ -173,22 +173,28 @@
                               Delete
                             </button>
                           </div>
-                        {% endfor %}
-                        <div class="add-name-container">
-                          {% if user.is_authenticated %}
-                            <button type="button"
-                                    class="btn btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#addNameModal"
-                                    data-instrument-name="{{ active_instrument_name.first.name | title }}"
-                                    data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
-                                    data-instrument-pk="{{ instrument.pk }}">
-                              Add Instrument Name
-                            </button>
-                          </div>
-                          {% endif %}
-                        </div>
+                        {% endif %}
                       </div>
+                    </div>
+                  {% endfor %}
+                  <div class="add-name-container">
+                    {% if user.is_authenticated %}
+                      <button type="button"
+                              class="btn btn-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addNameModal"
+                              data-instrument-name="{{ active_instrument_name.first.name | title }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                              data-instrument-pk="{{ instrument.pk }}">
+                        Add Instrument Name
+                      </button>
+                    {% else %}
+                      <a href="{% url 'main:login' %}?next={{ request.path }}"
+                          class="btn btn-primary"
+                          role="button">Add Instrument Name</a>
+                    {% endif %}
+                  </div>
+                </div>    
                 <!-- Button below the table -->
                 <div class="text-start mt-2">
                   <button id="toggle-language-table" class="btn btn-link" type="button">
