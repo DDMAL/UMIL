@@ -1,12 +1,32 @@
 from typing import Union
+import logging
 
 import pysolr
 import requests
 from django.conf import settings
+from django.core.paginator import Paginator, Page
 from django.db.models import Prefetch, QuerySet
 from django.views.generic import ListView
 
 from VIM.apps.instruments.models import Instrument, InstrumentName, Language
+
+logger = logging.getLogger(__name__)
+
+# Constants
+SOLR_SEARCH_MARKER = "SOLR_SEARCH"
+
+
+# Custom paginator for Solr search results
+class SolrPaginator(Paginator):
+    """Custom paginator that knows the total count of Solr results."""
+
+    def __init__(self, object_list, per_page, total_count):
+        super().__init__(object_list, per_page)
+        self._count = total_count
+
+    @property
+    def count(self):
+        return self._count
 
 
 # Helper classes to normalize Solr results
@@ -112,6 +132,97 @@ class InstrumentList(ListView):
             context["search_query"] = search_query
         return context
 
+    def _get_solr_connection(self):
+        """Get a Solr connection with error handling."""
+        try:
+            return pysolr.Solr(settings.SOLR_URL, timeout=10)
+        except Exception as e:
+            logger.error(f"Failed to connect to Solr: {e}")
+            raise
+
+    def _get_solr_search_params(self, search_query: str, language_en: str):
+        """Get common Solr search parameters."""
+        try:
+            lang_code = Language.objects.get(en_label=language_en).wikidata_code
+            name_field = f"instrument_name_{lang_code}_ss"
+            return {
+                "q": search_query,
+                "wt": "json",
+                "facet": "false",
+                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
+                "lang_code": lang_code,
+            }
+        except Language.DoesNotExist:
+            logger.error(f"Language not found: {language_en}")
+            raise
+
+    def _get_solr_total_count(self, solr, search_query: str):
+        """Get total count of Solr search results."""
+        try:
+            count_params = {
+                "q": search_query,
+                "wt": "json",
+                "rows": 0,  # We only want the count
+                "facet": "false",
+            }
+            count_response = solr.search(**count_params)
+            return count_response.hits
+        except Exception as e:
+            logger.error(f"Failed to get Solr count for query '{search_query}': {e}")
+            return 0
+
+    def _get_solr_page_results(
+        self, solr, search_params: dict, page_size: int, start: int
+    ):
+        """Get a specific page of Solr search results."""
+        try:
+            solr_params = {
+                **search_params,
+                "rows": page_size,
+                "start": start,
+            }
+            # Remove our custom params
+            lang_code = solr_params.pop("lang_code")
+
+            solr_response = solr.search(**solr_params)
+            return [
+                SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
+            ]
+        except Exception as e:
+            logger.error(f"Failed to get Solr page results: {e}")
+            return []
+
+    def paginate_queryset(self, queryset, page_size):
+        """Custom pagination to handle Solr search results."""
+        if queryset == SOLR_SEARCH_MARKER:
+            return self._paginate_solr_search(page_size)
+
+        # Use default pagination for regular querysets
+        return super().paginate_queryset(queryset, page_size)
+
+    def _paginate_solr_search(self, page_size):
+        """Handle Solr search pagination."""
+        search_query = self.request.GET.get("query", "").strip()
+        language_en = self.get_active_language_en_label()
+        page_number = int(self.request.GET.get("page", 1))
+        start = (page_number - 1) * page_size
+
+        # Get Solr connection and search parameters
+        solr = self._get_solr_connection()
+        search_params = self._get_solr_search_params(search_query, language_en)
+
+        # Get total count and page results
+        total_results = self._get_solr_total_count(solr, search_query)
+        page_results = self._get_solr_page_results(
+            solr, search_params, page_size, start
+        )
+
+        # Create paginator and page objects
+        paginator = SolrPaginator(page_results, page_size, total_results)
+        page = Page(page_results, page_number, paginator)
+
+        return (paginator, page, page_results, page.has_other_pages())
+
     def get(self, request, *args, **kwargs):
         language_en = request.GET.get("language", None)
         if language_en:
@@ -135,22 +246,8 @@ class InstrumentList(ListView):
         search_query = self.request.GET.get("query", "").strip()
 
         if search_query:
-            solr = pysolr.Solr(settings.SOLR_URL, timeout=10)
-            lang_code = Language.objects.get(en_label=language_en).wikidata_code
-            name_field = f"instrument_name_{lang_code}_ss"
-            solr_params = {
-                "q": search_query,
-                "wt": "json",
-                "rows": 100,
-                "facet": "false",
-                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
-            }
-
-            # Send query to Solr and retrieve results
-            solr_response = solr.search(**solr_params)
-            return [
-                SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
-            ]
+            # Return a special marker for Solr search that will be handled in paginate_queryset
+            return SOLR_SEARCH_MARKER
 
         return Instrument.objects.select_related("thumbnail").prefetch_related(
             instrumentname_prefetch_manager
