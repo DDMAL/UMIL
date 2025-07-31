@@ -93,13 +93,26 @@ class InstrumentList(ListView):
             return language_en
         return self.request.session.get("active_language_en", "English")
 
+    def get_active_language(self) -> Language:
+        """
+        Returns the active Language object.
+
+        Returns:
+            Language: The active Language object
+        """
+        language_en = self.get_active_language_en_label()
+        try:
+            return Language.objects.get(en_label=language_en)
+        except Language.DoesNotExist:
+            logger.error(f"Language not found: {language_en}")
+            raise
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["active_tab"] = "instruments"
         context["instrument_num"] = context["paginator"].count
         context["languages"] = Language.objects.all().order_by("en_label")
-        active_language_en = self.get_active_language_en_label()
-        context["active_language"] = Language.objects.get(en_label=active_language_en)
+        context["active_language"] = self.get_active_language()
 
         hbs_facet = self.request.GET.get("hbs_facet", None)
         context["hbs_facet"] = hbs_facet
@@ -140,21 +153,17 @@ class InstrumentList(ListView):
             logger.error(f"Failed to connect to Solr: {e}")
             raise
 
-    def _get_solr_search_params(self, search_query: str, language_en: str):
+    def _get_solr_search_params(self, search_query: str, language: Language):
         """Get common Solr search parameters."""
-        try:
-            lang_code = Language.objects.get(en_label=language_en).wikidata_code
-            name_field = f"instrument_name_{lang_code}_ss"
-            return {
-                "q": search_query,
-                "wt": "json",
-                "facet": "false",
-                "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
-                "lang_code": lang_code,
-            }
-        except Language.DoesNotExist:
-            logger.error(f"Language not found: {language_en}")
-            raise
+        lang_code = language.wikidata_code
+        name_field = f"instrument_name_{lang_code}_ss"
+        return {
+            "q": search_query,
+            "wt": "json",
+            "facet": "false",
+            "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
+            "lang_code": lang_code,
+        }
 
     def _get_solr_total_count(self, solr, search_query: str):
         """Get total count of Solr search results."""
@@ -203,13 +212,13 @@ class InstrumentList(ListView):
     def _paginate_solr_search(self, page_size):
         """Handle Solr search pagination."""
         search_query = self.request.GET.get("query", "").strip()
-        language_en = self.get_active_language_en_label()
+        language = self.get_active_language()
         page_number = int(self.request.GET.get("page", 1))
         start = (page_number - 1) * page_size
 
         # Get Solr connection and search parameters
         solr = self._get_solr_connection()
-        search_params = self._get_solr_search_params(search_query, language_en)
+        search_params = self._get_solr_search_params(search_query, language)
 
         # Get total count and page results
         total_results = self._get_solr_total_count(solr, search_query)
@@ -230,10 +239,10 @@ class InstrumentList(ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> Union[QuerySet[Instrument], list[SolrInstrument]]:
-        language_en = self.get_active_language_en_label()
+        language = self.get_active_language()
         instrumentname_prefetch_manager = Prefetch(
             "instrumentname_set",
-            queryset=InstrumentName.objects.filter(language__en_label=language_en),
+            queryset=InstrumentName.objects.filter(language=language),
         )
         hbs_facet = self.request.GET.get("hbs_facet", None)
         if hbs_facet:
