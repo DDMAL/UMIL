@@ -107,7 +107,7 @@ class InstrumentList(ListView):
             context["hbs_facet_name"] = next(
                 (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
             )
-        search_query = self.request.GET.get("q", "").strip()
+        search_query = self.request.GET.get("query", "").strip()
         if search_query:
             context["search_query"] = search_query
         return context
@@ -132,7 +132,7 @@ class InstrumentList(ListView):
                 .prefetch_related(instrumentname_prefetch_manager)
             )
 
-        search_query = self.request.GET.get("q", "").strip()
+        search_query = self.request.GET.get("query", "").strip()
 
         if search_query:
             solr = pysolr.Solr(settings.SOLR_URL, timeout=10)
