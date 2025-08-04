@@ -4,6 +4,8 @@ import csv
 import os
 from typing import Optional
 import requests
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
@@ -23,6 +25,12 @@ class Command(BaseCommand):
     def __init__(self):
         super().__init__()
         self.language_map: dict[str, Language] = {}
+        User = get_user_model()
+        self.default_contributor = User.objects.get(username=settings.DDMAL_USERNAME)
+        if not self.default_contributor:
+            raise ValueError(
+                f"Default contributor {settings.DDMAL_USERNAME} not found in the database."
+            )
 
     def parse_instrument_data(
         self, instrument_id: str, instrument_data: dict
@@ -48,6 +56,11 @@ class Command(BaseCommand):
         ins_names: dict[str, str] = {
             value["language"]: value["value"] for key, value in ins_labels.items()
         }
+        ins_aliases: dict = instrument_data["aliases"]
+        ins_aliases_dict: dict[str, list[str]] = {
+            key: [alias["value"] for alias in value]
+            for key, value in ins_aliases.items()
+        }
         # Get Hornbostel-Sachs and MIMO classifications, if available
         ins_hbs: Optional[list[dict]] = instrument_data["claims"].get("P1762")
         ins_mimo: Optional[list[dict]] = instrument_data["claims"].get("P3763")
@@ -64,6 +77,7 @@ class Command(BaseCommand):
             "ins_names": ins_names,
             "hornbostel_sachs_class": hbs_class,
             "mimo_class": mimo_class,
+            "ins_aliases": ins_aliases_dict,
         }
         return parsed_data
 
@@ -80,7 +94,7 @@ class Command(BaseCommand):
         ins_ids_str: str = "|".join(instrument_ids)
         url = (
             "https://www.wikidata.org/w/api.php?action=wbgetentities&"
-            f"ids={ins_ids_str}&format=json&props=labels|descriptions|claims"
+            f"ids={ins_ids_str}&format=json&props=labels|descriptions|claims|aliases"
         )
         response = requests.get(url, timeout=10)
         response_entities = response.json()["entities"]
@@ -103,7 +117,10 @@ class Command(BaseCommand):
         thumbnail_img_path [str]: Path to the thumbnail of the instrument image
         """
         ins_names = instrument_attrs.pop("ins_names")
+        ins_aliases = instrument_attrs.pop("ins_aliases")
         instrument, _ = Instrument.objects.update_or_create(**instrument_attrs)
+
+        # Create or update instrument labels in the database (umil_label=True)
         for lang, name in ins_names.items():
             # Skip if the language code is not found in the database.
             # This commonly happens for codes like "mul" (multiple languages),
@@ -121,7 +138,34 @@ class Command(BaseCommand):
                 language=self.language_map[lang],
                 name=name,
                 source_name="Wikidata",
+                umil_label=True,
+                contributor=self.default_contributor,
+                verification_status="verified",
+                on_wikidata=True,
             )
+
+        # Create or update instrument aliases in the database (umil_label=False)
+        for lang, aliases in ins_aliases.items():
+            # Skip if the language code is not found in the database.
+            if lang not in self.language_map:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"Skipping language {lang} for instrument {instrument.wikidata_id} as the language is not found in the database."
+                    )
+                )
+                continue
+            for alias in aliases:
+                InstrumentName.objects.update_or_create(
+                    instrument=instrument,
+                    language=self.language_map[lang],
+                    name=alias,
+                    source_name="Wikidata",
+                    umil_label=False,
+                    contributor=self.default_contributor,
+                    verification_status="verified",
+                    on_wikidata=True,
+                )
+
         img_obj = AVResource.objects.create(
             instrument=instrument,
             type="image",
