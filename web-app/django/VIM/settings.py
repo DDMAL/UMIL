@@ -175,3 +175,6 @@ SESSION_COOKIE_SECURE = IS_PRODUCTION
 # SOLR SETTINGS
 
 SOLR_URL = "http://solr:8983/solr/virtual-instrument-museum"
+
+# DDMAL USER ACCOUNT FOR UMIL
+DDMAL_USERNAME = "ddmal"
