@@ -20,18 +20,11 @@ h4 {
 }
 
 // TODO: Clean up
-.list-group-item {
-  border: none !important;
-  background-color: transparent !important;
-  color: $umil-green-dark;
-}
-
 .list-group-item:hover {
   color: $umil-green-primary;
 }
 
-.selected {
-  color: $umil-green-dark;
+.active {
   font-weight: bold;
 }
 

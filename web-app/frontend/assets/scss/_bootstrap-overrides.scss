@@ -26,6 +26,12 @@ $card-bg: $umil-cream;
 // Pagination
 $pagination-color: $umil-green-dark;
 $pagination-hover-color: $umil-green-primary;
+// List group
+$list-group-bg: transparent;
+$list-group-border-width: 0;
+$list-group-color: $umil-green-dark;
+$list-group-active-color: $umil-green-dark;
+$list-group-active-bg: transparent;
 
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
