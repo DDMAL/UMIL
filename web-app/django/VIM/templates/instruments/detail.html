@@ -68,6 +68,9 @@
                       <th scope="col" class="w-30">
                         <span>Source</span>
                       </th>
+                      <th scope="col" class="w-30">
+                        <span>Status</span>
+                      </th>
                       {% if user.is_authenticated %}
                         <th scope="col">
                           <span class="name-form-item">Actions</span>
@@ -93,6 +96,11 @@
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
                           </div>
                         </td>
+                        <td>
+                          <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                            <span class="view-field flex-grow-1">{{ instrumentname.verification_status | title }}</span>
+                          </div>
+                        </td>
                         {% if user.is_authenticated %}
                           <td>
                             <div class="action-buttons">
@@ -112,7 +120,7 @@
                       </tr>
                     {% endfor %}
                     <tr>
-                      <td colspan="4">
+                      <td colspan="5">
                         <div class="add-name-container">
                           {% if user.is_authenticated %}
                             <button type="button"
