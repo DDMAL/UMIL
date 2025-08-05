@@ -98,7 +98,23 @@
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                            <span class="view-field flex-grow-1">{{ instrumentname.verification_status | title }}</span>
+                            {% if instrumentname.verification_status == 'verified' %}
+                              <span class="badge border bg-success">
+                                {{ instrumentname.verification_status | title }}
+                              </span>
+                            {% elif instrumentname.verification_status == 'needs_review' %}
+                              <span class="badge border bg-warning text-dark">
+                                {{ instrumentname.verification_status | title }}
+                              </span>
+                            {% elif instrumentname.verification_status == 'unverified' %}
+                              <span class="badge border bg-light text-dark">
+                                {{ instrumentname.verification_status | title }}
+                              </span>  
+                            {% else %}
+                              <span class="badge border bg-danger">
+                                {{ instrumentname.verification_status | title }}
+                              </span>
+                            {% endif %}
                           </div>
                         </td>
                         {% if user.is_authenticated %}
@@ -166,6 +182,29 @@
                           <div class="fw-bold text-muted small mb-1">Source</div>
                           <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                             <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
+                          </div>
+                        </div>
+                        <!-- Status column -->
+                        <div class="col-12">
+                          <div class="fw-bold text-muted small mb-1">Status</div>
+                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
+                            {% if instrumentname.verification_status == 'verified' %}
+                              <span class="badge border bg-success">
+                                {{ instrumentname.verification_status | title }}
+                              </span>
+                            {% elif instrumentname.verification_status == 'needs_review' %}
+                              <span class="badge border bg-warning text-dark">
+                                {{ instrumentname.verification_status | title }}
+                              </span>
+                            {% elif instrumentname.verification_status == 'unverified' %}
+                              <span class="badge border bg-light text-dark">
+                                {{ instrumentname.verification_status | title }}
+                              </span>  
+                            {% else %}
+                              <span class="badge border bg-danger">
+                                {{ instrumentname.verification_status | title }}
+                              </span>
+                            {% endif %}
                           </div>
                         </div>
                         {% if user.is_authenticated %}
