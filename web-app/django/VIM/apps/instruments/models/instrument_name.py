@@ -9,11 +9,12 @@ class InstrumentName(models.Model):
         max_length=50, blank=False, help_text="Who or what called the instrument this?"
     )  # Stand-in for source data; format TBD
     verification_status = models.CharField(
-        max_length=20,
+        max_length=50,
         choices=[
             ("verified", "Verified"),
             ("unverified", "Unverified"),
-            ("needs_review", "Needs Review"),
+            ("under_review", "Under Review"),
+            ("needs_additional_review", "Needs Additional Review"),
             ("rejected", "Rejected"),
         ],
         default="unverified",
