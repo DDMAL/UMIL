@@ -5,7 +5,7 @@ import pysolr
 import requests
 from django.conf import settings
 from django.core.paginator import Paginator, Page
-from django.views.generic import ListView
+from django.views.generic import TemplateView
 
 from VIM.apps.instruments.models import Language
 
@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 DEFAULT_PAGE_SIZE = 20
 DEFAULT_LANGUAGE = "English"
 EMPTY_HBS_CATEGORY = "999"
-SOLR_SEARCH_MARKER = "SOLR_SEARCH"
 SOLR_TIMEOUT = 10
 
 
@@ -60,7 +59,7 @@ class InstrumentNameSet:
         return [InstrumentNameStub(name) for name in self._names]
 
 
-class InstrumentList(ListView):
+class InstrumentList(TemplateView):
     """
     Provides a paginated list of all instruments using Solr for unified pagination.
 
@@ -79,7 +78,8 @@ class InstrumentList(ListView):
     template_name = "instruments/index.html"
     context_object_name = "instruments"
 
-    def get_paginate_by(self, queryset) -> int:
+    def get_paginate_by(self) -> int:
+        """Get the number of items to show per page."""
         pag_by_param: str = self.request.GET.get("paginate_by", str(DEFAULT_PAGE_SIZE))
         try:
             paginate_by = int(pag_by_param)
@@ -120,8 +120,22 @@ class InstrumentList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # Get pagination data
+        page_size = self.get_paginate_by()
+        paginator, page, instruments, has_other_pages = self._paginate_solr_results(
+            page_size
+        )
+
+        # Add pagination data to context
+        context["paginator"] = paginator
+        context["page_obj"] = page
+        context["instruments"] = instruments
+        context["is_paginated"] = has_other_pages
+
+        # Add basic context data
         context["active_tab"] = "instruments"
-        context["instrument_num"] = context["paginator"].count
+        context["instrument_num"] = paginator.count
         context["languages"] = Language.objects.all().order_by("en_label")
         context["active_language"] = self.get_active_language()
 
@@ -346,11 +360,6 @@ class InstrumentList(ListView):
             # Fallback to empty list
             return []
 
-    def paginate_queryset(self, queryset, page_size):
-        """Custom pagination using Solr for all queries."""
-        # All queries now go through Solr
-        return self._paginate_solr_results(page_size)
-
     def _paginate_solr_results(self, page_size):
         """Handle Solr pagination for all query types (search, HBS filter, show all)."""
         language = self.get_active_language()
@@ -376,8 +385,3 @@ class InstrumentList(ListView):
         if language_en:
             request.session["active_language_en"] = language_en
         return super().get(request, *args, **kwargs)
-
-    def get_queryset(self) -> str:
-        """Return marker to indicate all queries should use Solr pagination."""
-        # All queries (search, HBS filter, show all) now go through Solr
-        return SOLR_SEARCH_MARKER
