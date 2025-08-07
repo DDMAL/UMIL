@@ -25,6 +25,7 @@ class InstrumentName(models.Model):
     )
     contributor = models.ForeignKey(
         "auth.User",
+        null=True,
         on_delete=models.PROTECT,
         help_text="User who contributed this name",
     )
