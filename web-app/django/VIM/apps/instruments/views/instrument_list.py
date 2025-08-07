@@ -198,12 +198,8 @@ class InstrumentList(TemplateView):
         return context
 
     def _get_solr_connection(self):
-        """Get a Solr connection with error handling."""
-        try:
-            return pysolr.Solr(settings.SOLR_URL, timeout=SOLR_TIMEOUT)
-        except Exception as e:
-            logger.error(f"Failed to connect to Solr: {e}")
-            raise
+        """Get a Solr connection."""
+        return pysolr.Solr(settings.SOLR_URL, timeout=SOLR_TIMEOUT)
 
     def _build_solr_query(self, language: Language):
         """Build Solr query parameters supporting combined search + HBS filtering."""
@@ -245,120 +241,96 @@ class InstrumentList(TemplateView):
 
     def _get_solr_total_count(self, solr, query_params: dict):
         """Get total count of Solr search results with filter queries."""
-        try:
-            count_params = {
-                "q": query_params["q"],
-                "wt": "json",
-                "rows": 0,  # We only want the count
-                "facet": "false",
-            }
-            # Include filter queries if present
-            if "fq" in query_params:
-                count_params["fq"] = query_params["fq"]
+        count_params = {
+            "q": query_params["q"],
+            "wt": "json",
+            "rows": 0,  # We only want the count
+            "facet": "false",
+        }
+        # Include filter queries if present
+        if "fq" in query_params:
+            count_params["fq"] = query_params["fq"]
 
-            count_response = solr.search(**count_params)
-            return count_response.hits
-        except Exception as e:
-            logger.error(
-                f"Failed to get Solr count for query '{query_params['q']}': {e}"
-            )
-            return 0
+        count_response = solr.search(**count_params)
+        return count_response.hits
 
     def _get_solr_page_results(
         self, solr, query_params: dict, page_size: int, start: int
     ):
         """Get a specific page of Solr search results with filter queries."""
-        try:
-            solr_params = {
-                **query_params,
-                "rows": page_size,
-                "start": start,
-            }
-            # Remove our custom params
-            lang_code = solr_params.pop("lang_code")
+        solr_params = {
+            **query_params,
+            "rows": page_size,
+            "start": start,
+        }
+        # Remove our custom params
+        lang_code = solr_params.pop("lang_code")
 
-            solr_response = solr.search(**solr_params)
-            return [
-                SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
-            ]
-        except Exception as e:
-            logger.error(f"Failed to get Solr page results: {e}")
-            return []
+        solr_response = solr.search(**solr_params)
+        return [SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs]
 
     def _get_contextual_hbs_facets(self):
         """Get HBS facets showing all categories with contextual counts (including zero)."""
-        try:
-            # Get current search query (but exclude HBS filter to get all HBS options)
-            search_query = self.request.GET.get("query", "").strip()
+        # Get current search query (but exclude HBS filter to get all HBS options)
+        search_query = self.request.GET.get("query", "").strip()
 
-            # Get Solr connection
-            solr = self._get_solr_connection()
+        # Get Solr connection
+        solr = self._get_solr_connection()
 
-            # Step 1: Get ALL possible HBS categories (complete taxonomy)
-            all_categories_response = solr.search(
-                q="*:*",
+        # Step 1: Get ALL possible HBS categories (complete taxonomy)
+        all_categories_response = solr.search(
+            q="*:*",
+            rows=0,
+            facet="true",
+            **{"facet.pivot": "hbs_prim_cat_s,hbs_prim_cat_label_s"},
+        )
+        all_categories_data = all_categories_response.facets["facet_pivot"][
+            "hbs_prim_cat_s,hbs_prim_cat_label_s"
+        ]
+
+        # Create base list with all categories
+        all_facets = {}
+        for hbs_cat in all_categories_data:
+            value = EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
+            name = hbs_cat["pivot"][0]["value"]
+            all_facets[value] = {
+                "value": value,
+                "name": name,
+                "count": 0,  # Default to 0, will update with contextual counts
+            }
+
+        # Step 2: Get contextual counts for current search (if any)
+        if search_query:
+            contextual_response = solr.search(
+                q=search_query,
                 rows=0,
                 facet="true",
                 **{"facet.pivot": "hbs_prim_cat_s,hbs_prim_cat_label_s"},
             )
-            all_categories_data = all_categories_response.facets["facet_pivot"][
+            contextual_data = contextual_response.facets["facet_pivot"][
                 "hbs_prim_cat_s,hbs_prim_cat_label_s"
             ]
 
-            # Create base list with all categories
-            all_facets = {}
+            # Update counts with contextual data
+            for hbs_cat in contextual_data:
+                value = (
+                    EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
+                )
+                if value in all_facets:
+                    all_facets[value]["count"] = hbs_cat["count"]
+        else:
+            # No search query, use the all categories counts directly
             for hbs_cat in all_categories_data:
                 value = (
                     EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
                 )
-                name = hbs_cat["pivot"][0]["value"]
-                all_facets[value] = {
-                    "value": value,
-                    "name": name,
-                    "count": 0,  # Default to 0, will update with contextual counts
-                }
+                if value in all_facets:
+                    all_facets[value]["count"] = hbs_cat["count"]
 
-            # Step 2: Get contextual counts for current search (if any)
-            if search_query:
-                contextual_response = solr.search(
-                    q=search_query,
-                    rows=0,
-                    facet="true",
-                    **{"facet.pivot": "hbs_prim_cat_s,hbs_prim_cat_label_s"},
-                )
-                contextual_data = contextual_response.facets["facet_pivot"][
-                    "hbs_prim_cat_s,hbs_prim_cat_label_s"
-                ]
-
-                # Update counts with contextual data
-                for hbs_cat in contextual_data:
-                    value = (
-                        EMPTY_HBS_CATEGORY
-                        if hbs_cat["value"] == ""
-                        else hbs_cat["value"]
-                    )
-                    if value in all_facets:
-                        all_facets[value]["count"] = hbs_cat["count"]
-            else:
-                # No search query, use the all categories counts directly
-                for hbs_cat in all_categories_data:
-                    value = (
-                        EMPTY_HBS_CATEGORY
-                        if hbs_cat["value"] == ""
-                        else hbs_cat["value"]
-                    )
-                    if value in all_facets:
-                        all_facets[value]["count"] = hbs_cat["count"]
-
-            # Convert to list and sort
-            hbs_facet_list = list(all_facets.values())
-            hbs_facet_list.sort(key=lambda x: x["value"])
-            return hbs_facet_list
-
-        except Exception as e:
-            logger.error(f"Failed to get contextual HBS facets: {e}")
-            # Fallback to empty list
-            return []
+        # Convert to list and sort
+        hbs_facet_list = list(all_facets.values())
+        hbs_facet_list.sort(key=lambda x: x["value"])
+        return hbs_facet_list
 
     def _paginate_solr_results(self, page_size):
         """Handle Solr pagination for all query types (search, HBS filter, show all)."""
