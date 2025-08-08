@@ -46,7 +46,7 @@ class InstrumentDetail(DetailView):
         )
         umil_label = active_labels.filter(umil_label=True)
         if umil_label.exists():
-            context["active_instrument_label"] = umil_label
+            context["active_instrument_label"] = umil_label.first()
         else:
             context["active_instrument_label"] = active_labels.first()
 
