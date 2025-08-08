@@ -16,13 +16,17 @@ class InstrumentDetail(DetailView):
         context = super().get_context_data(**kwargs)
 
         # Query the instrument names in all languages
-        instrument_names = context["instrument"].instrumentname_set.select_related("language")
+        instrument_names = context["instrument"].instrumentname_set.select_related(
+            "language"
+        )
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
             context["instrument_names"] = instrument_names.all()
         else:
             # Show only verified names for unauthenticated users
-            context["instrument_names"] = instrument_names.filter(verification_status="verified")
+            context["instrument_names"] = instrument_names.filter(
+                verification_status="verified"
+            )
 
         # Get the active language
         active_language_en = self.request.session.get("active_language_en", None)
