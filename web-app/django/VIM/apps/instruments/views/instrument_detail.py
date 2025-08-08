@@ -16,21 +16,11 @@ class InstrumentDetail(DetailView):
         context = super().get_context_data(**kwargs)
 
         # Query the instrument names in all languages
-        if self.request.user.is_superuser:
-            # Show all names for superusers
+        if self.request.user.is_authenticated:
+            # Show all names for authenticated users
             context["instrument_names"] = (
                 context["instrument"]
                 .instrumentname_set.all()
-                .select_related("language")
-            )
-        elif self.request.user.is_authenticated:
-            # Show verified names and names contributed by the authenticated user
-            context["instrument_names"] = (
-                context["instrument"]
-                .instrumentname_set.filter(
-                    models.Q(verification_status="verified")
-                    | models.Q(contributor=self.request.user)
-                )
                 .select_related("language")
             )
         else:
