@@ -239,25 +239,10 @@ class InstrumentList(TemplateView):
 
         return params
 
-    def _get_solr_total_count(self, solr, query_params: dict):
-        """Get total count of Solr search results with filter queries."""
-        count_params = {
-            "q": query_params["q"],
-            "wt": "json",
-            "rows": 0,  # We only want the count
-            "facet": "false",
-        }
-        # Include filter queries if present
-        if "fq" in query_params:
-            count_params["fq"] = query_params["fq"]
-
-        count_response = solr.search(**count_params)
-        return count_response.hits
-
     def _get_solr_page_results(
         self, solr, query_params: dict, page_size: int, start: int
     ):
-        """Get a specific page of Solr search results with filter queries."""
+        """Get a specific page of Solr search results with filter queries and total count."""
         solr_params = {
             **query_params,
             "rows": page_size,
@@ -267,7 +252,12 @@ class InstrumentList(TemplateView):
         lang_code = solr_params.pop("lang_code")
 
         solr_response = solr.search(**solr_params)
-        return [SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs]
+        instruments = [
+            SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
+        ]
+        total_count = solr_response.hits  # pysolr's hits corresponds to Solr's numFound
+
+        return instruments, total_count
 
     def _get_contextual_hbs_facets(self):
         """Get HBS facets showing all categories with contextual counts (including zero)."""
@@ -342,12 +332,13 @@ class InstrumentList(TemplateView):
         solr = self._get_solr_connection()
         query_params = self._build_solr_query(language)
 
-        # Get total count and page results
-        total_results = self._get_solr_total_count(solr, query_params)
-        page_results = self._get_solr_page_results(solr, query_params, page_size, start)
+        # Get page results and total count in one query
+        page_results, total_count = self._get_solr_page_results(
+            solr, query_params, page_size, start
+        )
 
         # Create paginator and page objects
-        paginator = SolrPaginator(page_results, page_size, total_results)
+        paginator = SolrPaginator(page_results, page_size, total_count)
         page = Page(page_results, page_number, paginator)
 
         return (paginator, page, page_results, page.has_other_pages())
