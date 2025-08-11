@@ -22,7 +22,7 @@ jobs:
       - name: Run djlint via Poetry
         run: |
           cd web-app/django/VIM/templates/
-          poetry run djlint . --check --extension html --exclude "migrations/*" 2>&1 | grep -E "^[a-zA-Z0-9/_\.-]+\.html$" | sort | uniq
+          poetry run djlint . --check --extension html --exclude "migrations/*"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

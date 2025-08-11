@@ -1,4 +1,5 @@
 from django.views.generic import DetailView
+from django.db import models
 from VIM.apps.instruments.models import Instrument, Language
 
 
@@ -15,9 +16,17 @@ class InstrumentDetail(DetailView):
         context = super().get_context_data(**kwargs)
 
         # Query the instrument names in all languages
-        context["instrument_names"] = (
-            context["instrument"].instrumentname_set.all().select_related("language")
+        instrument_names = context["instrument"].instrumentname_set.select_related(
+            "language"
         )
+        if self.request.user.is_authenticated:
+            # Show all names for authenticated users
+            context["instrument_names"] = instrument_names.all()
+        else:
+            # Show only verified names for unauthenticated users
+            context["instrument_names"] = instrument_names.filter(
+                verification_status="verified"
+            )
 
         # Get the active language
         active_language_en = self.request.session.get("active_language_en", None)
@@ -32,8 +41,8 @@ class InstrumentDetail(DetailView):
         active_labels = context["instrument_names"].filter(
             language=context["active_language"]
         )
-        umil_label = active_labels.filter(umil_label=True)
-        if umil_label.exists():
+        umil_label = active_labels.filter(umil_label=True).first()
+        if umil_label:
             context["active_instrument_label"] = umil_label
         else:
             context["active_instrument_label"] = active_labels.first()

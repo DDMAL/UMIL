@@ -33,6 +33,20 @@ $pagination-hover-color: $umil-green-primary;
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    "gray": $gray-600,
+  )
+);
+
+$theme-colors-rgb: map-merge(
+  $theme-colors-rgb,
+  (
+    "gray": to-rgb($gray-600),
+  )
+);
+
 $position-values: map-merge(
   $position-values,
   (
@@ -68,8 +82,8 @@ $utilities: map-merge(
       class: w,
       values: (
         20: 20%,
-        30: 30%,
         25: 25%,
+        30: 30%,
         50: 50%,
         75: 75%,
         100: 100%,
