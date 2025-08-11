@@ -123,9 +123,13 @@ class InstrumentList(TemplateView):
 
         # Get pagination data
         page_size = self.get_paginate_by()
-        paginator, page, instruments, has_other_pages = self._paginate_solr_results(
-            page_size
-        )
+        (
+            paginator,
+            page,
+            instruments,
+            has_other_pages,
+            facet_data,
+        ) = self._paginate_solr_results(page_size)
 
         # Add pagination data to context
         context["paginator"] = paginator
@@ -148,7 +152,7 @@ class InstrumentList(TemplateView):
         context["search_query"] = search_query if search_query else None
 
         # Get contextual HBS facets (respects current search)
-        hbs_facet_list = self._get_contextual_hbs_facets()
+        hbs_facet_list = self._get_contextual_hbs_facets(facet_data)
         context["hbs_facets"] = hbs_facet_list
 
         # Get HBS facet name for display
@@ -201,7 +205,7 @@ class InstrumentList(TemplateView):
         """Get a Solr connection."""
         return pysolr.Solr(settings.SOLR_URL, timeout=SOLR_TIMEOUT)
 
-    def _build_solr_query(self, language: Language):
+    def _build_solr_query(self, language: Language, include_facets: bool = False):
         """Build Solr query parameters supporting combined search + HBS filtering."""
         lang_code = language.wikidata_code
         name_field = f"instrument_name_{lang_code}_ss"
@@ -228,10 +232,14 @@ class InstrumentList(TemplateView):
         params = {
             "q": main_query,
             "wt": "json",
-            "facet": "false",
+            "facet": "true" if include_facets else "false",
             "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
             "lang_code": lang_code,
         }
+
+        # Add facet parameters if requested
+        if include_facets:
+            params["facet.pivot"] = "hbs_prim_cat_s,hbs_prim_cat_label_s"
 
         # Add filter queries if any
         if filter_queries:
@@ -257,13 +265,17 @@ class InstrumentList(TemplateView):
         ]
         total_count = solr_response.hits  # pysolr's hits corresponds to Solr's numFound
 
-        return instruments, total_count
+        # Return facet data if available
+        facet_data = None
+        if hasattr(solr_response, "facets") and solr_response.facets:
+            facet_data = solr_response.facets.get("facet_pivot", {}).get(
+                "hbs_prim_cat_s,hbs_prim_cat_label_s", []
+            )
 
-    def _get_contextual_hbs_facets(self):
+        return instruments, total_count, facet_data
+
+    def _get_contextual_hbs_facets(self, contextual_facet_data):
         """Get HBS facets showing all categories with contextual counts (including zero)."""
-        # Get current search query (but exclude HBS filter to get all HBS options)
-        search_query = self.request.GET.get("query", "").strip()
-
         # Get Solr connection
         solr = self._get_solr_connection()
 
@@ -289,27 +301,17 @@ class InstrumentList(TemplateView):
                 "count": 0,  # Default to 0, will update with contextual counts
             }
 
-        # Step 2: Get contextual counts for current search (if any)
-        if search_query:
-            contextual_response = solr.search(
-                q=search_query,
-                rows=0,
-                facet="true",
-                **{"facet.pivot": "hbs_prim_cat_s,hbs_prim_cat_label_s"},
-            )
-            contextual_data = contextual_response.facets["facet_pivot"][
-                "hbs_prim_cat_s,hbs_prim_cat_label_s"
-            ]
-
-            # Update counts with contextual data
-            for hbs_cat in contextual_data:
+        # Step 2: Use contextual facet data from main query (if available)
+        if contextual_facet_data:
+            # Update counts with contextual data from main search query
+            for hbs_cat in contextual_facet_data:
                 value = (
                     EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
                 )
                 if value in all_facets:
                     all_facets[value]["count"] = hbs_cat["count"]
         else:
-            # No search query, use the all categories counts directly
+            # No contextual facet data, use the all categories counts directly
             for hbs_cat in all_categories_data:
                 value = (
                     EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
@@ -328,12 +330,12 @@ class InstrumentList(TemplateView):
         page_number = int(self.request.GET.get("page", 1))
         start = (page_number - 1) * page_size
 
-        # Get Solr connection and query parameters
+        # Get Solr connection and query parameters with facets enabled
         solr = self._get_solr_connection()
-        query_params = self._build_solr_query(language)
+        query_params = self._build_solr_query(language, include_facets=True)
 
-        # Get page results and total count in one query
-        page_results, total_count = self._get_solr_page_results(
+        # Get page results, total count, and facet data in one query
+        page_results, total_count, facet_data = self._get_solr_page_results(
             solr, query_params, page_size, start
         )
 
@@ -341,7 +343,7 @@ class InstrumentList(TemplateView):
         paginator = SolrPaginator(page_results, page_size, total_count)
         page = Page(page_results, page_number, paginator)
 
-        return (paginator, page, page_results, page.has_other_pages())
+        return (paginator, page, page_results, page.has_other_pages(), facet_data)
 
     def get(self, request, *args, **kwargs):
         language_en = request.GET.get("language", None)
