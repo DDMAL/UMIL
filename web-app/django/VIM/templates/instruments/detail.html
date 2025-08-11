@@ -57,17 +57,17 @@
                 <table class="table table-sm table-striped table-bordered mb-0 d-none d-lg-table">
                   <thead>
                     <tr>
-                      <th scope="col" class="w-30">
+                      <th scope="col" class="w-25">
                         <span>Language</span>
                       </th>
-                      <th scope="col" class="w-30">
+                      <th scope="col" class="w-25">
                         <span>Name</span>
                       </th>
-                      <th scope="col" class="w-30">
+                      <th scope="col" class="w-25">
                         <span>Source</span>
                       </th>
                       {% if user.is_authenticated %}
-                        <th scope="col" class="w-30">
+                        <th scope="col" class="w-25">
                           <span>Verification Status</span>
                           <i class="bi bi-info-circle"
                              data-bs-toggle="modal"
@@ -106,13 +106,13 @@
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                               {% if instrumentname.verification_status == 'verified' %}
-                                <span class="badge border bg-success">Verified</span>
+                                <span class="badge rounded-pill text-bg-success">Verified</span>
                               {% elif instrumentname.verification_status == 'unverified' %}
-                                <span class="badge border bg-light text-dark">Unverified</span>
+                                <span class="badge rounded-pill text-bg-gray">Unverified</span>
                               {% elif instrumentname.verification_status == 'rejected' %}
-                                <span class="badge border bg-danger">Rejected</span>
+                                <span class="badge rounded-pill text-bg-danger">Rejected</span>
                               {% else %}
-                                <span class="badge border bg-warning text-dark">Under Review</span>
+                                <span class="badge rounded-pill text-bg-warning">Under Review</span>
                               {% endif %}
                             </div>
                           </td>
@@ -198,13 +198,13 @@
                             </div>
                             <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
                               {% if instrumentname.verification_status == 'verified' %}
-                                <span class="badge border bg-success">Verified</span>
+                                <span class="badge rounded-pill text-bg-success">Verified</span>
                               {% elif instrumentname.verification_status == 'unverified' %}
-                                <span class="badge border bg-light text-dark">Unverified</span>
+                                <span class="badge rounded-pill text-bg-gray">Unverified</span>
                               {% elif instrumentname.verification_status == 'rejected' %}
-                                <span class="badge border bg-danger">Rejected</span>
+                                <span class="badge rounded-pill text-bg-danger">Rejected</span>
                               {% else %}
-                                <span class="badge border bg-warning text-dark">Under Review</span>
+                                <span class="badge rounded-pill text-bg-warning">Under Review</span>
                               {% endif %}
                             </div>
                           </div>
