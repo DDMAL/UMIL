@@ -23,9 +23,7 @@
   <div class="container d-flex align-items-center justify-content-center min-vh-80 py-4">
     <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
       <div class="w-100">
-        <h2 class="notranslate">
-          {{ active_instrument_label.name|title }}
-        </h2>
+        <h2 class="notranslate">{{ active_instrument_label.name|title }}</h2>
         <hr class="w-100 mt-0" />
       </div>
       <div class="w-100">
@@ -59,15 +57,26 @@
                 <table class="table table-sm table-striped table-bordered mb-0 d-none d-lg-table">
                   <thead>
                     <tr>
-                      <th scope="col" class="w-30">
+                      <th scope="col" class="w-25">
                         <span>Language</span>
                       </th>
-                      <th scope="col" class="w-30">
+                      <th scope="col" class="w-25">
                         <span>Name</span>
                       </th>
-                      <th scope="col" class="w-30">
+                      <th scope="col" class="w-25">
                         <span>Source</span>
                       </th>
+                      {% if user.is_authenticated %}
+                        <th scope="col" class="w-25">
+                          <span>Verification Status</span>
+                          <i class="bi bi-info-circle"
+                             data-bs-toggle="modal"
+                             data-bs-target="#statusInfoModal"
+                             role="button"
+                             aria-label="More information about statuses">
+                          </i>
+                        </th>
+                      {% endif %}
                       {% if user.is_authenticated %}
                         <th scope="col">
                           <span class="name-form-item">Actions</span>
@@ -95,6 +104,21 @@
                         </td>
                         {% if user.is_authenticated %}
                           <td>
+                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                              {% if instrumentname.verification_status == 'verified' %}
+                                <span class="badge rounded-pill text-bg-success">Verified</span>
+                              {% elif instrumentname.verification_status == 'unverified' %}
+                                <span class="badge rounded-pill text-bg-gray">Unverified</span>
+                              {% elif instrumentname.verification_status == 'rejected' %}
+                                <span class="badge rounded-pill text-bg-danger">Rejected</span>
+                              {% else %}
+                                <span class="badge rounded-pill text-bg-warning">Under Review</span>
+                              {% endif %}
+                            </div>
+                          </td>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                          <td>
                             <div class="action-buttons">
                               <button class="btn btn-primary"
                                       data-bs-toggle="modal"
@@ -112,7 +136,7 @@
                       </tr>
                     {% endfor %}
                     <tr>
-                      <td colspan="4">
+                      <td colspan="5">
                         <div class="add-name-container">
                           {% if user.is_authenticated %}
                             <button type="button"
@@ -161,6 +185,31 @@
                           </div>
                         </div>
                         {% if user.is_authenticated %}
+                          <!-- Status column -->
+                          <div class="col-12">
+                            <div class="fw-bold text-muted small mb-1">
+                              Verification Status
+                              <i class="bi bi-info-circle"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#statusInfoModal"
+                                 role="button"
+                                 aria-label="More information about statuses">
+                              </i>
+                            </div>
+                            <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
+                              {% if instrumentname.verification_status == 'verified' %}
+                                <span class="badge rounded-pill text-bg-success">Verified</span>
+                              {% elif instrumentname.verification_status == 'unverified' %}
+                                <span class="badge rounded-pill text-bg-gray">Unverified</span>
+                              {% elif instrumentname.verification_status == 'rejected' %}
+                                <span class="badge rounded-pill text-bg-danger">Rejected</span>
+                              {% else %}
+                                <span class="badge rounded-pill text-bg-warning">Under Review</span>
+                              {% endif %}
+                            </div>
+                          </div>
+                        {% endif %}
+                        {% if user.is_authenticated %}
                           <div class="action-buttons">
                             <button class="btn btn-primary"
                                     data-bs-toggle="modal"
@@ -190,11 +239,11 @@
                       </button>
                     {% else %}
                       <a href="{% url 'main:login' %}?next={{ request.path }}"
-                          class="btn btn-primary"
-                          role="button">Add Instrument Name</a>
+                         class="btn btn-primary"
+                         role="button">Add Instrument Name</a>
                     {% endif %}
                   </div>
-                </div>    
+                </div>
                 <!-- Button below the table -->
                 <div class="text-start mt-2">
                   <button id="toggle-language-table" class="btn btn-link" type="button">
@@ -203,6 +252,8 @@
                 </div>
                 {% include "instruments/includes/deleteName.html" %}
                 {% include "instruments/includes/addName.html" %}
+                {% include "instruments/includes/statusInfo.html" %}
+
               </td>
             </tr>
             <tr>
