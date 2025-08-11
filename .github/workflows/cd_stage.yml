@@ -1,5 +1,5 @@
 name: Deploy to staging Server
-on: 
+on:
   push:
     branches:
       - "develop"
@@ -21,16 +21,27 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Stop docker swarm and cleanup services
         run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd /virtual_instrument_museum && sudo docker compose stop"
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cd /virtual_instrument_museum && \
+             sudo docker compose stop"
       - name: Log git branch we're on
         run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd /virtual_instrument_museum && sudo git branch --all -v"
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cd /virtual_instrument_museum && \
+             sudo git branch --all -v"
       - name: Fetch on dev branch
         run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd /virtual_instrument_museum && sudo git fetch origin develop && sudo git merge origin/develop"
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \ 
+            "cd /virtual_instrument_museum && \
+             sudo git fetch origin develop && \
+             sudo git merge origin/develop"
       - name: Build docker images
         run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd /virtual_instrument_museum && sudo docker compose build"
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cd /virtual_instrument_museum && \
+             sudo docker compose build --no-cache"
       - name: Start the service
         run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd /virtual_instrument_museum && sudo docker compose up -d"
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
+            "cd /virtual_instrument_museum && \
+             sudo docker compose up -d"
