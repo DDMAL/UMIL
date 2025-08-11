@@ -24,23 +24,24 @@ jobs:
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual_instrument_museum &&
              sudo docker compose stop"
-      - name: Log current branches & make sure we are on `main` branch
+      - name: Fetch new updates from remote `origin` and log current branches
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual_instrument_museum &&
-             sudo git branch -v &&
-             sudo git checkout main"
-      - name: Fetch on dev branch
+             sudo git fetch origin -v &&
+             sudo git branch -v"
+      - name: Checkout to `main` branch and pull new changes 
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \ 
             "cd /virtual_instrument_museum &&
-             sudo git pull origin main
+             sudo git checkout main &&
+             sudo git pull origin main"
       - name: Build docker images
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual_instrument_museum &&
              sudo docker compose build --no-cache"
-      - name: Start the service
+      - name: Start the services
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual_instrument_museum &&
