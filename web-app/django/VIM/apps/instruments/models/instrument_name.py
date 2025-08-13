@@ -34,6 +34,10 @@ class InstrumentName(models.Model):
         default=False,
         help_text="Is this name already on Wikidata?",
     )
+    deleted = models.BooleanField(
+        default=False,
+        help_text="Soft delete flag. If true, this name is considered deleted but retained in the database.",
+    )
 
     # Custom validation to ensure at most one UMIL label per instrument language
     class Meta:
