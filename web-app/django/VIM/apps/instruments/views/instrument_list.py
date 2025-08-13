@@ -8,14 +8,15 @@ from django.core.paginator import Paginator, Page
 from django.views.generic import TemplateView
 
 from VIM.apps.instruments.models import Language
+from VIM.settings import (
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_LANGUAGE,
+    EMPTY_HBS_CATEGORY,
+    SOLR_TIMEOUT,
+    SOLR_URL,
+)
 
 logger = logging.getLogger(__name__)
-
-# Constants
-DEFAULT_PAGE_SIZE = 20
-DEFAULT_LANGUAGE = "English"
-EMPTY_HBS_CATEGORY = "999"
-SOLR_TIMEOUT = 10
 
 
 # Custom paginator for Solr search results
@@ -203,7 +204,7 @@ class InstrumentList(TemplateView):
 
     def _get_solr_connection(self):
         """Get a Solr connection."""
-        return pysolr.Solr(settings.SOLR_URL, timeout=SOLR_TIMEOUT)
+        return pysolr.Solr(SOLR_URL, timeout=SOLR_TIMEOUT)
 
     def _build_solr_query(self, language: Language, include_facets: bool = False):
         """Build Solr query parameters supporting combined search + HBS filtering."""
