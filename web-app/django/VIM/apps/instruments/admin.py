@@ -8,7 +8,7 @@ admin.site.register(AVResource)
 
 @admin.register(InstrumentName)
 class InstrumentNameAdmin(admin.ModelAdmin):
-    list_filter = ("verification_status", "on_wikidata")  # Filter by status
+    list_filter = ("verification_status", "on_wikidata", "deleted")  # Filter by status
     search_fields = (
         "name",
         "source_name",

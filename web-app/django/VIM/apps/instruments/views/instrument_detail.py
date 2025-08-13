@@ -15,10 +15,13 @@ class InstrumentDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Query the instrument names in all languages
-        instrument_names = context["instrument"].instrumentname_set.select_related(
-            "language"
+        # Query the instrument names in all languages, excluding deleted names
+        instrument_names = (
+            context["instrument"]
+            .instrumentname_set.select_related("language")
+            .filter(deleted=False)
         )
+
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
             context["instrument_names"] = instrument_names.all()
