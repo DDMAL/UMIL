@@ -133,7 +133,9 @@ def delete_name(request: HttpRequest) -> JsonResponse:
 
     # If user is a superuser or created the name, allow deletion
     if request.user.is_superuser or instrument_name.contributor == request.user:
-        instrument_name.delete()
+        instrument_name.deleted = True  # Soft delete the name
+        instrument_name.save()  # Don't forget to save the changes
+
         return JsonResponse(
             {
                 "status": "success",
