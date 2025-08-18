@@ -42,30 +42,36 @@ function googleTranslateElementInit() {
       },
       'google_translate_element',
     );
-
-    // Apply styling after widget renders
-    setTimeout(() => {
-      const googleSelect = document.querySelector(
-        '.goog-te-combo',
-      ) as HTMLSelectElement;
-      if (googleSelect) {
-        googleSelect.classList.add('p-0', 'm-0', 'h-100');
-        googleSelect.parentElement?.classList.add(
-          'h-100',
-          'd-flex',
-          'align-items-center',
-        );
-        googleSelect.parentElement?.parentElement?.classList.add(
-          'h-100',
-          'd-flex',
-          'align-items-center',
-        );
-      }
-    }, 50);
+    customizeGoogleTranslate();
   } catch (error) {
     console.error('Google Translate initialization failed:', error);
     setTimeout(googleTranslateElementInit, 200);
   }
+}
+
+function customizeGoogleTranslate() {
+  const googleSelect = document.querySelector(
+    '.goog-te-combo',
+  ) as HTMLSelectElement;
+  if (!googleSelect || googleSelect.options.length === 0) {
+    setTimeout(customizeGoogleTranslate, 100);
+    return;
+  }
+  googleSelect.classList.add('p-0', 'm-0', 'h-100');
+  googleSelect.parentElement?.classList.add(
+    'h-100',
+    'd-flex',
+    'align-items-center',
+  );
+  googleSelect.parentElement?.parentElement?.classList.add(
+    'h-100',
+    'd-flex',
+    'align-items-center',
+  );
+  const languageOption = Array.from(googleSelect.options).find((option) =>
+    option.text.toLowerCase().includes('select language'),
+  );
+  languageOption.text = 'English';
 }
 
 // Export the initialization function so it's globally accessible for backwards compatibility
