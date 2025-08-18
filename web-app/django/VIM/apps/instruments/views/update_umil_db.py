@@ -51,10 +51,6 @@ def add_name(request: HttpRequest) -> JsonResponse:
     # create dictionary to map language codes to Language objects
     language = {lang.wikidata_code: lang for lang in Language.objects.all()}
 
-    # considering entries with multiple of the same language, create a dictionary to track if a label has
-    # been assigned to a previous entry
-    entry_labels = {entry["language"]: False for entry in entries}
-
     instrument_names_to_create = []
 
     for entry in entries:
@@ -75,19 +71,6 @@ def add_name(request: HttpRequest) -> JsonResponse:
         # Find language object from language code dictionary
         language_obj: Language = language.get(language_code)
 
-        # Within the entries, check if the language already has a name
-        # if it does, set umil_label to False
-        # otherwise, check against the UMILdb
-        if entry_labels[language_code]:
-            umil_label = False
-        else:
-            umil_label: bool = not (
-                instrument.instrumentname_set.filter(
-                    language__wikidata_code=language_code
-                ).exists()
-            )
-            entry_labels[language_code] = True  # Mark that this language now has a name
-
         # Prepare the InstrumentName object
         instrument_names_to_create.append(
             InstrumentName(
@@ -95,7 +78,6 @@ def add_name(request: HttpRequest) -> JsonResponse:
                 language=language_obj,
                 name=name,
                 source_name=source,
-                umil_label=umil_label,
                 contributor=request.user,
             )
         )
