@@ -26,14 +26,39 @@
     <div class="row">
       <div class="col-xl-3">
         <div class="px-3 pt-3 me-1 mb-3 h-auto bg-white container-border">
+          {% if has_filters %}
+            <div class="info-block bg-info h-auto p-2 mb-3">
+              <h6 class="text-white">Active Filters</h6>
+              <div class="d-flex flex-wrap gap-1">
+                {% if active_filters.search %}
+                  <span class="badge bg-primary text-white">
+                    Search: "{{ active_filters.search }}"
+                    <a href="{{ clear_search_url }}"
+                       class="ms-1 text-white"
+                       title="Remove search filter">×</a>
+                  </span>
+                {% endif %}
+                {% if active_filters.hbs_classification %}
+                  <span class="badge bg-primary text-white">
+                    HBS: {{ active_filters.hbs_classification.name }}
+                    <a href="{{ clear_hbs_url }}"
+                       class="ms-1 text-white"
+                       title="Remove HBS filter">×</a>
+                  </span>
+                {% endif %}
+                <a href="{{ clear_all_filters_url }}"
+                   class="badge bg-danger text-white text-decoration-none"
+                   title="Clear all filters">Clear All</a>
+              </div>
+            </div>
+          {% endif %}
           <div class="info-block bg-light h-auto p-2 mb-3">
             <h4>Hornbostel-Sachs Classification</h4>
             <hr class="mt-0" />
             <ul class="list-group">
               {% for hbs_facet_item in hbs_facets %}
-                <a href="?hbs_facet={{ hbs_facet_item.value }}"
-                   class="text-decoration-none">
-                  <li class="list-group-item d-flex justify-content-between p-0"
+                <a href="{{ hbs_facet_item.url }}" class="text-decoration-none">
+                  <li class="list-group-item d-flex justify-content-between p-0 {% if hbs_facet_item.is_active %}active{% endif %}"
                       current-value="{{ hbs_facet_item.value }}">
                     {% if hbs_facet_item.name == '' %}
                       <span class="text-start">Unclassified</span>
