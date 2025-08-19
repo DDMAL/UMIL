@@ -99,6 +99,8 @@ class InstrumentName(models.Model):
                 if self.deleted:
                     self.umil_label = False
                 else:
-                    self.umil_label = True
+                    raise ValueError(
+                        "This is the only verified, non-deleted name for this instrument and language, it must be set as umil_label."
+                    )
 
         super().save(*args, **kwargs)
