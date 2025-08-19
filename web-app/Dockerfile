@@ -25,8 +25,6 @@ FROM builder AS dev
 # Install poetry dependencies for development
 RUN poetry install --with debug
 
-RUN mkdir -p /frontend/assets/css /frontend/dist
-
 # Install Node.js and frontend dependencies
 RUN apt-get update && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
