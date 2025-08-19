@@ -40,6 +40,7 @@ class Command(BaseCommand):
                     JSONObject(
                         lang=F("instrumentname__language__wikidata_code"),
                         name=F("instrumentname__name"),
+                        umil_label=F("instrumentname__umil_label"),
                     ),
                 ),
             ).values(
@@ -59,11 +60,16 @@ class Command(BaseCommand):
             instrument["hbs_prim_cat_label_s"] = self.HBS_LABEL_MAP.get(hbs_code, "")
 
             for name_entry in instrument.pop("instrument_names_by_language", []):
-                field = f"instrument_name_{name_entry['lang']}_ss"
-                if field not in instrument:
-                    instrument[field] = [name_entry["name"]]
+                instrument_name_field = f"instrument_name_{name_entry['lang']}_ss"
+                instrument_umil_label_field = (
+                    f"instrument_umil_label_{name_entry['lang']}_s"
+                )
+                if instrument_name_field not in instrument:
+                    instrument[instrument_name_field] = [name_entry["name"]]
                 else:
-                    instrument[field].append(name_entry["name"])
+                    instrument[instrument_name_field].append(name_entry["name"])
+                if name_entry.get("umil_label"):
+                    instrument[instrument_umil_label_field] = name_entry["name"]
 
         # Initialize Solr client
         solr = pysolr.Solr(settings.SOLR_URL, timeout=10, always_commit=True)

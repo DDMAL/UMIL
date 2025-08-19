@@ -1,5 +1,4 @@
 from django.views.generic import DetailView
-from django.db import models
 from VIM.apps.instruments.models import Instrument, Language
 
 
@@ -16,8 +15,8 @@ class InstrumentDetail(DetailView):
         context = super().get_context_data(**kwargs)
 
         # Query the instrument names in all languages
-        instrument_names = context["instrument"].instrumentname_set.select_related(
-            "language"
+        instrument_names = (
+            context["instrument"].instrumentname_set.all().select_related("language")
         )
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
@@ -27,6 +26,18 @@ class InstrumentDetail(DetailView):
             context["instrument_names"] = instrument_names.filter(
                 verification_status="verified"
             )
+
+        # Initialize a dictionary to store label and aliases by language
+        label_aliases_dict = {}
+        for instrumentname in instrument_names:
+            language = instrumentname.language
+            if language not in label_aliases_dict:
+                label_aliases_dict[language] = {"label": None, "aliases": []}
+            if instrumentname.umil_label:
+                label_aliases_dict[language]["label"] = instrumentname
+            else:
+                label_aliases_dict[language]["aliases"].append(instrumentname)
+        context["label_aliases_dict"] = label_aliases_dict
 
         # Get the active language
         active_language_en = self.request.session.get("active_language_en", None)
@@ -38,12 +49,10 @@ class InstrumentDetail(DetailView):
 
         # Get the instrument label in the active language
         # Set label to the first instrument name added in the language if there is no "umil_label" set
-        active_labels = context["instrument_names"].filter(
-            language=context["active_language"]
-        )
-        umil_label = active_labels.filter(umil_label=True).first()
-        if umil_label:
-            context["active_instrument_label"] = umil_label
+        active_labels = instrument_names.filter(language=context["active_language"])
+        umil_label = active_labels.filter(umil_label=True)
+        if umil_label.exists():
+            context["active_instrument_label"] = umil_label.first()
         else:
             context["active_instrument_label"] = active_labels.first()
 

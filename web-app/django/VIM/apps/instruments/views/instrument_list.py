@@ -36,7 +36,10 @@ class SolrInstrument:
         self.pk = sid.replace("instrument-", "") if sid else ""
         self.thumbnail = ThumbnailStub(data.get("thumbnail_url"))
         name_field = f"instrument_name_{lang_code}_ss"
-        self.instrumentname_set = InstrumentNameSet(data.get(name_field, []))
+        umil_label_name_field = f"instrument_umil_label_{lang_code}_s"
+        self.instrumentname_set = InstrumentNameSet(
+            data.get(name_field, []), data.get(umil_label_name_field, None)
+        )
 
 
 class ThumbnailStub:
@@ -45,16 +48,18 @@ class ThumbnailStub:
 
 
 class InstrumentNameStub:
-    def __init__(self, name: str):
+    def __init__(self, name: str, umil_label_name: str = None):
         self.name = name
+        self.umil_label = (self.name == umil_label_name) if umil_label_name else False
 
 
 class InstrumentNameSet:
-    def __init__(self, names: Union[list[str], str]):
+    def __init__(self, names: Union[list[str], str], umil_label_name: str = None):
         self._names = names if isinstance(names, list) else [names]
+        self._umil_label_name = umil_label_name
 
     def all(self) -> list[InstrumentNameStub]:
-        return [InstrumentNameStub(name) for name in self._names]
+        return [InstrumentNameStub(name, self._umil_label_name) for name in self._names]
 
 
 class InstrumentList(ListView):
@@ -157,11 +162,12 @@ class InstrumentList(ListView):
         """Get common Solr search parameters."""
         lang_code = language.wikidata_code
         name_field = f"instrument_name_{lang_code}_ss"
+        umil_label_field = f"instrument_umil_label_{lang_code}_s"
         return {
             "q": search_query,
             "wt": "json",
             "facet": "false",
-            "fl": f"sid, {name_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
+            "fl": f"sid, {name_field}, {umil_label_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
             "lang_code": lang_code,
         }
 

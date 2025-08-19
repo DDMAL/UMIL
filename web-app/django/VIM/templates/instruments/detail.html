@@ -57,13 +57,16 @@
                 <table class="table table-sm table-striped table-bordered mb-0 d-none d-lg-table">
                   <thead>
                     <tr>
-                      <th scope="col" class="w-25">
+                      <th scope="col" class="w-20">
                         <span>Language</span>
                       </th>
-                      <th scope="col" class="w-25">
+                      <th scope="col" class="w-20">
                         <span>Name</span>
                       </th>
-                      <th scope="col" class="w-25">
+                      <th scope="col" class="w-20">
+                        <span>Alias</span>
+                      </th>
+                      <th scope="col" class="w-20">
                         <span>Source</span>
                       </th>
                       {% if user.is_authenticated %}
@@ -85,31 +88,40 @@
                     </tr>
                   </thead>
                   <tbody id="languageTableBody">
-                    {% for instrumentname in instrument_names %}
+                    {% for lang, names in label_aliases_dict.items %}
                       <tr class="{% if forloop.counter > 5 %}d-none extra-language-row{% endif %}">
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                            <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
+                            <span class="view-field flex-grow-1 notranslate">{{ lang.en_label }}</span>
                           </div>
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                            <span class="view-field flex-grow-1 notranslate">{{ instrumentname.name }}</span>
+                            <span class="view-field flex-grow-1 notranslate">{{ names.label.name }}</span>
                           </div>
                         </td>
                         <td>
                           <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                            <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
+                            <div class="alias-list">
+                              {% for alias in names.aliases %}
+                                <span class="alias-item">{{ alias.name }}</span>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
+                            <span class="view-field flex-grow-1">{{ names.label.source_name }}</span>
                           </div>
                         </td>
                         {% if user.is_authenticated %}
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                              {% if instrumentname.verification_status == 'verified' %}
+                              {% if names.label.verification_status == 'verified' %}
                                 <span class="badge rounded-pill text-bg-success">Verified</span>
-                              {% elif instrumentname.verification_status == 'unverified' %}
+                              {% elif names.label.verification_status == 'unverified' %}
                                 <span class="badge rounded-pill text-bg-gray">Unverified</span>
-                              {% elif instrumentname.verification_status == 'rejected' %}
+                              {% elif names.label.verification_status == 'rejected' %}
                                 <span class="badge rounded-pill text-bg-danger">Rejected</span>
                               {% else %}
                                 <span class="badge rounded-pill text-bg-warning">Under Review</span>
@@ -123,10 +135,10 @@
                               <button class="btn btn-primary"
                                       data-bs-toggle="modal"
                                       data-bs-target="#deleteNameModal"
-                                      data-instrument-language="{{ instrumentname.language.en_label }}"
-                                      data-instrument-name="{{ instrumentname.name }}"
-                                      data-instrument-source="{{ instrumentname.source_name }}"
-                                      data-instrument-id="{{ instrumentname.id }}"
+                                      data-instrument-language="{{ names.label.language.en_label }}"
+                                      data-instrument-name="{{ names.label.name }}"
+                                      data-instrument-source="{{ names.label.source_name }}"
+                                      data-instrument-id="{{ names.label.id }}"
                                       data-instrument-pk="{{ instrument.pk }}">
                                 Delete
                               </button>
@@ -160,79 +172,81 @@
                 </table>
                 <!-- Stacked layout for small screens only -->
                 <div class="d-lg-none" id="languageTableBodyMobile">
-                  {% for instrumentname in instrument_names %}
+                  {% for lang, names in label_aliases_dict.items %}
                     <div class="border rounded p-2 mb-2 {% if forloop.counter > 5 %}d-none extra-language-row{% endif %}">
-                      <div class="row g-2">
-                        <!-- Language column -->
-                        <div class="col-12">
-                          <div class="fw-bold text-muted small mb-1">Language</div>
-                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
-                            <span class="view-field flex-grow-1">{{ instrumentname.language.en_label }}</span>
-                          </div>
-                        </div>
-                        <!-- Name column -->
-                        <div class="col-12">
-                          <div class="fw-bold text-muted small mb-1">Name</div>
-                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
-                            <span class="view-field flex-grow-1 notranslate">{{ instrumentname.name }}</span>
-                          </div>
-                        </div>
-                        <!-- Source column -->
-                        <div class="col-12">
-                          <div class="fw-bold text-muted small mb-1">Source</div>
-                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
-                            <span class="view-field flex-grow-1">{{ instrumentname.source_name }}</span>
-                          </div>
-                        </div>
-                        {% if user.is_authenticated %}
-                          <!-- Status column -->
-                          <div class="col-12">
-                            <div class="fw-bold text-muted small mb-1">
-                              Verification Status
-                              <i class="bi bi-info-circle"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#statusInfoModal"
-                                 role="button"
-                                 aria-label="More information about statuses">
-                              </i>
-                            </div>
-                            <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
-                              {% if instrumentname.verification_status == 'verified' %}
-                                <span class="badge rounded-pill text-bg-success">Verified</span>
-                              {% elif instrumentname.verification_status == 'unverified' %}
-                                <span class="badge rounded-pill text-bg-gray">Unverified</span>
-                              {% elif instrumentname.verification_status == 'rejected' %}
-                                <span class="badge rounded-pill text-bg-danger">Rejected</span>
-                              {% else %}
-                                <span class="badge rounded-pill text-bg-warning">Under Review</span>
-                              {% endif %}
-                            </div>
-                          </div>
-                        {% endif %}
-                        {% if user.is_authenticated %}
-                          <div class="action-buttons">
-                            <button class="btn btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteNameModal"
-                                    data-instrument-language="{{ instrumentname.language.en_label }}"
-                                    data-instrument-name="{{ instrumentname.name }}"
-                                    data-instrument-source="{{ instrumentname.source_name }}"
-                                    data-instrument-id="{{ instrumentname.id }}"
-                                    data-instrument-pk="{{ instrument.pk }}">
-                              Delete
-                            </button>
-                          </div>
-                        {% endif %}
+                      <!-- Language -->
+                      <div class="mb-1">
+                        <div class="fw-bold text-muted small">Language</div>
+                        <span class="view-field">{{ lang.en_label }}</span>
                       </div>
+                      <!-- Name -->
+                      <div class="mb-1">
+                        <div class="fw-bold text-muted small">Name</div>
+                        <span class="view-field notranslate">{{ names.label.name }}</span>
+                      </div>
+                      <!-- Aliases -->
+                      <div class="mb-1">
+                        <div class="fw-bold text-muted small">Alias</div>
+                        <div class="alias-list">
+                          {% for alias in names.aliases %}
+                            <span class="alias-item">{{ alias.name }}</span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <!-- Source -->
+                      <div class="mb-1">
+                        <div class="fw-bold text-muted small">Source</div>
+                        <span class="view-field">{{ names.label.source_name }}</span>
+                      </div>
+                      {% if user.is_authenticated %}
+                        <!-- Status column -->
+                        <div class="col-12">
+                          <div class="fw-bold text-muted small mb-1">
+                            Verification Status
+                            <i class="bi bi-info-circle"
+                               data-bs-toggle="modal"
+                               data-bs-target="#statusInfoModal"
+                               role="button"
+                               aria-label="More information about statuses">
+                            </i>
+                          </div>
+                          <div class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center edit-container">
+                            {% if names.label.verification_status == 'verified' %}
+                              <span class="badge rounded-pill text-bg-success">Verified</span>
+                            {% elif names.label.verification_status == 'unverified' %}
+                              <span class="badge rounded-pill text-bg-gray">Unverified</span>
+                            {% elif names.label.verification_status == 'rejected' %}
+                              <span class="badge rounded-pill text-bg-danger">Rejected</span>
+                            {% else %}
+                              <span class="badge rounded-pill text-bg-warning">Under Review</span>
+                            {% endif %}
+                          </div>
+                        </div>
+                      {% endif %}
+                      {% if user.is_authenticated %}
+                        <div class="action-buttons mt-1">
+                          <button class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#deleteNameModal"
+                                  data-instrument-language="{{ names.label.language.en_label }}"
+                                  data-instrument-name="{{ names.label.name }}"
+                                  data-instrument-source="{{ names.label.source_name }}"
+                                  data-instrument-id="{{ names.label.id }}"
+                                  data-instrument-pk="{{ instrument.pk }}">
+                            Delete
+                          </button>
+                        </div>
+                      {% endif %}
                     </div>
                   {% endfor %}
-                  <div class="add-name-container">
+                  <!-- Add Name Button -->
+                  <div class="add-name-container mt-2">
                     {% if user.is_authenticated %}
                       <button type="button"
                               class="btn btn-primary"
                               data-bs-toggle="modal"
                               data-bs-target="#addNameModal"
-                              data-instrument-name="{{ active_instrument_name.first.name | title }}"
+                              data-instrument-name="{{ active_instrument_label.name | title }}"
                               data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
                               data-instrument-pk="{{ instrument.pk }}">
                         Add Instrument Name
