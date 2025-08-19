@@ -40,10 +40,11 @@ class InstrumentName(models.Model):
         help_text="Soft delete flag. If true, this name is considered deleted but retained in the database.",
     )
 
+    # Constrain umil_label to be true only if the name is verified and not deleted
     class Meta:
         constraints = [
             models.CheckConstraint(
-                name="umil_label_only_if_verified_and_not_deleted",
+                name="umil_label=true only if name is Verified and not Deleted",
                 check=~Q(umil_label=True)
                 | (Q(verification_status="verified") & Q(deleted=False)),
             ),
@@ -54,48 +55,40 @@ class InstrumentName(models.Model):
         return f"{self.name} ({self.language.en_label}) - {self.instrument.wikidata_id}"
 
     def save(self, *args, **kwargs):
-        """
-        umil_label
-        """
-        existing_umil_label = InstrumentName.objects.filter(
+        # Querysets for efficiency
+        existing_umil_label_qs = InstrumentName.objects.filter(
             instrument=self.instrument,
             language=self.language,
             umil_label=True,
         ).exclude(id=self.id)
-        print("existing_umil_label", existing_umil_label.exists(), flush=True)
 
-        replacement_umil_label = (
-            InstrumentName.objects.filter(
-                instrument=self.instrument,
-                language=self.language,
-                verification_status="verified",
-                deleted=False,
-            )
-            .exclude(id=self.id)
-            .first()
-        )
-        print("replacement_umil_label", replacement_umil_label, flush=True)
+        replacement_umil_label_qs = InstrumentName.objects.filter(
+            instrument=self.instrument,
+            language=self.language,
+            verification_status="verified",
+            deleted=False,
+        ).exclude(id=self.id)
 
+        # If setting umil_label=True
         if self.umil_label:
             if self.deleted:
-                if replacement_umil_label:
-                    self.umil_label = False
-                    replacement_umil_label.umil_label = True
-                    replacement_umil_label.save()
-                else:
-                    self.umil_label = False
-                    return super().save(*args, **kwargs)
-            else:
-                if existing_umil_label.exists():
-                    existing_umil_label.update(umil_label=False)
-                else:
-                    return super().save(*args, **kwargs)
+                # Assign replacement if possible, else just unset
+                self.umil_label = False
+                super().save(*args, **kwargs)
 
-        if not self.umil_label and self.verification_status == "verified":
-            if replacement_umil_label:
-                replacement_umil_label.umil_label = True
-                replacement_umil_label.save()
+                replacement_umil_label_qs.update(umil_label=True)
+                return
             else:
+                # Unset other umil_labels in one query
+                existing_umil_label_qs.update(umil_label=False)
+
+        # If a verified name is removing itself as umil_label
+        if not self.umil_label and self.verification_status == "verified":
+            # Try to assign replacement label in one query
+            replaced = replacement_umil_label_qs.update(umil_label=True)
+            if not replaced:
+                # If there is no replacement umil_label, only set umil_label=False if the current name is also deleted
+                # Otherwise, a viewer will see a verified name on the detail page without a label
                 if self.deleted:
                     self.umil_label = False
                 else:
