@@ -8,13 +8,6 @@ from django.core.paginator import Paginator, Page
 from django.views.generic import TemplateView
 
 from VIM.apps.instruments.models import Language
-from VIM.settings import (
-    DEFAULT_PAGE_SIZE,
-    DEFAULT_LANGUAGE,
-    EMPTY_HBS_CATEGORY,
-    SOLR_TIMEOUT,
-    SOLR_URL,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -81,11 +74,13 @@ class InstrumentList(TemplateView):
 
     def get_paginate_by(self) -> int:
         """Get the number of items to show per page."""
-        pag_by_param: str = self.request.GET.get("paginate_by", str(DEFAULT_PAGE_SIZE))
+        pag_by_param: str = self.request.GET.get(
+            "paginate_by", str(settings.DEFAULT_PAGE_SIZE)
+        )
         try:
             paginate_by = int(pag_by_param)
         except ValueError:
-            paginate_by = DEFAULT_PAGE_SIZE
+            paginate_by = settings.DEFAULT_PAGE_SIZE
         return paginate_by
 
     def get_active_language_en_label(self) -> str:
@@ -103,7 +98,7 @@ class InstrumentList(TemplateView):
         language_en = self.request.GET.get("language")
         if language_en:
             return language_en
-        return self.request.session.get("active_language_en", DEFAULT_LANGUAGE)
+        return self.request.session.get("active_language_en", settings.DEFAULT_LANGUAGE)
 
     def get_active_language(self) -> Language:
         """
@@ -204,7 +199,7 @@ class InstrumentList(TemplateView):
 
     def _get_solr_connection(self):
         """Get a Solr connection."""
-        return pysolr.Solr(SOLR_URL, timeout=SOLR_TIMEOUT)
+        return pysolr.Solr(settings.SOLR_URL, timeout=settings.SOLR_TIMEOUT)
 
     def _build_solr_query(self, language: Language, include_facets: bool = False):
         """Build Solr query parameters supporting combined search + HBS filtering."""
@@ -226,7 +221,7 @@ class InstrumentList(TemplateView):
         # Build filter queries (fq parameter) for HBS classification
         filter_queries = []
         if (
-            hbs_facet and hbs_facet != EMPTY_HBS_CATEGORY
+            hbs_facet and hbs_facet != settings.EMPTY_HBS_CATEGORY
         ):  # Used for empty/unknown categories
             filter_queries.append(f"hbs_prim_cat_s:{hbs_facet}")
 
@@ -294,7 +289,11 @@ class InstrumentList(TemplateView):
         # Create base list with all categories
         all_facets = {}
         for hbs_cat in all_categories_data:
-            value = EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
+            value = (
+                settings.EMPTY_HBS_CATEGORY
+                if hbs_cat["value"] == ""
+                else hbs_cat["value"]
+            )
             name = hbs_cat["pivot"][0]["value"]
             all_facets[value] = {
                 "value": value,
@@ -307,7 +306,9 @@ class InstrumentList(TemplateView):
             # Update counts with contextual data from main search query
             for hbs_cat in contextual_facet_data:
                 value = (
-                    EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
+                    settings.EMPTY_HBS_CATEGORY
+                    if hbs_cat["value"] == ""
+                    else hbs_cat["value"]
                 )
                 if value in all_facets:
                     all_facets[value]["count"] = hbs_cat["count"]
@@ -315,7 +316,9 @@ class InstrumentList(TemplateView):
             # No contextual facet data, use the all categories counts directly
             for hbs_cat in all_categories_data:
                 value = (
-                    EMPTY_HBS_CATEGORY if hbs_cat["value"] == "" else hbs_cat["value"]
+                    settings.EMPTY_HBS_CATEGORY
+                    if hbs_cat["value"] == ""
+                    else hbs_cat["value"]
                 )
                 if value in all_facets:
                     all_facets[value]["count"] = hbs_cat["count"]
