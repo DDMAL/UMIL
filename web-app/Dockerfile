@@ -37,7 +37,7 @@ RUN apt-get update && \
 # Current working directory: /virtual-instrument-museum/
 CMD bash -c "cd frontend && npm run sass:watch &" && \
     bash -c "cd frontend && npm run dev -- --host 0.0.0.0 &" && \
-    bash -c "cd /virtual-instrument-museum/vim-app && \
+    bash -c "cd vim-app && \
     python manage.py collectstatic --noinput && \
     python manage.py runserver_plus 0:8001"
 

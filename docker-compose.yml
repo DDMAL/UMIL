@@ -1,4 +1,9 @@
 # Uses Compose Specification (https://github.com/compose-spec/compose-spec/blob/master/spec.md)
+#
+# Note for vim-app volumes: Mounting `/virtual-instrument-museum/frontend/node_modules`
+# is needed to (1) expose frontend build tools such as `vite` so `npm run dev` could run,
+# and to (2) prevent local `npm install` commands from causing conflicts with the container's dependencies.
+
 services:
   app:
     build:
@@ -11,6 +16,7 @@ services:
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
       - ./web-app/frontend/:/virtual-instrument-museum/frontend
+      - /virtual-instrument-museum/frontend/node_modules
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       postgres:
@@ -58,8 +64,6 @@ services:
     build: ./solr
     container_name: vim-solr
     restart: unless-stopped
-    ports:
-      - "8983:8983"
 
 networks:
   vim-net:
