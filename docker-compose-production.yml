@@ -6,11 +6,8 @@ services:
       dockerfile: ./web-app/Dockerfile
       target: $MODE
     container_name: vim-app
-    ports:
-      - "5173:5173"
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
-      - ./web-app/frontend/:/virtual-instrument-museum/frontend
       - vim-static:/virtual-instrument-museum/static
     depends_on:
       postgres:
@@ -58,8 +55,6 @@ services:
     build: ./solr
     container_name: vim-solr
     restart: unless-stopped
-    ports:
-      - "8983:8983"
 
 networks:
   vim-net:
