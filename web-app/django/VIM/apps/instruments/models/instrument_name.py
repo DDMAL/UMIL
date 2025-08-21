@@ -55,26 +55,28 @@ class InstrumentName(models.Model):
         return f"{self.name} ({self.language.en_label}) - {self.instrument.wikidata_id}"
 
     def save(self, *args, **kwargs):
-        # Querysets for efficiency
+
         existing_umil_label_qs = InstrumentName.objects.filter(
             instrument=self.instrument,
             language=self.language,
             umil_label=True,
         ).exclude(id=self.id)
 
-        # do not re-replace existing umil_label if it is already set
+        existing_umil_label = existing_umil_label_qs.first()
+        print("Existing UMIL label:", existing_umil_label)
+
         replacement_umil_label = (
             InstrumentName.objects.filter(
                 instrument=self.instrument,
                 language=self.language,
                 verification_status="verified",
-                umil_label=False,
                 deleted=False,
             )
             .exclude(id=self.id)
             .order_by("id")
             .first()
         )
+        print("Replacement UMIL label:", replacement_umil_label)
 
         # If setting umil_label=True
         if self.umil_label:
@@ -91,21 +93,21 @@ class InstrumentName(models.Model):
                 existing_umil_label_qs.update(umil_label=False)
 
         # If a verified name is removing itself as umil_label
-        if not self.umil_label and self.verification_status == "verified":
-            # Try to assign replacement label in one query
-            if replacement_umil_label:
+        if not self.umil_label:
+            # check if there is an existing label
+            if existing_umil_label:
+                pass
+            # If the existing label is not found, check for a replacement
+            elif replacement_umil_label:
+                print("Replacement label found.", flush=True)
                 replacement_umil_label.umil_label = True
                 replacement_umil_label.save()
+            # If there is no replacement umil_label, only set umil_label=False if the current name is also deleted
             else:
-                # If there is no replacement umil_label, only set umil_label=False if the current name is also deleted
                 # Otherwise, a viewer will see a verified name on the detail page without a label
-                if self.deleted:
-                    self.umil_label = False
-                else:
-                    # If no replacement and not deleted, check that there is not an existing umil_label
-                    if not existing_umil_label_qs.exists():
-                        raise ValueError(
-                            "This is the only verified, non-deleted name for this instrument and language, it must be set as umil_label."
-                        )
+                if self.verification_status == "verified" and not self.deleted:
+                    raise ValueError(
+                        "This is the only verified, non-deleted name for this instrument and language, it must be set as umil_label."
+                    )
 
         super().save(*args, **kwargs)
