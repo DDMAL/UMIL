@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./web-app/Dockerfile
-      target: $MODE
+      target: prod
     container_name: vim-app
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
@@ -13,7 +13,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - MODE=$MODE
+      - MODE=prod
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

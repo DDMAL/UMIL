@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: ./web-app/Dockerfile
-      target: $MODE
+      target: dev
     container_name: vim-app
     ports:
       - "5173:5173"
@@ -22,7 +22,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - MODE=$MODE
+      - MODE=dev
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -64,6 +64,8 @@ services:
     build: ./solr
     container_name: vim-solr
     restart: unless-stopped
+    ports:
+      - "8983:8983"
 
 networks:
   vim-net:
