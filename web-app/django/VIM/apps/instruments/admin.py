@@ -25,8 +25,8 @@ class InstrumentNameAdmin(admin.ModelAdmin):
                 "language",
                 "name",
                 "source_name",
-                "umil_label",
                 "contributor",
                 "on_wikidata",
+                "deleted",
             )
         return super().get_readonly_fields(request, obj)
