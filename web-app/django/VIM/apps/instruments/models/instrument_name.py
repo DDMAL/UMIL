@@ -106,8 +106,9 @@ class InstrumentName(models.Model):
             else:
                 # Otherwise, a viewer will see a verified name on the detail page without a label
                 if self.verification_status == "verified" and not self.deleted:
-                    raise ValueError(
-                        "This is the only verified, non-deleted name for this instrument and language, it must be set as umil_label."
-                    )
+                    # raise ValueError(
+                    #     "This is the only verified, non-deleted name for this instrument and language, it must be set as umil_label."
+                    # )
+                    self.umil_label = True  # Comment this out and uncomment the above after initial instrument upload.
 
         super().save(*args, **kwargs)
