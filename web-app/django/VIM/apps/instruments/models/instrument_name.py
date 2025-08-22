@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 
 class InstrumentName(models.Model):
@@ -34,17 +35,80 @@ class InstrumentName(models.Model):
         default=False,
         help_text="Is this name already on Wikidata?",
     )
+    deleted = models.BooleanField(
+        default=False,
+        help_text="Soft delete flag. If true, this name is considered deleted but retained in the database.",
+    )
 
-    # Custom validation to ensure at most one UMIL label per instrument language
+    # Constrain umil_label to be true only if the name is verified and not deleted
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=["instrument", "language"],
-                condition=models.Q(umil_label=True),
-                name="unique_umil_label_per_instrument_language",
-            )
+            models.CheckConstraint(
+                name="umil_label=true only if name is Verified and not Deleted",
+                check=~Q(umil_label=True)
+                | (Q(verification_status="verified") & Q(deleted=False)),
+            ),
         ]
 
     # TODO: add verified_by field to track who verified the name
     def __str__(self):
         return f"{self.name} ({self.language.en_label}) - {self.instrument.wikidata_id}"
+
+    def save(self, *args, **kwargs):
+
+        existing_umil_label_qs = InstrumentName.objects.filter(
+            instrument=self.instrument,
+            language=self.language,
+            umil_label=True,
+        ).exclude(id=self.id)
+
+        existing_umil_label = existing_umil_label_qs.first()
+        print("Existing UMIL label:", existing_umil_label)
+
+        replacement_umil_label = (
+            InstrumentName.objects.filter(
+                instrument=self.instrument,
+                language=self.language,
+                verification_status="verified",
+                deleted=False,
+            )
+            .exclude(id=self.id)
+            .order_by("id")
+            .first()
+        )
+        print("Replacement UMIL label:", replacement_umil_label)
+
+        # If setting umil_label=True
+        if self.umil_label:
+            if self.deleted:
+                # Assign replacement if possible, else just unset
+                self.umil_label = False
+                if replacement_umil_label:
+                    replacement_umil_label.umil_label = True
+                    replacement_umil_label.save()
+
+                return super().save(*args, **kwargs)
+            else:
+                # Unset other umil_labels in one query
+                existing_umil_label_qs.update(umil_label=False)
+
+        # If a verified name is removing itself as umil_label
+        if not self.umil_label:
+            # check if there is an existing label
+            if existing_umil_label:
+                pass
+            # If the existing label is not found, check for a replacement
+            elif replacement_umil_label:
+                print("Replacement label found.", flush=True)
+                replacement_umil_label.umil_label = True
+                replacement_umil_label.save()
+            # If there is no replacement umil_label, only set umil_label=False if the current name is also deleted
+            else:
+                # Otherwise, a viewer will see a verified name on the detail page without a label
+                if self.verification_status == "verified" and not self.deleted:
+                    # raise ValueError(
+                    #     "This is the only verified, non-deleted name for this instrument and language, it must be set as umil_label."
+                    # )
+                    self.umil_label = True  # Comment this out and uncomment the above after initial instrument upload.
+
+        super().save(*args, **kwargs)

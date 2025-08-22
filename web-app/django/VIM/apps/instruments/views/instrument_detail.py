@@ -15,10 +15,13 @@ class InstrumentDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Query the instrument names in all languages
-        instrument_names = context["instrument"].instrumentname_set.select_related(
-            "language"
+        # Query the instrument names in all languages, excluding deleted names
+        instrument_names = (
+            context["instrument"]
+            .instrumentname_set.select_related("language")
+            .filter(deleted=False)
         )
+
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
             context["instrument_names"] = instrument_names.all()
@@ -37,15 +40,12 @@ class InstrumentDetail(DetailView):
         )
 
         # Get the instrument label in the active language
-        # Set label to the first instrument name added in the language if there is no "umil_label" set
         active_labels = context["instrument_names"].filter(
             language=context["active_language"]
         )
-        umil_label = active_labels.filter(umil_label=True).first()
-        if umil_label:
-            context["active_instrument_label"] = umil_label
-        else:
-            context["active_instrument_label"] = active_labels.first()
+        context["active_instrument_label"] = active_labels.filter(
+            umil_label=True
+        ).first()
 
         # Get all languages for the dropdown
         context["languages"] = Language.objects.all()
