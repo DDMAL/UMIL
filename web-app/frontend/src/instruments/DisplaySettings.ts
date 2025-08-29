@@ -119,46 +119,7 @@ class DisplayManager {
   }
 }
 
-// Initialize HBS facet functionality
-class HbsFacetManager {
-  private items: NodeListOf<Element>;
-
-  constructor() {
-    this.items = document.querySelectorAll('.list-group-item');
-    this.initializeEventListeners();
-    this.updateHbsFacet();
-  }
-
-  private initializeEventListeners(): void {
-    this.items.forEach((item) => {
-      item.addEventListener('click', () => {
-        const currentItem = item.getAttribute('current-value');
-        if (currentItem) {
-          localStorage.setItem('selectedHbsFacet', currentItem);
-          this.updateHbsFacet();
-        }
-      });
-    });
-  }
-
-  private updateHbsFacet(): void {
-    const url = new URL(window.location.href);
-    const selectedHbsFacet = url.searchParams.get('hbs_facet') || '';
-    localStorage.setItem('selectedHbsFacet', selectedHbsFacet);
-
-    this.items.forEach((item) => {
-      const currentItem = item.getAttribute('current-value');
-      if (currentItem === selectedHbsFacet) {
-        item.classList.add('selected');
-      } else {
-        item.classList.remove('selected');
-      }
-    });
-  }
-}
-
-// Initialize managers when DOM is loaded
+// Initialize display manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   new DisplayManager();
-  new HbsFacetManager();
 });
