@@ -60,8 +60,8 @@
                 <a href="{{ hbs_facet_item.url }}" class="text-decoration-none">
                   <li class="list-group-item d-flex justify-content-between p-0 {% if hbs_facet_item.is_active %}active{% endif %}"
                       current-value="{{ hbs_facet_item.value }}">
-                    {% if hbs_facet_item.name == '' %}
-                      <span class="text-start">Unclassified</span>
+                    {% if hbs_facet_item.name == 'Unclassified' %}
+                      <span class="text-start">{{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
                     {% else %}
                       <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
                     {% endif %}
