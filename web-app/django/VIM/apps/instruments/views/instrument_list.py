@@ -220,9 +220,7 @@ class InstrumentList(TemplateView):
 
         # Build filter queries (fq parameter) for HBS classification
         filter_queries = []
-        if (
-            hbs_facet and hbs_facet != settings.EMPTY_HBS_CATEGORY
-        ):  # Used for empty/unknown categories
+        if hbs_facet:
             filter_queries.append(f"hbs_prim_cat_s:{hbs_facet}")
 
         params = {
@@ -324,8 +322,10 @@ class InstrumentList(TemplateView):
                     all_facets[value]["count"] = hbs_cat["count"]
 
         # Convert to list and sort
-        hbs_facet_list = list(all_facets.values())
-        hbs_facet_list.sort(key=lambda x: x["value"])
+        hbs_facet_list = sorted(
+            all_facets.values(), key=lambda x: (x["name"] == "Unclassified", x["value"])
+        )
+
         return hbs_facet_list
 
     def _paginate_solr_results(self, page_size):
