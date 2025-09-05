@@ -24,6 +24,7 @@ class Command(BaseCommand):
         "3": "Chordophones",
         "4": "Aerophones",
         "5": "Electrophones",
+        settings.EMPTY_HBS_CATEGORY: "Unclassified",
     }
 
     def handle(self, *args, **options):
