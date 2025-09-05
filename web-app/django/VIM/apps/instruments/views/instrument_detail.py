@@ -37,6 +37,13 @@ class InstrumentDetail(DetailView):
                 label_aliases_dict[language]["label"] = instrumentname
             else:
                 label_aliases_dict[language]["aliases"].append(instrumentname)
+        # Sort language keys alphabetically by their English labels
+        label_aliases_dict = dict(
+            sorted(
+                label_aliases_dict.items(),
+                key=lambda item: item[0].en_label if item[0] else "",
+            )
+        )
         context["label_aliases_dict"] = label_aliases_dict
 
         # Get the active language
