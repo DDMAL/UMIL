@@ -1,3 +1,5 @@
+import { setCookie, readCookie } from './utils/cookies';
+
 declare namespace google {
   namespace translate {
     class TranslateElement {
@@ -68,17 +70,112 @@ function customizeGoogleTranslate() {
     'd-flex',
     'align-items-center',
   );
-  const languageOption = Array.from(googleSelect.options).find((option) =>
-    option.text.toLowerCase().includes('select language'),
-  );
-  languageOption.text = 'English';
+
+  if (readCookie('frSite') === 'true') {
+    setGTLanguage(googleSelect, 'fr');
+  } else if (readCookie('enSite') === 'true') {
+    clearGTLanguage();
+  }
+
+  // Set up observer to watch for Google Translate widget changes
+  watchGTDefaultText(googleSelect);
+}
+
+// Watch for the default text of the Google Translate widget to be "Select Language"
+// and set it to "English"
+function watchGTDefaultText(googleSelect: HTMLSelectElement) {
+  const updateText = () => {
+    const option = Array.from(googleSelect.options).find((opt) =>
+      opt.text.toLowerCase().includes('select language'),
+    );
+    if (option) option.text = 'English';
+  };
+
+  updateText(); // Initial check
+
+  const observer = new MutationObserver(() => updateText());
+  observer.observe(googleSelect, { childList: true, subtree: true });
+
+  const interval = setInterval(updateText, 1000);
+  setTimeout(() => {
+    observer.disconnect();
+    clearInterval(interval);
+  }, 30000);
+}
+
+function setGTLanguage(googleSelect: HTMLSelectElement, language: string) {
+  googleSelect.value = language;
+  googleSelect.dispatchEvent(new Event('change'));
+}
+
+function clearGTLanguage() {
+  // Clear the Google Translate cookie
+  setCookie('googtrans', '', '/', window.location.hostname);
+  setCookie('frSite', 'false', '/', window.location.hostname);
+  setCookie('enSite', 'false', '/', window.location.hostname);
+
+  // Force a page reload to ensure translation is completely cleared
+  window.location.reload();
+}
+
+function getGTLanguage(googleSelect: HTMLSelectElement) {
+  return readCookie('googtrans');
 }
 
 // Export the initialization function so it's globally accessible for backwards compatibility
 window.googleTranslateElementInit = googleTranslateElementInit;
 
+function setupSiteLanguageListeners() {
+  // Wait for DOM if still loading
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupSiteLanguageListeners);
+    return;
+  }
+
+  // Set up French site button listener
+  const frSiteBtn = document.getElementById('fr-site-btn');
+  if (frSiteBtn) {
+    frSiteBtn.addEventListener('click', (event) => {
+      // Prevent default link behavior temporarily
+      event.preventDefault();
+
+      // Set cookies for French site
+      setCookie('frSite', 'true', '/', window.location.hostname);
+      setCookie('enSite', 'false', '/', window.location.hostname);
+
+      // Get the href from the parent anchor element and redirect
+      const parentLink = frSiteBtn.closest('a') as HTMLAnchorElement;
+      if (parentLink && parentLink.href) {
+        window.location.href = parentLink.href;
+      }
+    });
+  }
+
+  // Set up English site button listener
+  const enSiteBtn = document.getElementById('en-site-btn');
+  if (enSiteBtn) {
+    enSiteBtn.addEventListener('click', (event) => {
+      // Prevent default link behavior temporarily
+      event.preventDefault();
+
+      // Set cookies for English site
+      setCookie('enSite', 'true', '/', window.location.hostname);
+      setCookie('frSite', 'false', '/', window.location.hostname);
+
+      // Get the href from the parent anchor element and redirect
+      const parentLink = enSiteBtn.closest('a') as HTMLAnchorElement;
+      if (parentLink && parentLink.href) {
+        window.location.href = parentLink.href;
+      }
+    });
+  }
+}
+
 // Start the initialization process
 googleTranslateElementInit();
+
+// Set up site language button listeners
+setupSiteLanguageListeners();
 
 // Add the type definition to the Window interface
 declare global {
