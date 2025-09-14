@@ -67,7 +67,7 @@ class Command(BaseCommand):
         if ins_hbs and ins_hbs[0]["mainsnak"]["snaktype"] == "value":
             hbs_class: str = ins_hbs[0]["mainsnak"]["datavalue"]["value"]
         else:
-            hbs_class = ""
+            hbs_class = settings.EMPTY_HBS_CATEGORY
         if ins_mimo and ins_mimo[0]["mainsnak"]["snaktype"] == "value":
             mimo_class: str = ins_mimo[0]["mainsnak"]["datavalue"]["value"]
         else:

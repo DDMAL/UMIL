@@ -11,9 +11,7 @@
           <img src="{% static instrument.thumbnail.url %}" class="card-img-top rounded p-2" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
           <div class="card-body pb-0 pt-0">
             <p class="card-title text-center notranslate ">
-              {% for instrumentname in instrument.instrumentname_set.all %}
-                {{ instrumentname.name|title }}
-              {% endfor %}
+              {{ instrument.instrumentname_set.get_display_names_str }}
             </p>
           </div>
         </div>
