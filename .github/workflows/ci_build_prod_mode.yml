@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HOST_NAME: umil.linkedmusic.ca
-      DJANGO_SECRET_KEY:  {{ secrets.CI_DJANGO_SECRET_KEY }}
+      DJANGO_SECRET_KEY:  ${{ secrets.CI_DJANGO_SECRET_KEY }}
       POSTGRES_DB: virtual_instrument_museum
-      POSTGRES_USER: {{ secrets.CI_POSTGRES_USER }}
-      POSTGRES_PASSWORD: {{ secrets.CI_POSTGRES_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.CI_POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.CI_POSTGRES_PASSWORD }}
 
     steps:
       - name: Checkout the current repo
