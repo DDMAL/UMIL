@@ -1,0 +1,30 @@
+name: CI - Test building Docker for production
+
+on:
+  push:
+    branches: [ develop, main ]
+  pull_request:
+    branches: [ develop ]
+  workflow_dispatch:
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the current repo
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
+
+      - name: Build UMIL with Production compose file
+        run: |
+          docker compose build
+          docker compose -f docker-compose-production.yml build
+      
+      - name: List built Docker images
+        run: |
+          docker images
