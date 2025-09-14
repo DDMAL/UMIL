@@ -64,3 +64,4 @@ networks:
 
 volumes:
   vim-static:
+  umil-solr:
