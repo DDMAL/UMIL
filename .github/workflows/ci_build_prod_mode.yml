@@ -1,4 +1,4 @@
-name: CI - Test Docker Build for development
+name: CI - Test Docker build (prod mode)
 
 on:
   push:
@@ -8,8 +8,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci-build-dev:
+  ci-build-prod:
     runs-on: ubuntu-latest
+    env:
+      HOST_NAME: umil.linkedmusic.ca
+      DJANGO_SECRET_KEY:  {{ secrets.CI_DJANGO_SECRET_KEY }}
+      POSTGRES_DB: virtual_instrument_museum
+      POSTGRES_USER: {{ secrets.CI_POSTGRES_USER }}
+      POSTGRES_PASSWORD: {{ secrets.CI_POSTGRES_PASSWORD }}
 
     steps:
       - name: Checkout the current repo
@@ -20,9 +26,9 @@ jobs:
         with:
           version: latest
       
-      - name: Build UMIL with Development compose file
+      - name: Build UMIL with Production compose file
         run: |
-          docker compose build
+          docker compose -f docker-compose-production.yml build
       
       - name: List built Docker images
         run: |
