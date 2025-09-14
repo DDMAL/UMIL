@@ -66,9 +66,13 @@ services:
     restart: unless-stopped
     ports:
       - "8983:8983"
+    volumes:
+      - umil-solr:/var/solr
+      - ./solr/cores:/var/solr/data
 
 networks:
   vim-net:
 
 volumes:
   vim-static:
+  umil-solr:
