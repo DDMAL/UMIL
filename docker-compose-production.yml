@@ -55,6 +55,9 @@ services:
     build: ./solr
     container_name: vim-solr
     restart: unless-stopped
+    volumes:
+      - umil-solr:/var/solr
+      - ./solr/cores:/var/solr/data
 
 networks:
   vim-net:
