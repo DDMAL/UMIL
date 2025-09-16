@@ -96,7 +96,8 @@ class Command(BaseCommand):
             "https://www.wikidata.org/w/api.php?action=wbgetentities&"
             f"ids={ins_ids_str}&format=json&props=labels|descriptions|claims|aliases"
         )
-        response = requests.get(url, timeout=10)
+        headers = {"User-Agent": "UMIL/0.1.0 (https://umil.linkedmusic.ca/)"}
+        response = requests.get(url, timeout=10, headers=headers)
         response_entities = response.json()["entities"]
         instrument_data = [
             self.parse_instrument_data(key, value)
@@ -118,7 +119,15 @@ class Command(BaseCommand):
         """
         ins_names = instrument_attrs.pop("ins_names")
         ins_aliases = instrument_attrs.pop("ins_aliases")
-        instrument, _ = Instrument.objects.update_or_create(**instrument_attrs)
+
+        # Create instrument using only the remaining valid fields
+        instrument, _ = Instrument.objects.update_or_create(
+            wikidata_id=instrument_attrs["wikidata_id"],
+            defaults={
+                "hornbostel_sachs_class": instrument_attrs["hornbostel_sachs_class"],
+                "mimo_class": instrument_attrs["mimo_class"],
+            },
+        )
 
         # Create or update instrument labels in the database (umil_label=True)
         for lang, name in ins_names.items():
@@ -136,12 +145,14 @@ class Command(BaseCommand):
             InstrumentName.objects.update_or_create(
                 instrument=instrument,
                 language=self.language_map[lang],
-                name=name,
-                source_name="Wikidata",
                 umil_label=True,
-                contributor=self.default_contributor,
-                verification_status="verified",
-                on_wikidata=True,
+                defaults={
+                    "name": name,
+                    "source_name": "Wikidata",
+                    "contributor": self.default_contributor,
+                    "verification_status": "verified",
+                    "on_wikidata": True,
+                },
             )
 
         # Create or update instrument aliases in the database (umil_label=False)
@@ -159,11 +170,13 @@ class Command(BaseCommand):
                     instrument=instrument,
                     language=self.language_map[lang],
                     name=alias,
-                    source_name="Wikidata",
                     umil_label=False,
-                    contributor=self.default_contributor,
-                    verification_status="verified",
-                    on_wikidata=True,
+                    defaults={
+                        "source_name": "Wikidata",
+                        "contributor": self.default_contributor,
+                        "verification_status": "verified",
+                        "on_wikidata": True,
+                    },
                 )
 
         img_obj = AVResource.objects.create(
