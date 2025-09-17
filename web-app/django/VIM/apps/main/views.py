@@ -2,9 +2,9 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
+from VIM.apps.main.forms import EmailUserCreationForm
 from django.db.models import Count
 import json
 
@@ -79,7 +79,7 @@ def about(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = EmailUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -87,6 +87,6 @@ def register(request):
             success_url = f"{reverse('main:home')}?registration=success"
             return redirect(success_url)
     else:
-        form = UserCreationForm()
+        form = EmailUserCreationForm()
 
     return render(request, "main/registration/register.html", {"form": form})
