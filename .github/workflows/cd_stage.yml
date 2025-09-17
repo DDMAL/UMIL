@@ -39,9 +39,9 @@ jobs:
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "cd /virtual_instrument_museum &&
-             sudo docker compose -f docker-compose-production.yml build --no-cache"
+             sudo docker compose -f docker-compose-deployment.yml build --no-cache"
       - name: Start the service
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "cd /virtual_instrument_museum &&
-             sudo docker compose -f docker-compose-production.yml up -d"
+             sudo docker compose -f docker-compose-deployment.yml up -d"

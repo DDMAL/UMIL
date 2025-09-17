@@ -1,4 +1,4 @@
-name: CI - Test Docker build (prod mode)
+name: CI - Test Docker build for deployment
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci-build-prod:
+  ci-build-deployment:
     runs-on: ubuntu-latest
     env:
       HOST_NAME: umil.linkedmusic.ca
@@ -28,7 +28,7 @@ jobs:
       
       - name: Build UMIL with Production compose file
         run: |
-          docker compose -f docker-compose-production.yml build
+          docker compose -f docker-compose-deployment.yml build
       
       - name: List built Docker images
         run: |
