@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from VIM.apps.main.forms import EmailAuthenticationForm
 
 app_name = "main"
 
@@ -25,6 +26,7 @@ urlpatterns = [
         "accounts/login/",
         auth_views.LoginView.as_view(
             template_name="main/registration/login.html",
+            form_class=EmailAuthenticationForm,
             redirect_authenticated_user=True,
             redirect_field_name="next",
             next_page="main:home",
