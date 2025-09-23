@@ -36,6 +36,19 @@ function googleTranslateElementInit() {
     return;
   }
 
+  // Check if Google Translate widget already exists and remove it
+  // This is needed for back/forward navigation
+  const existingWidget = document.querySelector('.goog-te-banner-frame');
+  if (existingWidget) {
+    existingWidget.remove();
+  }
+
+  // Clear any existing Google Translate elements
+  const existingElements = document.querySelectorAll(
+    '.goog-te-combo, .goog-te-gadget',
+  );
+  existingElements.forEach((element) => element.remove());
+
   try {
     new google.translate.TranslateElement(
       {
@@ -176,6 +189,30 @@ googleTranslateElementInit();
 
 // Set up site language button listeners
 setupSiteLanguageListeners();
+
+// Handle browser navigation events (back/forward buttons)
+function handleNavigationEvents() {
+  // Listen for popstate events (back/forward navigation)
+  window.addEventListener('popstate', () => {
+    // Small delay to ensure DOM is ready after navigation
+    setTimeout(() => {
+      googleTranslateElementInit();
+    }, 100);
+  });
+
+  // Listen for pageshow events (handles both initial load and back/forward cache)
+  window.addEventListener('pageshow', (event) => {
+    // Reinitialize if the page was loaded from cache (back/forward navigation)
+    if (event.persisted) {
+      setTimeout(() => {
+        googleTranslateElementInit();
+      }, 100);
+    }
+  });
+}
+
+// Set up navigation event listeners
+handleNavigationEvents();
 
 // Add the type definition to the Window interface
 declare global {
