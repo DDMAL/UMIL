@@ -59,4 +59,6 @@ class InstrumentDetail(DetailView):
         # Get all languages for the dropdown
         context["languages"] = Language.objects.all()
 
+        context["active_tab"] = "instruments"
+
         return context
