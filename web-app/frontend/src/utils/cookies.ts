@@ -1,5 +1,3 @@
-import { CookieDictionary } from './interfaces';
-
 /**
  * Reads a cookie value by name from document.cookie
  * @param name - The name of the cookie to retrieve
