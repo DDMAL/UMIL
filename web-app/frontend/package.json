@@ -4,6 +4,14 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:ui": "playwright test --ui",
+    "test:all": "npm run test && npm run test:e2e",
+    "docker:up": "cd ../.. && docker-compose up -d && echo 'Waiting for services...' && sleep 10",
+    "docker:down": "cd ../.. && docker-compose down",
+    "docker:test": "npm run docker:up && npm run test:e2e; npm run docker:down",
     "dev": "vite",
     "build": "vite build",
     "watch": "vite build --watch",
@@ -22,6 +30,7 @@
     "masonry-layout": "^4.2.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "@types/bootstrap": "^5.2.10",
     "@types/imagesloaded": "^4.1.6",
     "@types/masonry-layout": "^4.2.8",
