@@ -196,10 +196,14 @@ class Command(BaseCommand):
         instrument.save()
 
     def handle(self, *args, **options) -> None:
-        with open(
-            "startup_data/umil_instruments_15July_2025.csv",
-            encoding="utf-8-sig",
-        ) as csvfile:
+        # Use smaller test dataset when in TEST_MODE
+        csv_file = (
+            "startup_data/test_instruments.csv"
+            if os.getenv("TEST_MODE") == "true"
+            else "startup_data/umil_instruments_15July_2025.csv"
+        )
+
+        with open(csv_file, encoding="utf-8-sig") as csvfile:
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
         self.language_map = Language.objects.in_bulk(field_name="wikidata_code")

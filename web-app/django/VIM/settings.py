@@ -89,16 +89,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "VIM.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": "vim-db",
-        "PORT": "5432",
+# Database configuration
+# Check if running in test mode
+TEST_MODE = os.getenv("TEST_MODE", "false").lower() == "true"
+
+if TEST_MODE:
+    # Use test database (isolated from development)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("TEST_POSTGRES_DB", "vim_test_db"),
+            "USER": os.environ.get("TEST_POSTGRES_USER", "test_user"),
+            "PASSWORD": os.environ.get("TEST_POSTGRES_PASSWORD", "test_password"),
+            "HOST": "postgres-test",
+            "PORT": "5432",
+        }
     }
-}
+else:
+    # Use development database
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": "vim-db",
+            "PORT": "5432",
+        }
+    }
 
 
 # Password validation

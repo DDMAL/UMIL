@@ -49,7 +49,8 @@ def get_languages_from_wikidata():
     }
 
     # Make the request to the Wikidata API
-    response = requests.get(WIKIDATA_URL, params=params, timeout=50)
+    headers = {"User-Agent": "UMIL/0.1.0 (https://umil.linkedmusic.ca/)"}
+    response = requests.get(WIKIDATA_URL, params=params, headers=headers, timeout=50)
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -107,7 +108,8 @@ def get_language_details(language_codes):
     }
 
     # Make the request to the Wikidata API
-    response = requests.get(WIKIDATA_URL, params=params, timeout=50)
+    headers = {"User-Agent": "UMIL/0.1.0 (https://umil.linkedmusic.ca/)"}
+    response = requests.get(WIKIDATA_URL, params=params, headers=headers, timeout=50)
 
     # Check if the request was successful
     if response.status_code == 200:

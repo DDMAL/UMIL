@@ -21,11 +21,16 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      postgres-test:
+        condition: service_healthy
     environment:
       - MODE=dev
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TEST_POSTGRES_DB=${TEST_POSTGRES_DB}
+      - TEST_POSTGRES_USER=${TEST_POSTGRES_USER}
+      - TEST_POSTGRES_PASSWORD=${TEST_POSTGRES_PASSWORD}
       - HOST_NAME=${HOST_NAME}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
 
@@ -45,6 +50,23 @@ services:
       retries: 5
       start_period: 30s
     restart: unless-stopped
+
+  postgres-test:
+    image: postgres:15.4
+    container_name: vim-db-test
+    environment:
+      - POSTGRES_DB=${TEST_POSTGRES_DB}
+      - POSTGRES_USER=${TEST_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${TEST_POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: "pg_isready -U ${TEST_POSTGRES_USER} -d ${TEST_POSTGRES_DB}"
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx:
     build: ./nginx
