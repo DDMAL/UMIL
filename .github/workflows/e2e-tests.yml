@@ -1,0 +1,81 @@
+name: E2E Tests
+on: [push, pull_request]
+
+jobs:
+  e2e-tests:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: web-app/frontend/package-lock.json
+
+      # Step 3: Install frontend dependencies
+      - name: Install dependencies
+        working-directory: web-app/frontend
+        run: npm ci
+
+      # Step 4: Install Playwright browsers
+      - name: Install Playwright Browsers
+        working-directory: web-app/frontend
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      # Step 5: Create environment file for Docker Compose
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          # Test Database Configuration
+          TEST_POSTGRES_DB=vim_test
+          TEST_POSTGRES_USER=vim_test_user
+          TEST_POSTGRES_PASSWORD=vim_test_password
+
+          # Application Configuration
+          HOST_NAME=localhost
+          DJANGO_SECRET_KEY=test-secret-key-for-ci-only-not-for-production
+          EOF
+
+      # Step 6: Start Docker Compose services and wait for healthchecks
+      - name: Start Docker Compose
+        run: docker compose -f docker-compose-test.yml up -d --wait
+
+      # Step 7: Check Docker services status
+      # - name: Check Docker services
+      #   run: docker compose -f docker-compose-test.yml ps
+
+      # Step 8: Run E2E tests
+      - name: Run Playwright tests
+        working-directory: web-app/frontend
+        run: npm run test:e2e
+
+      # Step 9: Upload Playwright report (on failure)
+      - name: Upload Playwright Report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: web-app/frontend/tests/playwright-report/
+          retention-days: 30
+
+      # Step 10: Upload test results (on failure)
+      - name: Upload Test Results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: web-app/frontend/tests/test-results/
+          retention-days: 30
+
+      # Step 11: Clean up - Stop and remove Docker containers
+      - name: Stop Docker Compose
+        if: always()
+        run: docker compose -f docker-compose-test.yml down -v

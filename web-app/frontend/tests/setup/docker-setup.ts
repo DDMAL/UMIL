@@ -44,8 +44,9 @@ async function waitForServer(url: string, timeout: number): Promise<void> {
         waitUntil: 'domcontentloaded',
       });
 
-      if (response && (response.ok() || response.status() === 404)) {
-        // 404 is okay - means server is running, just no page at /
+      if (response && response.status() !== 0) {
+        // Any HTTP response (including 500) means server is running
+        // 500 is expected before migrations run - we'll handle setup after this
         await browser.close();
         return;
       }
@@ -102,8 +103,9 @@ async function runDjangoCommand(
 
   return new Promise((resolve, reject) => {
     const proc = spawn(
-      'docker-compose',
+      'docker',
       [
+        'compose',
         '-f',
         dockerComposeFile,
         'exec',
@@ -197,8 +199,9 @@ else:
 
   return new Promise((resolve, reject) => {
     const proc = spawn(
-      'docker-compose',
+      'docker',
       [
+        'compose',
         '-f',
         dockerComposeFile,
         'exec',
