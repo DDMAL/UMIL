@@ -24,6 +24,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 IS_DEVELOPMENT = bool(os.environ.get("MODE") == "dev")
 IS_PRODUCTION = bool(os.environ.get("MODE") == "prod")
+IS_TEST = bool(os.environ.get("MODE") == "test")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT
@@ -91,9 +92,7 @@ WSGI_APPLICATION = "VIM.wsgi.application"
 
 # Database configuration
 # Check if running in test mode
-TEST_MODE = os.getenv("TEST_MODE", "false").lower() == "true"
-
-if TEST_MODE:
+if IS_TEST:
     # Use test database (isolated from development)
     DATABASES = {
         "default": {
@@ -106,7 +105,7 @@ if TEST_MODE:
         }
     }
 else:
-    # Use development database
+    # Use development or production database
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
