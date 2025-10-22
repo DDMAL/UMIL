@@ -1,8 +1,10 @@
 import { chromium, FullConfig } from '@playwright/test';
 
+const dockerComposeFile = '../../docker-compose-test.yml';
+
 /**
  * Global setup for Docker-based E2E tests.
- * Assumes Docker Compose services are already running.
+ * Assumes Docker Compose services are already running with docker-compose-test.yml.
  *
  * This script:
  * 1. Waits for Django server to be ready
@@ -88,7 +90,7 @@ async function setupTestDatabase(): Promise<void> {
 }
 
 /**
- * Run Django management command with TEST_MODE=true
+ * Run Django management command in test mode
  * @param command - Django management command to run
  * @param suppressOutput - If true, only show summary, not full output
  */
@@ -102,10 +104,10 @@ async function runDjangoCommand(
     const proc = spawn(
       'docker-compose',
       [
+        '-f',
+        dockerComposeFile,
         'exec',
         '-T',
-        '-e',
-        'TEST_MODE=true',
         'app',
         'sh',
         '-c',
@@ -197,10 +199,10 @@ else:
     const proc = spawn(
       'docker-compose',
       [
+        '-f',
+        dockerComposeFile,
         'exec',
         '-T',
-        '-e',
-        'TEST_MODE=true',
         'app',
         'sh',
         '-c',
@@ -228,7 +230,7 @@ else:
         reject(
           new Error(
             `Failed to create test user (exit code ${code}).\n${errorOutput}\n` +
-              'Make sure Docker containers are running: docker-compose up -d',
+              'Make sure Docker containers are running from project root: docker-compose -f docker-compose-test.yml up -d',
           ),
         );
       } else {
