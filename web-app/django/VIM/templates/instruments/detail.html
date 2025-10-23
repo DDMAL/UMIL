@@ -4,7 +4,7 @@
 {% load django_vite %}
 
 {% block title %}
-  Instrument Detail
+  {{ active_instrument_label.name|title }}
 {% endblock title %}
 
 {% block ts_files %}
