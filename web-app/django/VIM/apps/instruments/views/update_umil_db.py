@@ -75,6 +75,15 @@ def add_name(request: HttpRequest) -> JsonResponse:
         # Find language object from language code dictionary
         language_obj: Language = language.get(language_code)
 
+        # Check if the entery exists in UMIL_db
+        if InstrumentName.objects.filter(
+                instrument=instrument,
+                language__wikidata_code=language_code,
+                name__iexact=name
+            ).exists():
+            continue
+
+
         # Within the entries, check if the language already has a name
         # if it does, set umil_label to False
         # otherwise, check against the UMILdb
