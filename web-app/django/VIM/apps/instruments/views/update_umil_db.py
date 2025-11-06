@@ -57,6 +57,9 @@ def add_name(request: HttpRequest) -> JsonResponse:
 
     instrument_names_to_create = []
 
+    # Keep track of the (name, language_code) enteties for fast detection of duplication in the request
+    unique_instruments = set()
+
     for entry in entries:
         language_code: str = entry["language"]
         name: str = entry["name"]
@@ -75,14 +78,19 @@ def add_name(request: HttpRequest) -> JsonResponse:
         # Find language object from language code dictionary
         language_obj: Language = language.get(language_code)
 
-        # Check if the entery exists in UMIL_db
-        if InstrumentName.objects.filter(
-                instrument=instrument,
-                language__wikidata_code=language_code,
-                name__iexact=name
-            ).exists():
+        # Skip the entry if duplicate in batch
+        entry_key = (name.lower(), language_code)
+        if entry_key in unique_instruments:
             continue
+        unique_instruments.add(entry_key)
 
+        # Check if the entry exists in UMIL_db
+        if InstrumentName.objects.filter(
+            instrument=instrument,
+            language__wikidata_code=language_code,
+            name__iexact=name,
+        ).exists():
+            continue
 
         # Within the entries, check if the language already has a name
         # if it does, set umil_label to False
