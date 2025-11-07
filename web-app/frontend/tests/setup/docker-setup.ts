@@ -190,8 +190,8 @@ else:
     print('✓ DDMAL user already exists')
 
 # Create testuser (for authentication tests)
-if not User.objects.filter(username='testuser').exists():
-    User.objects.create_superuser('testuser', 'test@example.com', 'testpass123')
+if not User.objects.filter(username='testuser@example.com').exists():
+    User.objects.create_superuser('testuser@example.com', 'testuser@example.com', 'testpassword')
     print('✓ Test user created')
 else:
     print('✓ Test user already exists')

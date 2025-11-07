@@ -3,7 +3,7 @@ import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
   async goto() {
-    await super.goto('/login/');
+    await super.goto('/accounts/login/');
   }
 
   getUsernameInput(): Locator {

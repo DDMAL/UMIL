@@ -3,7 +3,7 @@ import { BasePage } from './BasePage';
 
 export class InstrumentDetailPage extends BasePage {
   async goto(wikidataId: string) {
-    await super.goto(`/instruments/${wikidataId}/`);
+    await super.goto(`/instrument/${wikidataId}/`);
   }
 
   getInstrumentName(): Locator {
@@ -66,5 +66,27 @@ export class InstrumentDetailPage extends BasePage {
       .selectOption(language);
     await this.page.locator('#addNameModal input[name="name"]').fill(name);
     await this.page.locator('#addNameModal button[type="submit"]').click();
+  }
+
+  async get1stVerificationStatus(): Promise<Locator> {
+    const isMobile = await this.isMobile();
+    if (isMobile) {
+      return this.page
+        .locator(
+          '#languageTableBodyMobile .fw-bold:has-text("Verification Status")',
+        )
+        .first();
+    }
+    return this.page
+      .locator('thead th:has-text("Verification Status")')
+      .first();
+  }
+
+  async get1stActions(): Promise<Locator> {
+    const isMobile = await this.isMobile();
+    const container = isMobile
+      ? '#languageTableBodyMobile'
+      : '#languageTableBody';
+    return this.page.locator(`${container} .action-buttons`).first();
   }
 }
