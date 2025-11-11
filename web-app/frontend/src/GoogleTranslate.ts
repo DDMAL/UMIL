@@ -146,8 +146,8 @@ function setupSiteLanguageListeners() {
   }
 
   // Set up French site button listener
-  const frSiteBtn = document.getElementById('fr-site-btn');
-  if (frSiteBtn) {
+  const frSiteBtns = document.querySelectorAll('.fr-site-btn');
+  frSiteBtns.forEach((frSiteBtn) => {
     frSiteBtn.addEventListener('click', (event) => {
       // Prevent default link behavior temporarily
       event.preventDefault();
@@ -162,11 +162,11 @@ function setupSiteLanguageListeners() {
         window.location.href = parentLink.href;
       }
     });
-  }
+  });
 
   // Set up English site button listener
-  const enSiteBtn = document.getElementById('en-site-btn');
-  if (enSiteBtn) {
+  const enSiteBtns = document.querySelectorAll('.en-site-btn');
+  enSiteBtns.forEach((enSiteBtn) => {
     enSiteBtn.addEventListener('click', (event) => {
       // Prevent default link behavior temporarily
       event.preventDefault();
@@ -181,7 +181,7 @@ function setupSiteLanguageListeners() {
         window.location.href = parentLink.href;
       }
     });
-  }
+  });
 }
 
 // Start the initialization process
