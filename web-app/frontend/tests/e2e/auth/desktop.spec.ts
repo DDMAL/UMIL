@@ -29,9 +29,9 @@ test.describe('Desktop Authentication', () => {
   }) => {
     await instrumentDetailPage.goto('1');
     await expect(
-      await instrumentDetailPage.get1stVerificationStatus(),
+      instrumentDetailPage.get1stVerificationStatus(),
     ).not.toBeVisible();
-    await expect(await instrumentDetailPage.get1stActions()).not.toBeVisible();
+    await expect(instrumentDetailPage.get1stActions()).not.toBeVisible();
   });
 
   test('should show verification and action columns after login', async ({
@@ -41,9 +41,7 @@ test.describe('Desktop Authentication', () => {
     await loginPage.goto();
     await loginPage.login('testuser@example.com', 'testpassword');
     await instrumentDetailPage.goto('1');
-    await expect(
-      await instrumentDetailPage.get1stVerificationStatus(),
-    ).toBeVisible();
-    await expect(await instrumentDetailPage.get1stActions()).toBeVisible();
+    await expect(instrumentDetailPage.get1stVerificationStatus()).toBeVisible();
+    await expect(instrumentDetailPage.get1stActions()).toBeVisible();
   });
 });

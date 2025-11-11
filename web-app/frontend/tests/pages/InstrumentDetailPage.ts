@@ -41,7 +41,7 @@ export class InstrumentDetailPage extends BasePage {
   }
 
   async getLanguageNames(): Promise<string[]> {
-    const isMobile = await this.isMobile();
+    const isMobile = this.isMobile();
     const table = isMobile
       ? this.getLanguageTableMobile()
       : this.getLanguageTable();
@@ -68,8 +68,8 @@ export class InstrumentDetailPage extends BasePage {
     await this.page.locator('#addNameModal button[type="submit"]').click();
   }
 
-  async get1stVerificationStatus(): Promise<Locator> {
-    const isMobile = await this.isMobile();
+  get1stVerificationStatus(): Locator {
+    const isMobile = this.isMobile();
     if (isMobile) {
       return this.page
         .locator(
@@ -82,8 +82,8 @@ export class InstrumentDetailPage extends BasePage {
       .first();
   }
 
-  async get1stActions(): Promise<Locator> {
-    const isMobile = await this.isMobile();
+  get1stActions(): Locator {
+    const isMobile = this.isMobile();
     const container = isMobile
       ? '#languageTableBodyMobile'
       : '#languageTableBody';
