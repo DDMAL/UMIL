@@ -196,10 +196,10 @@ class Command(BaseCommand):
         instrument.save()
 
     def handle(self, *args, **options) -> None:
-        # Use smaller test dataset when in TEST_MODE
+        # Use smaller test dataset when in test mode
         csv_file = (
             "startup_data/test_instruments.csv"
-            if os.getenv("TEST_MODE") == "true"
+            if os.getenv("MODE") == "test"
             else "startup_data/umil_instruments_15July_2025.csv"
         )
 
