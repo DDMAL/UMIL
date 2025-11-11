@@ -30,6 +30,20 @@ jobs:
         working-directory: web-app/frontend
         run: npx playwright install --with-deps chromium firefox webkit
 
+      # Step 4.5: Build frontend assets
+      # Nginx mounts ./web-app/frontend/assets/ from the host,
+      # so we need to build assets BEFORE starting Docker containers.
+      # Otherwise CSS/JS won't load properly in tests.
+      - name: Build frontend assets
+        working-directory: web-app/frontend
+        run: |
+          npm run sass:build
+          npm run build
+          echo "Verifying build output..."
+          ls -la assets/css/ dist/
+          test -f dist/manifest.json || (echo "ERROR: manifest.json not found!" && exit 1)
+          test -d assets/css || (echo "ERROR: CSS directory not found!" && exit 1)
+
       # Step 5: Create environment file for Docker Compose
       - name: Create .env file
         run: |
