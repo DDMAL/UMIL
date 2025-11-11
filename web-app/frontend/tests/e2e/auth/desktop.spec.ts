@@ -1,4 +1,5 @@
 import { test, expect } from '../../fixtures/pages';
+import { test as authTest } from '../../fixtures/auth';
 
 test.describe('Desktop Authentication', () => {
   test('should register new user', async ({
@@ -34,14 +35,14 @@ test.describe('Desktop Authentication', () => {
     await expect(instrumentDetailPage.get1stActions()).not.toBeVisible();
   });
 
-  test('should show verification and action columns after login', async ({
-    loginPage,
-    instrumentDetailPage,
-  }) => {
-    await loginPage.goto();
-    await loginPage.login('testuser@example.com', 'testpassword');
-    await instrumentDetailPage.goto('1');
-    await expect(instrumentDetailPage.get1stVerificationStatus()).toBeVisible();
-    await expect(instrumentDetailPage.get1stActions()).toBeVisible();
-  });
+  authTest(
+    'should show verification and action columns after login',
+    async ({ instrumentDetailPage }) => {
+      await instrumentDetailPage.goto('1');
+      await expect(
+        instrumentDetailPage.get1stVerificationStatus(),
+      ).toBeVisible();
+      await expect(instrumentDetailPage.get1stActions()).toBeVisible();
+    },
+  );
 });
