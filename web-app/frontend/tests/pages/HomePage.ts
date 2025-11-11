@@ -6,16 +6,18 @@ export class HomePage extends BasePage {
     await super.goto('/');
   }
 
-  getEnglishButton(): Locator {
-    return this.page
-      .locator('button#en-site-btn, a[href*="language=English"] button')
-      .first();
+  getVisitEnglishButton(): Locator {
+    const isMobile = this.isMobile();
+    return this.page.locator(
+      isMobile ? 'button.en-site-btn.mobile' : 'button.en-site-btn.desktop',
+    );
   }
 
-  getFrenchButton(): Locator {
-    return this.page
-      .locator('button#fr-site-btn, a[href*="language=French"] button')
-      .first();
+  getVisitFrenchButton(): Locator {
+    const isMobile = this.isMobile();
+    return this.page.locator(
+      isMobile ? 'button.fr-site-btn.mobile' : 'button.fr-site-btn.desktop',
+    );
   }
 
   getStatsSection(): Locator {

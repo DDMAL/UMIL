@@ -19,7 +19,7 @@ export class BasePage {
     await this.page.waitForURL(path);
   }
 
-  async isMobile(): Promise<boolean> {
+  isMobile(): boolean {
     const viewport = this.page.viewportSize();
     return viewport ? viewport.width < 768 : false;
   }
@@ -43,7 +43,7 @@ export class BasePage {
   }
 
   async toggleMobileNav() {
-    if (await this.isMobile()) {
+    if (this.isMobile()) {
       await this.getHamburgerButton().click();
       await this.page.waitForTimeout(300); // Wait for animation
     }
