@@ -87,7 +87,14 @@ async function setupTestDatabase(): Promise<void> {
 
   // Step 4: Import instruments
   console.log('  Importing 200 test instruments...');
-  await runDjangoCommand('python manage.py import_instruments', true);
+  try {
+    // Don't suppress output so we can see if Wikidata API calls are failing
+    await runDjangoCommand('python manage.py import_instruments', false);
+  } catch (error) {
+    console.error('⚠️  Instrument import failed!');
+    console.error(error);
+    throw error; // Fail the setup so we know something is wrong
+  }
 }
 
 /**
