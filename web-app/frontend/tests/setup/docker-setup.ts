@@ -80,20 +80,30 @@ async function setupTestDatabase(): Promise<void> {
   try {
     await runDjangoCommand('python manage.py import_languages', true);
   } catch (error) {
-    console.warn(
-      '⚠️  Language import failed (API may be rate-limited). Continuing...',
-    );
+    console.error('⚠️  Language import failed!');
+    console.error(error);
+    throw error;
   }
 
   // Step 4: Import instruments
   console.log('  Importing 200 test instruments...');
   try {
-    // Don't suppress output so we can see if Wikidata API calls are failing
-    await runDjangoCommand('python manage.py import_instruments', false);
+    await runDjangoCommand('python manage.py import_instruments', true);
   } catch (error) {
     console.error('⚠️  Instrument import failed!');
     console.error(error);
-    throw error; // Fail the setup so we know something is wrong
+    throw error;
+  }
+
+  // Step 5: Index instruments in Solr
+  console.log('  Indexing instruments in Solr...');
+  try {
+    await runDjangoCommand('python manage.py index_data', true);
+  } catch (error) {
+    console.error('⚠️  Solr indexing failed!');
+    console.error('    Make sure Solr service is running and accessible.');
+    console.error(error);
+    throw error;
   }
 }
 
