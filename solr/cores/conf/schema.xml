@@ -79,11 +79,27 @@
             <filter class="solr.LowerCaseFilterFactory" />
         </analyzer>
     </fieldType>
-  
+
+    <!-- Exact match text field with term vectors -->
+    <fieldType name="text_vector" class="solr.TextField" positionIncrementGap="100" termVectors="true">
+        <analyzer type="index">
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory" />
+        </analyzer>
+    </fieldType>
+
+
    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
 
     <!-- Define the new text field for queries -->
     <field name="text" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- exact match field -->
+    <field name="text_exact" type="text_vector" indexed="true" stored="true" multiValued="true"/>
 
     <!-- Define the field for storing the thumbnail URL -->
     <field name="thumbnail_url" type="string" stored="true" indexed="false" />
@@ -91,4 +107,5 @@
     <!-- Copy field directives for aggregating values into the text field -->
     <copyField source="wikidata_id_s" dest="text"/>
     <copyField source="*_ss" dest="text" />
+    <copyField source="*_ss" dest="text_exact" />
 </schema>
