@@ -6,6 +6,10 @@ from VIM.apps.instruments.models import Language
 
 WIKIDATA_URL = "https://www.wikidata.org/w/api.php"
 
+HEADERS = {
+    "User-Agent": "UMIL/0.1.0 (https://vim.simssa.ca/; https://ddmal.music.mcgill.ca/)"
+}
+
 
 def get_languages_from_wikidata():
     """
@@ -49,7 +53,7 @@ def get_languages_from_wikidata():
     }
 
     # Make the request to the Wikidata API
-    response = requests.get(WIKIDATA_URL, params=params, timeout=50)
+    response = requests.get(WIKIDATA_URL, params=params, headers=HEADERS, timeout=50)
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -107,7 +111,7 @@ def get_language_details(language_codes):
     }
 
     # Make the request to the Wikidata API
-    response = requests.get(WIKIDATA_URL, params=params, timeout=50)
+    response = requests.get(WIKIDATA_URL, params=params, headers=HEADERS, timeout=50)
 
     # Check if the request was successful
     if response.status_code == 200:
