@@ -61,3 +61,15 @@ body {
 .goog-te-gadget {
   font-size: 0 !important;
 }
+
+html.translated-rtl,
+body.translated-rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+html.translated-rtl .ltr-keep,
+body.translated-rtl .ltr-keep {
+  direction: ltr !important;
+  text-align: left !important;
+}
