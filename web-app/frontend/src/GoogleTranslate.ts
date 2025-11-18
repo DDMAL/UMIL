@@ -1,4 +1,4 @@
-import { setCookie, readCookie } from './utils/cookies';
+import { setCookie, readCookie, deleteCookie } from './utils/cookies';
 
 declare namespace google {
   namespace translate {
@@ -123,9 +123,22 @@ function setGTLanguage(googleSelect: HTMLSelectElement, language: string) {
 
 function clearGTLanguage() {
   // Clear the Google Translate cookie
-  setCookie('googtrans', '', '/', window.location.hostname);
-  setCookie('frSite', 'false', '/', window.location.hostname);
-  setCookie('enSite', 'false', '/', window.location.hostname);
+  // Try deleting with both possible domain formats (localhost and .localhost)
+  // Safari requires exact domain match, and Google Translate may set cookies with either format
+  const hostname = window.location.hostname;
+  deleteCookie('googtrans', { path: '/', domain: hostname });
+
+  // Also try with leading dot (for subdomain cookies)
+  // Only do this if hostname is not an IP address
+  if (!/^\d+\.\d+\.\d+\.\d+$/.test(hostname)) {
+    deleteCookie('googtrans', { path: '/', domain: `.${hostname}` });
+  }
+
+  // Also try without any domain (for cookies set without domain attribute)
+  deleteCookie('googtrans', { path: '/' });
+
+  setCookie('frSite', 'false', {});
+  setCookie('enSite', 'false', {});
 
   // Force a page reload to ensure translation is completely cleared
   window.location.reload();
@@ -153,8 +166,8 @@ function setupSiteLanguageListeners() {
       event.preventDefault();
 
       // Set cookies for French site
-      setCookie('frSite', 'true', '/', window.location.hostname);
-      setCookie('enSite', 'false', '/', window.location.hostname);
+      setCookie('frSite', 'true', {});
+      setCookie('enSite', 'false', {});
 
       // Get the href from the parent anchor element and redirect
       const parentLink = frSiteBtn.closest('a') as HTMLAnchorElement;
@@ -172,8 +185,8 @@ function setupSiteLanguageListeners() {
       event.preventDefault();
 
       // Set cookies for English site
-      setCookie('enSite', 'true', '/', window.location.hostname);
-      setCookie('frSite', 'false', '/', window.location.hostname);
+      setCookie('enSite', 'true', {});
+      setCookie('frSite', 'false', {});
 
       // Get the href from the parent anchor element and redirect
       const parentLink = enSiteBtn.closest('a') as HTMLAnchorElement;
