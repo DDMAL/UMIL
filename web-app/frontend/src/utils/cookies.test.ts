@@ -51,16 +51,53 @@ describe('setCookie', () => {
 
   it('should set cookie with default path', () => {
     setCookie('sessionId', 'abc123');
-    expect(cookieValue).toBe('sessionId=abc123; path=/');
+    expect(cookieValue).toContain('sessionId=abc123');
+    expect(cookieValue).toContain('path=/');
+    expect(cookieValue).toContain('SameSite=Lax');
+    expect(cookieValue).toContain('expires=');
   });
 
   it('should set cookie with custom path', () => {
-    setCookie('sessionId', 'abc123', '/admin');
-    expect(cookieValue).toBe('sessionId=abc123; path=/admin');
+    setCookie('sessionId', 'abc123', { path: '/admin' });
+    expect(cookieValue).toContain('sessionId=abc123');
+    expect(cookieValue).toContain('path=/admin');
+    expect(cookieValue).toContain('SameSite=Lax');
+    expect(cookieValue).toContain('expires=');
   });
 
   it('should set cookie with domain', () => {
-    setCookie('sessionId', 'abc123', '/', 'example.com');
-    expect(cookieValue).toBe('sessionId=abc123; path=/; domain=example.com');
+    setCookie('sessionId', 'abc123', { path: '/', domain: 'example.com' });
+    expect(cookieValue).toContain('sessionId=abc123');
+    expect(cookieValue).toContain('path=/');
+    expect(cookieValue).toContain('domain=example.com');
+    expect(cookieValue).toContain('SameSite=Lax');
+    expect(cookieValue).toContain('expires=');
+  });
+
+  it('should set session cookie when days is 0', () => {
+    setCookie('sessionId', 'abc123', { days: 0 });
+    expect(cookieValue).toContain('sessionId=abc123');
+    expect(cookieValue).toContain('path=/');
+    expect(cookieValue).toContain('SameSite=Lax');
+    expect(cookieValue).toContain('expires=Thu, 01 Jan 1970 00:00:00 GMT');
+  });
+
+  it('should set cookie with custom SameSite', () => {
+    setCookie('sessionId', 'abc123', { sameSite: 'Strict' });
+    expect(cookieValue).toContain('sessionId=abc123');
+    expect(cookieValue).toContain('SameSite=Strict');
+  });
+
+  it('should set secure cookie when SameSite is None', () => {
+    setCookie('sessionId', 'abc123', { sameSite: 'None' });
+    expect(cookieValue).toContain('sessionId=abc123');
+    expect(cookieValue).toContain('SameSite=None');
+    expect(cookieValue).toContain('Secure');
+  });
+
+  it('should URL encode cookie name and value', () => {
+    setCookie('session id', 'value with spaces');
+    expect(cookieValue).toContain('session%20id=value%20with%20spaces');
+    expect(cookieValue).toContain('path=/');
   });
 });
