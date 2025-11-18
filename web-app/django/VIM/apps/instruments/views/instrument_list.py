@@ -322,6 +322,7 @@ class InstrumentList(TemplateView):
                 )
                 if value in all_facets:
                     all_facets[value]["count"] = hbs_cat["count"]
+
         else:
             # No contextual facet data, use the all categories counts directly
             for hbs_cat in all_categories_data:
@@ -331,7 +332,7 @@ class InstrumentList(TemplateView):
                     else hbs_cat["value"]
                 )
                 if value in all_facets:
-                    all_facets[value]["count"] = hbs_cat["count"]
+                    all_facets[value]["count"] = 0
 
         # Convert to list and sort
         hbs_facet_list = sorted(
