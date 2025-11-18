@@ -17,6 +17,10 @@ test.describe('Mobile Google Translate', () => {
     expect(
       !googleTranslateCookie || googleTranslateCookie.value === '/en/en',
     ).toBeTruthy();
+    const frSiteCookie = cookies.find((c) => c.name === 'frSite');
+    const enSiteCookie = cookies.find((c) => c.name === 'enSite');
+    expect(!frSiteCookie || frSiteCookie.value === 'false').toBeTruthy();
+    expect(!enSiteCookie || enSiteCookie.value === 'false').toBeTruthy();
     await homePage.toggleMobileNav();
     const aboutLink = page.locator('.nav-link:has-text("About")');
     await expect(aboutLink).toBeVisible();
@@ -34,6 +38,14 @@ test.describe('Mobile Google Translate', () => {
       c.name.includes('googtrans'),
     );
     expect(frenchCookie?.value).toContain('/en/fr');
+    const frSiteCookieAfterFrench = cookiesAfterFrench.find(
+      (c) => c.name === 'frSite',
+    );
+    const enSiteCookieAfterFrench = cookiesAfterFrench.find(
+      (c) => c.name === 'enSite',
+    );
+    expect(frSiteCookieAfterFrench?.value).toBe('true');
+    expect(enSiteCookieAfterFrench?.value).toBe('false');
 
     // 3. Go back to home page, should still be in French
     await homePage.goto();
@@ -41,6 +53,15 @@ test.describe('Mobile Google Translate', () => {
     const aboutLinkFrHome = page.locator('.nav-link:has-text("À propos")');
     await expect(aboutLinkFrHome).toBeVisible();
     await homePage.toggleMobileNav();
+    const cookiesAfterHome = await page.context().cookies();
+    const frSiteCookieAfterHome = cookiesAfterHome.find(
+      (c) => c.name === 'frSite',
+    );
+    const enSiteCookieAfterHome = cookiesAfterHome.find(
+      (c) => c.name === 'enSite',
+    );
+    expect(frSiteCookieAfterHome?.value).toBe('true');
+    expect(enSiteCookieAfterHome?.value).toBe('false');
 
     // 4. Click English button, navigate to instruments, should be in English
     await homePage.getVisitEnglishButton().click();
@@ -56,5 +77,13 @@ test.describe('Mobile Google Translate', () => {
       c.name.includes('googtrans'),
     );
     expect(!englishCookie || englishCookie.value === '').toBe(true);
+    const frSiteCookieAfterEnglish = cookiesAfterEnglish.find(
+      (c) => c.name === 'frSite',
+    );
+    const enSiteCookieAfterEnglish = cookiesAfterEnglish.find(
+      (c) => c.name === 'enSite',
+    );
+    expect(frSiteCookieAfterEnglish?.value).toBe('false');
+    expect(enSiteCookieAfterEnglish?.value).toBe('false');
   });
 });
