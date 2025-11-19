@@ -18,11 +18,13 @@ export function readCookie(name: string): string | undefined {
     // Skip malformed cookies (no '=' found)
     if (equalIndex === -1) continue;
 
-    const key = cookieString.slice(0, equalIndex).trim();
+    const key = decodeURIComponent(cookieString.slice(0, equalIndex).trim());
 
     // Early return if we found our target cookie
     if (key === name) {
-      const value = cookieString.slice(equalIndex + 1).trim();
+      const value = decodeURIComponent(
+        cookieString.slice(equalIndex + 1).trim(),
+      );
       return value || undefined; // Return undefined for empty values
     }
   }
