@@ -62,14 +62,15 @@ body {
   font-size: 0 !important;
 }
 
+// Google Translate marks RTL with `.translated-rtl` but doesn't flip layout
 html.translated-rtl,
 body.translated-rtl {
   direction: rtl !important;
   text-align: right !important;
 }
 
-html.translated-rtl .ltr-keep,
-body.translated-rtl .ltr-keep {
+html.translated-rtl .force-ltr,
+body.translated-rtl .force-ltr {
   direction: ltr !important;
   text-align: left !important;
 }
