@@ -98,17 +98,36 @@ class InstrumentList(TemplateView):
         Returns the English label of the active language.
 
         The active language is determined by the following order of precedence:
-            - by the `language` query parameter if present
+            - by the `language` query parameter if present as an English label or a Wikidata code
             - by the `active_language_en` session variable if present
             - by the default language 'english'
 
         Returns:
             str: The English label of the active language
         """
-        language_en = self.request.GET.get("language")
-        if language_en:
-            return language_en
-        return self.request.session.get("active_language_en", settings.DEFAULT_LANGUAGE)
+        language_param = self.request.GET.get("language") or self.request.session.get(
+            "active_language_en"
+        )
+
+        if not language_param:
+
+            # Check if the language is an English label
+            try:
+                lang_obj = Language.objects.get(en_label__iexact=language_param)
+                return lang_obj.en_label
+
+            except Language.DoesNotExist:
+                pass
+
+            # Check if the language is a Wikidata code/Google translate code (they are both ISO 639-1)
+            try:
+                lang_obj = Language.objects.get(wikidata_code__iexact=language_param)
+                return lang_obj.en_label
+            except Language.DoesNotExist:
+                pass
+
+        # Return the defult if nothing matches
+        return settings.DEFAULT_LANGUAGE
 
     def get_active_language(self) -> Language:
         """
