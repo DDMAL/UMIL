@@ -110,7 +110,6 @@ class InstrumentList(TemplateView):
         )
 
         if language_param:
-
             # Check if the language is an English label
             try:
                 lang_obj = Language.objects.get(en_label__iexact=language_param)
