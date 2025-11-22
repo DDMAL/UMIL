@@ -50,7 +50,7 @@
           </div>
           <div class="row">
             <div class="col-6">
-              <a href="{% url "instrument-list" %}?language=English">
+              <a class="dynamic-language-link" href="{% url 'instrument-list' %}?language=English">
                 <button class="btn btn-warning rounded-pill start-btn" id="en-site-btn">
                   Visit English Site
                 </button>
@@ -80,7 +80,7 @@
               <br />
               Explore, share, connect musical instruments in every language.
             </p>
-            <a href="{% url "instrument-list" %}?language=English">
+            <a id="dynamic-language-link" href="{% url 'instrument-list' %}?language=English">
               <button class="btn btn-warning rounded-pill start-btn">
                 Visit English Site
               </button>

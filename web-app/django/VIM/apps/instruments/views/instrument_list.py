@@ -109,7 +109,7 @@ class InstrumentList(TemplateView):
             "active_language_en"
         )
 
-        if not language_param:
+        if language_param:
 
             # Check if the language is an English label
             try:
@@ -117,14 +117,14 @@ class InstrumentList(TemplateView):
                 return lang_obj.en_label
 
             except Language.DoesNotExist:
-                pass
-
-            # Check if the language is a Wikidata code/Google translate code (they are both ISO 639-1)
-            try:
-                lang_obj = Language.objects.get(wikidata_code__iexact=language_param)
-                return lang_obj.en_label
-            except Language.DoesNotExist:
-                pass
+                # Check if the language is a Wikidata code/Google translate code (they are both ISO 639-1)
+                try:
+                    lang_obj = Language.objects.get(
+                        wikidata_code__iexact=language_param
+                    )
+                    return lang_obj.en_label
+                except Language.DoesNotExist:
+                    pass
 
         # Return the defult if nothing matches
         return settings.DEFAULT_LANGUAGE
@@ -138,7 +138,8 @@ class InstrumentList(TemplateView):
         """
         language_en = self.get_active_language_en_label()
         try:
-            return Language.objects.get(en_label=language_en)
+            return Language.objects.get(en_label__iexact=language_en)
+
         except Language.DoesNotExist:
             logger.error(f"Language not found: {language_en}")
             raise

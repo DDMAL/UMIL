@@ -41,11 +41,23 @@ class InstrumentDetail(DetailView):
 
         # Get the active language
         active_language_en = self.request.session.get("active_language_en", None)
-        context["active_language"] = (
-            Language.objects.get(en_label=active_language_en)
-            if active_language_en
-            else Language.objects.get(en_label="English")  # default in English
-        )
+        if active_language_en:
+            try:
+                # Try matching English label
+                lang_obj = Language.objects.get(en_label__iexact=active_language_en)
+            except Language.DoesNotExist:
+                try:
+                    # Try matching Wikidata code
+                    lang_obj = Language.objects.get(
+                        wikidata_code__iexact=active_language_en
+                    )
+                except Language.DoesNotExist:
+                    # Final fallback
+                    lang_obj = Language.objects.get(en_label="English")
+        else:
+            lang_obj = Language.objects.get(en_label="English")
+
+        context["active_language"] = lang_obj
 
         # Get the instrument label in the active language
         # Set label to the first instrument name added in the language if there is no "umil_label" set
