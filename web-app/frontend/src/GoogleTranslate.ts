@@ -58,6 +58,8 @@ function googleTranslateElementInit() {
       'google_translate_element',
     );
     customizeGoogleTranslate();
+    syncGTLanguageToURL();
+
   } catch (error) {
     console.error('Google Translate initialization failed:', error);
     setTimeout(googleTranslateElementInit, 200);
@@ -83,10 +85,7 @@ function customizeGoogleTranslate() {
     'd-flex',
     'align-items-center',
   );
-
-  if (readCookie('frSite') === 'true') {
-    setGTLanguage(googleSelect, 'fr');
-  } else if (readCookie('enSite') === 'true') {
+  if (readCookie('enSite') === 'true') {
     clearGTLanguage();
   }
 
@@ -134,6 +133,123 @@ function clearGTLanguage() {
 function getGTLanguage(googleSelect: HTMLSelectElement) {
   return readCookie('googtrans');
 }
+
+// Sync the Google Translate language to the URL
+function syncGTLanguageToURL() {
+  const googleSelect = document.querySelector<HTMLSelectElement>('.goog-te-combo');
+  if (!googleSelect) {
+    setTimeout(syncGTLanguageToURL, 100);
+    return;
+  }
+
+  googleSelect.addEventListener('change', () => {
+    const selectedLang = googleSelect.value;
+
+    // Update URL
+    const currentUrl = new URL(window.location.href);
+    if (currentUrl.searchParams.get('language') !== selectedLang) {
+      currentUrl.searchParams.set('language', selectedLang);
+      window.history.replaceState({}, '', currentUrl.toString());
+    }
+
+    // Reload when Google Translate finish translation
+    waitForGoogleTranslate(() => {
+      // Do not reload if a cookie is set
+      if (readCookie('frSite') === 'true' || readCookie('enSite') === 'true') return;
+      window.location.reload();
+    });
+
+  });
+
+  // Update all links on page
+  let langCode = googleSelect.value;
+  // Fallback to language param if select value is blank
+  if (!langCode) {
+    const langFromUrl = new URL(window.location.href).searchParams.get('language');
+    if (langFromUrl) langCode = langFromUrl;
+  }
+
+  if (langCode) {
+    updateLinksWithLanguage(langCode);
+  }
+}
+
+function updateLinksWithLanguage(langCode: string) {
+  // This updates all navbar links and add language param
+  // Also, updates links in elements with id=dynamic-language-link with language param
+  // It renames id=en-site-btn to avoid setting cookies
+  // It renames the content "Visit English Site" to the set language
+
+  const updateLink = (link: HTMLAnchorElement) => {
+    try {
+      const url = new URL(link.getAttribute('href') || '', window.location.origin);
+      url.searchParams.set('language', langCode);
+      link.setAttribute('href', url.pathname + url.search + url.hash);
+    } catch { /* skip broken links */ }
+  };
+
+  // Update only #navbarMenu a.nav-link links
+  document.querySelectorAll<HTMLAnchorElement>('#navbarMenu a.nav-link').forEach(link => {
+    updateLink(link);
+  });
+
+  // Only update a.dynamic-language-link if the language is not French
+  if (!langCode.toLowerCase().startsWith('fr')) {
+    document.querySelectorAll<HTMLAnchorElement>('a.dynamic-language-link').forEach(link => {
+      updateLink(link);
+      // Rename #en-site-btn and set its text (if present inside dynamic-language-link)
+      const enBtn = link.querySelector('#en-site-btn') as HTMLButtonElement | null;
+      if (enBtn) {
+        // Rename the id to avoid cookies
+        enBtn.id = 'en-site-btn-renamed';
+
+        // Set button content to match the selected language for the "Visit Site" button
+        let languageName = langCode;
+        try {
+          if (typeof Intl !== 'undefined' && typeof Intl.DisplayNames === 'function') {
+            try {
+              // Get English display names for languages
+              const displayNames = new Intl.DisplayNames(['en'], { type: 'language' });
+
+              const readable = displayNames.of(langCode);
+
+              if (readable) {
+                // Capitalize the language name
+                languageName = readable.replace(/\b\w/g, c => c.toUpperCase());
+              }
+            } catch {}
+          }
+        } catch {}
+        enBtn.textContent = `Visit ${languageName} Site`;
+      }
+    });
+  }
+}
+
+
+// Detect when Google Translate finishes applying translation
+function waitForGoogleTranslate(callback: () => void) {
+  const html = document.documentElement;
+
+  // If already translated execute callback
+  if (html.classList.contains('translated-ltr') || 
+      html.classList.contains('translated-rtl')) {
+    callback();
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (html.classList.contains('translated-ltr') || 
+        html.classList.contains('translated-rtl')) {
+      observer.disconnect();
+      callback();
+    }
+  });
+
+  observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+}
+
+
 
 // Export the initialization function so it's globally accessible for backwards compatibility
 window.googleTranslateElementInit = googleTranslateElementInit;
