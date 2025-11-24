@@ -4,7 +4,7 @@
 {% load django_vite %}
 
 {% block title %}
-  {{ active_instrument_label.name|title }}
+  {{ active_instrument_label.name }}
 {% endblock title %}
 
 {% block ts_files %}
@@ -22,7 +22,7 @@
   <div class="container d-flex align-items-center justify-content-center min-vh-80 py-4">
     <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
       <div class="w-100">
-        <h2 class="notranslate">{{ active_instrument_label.name|title }}</h2>
+        <h2 class="notranslate">{{ active_instrument_label.name }}</h2>
         <hr class="w-100 mt-0" />
       </div>
       <div class="w-100">
@@ -234,7 +234,7 @@
                               class="btn btn-primary"
                               data-bs-toggle="modal"
                               data-bs-target="#addNameModal"
-                              data-instrument-name="{{ active_instrument_label.name | title }}"
+                              data-instrument-name="{{ active_instrument_label.name }}"
                               data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
                               data-instrument-pk="{{ instrument.pk }}">
                         Add Instrument Name

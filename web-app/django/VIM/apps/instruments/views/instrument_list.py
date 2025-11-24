@@ -59,7 +59,7 @@ class InstrumentNameSet:
 
     def get_display_names_str(self) -> str:
         sorted_names = sorted(self.all(), key=lambda x: not x.umil_label)
-        name_list = [n.name.title() for n in sorted_names]
+        name_list = [n.name for n in sorted_names]
         return " | ".join(name_list)
 
 
