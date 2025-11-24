@@ -119,3 +119,6 @@ web-app/frontend/tests/.auth/*
 web-app/frontend/tests/.auth/
 web-app/frontend/tests/test-results/
 web-app/frontend/tests/playwright-report/
+
+# Cursor
+.cursor/
