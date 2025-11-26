@@ -1,0 +1,92 @@
+# Uses Compose Specification (https://github.com/compose-spec/compose-spec/blob/master/spec.md)
+#
+# This compose file is specifically for running E2E tests in production mode.
+# It combines production build settings with a test database for isolation.
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./web-app/Dockerfile
+      target: prod
+    container_name: vim-app
+    volumes:
+      - ./web-app/django:/virtual-instrument-museum/vim-app
+      - vim-static:/virtual-instrument-museum/static
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    environment:
+      - MODE=test
+      - TEST_POSTGRES_DB=${TEST_POSTGRES_DB}
+      - TEST_POSTGRES_USER=${TEST_POSTGRES_USER}
+      - TEST_POSTGRES_PASSWORD=${TEST_POSTGRES_PASSWORD}
+      - HOST_NAME=${HOST_NAME}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s = socket.socket(); s.connect(('localhost', 8001)); s.close()",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  postgres-test:
+    image: postgres:15.4
+    container_name: vim-db-test
+    environment:
+      - POSTGRES_DB=${TEST_POSTGRES_DB}
+      - POSTGRES_USER=${TEST_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${TEST_POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: "pg_isready -U ${TEST_POSTGRES_USER} -d ${TEST_POSTGRES_DB}"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    build: ./nginx
+    container_name: vim-nginx
+    restart: unless-stopped
+    environment:
+      - HOST_NAME=${HOST_NAME}
+    ports:
+      - "8000:80"
+    volumes:
+      - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
+      - vim-static:/virtual-instrument-museum/static
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 5s
+      timeout: 3s
+      retries: 6
+      start_period: 5s
+
+  solr:
+    build: ./solr
+    container_name: vim-solr
+    restart: unless-stopped
+    ports:
+      - "8983:8983"
+    volumes:
+      - umil-solr:/var/solr
+      - ./solr/cores:/var/solr/data
+
+networks:
+  vim-net:
+
+volumes:
+  vim-static:
+  umil-solr:

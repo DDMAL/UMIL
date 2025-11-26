@@ -24,6 +24,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 IS_DEVELOPMENT = bool(os.environ.get("MODE") == "dev")
 IS_PRODUCTION = bool(os.environ.get("MODE") == "prod")
+IS_TEST = bool(os.environ.get("MODE") == "test")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT
@@ -89,16 +90,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "VIM.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": "vim-db",
-        "PORT": "5432",
+# Database configuration
+# Check if running in test mode
+if IS_TEST:
+    # Use test database (isolated from development)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("TEST_POSTGRES_DB", "vim_test_db"),
+            "USER": os.environ.get("TEST_POSTGRES_USER", "test_user"),
+            "PASSWORD": os.environ.get("TEST_POSTGRES_PASSWORD", "test_password"),
+            "HOST": "postgres-test",
+            "PORT": "5432",
+        }
     }
-}
+else:
+    # Use development or production database
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": "vim-db",
+            "PORT": "5432",
+        }
+    }
 
 
 # Password validation
