@@ -9,7 +9,7 @@ const LOG_TAIL_LINES = 200;
  * Extract verification URL from Django console logs.
  * Retries to account for async email sending.
  */
-export async function extractVerificationUrl(email: string): Promise<string> {
+export async function extractVerificationUrl(): Promise<string> {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     const logs = await getDockerLogs();
     const url = parseVerificationUrl(logs);
@@ -24,7 +24,7 @@ export async function extractVerificationUrl(email: string): Promise<string> {
   }
 
   throw new Error(
-    `Failed to extract verification URL for ${email} after ${MAX_RETRIES} attempts`,
+    `Failed to extract verification URL after ${MAX_RETRIES} attempts`,
   );
 }
 
