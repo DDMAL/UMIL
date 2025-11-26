@@ -1,20 +1,44 @@
 import { test, expect } from '../../fixtures/pages';
 import { test as authTest } from '../../fixtures/auth';
+import { extractVerificationUrl } from '../../helpers/email';
 
 test.describe('Mobile Authentication', () => {
-  test('should register new user', async ({ registerPage, homePage, page }) => {
+  test('should register new user', async ({
+    registerPage,
+    loginPage,
+    homePage,
+    page,
+  }) => {
     await registerPage.goto();
     const timestamp = Date.now();
-    await registerPage.register(
-      `testuser${timestamp}@example.com`,
-      'TestPassword123!',
-      'TestPassword123!',
-    );
-    await expect(page).toHaveURL(/\/(.*)/);
-    await homePage.toggleMobileNav();
+    const email = `testuser${timestamp}@example.com`;
+    const password = 'TestPassword123!';
+
+    // Register new user
+    await registerPage.register(email, password, password);
+
+    // Should redirect to login page with success message
+    await expect(page).toHaveURL('/accounts/login/');
     await expect(
-      homePage.page.locator('.dropdown:has(svg[aria-label="user icon"])'),
+      page.locator('text=/Please check your email to verify/i'),
     ).toBeVisible();
+
+    // Extract verification URL from Docker logs
+    const verificationUrl = await extractVerificationUrl(email);
+
+    // Navigate to verification URL
+    await page.goto(verificationUrl);
+
+    // Should see verification success message
+    await expect(
+      page.locator('text=/Email verified successfully/i'),
+    ).toBeVisible();
+
+    // Login with verified account
+    await loginPage.login(email, password);
+    await expect(page).toHaveURL('/');
+    await homePage.toggleMobileNav();
+    await expect(loginPage.getUserDropdown()).toBeVisible();
   });
 
   test('should login user', async ({ loginPage, homePage, page }) => {
