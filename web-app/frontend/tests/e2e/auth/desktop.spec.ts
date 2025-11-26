@@ -23,7 +23,7 @@ test.describe('Desktop Authentication', () => {
     ).toBeVisible();
 
     // Extract verification URL from Docker logs
-    const verificationUrl = await extractVerificationUrl(email);
+    const verificationUrl = await extractVerificationUrl();
 
     // Navigate to verification URL
     await page.goto(verificationUrl);
