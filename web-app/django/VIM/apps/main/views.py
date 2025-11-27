@@ -1,12 +1,18 @@
+import json
+
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.db.models import Count
+from django.shortcuts import redirect, render
 from django.urls import reverse
+
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 from VIM.apps.main.forms import EmailUserCreationForm
-from django.db.models import Count
-import json
+from VIM.apps.main.utils.email import (
+    send_verification_email,
+    validate_verification_token,
+)
 
 
 def home(request):
@@ -81,12 +87,40 @@ def register(request):
     if request.method == "POST":
         form = EmailUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            # Add success parameter to the redirect URL for Google Analytics event tracking
-            success_url = f"{reverse('main:home')}?registration=success"
-            return redirect(success_url)
+            # Create user but not activate it yet
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+
+            # Send verification email
+            send_verification_email(user, request)
+
+            # Redirect to login with success message
+            messages.success(
+                request,
+                "Registration successful! Please check your email to verify your account before logging in.",
+            )
+            return redirect("main:login")
     else:
         form = EmailUserCreationForm()
 
     return render(request, "main/registration/register.html", {"form": form})
+
+
+def verify_email(request, uidb64, token):
+    """
+    Handle email verification when user clicks the link in their email.
+    """
+    # Validate the token and get the user
+    user = validate_verification_token(uidb64, token)
+
+    if user is None:
+        messages.error(request, "Invalid or expired verification link.")
+    elif user.is_active:
+        messages.info(request, "Your account is already verified.")
+    else:
+        user.is_active = True
+        user.save()
+        messages.success(request, "Email verified successfully! You can log in now.")
+
+    return redirect("main:login")

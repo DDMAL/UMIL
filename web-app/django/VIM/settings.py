@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # web-app/django:/virtual-instrument-museum/vim-app
@@ -173,15 +174,32 @@ DJANGO_VITE = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "email-smtp.us-west-2.amazonaws.com"
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv("AWS_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("AWS_EMAIL_HOST_PASSWORD")
+# Email configuration with environment variables and development fallback
+# If EMAIL_HOST is not set, emails will be printed to console (useful for development)
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend"
+    if EMAIL_HOST
+    else "django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL", "UMIL <noreply@umil.linkedmusic.com>"
+)
 
-# Copied from CantusDB, will need to change
-DEFAULT_FROM_EMAIL = "noreply@cantusdatabase.simssa.ca"
+SITE_NAME = "UMIL"
+
+# MESSAGE TAGS - Map Django message levels to Bootstrap alert classes
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}
 
 # DEPLOYMENT SETTINGS
 
