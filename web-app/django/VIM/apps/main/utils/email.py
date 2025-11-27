@@ -13,6 +13,26 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 
+def send_html_email_task(subject, body_html, to_emails):
+    """
+    Send HTML email synchronously. This function is intended to be called
+    from a thread by send_email_async.
+
+    Args:
+        subject: Email subject line
+        body_html: HTML content of the email
+        to_emails: List of recipient email addresses
+    """
+    email = EmailMessage(
+        subject=subject,
+        body=body_html,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=to_emails,
+    )
+    email.content_subtype = "html"
+    email.send()
+
+
 def send_email_async(subject, body_html, to_emails):
     """
     Send HTML email asynchronously using threading to avoid blocking the request.
@@ -22,19 +42,10 @@ def send_email_async(subject, body_html, to_emails):
         body_html: HTML content of the email
         to_emails: List of recipient email addresses
     """
-
-    def send_email_task():
-        email = EmailMessage(
-            subject=subject,
-            body=body_html,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=to_emails,
-        )
-        email.content_subtype = "html"
-        email.send()
-
     # Use daemon thread to prevent blocking shutdown
-    thread = threading.Thread(target=send_email_task, daemon=True)
+    thread = threading.Thread(
+        target=send_html_email_task, args=(subject, body_html, to_emails), daemon=True
+    )
     thread.start()
 
 
