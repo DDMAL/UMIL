@@ -1,5 +1,3 @@
-import { CookieDictionary } from './interfaces';
-
 /**
  * Reads a cookie value by name from document.cookie
  * @param name - The name of the cookie to retrieve
@@ -20,11 +18,13 @@ export function readCookie(name: string): string | undefined {
     // Skip malformed cookies (no '=' found)
     if (equalIndex === -1) continue;
 
-    const key = cookieString.slice(0, equalIndex).trim();
+    const key = decodeURIComponent(cookieString.slice(0, equalIndex).trim());
 
     // Early return if we found our target cookie
     if (key === name) {
-      const value = cookieString.slice(equalIndex + 1).trim();
+      const value = decodeURIComponent(
+        cookieString.slice(equalIndex + 1).trim(),
+      );
       return value || undefined; // Return undefined for empty values
     }
   }
@@ -34,22 +34,94 @@ export function readCookie(name: string): string | undefined {
 
 /**
  * Sets a cookie with the specified name and value
- * @param name - The name of the cookie
- * @param value - The value of the cookie
- * @param path - The path of the cookie (defaults to '/')
- * @param domain - The domain of the cookie (optional)
+ * Works reliably on Chrome, Firefox, Safari, WebKit (locally and CI)
+ * @param name - Cookie name
+ * @param value - Cookie value
+ * @param options - Optional settings
+ * @param options.days - Number of days until expiration (default 365)
+ * @param options.path - Cookie path (default '/')
+ * @param options.domain - Cookie domain (optional, avoid unless necessary)
+ * @param options.sameSite - SameSite policy ('Lax' by default)
+ * @param options.secure - Whether cookie is Secure (default false)
  */
 export function setCookie(
   name: string,
   value: string,
-  path: string = '/',
-  domain?: string,
+  options: {
+    days?: number;
+    path?: string;
+    domain?: string;
+    sameSite?: 'Lax' | 'Strict' | 'None';
+    secure?: boolean;
+  } = {},
 ): void {
-  let cookieString = `${name}=${value}; path=${path}`;
+  const {
+    days = 365,
+    path = '/',
+    domain,
+    sameSite = 'Lax',
+    secure = false,
+  } = options;
+
+  const encodedName = encodeURIComponent(name);
+  const encodedValue = encodeURIComponent(value);
+
+  let cookieString = `${encodedName}=${encodedValue}`;
+
+  // Set expiration date
+  if (days > 0) {
+    const expirationDate = new Date();
+    expirationDate.setTime(
+      expirationDate.getTime() + days * 24 * 60 * 60 * 1000,
+    );
+    cookieString += `; expires=${expirationDate.toUTCString()}`;
+  } else if (days === 0) {
+    // Immediate expiration → delete cookie
+    cookieString += `; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  }
+  // else no expiration = session cookie
+
+  // Set path
+  cookieString += `; path=${path}`;
+
+  // Set domain if provided (only if necessary)
+  if (domain) {
+    cookieString += `; domain=${domain}`;
+  }
+
+  // SameSite attribute
+  cookieString += `; SameSite=${sameSite}`;
+
+  // Secure attribute required if SameSite=None
+  const mustSecure = sameSite === 'None';
+  if (secure || mustSecure) {
+    cookieString += `; Secure`;
+  }
+
+  document.cookie = cookieString;
+}
+
+/**
+ * Deletes a cookie by setting its expiration date in the past.
+ * Make sure to use the same path and domain as when the cookie was set.
+ *
+ * @param name - The name of the cookie to delete
+ * @param options - Optional cookie attributes to match for deletion
+ * @param options.path - The path of the cookie (default '/')
+ * @param options.domain - The domain of the cookie (optional)
+ */
+export function deleteCookie(
+  name: string,
+  options: { path?: string; domain?: string } = {},
+): void {
+  const { path = '/', domain } = options;
+
+  let cookieString = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}`;
 
   if (domain) {
     cookieString += `; domain=${domain}`;
   }
 
+  // Setting Secure or SameSite not needed when deleting cookies
   document.cookie = cookieString;
 }
