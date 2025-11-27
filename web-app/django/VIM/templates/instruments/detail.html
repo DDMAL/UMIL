@@ -8,7 +8,6 @@
 {% endblock title %}
 
 {% block ts_files %}
-  {% vite_asset 'src/instruments/CollapseTable.ts' %}
   {% vite_asset 'src/instruments/JumpToTop.ts' %}
   {% vite_asset 'src/instruments/AddName.ts' %}
   {% vite_asset 'src/instruments/DeleteName.ts' %}
@@ -56,7 +55,7 @@
               <td>
                 <div style="height: 300px;
                             resize: vertical"
-                     class="overflow-y-auto border border-gray-300 d-none d-lg-block">
+                     class="overflow-y-scroll border border-gray-300 d-none d-lg-block">
                   <table class="table table-sm table-striped table-bordered table-hover mb-0">
                     <thead class="position-sticky top-0 align-top shadow-sm">
                       <tr>
@@ -92,7 +91,7 @@
                     </thead>
                     <tbody id="languageTableBody">
                       {% for lang, names in label_aliases_dict.items %}
-                        <tr class="{% if forloop.counter > 5 %}d-none extra-language-row{% endif %}">
+                        <tr>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                               <span class="view-field flex-grow-1 notranslate">{{ lang.en_label }}</span>
@@ -156,7 +155,7 @@
                 <!-- Stacked layout for small screens only -->
                 <div class="d-lg-none" id="languageTableBodyMobile">
                   {% for lang, names in label_aliases_dict.items %}
-                    <div class="border rounded p-2 mb-2 {% if forloop.counter > 5 %}d-none extra-language-row{% endif %}">
+                    <div class="border rounded p-2 mb-2">
                       <!-- Language -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Language</div>
@@ -224,10 +223,7 @@
                   {% endfor %}
                 </div>
                 <!-- Button below the table -->
-                <div class="my-2 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-md-between">
-                  <button id="toggle-language-table" class="btn btn-link px-1" type="button">
-                    View all languages
-                  </button>
+                <div class="my-2 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-md-end">
                   <div class="add-name-container">
                     {% if user.is_authenticated %}
                       <button type="button"
