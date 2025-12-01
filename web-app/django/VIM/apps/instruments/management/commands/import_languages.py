@@ -124,11 +124,45 @@ def get_language_details(language_codes):
         return None
 
 
+def get_language_directions_from_sparql(url: str):
+    """
+    Fetches the text direction for all languages available in Wikidata using SPARQL.
+    Returns a dictionary mapping each language code to its text direction.
+    """
+    query = """
+    SELECT ?code (MIN(?directionLabel) AS ?direction) WHERE { # some languages have two directions: MIN fetches it to ltr
+        ?lang wdt:P305 ?code .        # IETF language tag
+        ?lang wdt:P282 ?script .      # writing system
+        
+        ?script wdt:P1406 ?directionItem .   # script direction
+        SERVICE wikibase:label {
+            bd:serviceParam wikibase:language "en" .
+            ?directionItem rdfs:label ?directionLabel .
+        }
+        } GROUP BY ?code
+    """
+
+    response = requests.get(
+        url, params={"query": query, "format": "json"}, headers=HEADERS, timeout=50
+    )
+    data = response.json()
+
+    directions = {}
+    for item in data.get("results", {}).get("bindings", []):
+        code = item["code"]["value"]
+        direction_label = item["direction"]["value"]
+        if "right-to-left" in direction_label:
+            directions[code] = "rtl"
+        else:
+            directions[code] = "ltr"
+    return directions
+
+
 class Command(BaseCommand):
     """
     The import_languages command populates the database with languages in which instrument
     names can be provided in UMIL. It fetches the language list from Wikidata, retrieves the
-    'wikidata_code', 'autonym', and 'en_label', and stores them in the database.
+    'wikidata_code', 'autonym', 'en_label', and 'direction', and stores them in the database.
     """
 
     help = "Imports possible languages for instrument names from Wikidata."
@@ -137,6 +171,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Fetch the list of languages
+        fetched_dir = 0
         languages = get_languages_from_wikidata()
         language_codes = [lang.get("code") for lang in languages]
 
@@ -145,6 +180,9 @@ class Command(BaseCommand):
                 f"Successfully fetched {len(language_codes)} language codes."
             )
         )
+
+        # Fetch text directions for all language codes (can be batched if needed)
+        directions = get_language_directions_from_sparql(self.WIKIDATA_SPARQL_URL)
 
         # Fetch details for specific language codes, 50 at a time
         for i in range(0, len(language_codes), 50):
@@ -155,14 +193,26 @@ class Command(BaseCommand):
                     wikidata_code = language_details[lang]["code"]
                     en_label = language_details[lang]["name"]
                     autonym = language_details[lang]["autonym"]
+                    if wikidata_code in directions:
+                        direction = directions[wikidata_code]
+                        fetched_dir += 1
+                    else:
+                        direction = "ltr"
 
                     Language.objects.update_or_create(
                         wikidata_code=wikidata_code,
-                        defaults={"en_label": en_label, "autonym": autonym},
+                        defaults={
+                            "en_label": en_label,
+                            "autonym": autonym,
+                            "direction": direction,
+                        },
                     )
 
         self.stdout.write(
             self.style.SUCCESS(
                 f"Successfully imported {Language.objects.count()} languages."
             )
+        )
+        self.stdout.write(
+            self.style.SUCCESS(f"Successfully fetched {fetched_dir} directions.")
         )
