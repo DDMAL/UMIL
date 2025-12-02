@@ -9,14 +9,14 @@ class Language(models.Model):
     autonym = models.CharField(
         blank=False, help_text="Language label in the language itself"
     )
-    direction = models.CharField(
+    html_direction = models.CharField(
         max_length=3,
         choices=[
             ("ltr", "Left-to-Right"),
             ("rtl", "Right-to-Left"),
         ],
         default="ltr",
-        help_text="Text direction",
+        help_text="HTML text direction",
     )
 
     def __str__(self):

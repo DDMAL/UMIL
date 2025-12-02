@@ -99,13 +99,13 @@
                           </td>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
-                                 dir="{{ lang.direction }}">
+                                 dir="{{ lang.html_direction }}">
                               <span class="view-field flex-grow-1 notranslate">{{ names.label.name }}</span>
                             </div>
                           </td>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
-                                 dir="{{ lang.direction }}">
+                                 dir="{{ lang.html_direction }}">
                               <div class="alias-list">
                                 {% for alias in names.aliases %}
                                   <span class="alias-item notranslate">{{ alias.name }}</span>
@@ -167,13 +167,13 @@
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Name</div>
                         <span class="view-field notranslate">
-                          <div dir="{{ lang.direction }}">{{ names.label.name }}</div>
+                          <div dir="{{ lang.html_direction }}">{{ names.label.name }}</div>
                         </span>
                       </div>
                       <!-- Aliases -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Alias</div>
-                        <div class="alias-list" dir="{{ lang.direction }}">
+                        <div class="alias-list" dir="{{ lang.html_direction }}">
                           {% for alias in names.aliases %}
                             <span class="alias-item">{{ alias.name }}</span>
                           {% endfor %}
