@@ -170,7 +170,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Fetch the list of languages
-        fetched_dir = 0
         languages = get_languages_from_wikidata()
         language_codes = [lang.get("code") for lang in languages]
 
@@ -194,7 +193,6 @@ class Command(BaseCommand):
                     autonym = language_details[lang]["autonym"]
                     if wikidata_code in directions:
                         direction = directions[wikidata_code]
-                        fetched_dir += 1
                     else:
                         direction = "ltr"
 
