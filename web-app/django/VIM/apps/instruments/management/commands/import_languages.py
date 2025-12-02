@@ -133,7 +133,6 @@ def get_language_directions_from_sparql(url: str):
     SELECT ?code (MIN(?directionLabel) AS ?direction) WHERE { # some languages have two directions: MIN fetches it to ltr
         ?lang wdt:P305 ?code .        # IETF language tag
         ?lang wdt:P282 ?script .      # writing system
-        
         ?script wdt:P1406 ?directionItem .   # script direction
         SERVICE wikibase:label {
             bd:serviceParam wikibase:language "en" .
@@ -143,13 +142,13 @@ def get_language_directions_from_sparql(url: str):
     """
 
     response = requests.get(
-        url, params={"query": query, "format": "json"}, headers=HEADERS, timeout=50
+        url, params={"query": query, "format": "json"}, headers=HEADERS, timeout=200
     )
     data = response.json()
 
     directions = {}
     for item in data.get("results", {}).get("bindings", []):
-        code = item["code"]["value"]
+        code = item["code"]["value"].lower()
         direction_label = item["direction"]["value"]
         if "right-to-left" in direction_label:
             directions[code] = "rtl"
@@ -204,7 +203,7 @@ class Command(BaseCommand):
                         defaults={
                             "en_label": en_label,
                             "autonym": autonym,
-                            "direction": direction,
+                            "html_direction": direction,
                         },
                     )
 
@@ -213,6 +212,9 @@ class Command(BaseCommand):
                 f"Successfully imported {Language.objects.count()} languages."
             )
         )
+
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully fetched {fetched_dir} directions.")
+            self.style.SUCCESS(
+                f"Successfully fetched {Language.objects.filter(wikidata_code__in=directions.keys()).count()} directions."
+            )
         )
