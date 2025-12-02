@@ -61,3 +61,14 @@ body {
 .goog-te-gadget {
   font-size: 0 !important;
 }
+
+// Google Translate marks RTL with `.translated-rtl` but doesn't flip layout
+.translated-rtl {
+  direction: rtl !important;
+  text-align: right !important;
+
+  .force-ltr {
+    direction: ltr !important;
+    text-align: left !important;
+  }
+}
