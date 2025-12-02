@@ -98,14 +98,12 @@
                             </div>
                           </td>
                           <td>
-                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
-                                 dir="{{ lang.html_direction }}">
+                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                               <span class="view-field flex-grow-1 notranslate">{{ names.label.name }}</span>
                             </div>
                           </td>
                           <td>
-                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
-                                 dir="{{ lang.html_direction }}">
+                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
                               <div class="alias-list">
                                 {% for alias in names.aliases %}
                                   <span class="alias-item notranslate">{{ alias.name }}</span>
@@ -166,14 +164,12 @@
                       <!-- Name -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Name</div>
-                        <span class="view-field notranslate">
-                          <div dir="{{ lang.html_direction }}">{{ names.label.name }}</div>
-                        </span>
+                        <span class="view-field notranslate">{{ names.label.name }}</span>
                       </div>
                       <!-- Aliases -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Alias</div>
-                        <div class="alias-list" dir="{{ lang.html_direction }}">
+                        <div class="alias-list">
                           {% for alias in names.aliases %}
                             <span class="alias-item">{{ alias.name }}</span>
                           {% endfor %}
