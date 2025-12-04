@@ -40,6 +40,7 @@ export type WikidataLanguage = {
   wikidata_code: string;
   autonym: string;
   en_label: string;
+  html_direction?: string;
 };
 
 export type ValidationResult = {
