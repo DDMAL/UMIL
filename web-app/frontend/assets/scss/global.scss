@@ -71,4 +71,9 @@ body {
     direction: ltr !important;
     text-align: left !important;
   }
+
+  .force-rtl {
+    direction: rtl !important;
+    text-align: right !important;
+  }
 }
