@@ -115,7 +115,10 @@
                           </td>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                              <span class="view-field flex-grow-1">{{ names.label.source_name }}</span>
+                              <span class="view-field flex-grow-1">
+                                {{ names.label.sources.all.0.name }}
+                                {# TODO: show all visible sources in a separate page #}
+                              </span>
                             </div>
                           </td>
                           {% if user.is_authenticated %}
@@ -141,7 +144,7 @@
                                         data-bs-target="#deleteNameModal"
                                         data-instrument-language="{{ names.label.language.en_label }}"
                                         data-instrument-name="{{ names.label.name }}"
-                                        data-instrument-source="{{ names.label.source_name }}"
+                                        data-instrument-source="{{ names.label.sources.all.0.name }}"
                                         data-instrument-id="{{ names.label.id }}"
                                         data-instrument-pk="{{ instrument.pk }}">
                                   Delete
@@ -182,7 +185,10 @@
                       <!-- Source -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Source</div>
-                        <span class="view-field">{{ names.label.source_name }}</span>
+                        <span class="view-field">
+                          {{ names.label.sources.all.0.name }}
+                          {# TODO: show all visible sources in a separate page #}
+                        </span>
                       </div>
                       {% if user.is_authenticated %}
                         <!-- Status column -->
@@ -216,7 +222,7 @@
                                   data-bs-target="#deleteNameModal"
                                   data-instrument-language="{{ names.label.language.en_label }}"
                                   data-instrument-name="{{ names.label.name }}"
-                                  data-instrument-source="{{ names.label.source_name }}"
+                                  data-instrument-source="{{ names.label.sources.all.0.name }}"
                                   data-instrument-id="{{ names.label.id }}"
                                   data-instrument-pk="{{ instrument.pk }}">
                             Delete

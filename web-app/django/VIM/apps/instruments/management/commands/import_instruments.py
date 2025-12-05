@@ -8,7 +8,14 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
+from VIM.apps.instruments.models import (
+    Instrument,
+    InstrumentName,
+    InstrumentNameSource,
+    Source,
+    Language,
+    AVResource,
+)
 
 
 class Command(BaseCommand):
@@ -31,6 +38,12 @@ class Command(BaseCommand):
             raise ValueError(
                 f"Default contributor {settings.DDMAL_USERNAME} not found in the database."
             )
+
+        # Set Wikidata as a source to associate with all instrument names imported from Wikidata dumps
+        self.wikidata_source, _ = Source.objects.get_or_create(
+            name="Wikidata",
+            defaults={"is_visible": True},
+        )
 
     def parse_instrument_data(
         self, instrument_id: str, instrument_data: dict
@@ -142,16 +155,22 @@ class Command(BaseCommand):
                     )
                 )
                 continue
-            InstrumentName.objects.update_or_create(
+            name_obj, _ = InstrumentName.objects.update_or_create(
                 instrument=instrument,
                 language=self.language_map[lang],
                 umil_label=True,
                 defaults={
                     "name": name,
-                    "source_name": "Wikidata",
-                    "contributor": self.default_contributor,
-                    "verification_status": "verified",
                     "on_wikidata": True,
+                    "verification_status": "verified",
+                },
+            )
+
+            InstrumentNameSource.objects.update_or_create(
+                instrument_name=name_obj,
+                source=self.wikidata_source,
+                defaults={
+                    "contributor": self.default_contributor,
                 },
             )
 
@@ -166,16 +185,22 @@ class Command(BaseCommand):
                 )
                 continue
             for alias in aliases:
-                InstrumentName.objects.update_or_create(
+                alias_obj, _ = InstrumentName.objects.update_or_create(
                     instrument=instrument,
                     language=self.language_map[lang],
-                    name=alias,
                     umil_label=False,
                     defaults={
-                        "source_name": "Wikidata",
-                        "contributor": self.default_contributor,
-                        "verification_status": "verified",
+                        "name": alias,
                         "on_wikidata": True,
+                        "verification_status": "verified",
+                    },
+                )
+
+                InstrumentNameSource.objects.update_or_create(
+                    instrument_name=name_obj,
+                    source=self.wikidata_source,
+                    defaults={
+                        "contributor": self.default_contributor,
                     },
                 )
 

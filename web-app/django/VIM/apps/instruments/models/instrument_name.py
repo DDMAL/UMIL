@@ -5,9 +5,21 @@ class InstrumentName(models.Model):
     instrument = models.ForeignKey("Instrument", on_delete=models.CASCADE)
     language = models.ForeignKey("Language", on_delete=models.PROTECT)
     name = models.CharField(max_length=100, blank=False)
-    source_name = models.CharField(
-        max_length=50, blank=False, help_text="Who or what called the instrument this?"
-    )  # Stand-in for source data; format TBD
+
+    # An instrument name may be supported by multiple sources, each with its own contributor
+    sources = models.ManyToManyField(
+        "Source", through="InstrumentNameSource", related_name="instrument_names"
+    )
+    umil_label = models.BooleanField(
+        default=False,
+        help_text="Is this the label for the instrument? If true, it will be used as the main name.",
+    )
+
+    on_wikidata = models.BooleanField(
+        default=False,
+        help_text="Is this name already on Wikidata?",
+    )
+
     verification_status = models.CharField(
         max_length=50,
         choices=[
@@ -20,20 +32,6 @@ class InstrumentName(models.Model):
         default="unverified",
         help_text="Status of the name entry",
     )
-    umil_label = models.BooleanField(
-        default=False,
-        help_text="Is this the label for the instrument? If true, it will be used as the main name.",
-    )
-    contributor = models.ForeignKey(
-        "auth.User",
-        null=False,
-        on_delete=models.PROTECT,
-        help_text="User who contributed this name",
-    )
-    on_wikidata = models.BooleanField(
-        default=False,
-        help_text="Is this name already on Wikidata?",
-    )
 
     # Custom validation to ensure at most one UMIL label per instrument language
     class Meta:
@@ -44,7 +42,3 @@ class InstrumentName(models.Model):
                 name="unique_umil_label_per_instrument_language",
             )
         ]
-
-    # TODO: add verified_by field to track who verified the name
-    def __str__(self):
-        return f"{self.name} ({self.language.en_label}) - {self.instrument.wikidata_id}"
