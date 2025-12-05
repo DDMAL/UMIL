@@ -120,6 +120,9 @@ export class DeleteNameManager {
         },
         body: JSON.stringify({
           instrument_name_id: this.nameId,
+          source_name: this.deleteNameModal.querySelector(
+            '#instrumentSourceInModal',
+          )?.textContent,
         }),
       });
 

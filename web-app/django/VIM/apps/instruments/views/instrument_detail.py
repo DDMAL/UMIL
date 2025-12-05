@@ -23,9 +23,11 @@ class InstrumentDetail(DetailView):
             context["instrument_names"] = instrument_names.all()
         else:
             # Show only verified names for unauthenticated users
-            context["instrument_names"] = instrument_names.filter(
-                verification_status="verified"
-            )
+            context["instrument_names"] = [
+                name
+                for name in instrument_names
+                if name.verification_status == "verified"
+            ]
 
         # Initialize a dictionary to store label and aliases by language
         label_aliases_dict = {}
