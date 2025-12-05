@@ -39,12 +39,12 @@
         </a>
       </li>
     {% endif %}
-    <li class="page-item align-self-center">
+    <li class="page-item align-self-center force-rtl">
       <span class="current p-2">
         Page
         <span class="page-number">{{ page_obj.number }}</span>
         of
-        {{ page_obj.paginator.num_pages }}
+        <span>{{ page_obj.paginator.num_pages }}</span>
       </span>
     </li>
     {% if page_obj.has_next %}
