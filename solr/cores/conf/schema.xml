@@ -68,8 +68,8 @@
         </analyzer>
     </fieldType>
 
-    <!-- Exact match text field with term vectors -->
-    <fieldType name="text_vector" class="solr.TextField" positionIncrementGap="100" termVectors="true">
+    <!-- Exact match text field -->
+    <fieldType name="text_vector" class="solr.TextField" positionIncrementGap="100">
         <analyzer type="index">
             <tokenizer class="solr.KeywordTokenizerFactory"/>
             <filter class="solr.LowerCaseFilterFactory" />
