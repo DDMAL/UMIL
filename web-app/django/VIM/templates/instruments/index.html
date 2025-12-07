@@ -58,6 +58,18 @@
           {% endif %}
           <div class="info-block bg-light h-auto p-2 mb-3">
             <h4>Hornbostel-Sachs Classification</h4>
+            <div class="d-flex justify-content-end mb-2">
+              <div class="btn-group btn-group-sm" role="group">
+                <a href="{{ hbs_logic_urls.AND }}"
+                   class="btn {% if hbs_logic == 'AND' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                  AND
+                </a>
+                <a href="{{ hbs_logic_urls.OR }}"
+                   class="btn {% if hbs_logic == 'OR' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                  OR
+                </a>
+              </div>
+            </div>
             <hr class="mt-0" />
             <ul class="list-group">
               {% for hbs_facet_item in hbs_facets %}
