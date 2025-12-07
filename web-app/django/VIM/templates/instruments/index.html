@@ -31,16 +31,20 @@
               <h6 class="text-white">Active Filters</h6>
               <div class="d-flex flex-wrap gap-1">
                 {% if active_filters.search %}
-                  <span class="badge bg-primary text-white">
-                    Search: "{{ active_filters.search }}"
+                  <span class="badge bg-primary text-white d-flex justify-content-between align-items-start text-break"
+                        style="white-space: normal">
+                    <span class="text-start">Search: "{{ active_filters.search }}"</span>
                     <a href="{{ clear_search_url }}"
                        class="ms-1 text-white"
                        title="Remove search filter">×</a>
                   </span>
                 {% endif %}
                 {% if active_filters.hbs_classification %}
-                  <span class="badge bg-primary text-white">
-                    HBS: {{ active_filters.hbs_classification.name }}
+                  <span class="badge bg-primary text-white d-flex justify-content-between align-items-start"
+                        style="white-space: normal">
+                    <span class="text-start">
+                      HBS: {{ active_filters.hbs_classification.name }}
+                    </span>
                     <a href="{{ clear_hbs_url }}"
                        class="ms-1 text-white"
                        title="Remove HBS filter">×</a>

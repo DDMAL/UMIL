@@ -1,4 +1,5 @@
 from typing import Union
+from urllib.parse import urlencode
 import logging
 
 import pysolr
@@ -167,9 +168,13 @@ class InstrumentList(TemplateView):
 
         # Get HBS facet name for display
         if hbs_facet:
-            context["hbs_facet_name"] = next(
-                (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
-            )
+            matched_names = [
+                x["name"] for x in hbs_facet_list if x["value"] in hbs_facet
+            ]
+            if matched_names:
+                context["hbs_facet_name"] = f" {hbs_logic} ".join(matched_names)
+            else:
+                context["hbs_facet_name"] = ""
 
         # Add combined filter state for UI
         context["has_filters"] = bool(search_query or hbs_facet)
@@ -188,28 +193,48 @@ class InstrumentList(TemplateView):
         # Enhanced HBS facets with proper URLs that preserve search query
         enhanced_hbs_facets = []
         for facet in hbs_facet_list:
+            facet_value = facet["value"]
             facet_copy = facet.copy()
-            # Build URL that preserves search query (with proper encoding)
-            if search_query:
-                encoded_query = requests.utils.quote(search_query)
-                facet_copy["url"] = f"?query={encoded_query}&hbs_facet={facet['value']}"
-                facet_copy["clear_url"] = f"?query={encoded_query}"
+
+            is_active = facet_value in hbs_facet
+            facet_copy["is_active"] = is_active
+
+            # When selecting this facet, either add or remove it from the filter list
+            if is_active:
+                new_facets = [v for v in hbs_facet if v != facet_value]
             else:
-                facet_copy["url"] = f"?hbs_facet={facet['value']}"
-                facet_copy["clear_url"] = "?"
-            # Add active state for current HBS filter
-            facet_copy["is_active"] = facet["value"] == hbs_facet
+                new_facets = hbs_facet + [facet_value]
+
+            facet_copy["url"] = "?" + urlencode(
+                self.build_params(new_facets, search_query, hbs_logic), doseq=True
+            )
             enhanced_hbs_facets.append(facet_copy)
         context["hbs_facets"] = enhanced_hbs_facets
 
         # Add clear filter URLs for UI
-        context["clear_search_url"] = f"?hbs_facet={hbs_facet}" if hbs_facet else "?"
-        context["clear_hbs_url"] = (
-            f"?query={requests.utils.quote(search_query)}" if search_query else "?"
+        context["clear_hbs_url"] = "?" + urlencode(
+            {"query": search_query} if search_query else {}, doseq=True
         )
+        clear_search_params = {}
+        if hbs_facet:
+            clear_search_params["hbs_facet"] = hbs_facet
+            if hbs_logic:
+                clear_search_params["hbs_logic"] = hbs_logic
+        context["clear_search_url"] = "?" + urlencode(clear_search_params, doseq=True)
         context["clear_all_filters_url"] = "?"
 
         return context
+
+    # Compose params for URLs
+    def build_params(self, facets_list, query, logic):
+        params = {}
+        if query:
+            params["query"] = query
+        if facets_list:
+            params["hbs_facet"] = facets_list
+        if logic:
+            params["hbs_logic"] = logic
+        return params
 
     def _get_solr_connection(self):
         """Get a Solr connection."""
