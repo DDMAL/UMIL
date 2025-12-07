@@ -190,6 +190,14 @@ class InstrumentList(TemplateView):
         # Add URL building helpers for preserving search query in HBS facet links
         context["current_search_query"] = search_query
 
+        # Add url for hbs logic
+        context["hbs_logic_urls"] = {
+            "AND": "?"
+            + urlencode(self.build_params(hbs_facet, search_query, "AND"), doseq=True),
+            "OR": "?"
+            + urlencode(self.build_params(hbs_facet, search_query, "OR"), doseq=True),
+        }
+
         # Enhanced HBS facets with proper URLs that preserve search query
         enhanced_hbs_facets = []
         for facet in hbs_facet_list:
