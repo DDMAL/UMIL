@@ -150,11 +150,15 @@ class InstrumentList(TemplateView):
         context["active_language"] = self.get_active_language()
 
         # Get current filter parameters
-        hbs_facet = self.request.GET.get("hbs_facet", None)
+        hbs_facet = self.request.GET.getlist("hbs_facet")
+        hbs_logic = self.request.GET.get("hbs_logic", "OR").upper()
+
         search_query = self.request.GET.get("query", "").strip()
 
         # Set filter state in context
         context["hbs_facet"] = hbs_facet
+        context["hbs_logic"] = hbs_logic
+
         context["search_query"] = search_query if search_query else None
 
         # Get contextual HBS facets (respects current search)
@@ -212,13 +216,28 @@ class InstrumentList(TemplateView):
         return pysolr.Solr(settings.SOLR_URL, timeout=settings.SOLR_TIMEOUT)
 
     def _build_solr_query(self, language: Language, include_facets: bool = False):
-        """Build Solr query parameters supporting combined search + HBS filtering."""
+        """
+        Build Solr query parameters supporting
+            - Text search
+            - Multi-select facet filtering
+            - Support for OR / AND facet logic
+
+        ?query=<text>
+            Optional text search
+        ?hbs_facet=<value>&hbs_facet=<value>&...
+            Multi-select HBS categories.
+        ?hbs_logic=OR | AND (Default=OR)
+            Determines how multiple facet values are combined.
+        """
+
         lang_code = language.wikidata_code
         name_field = f"instrument_name_{lang_code}_ss"
 
         # Get request parameters
+        hbs_facet = self.request.GET.getlist("hbs_facet")
+        hbs_logic = self.request.GET.get("hbs_logic", "OR").upper()
+
         search_query = self.request.GET.get("query", "").strip()
-        hbs_facet = self.request.GET.get("hbs_facet", None)
 
         # Build main query (q parameter)
         if search_query:
@@ -231,7 +250,14 @@ class InstrumentList(TemplateView):
         # Build filter queries (fq parameter) for HBS classification
         filter_queries = []
         if hbs_facet:
-            filter_queries.append(f"hbs_prim_cat_s:{hbs_facet}")
+            if hbs_logic == "AND":
+                # AND = multiple fq entries
+                for val in hbs_facet:
+                    filter_queries.append(f"hbs_prim_cat_s:{val}")
+            else:
+                # OR = single fq with OR
+                joined = " OR ".join(hbs_facet)
+                filter_queries.append(f"hbs_prim_cat_s:({joined})")
 
         umil_label_field = f"instrument_umil_label_{lang_code}_s"
 
