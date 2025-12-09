@@ -70,7 +70,7 @@ class InstrumentNameAdmin(admin.ModelAdmin):
         """
         Display all associated source names for this instrument name
         """
-        return ", ".join(source.name for source in obj.sources.all())
+        return ", ".join(obj.sources.all.iterator())
 
     all_sources.short_description = "Sources"
 

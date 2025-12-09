@@ -10,7 +10,7 @@ class InstrumentNameSource(models.Model):
     contributor = models.ForeignKey(
         "auth.User",
         on_delete=models.SET_NULL,
-        help_text="Users who contributed this name",
+        help_text="Users who contributed this source to this name",
         related_name="instrument_name_sources",
         blank=True,
         null=True,
