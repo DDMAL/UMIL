@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                     "contributor",
                     models.ForeignKey(
                         blank=True,
-                        help_text="Users who contributed this name",
+                        help_text="Users who contributed this source to this name",
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
                         related_name="instrument_name_sources",

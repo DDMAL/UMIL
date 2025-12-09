@@ -42,3 +42,7 @@ class InstrumentName(models.Model):
                 name="unique_umil_label_per_instrument_language",
             )
         ]
+
+    # TODO: add verified_by field to track who verified the name
+    def __str__(self):
+        return f"{self.name} ({self.language.en_label}) - {self.instrument.wikidata_id}"
