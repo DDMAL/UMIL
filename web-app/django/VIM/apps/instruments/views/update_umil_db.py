@@ -45,6 +45,11 @@ def add_name(request: HttpRequest) -> JsonResponse:
             },
             status=400,
         )
+
+    # Get max lenght for name and source fields to prevent charecter overflow
+    max_name_length = InstrumentName._meta.get_field("name").max_length
+    max_source_length = InstrumentName._meta.get_field("source_name").max_length
+
     # Fetch the instrument from the database, if it does not exist return does not exist error
     instrument = get_object_or_404(Instrument, wikidata_id=wikidata_id)
 
@@ -62,8 +67,8 @@ def add_name(request: HttpRequest) -> JsonResponse:
 
     for entry in entries:
         language_code: str = entry["language"]
-        name: str = entry["name"]
-        source: str = entry["source"]
+        name: str = entry["name"][:max_name_length]
+        source: str = entry["source"][:max_source_length]
 
         # Validate that entry info is provided
         if not name or not source or not language_code:
