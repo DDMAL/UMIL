@@ -31,7 +31,7 @@
             <tr>
               <th scope="row" class="w-20">Wikidata ID</th>
               <td>
-                <a class="view-field"
+                <a class="view-field notranslate"
                    href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
                    target="_blank">{{ instrument.wikidata_id }}</a>
               </td>
@@ -39,13 +39,13 @@
             <tr>
               <th scope="row" class="w-20">Hornbostel-Sachs Classification</th>
               <td>
-                <span class="view-field">{{ instrument.hornbostel_sachs_class }}</span>
+                <span class="view-field notranslate">{{ instrument.hornbostel_sachs_class }}</span>
               </td>
             </tr>
             <tr>
               <th scope="row" class="w-20">MIMO Classification</th>
               <td>
-                <a class="view-field"
+                <a class="view-field notranslate"
                    href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
                    target="_blank">{{ instrument.mimo_class }}</a>
               </td>
@@ -94,19 +94,21 @@
                         <tr>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                              <span class="view-field flex-grow-1 notranslate">{{ lang.en_label }}</span>
+                              <span class="view-field flex-grow-1 notranslate force-ltr">{{ lang.en_label }}</span>
                             </div>
                           </td>
-                          <td>
+                          <td class="text-start">
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
                                  dir="{{ lang.html_direction }}">
-                              <span class="view-field flex-grow-1 notranslate">{{ names.label.name }}</span>
+                              <div>
+                                <span class="view-field flex-grow-1 notranslate">{{ names.label.name }}</span>
+                              </div>
                             </div>
                           </td>
-                          <td>
+                          <td class="text-start">
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
                                  dir="{{ lang.html_direction }}">
-                              <div class="alias-list">
+                              <div class="alias-list d-flex flex-wrap gap-1">
                                 {% for alias in names.aliases %}
                                   <span class="alias-item notranslate">{{ alias.name }}</span>
                                 {% endfor %}
@@ -161,19 +163,24 @@
                       <!-- Language -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Language</div>
-                        <span class="view-field">{{ lang.en_label }}</span>
+                        <div class="force-ltr notranslate">
+                          <span class="view-field">{{ lang.en_label }}</span>
+                        </div>
                       </div>
                       <!-- Name -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Name</div>
-                        <span class="view-field notranslate">
-                          <div dir="{{ lang.html_direction }}">{{ names.label.name }}</div>
-                        </span>
+                        <div class="d-flex flex-row notranslate" dir="{{ lang.html_direction }}">
+                          <div>
+                            <span class="view-field text-start">{{ names.label.name }}</span>
+                          </div>
+                        </div>
                       </div>
                       <!-- Aliases -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Alias</div>
-                        <div class="alias-list" dir="{{ lang.html_direction }}">
+                        <div class="alias-list d-flex flex-wrap gap-1 text-start notranslate"
+                             dir="{{ lang.html_direction }}">
                           {% for alias in names.aliases %}
                             <span class="alias-item">{{ alias.name }}</span>
                           {% endfor %}
