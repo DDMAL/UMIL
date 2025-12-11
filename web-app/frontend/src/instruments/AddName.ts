@@ -2,18 +2,9 @@ import { Modal } from 'bootstrap';
 import { WikidataLanguage, NameEntry } from './Types';
 import { NameValidator } from './helpers/NameValidator';
 import { AddNameManager } from './helpers/AddNameManager';
+import { getLanguages } from './utils';
 
-// Helper to read JSON from the template-inserted script tag
-function readLanguagesFromPage() {
-  const el = document.getElementById('languages-json');
-  if (!el) {
-    console.error('languages-json not found');
-    return [];
-  }
-  return JSON.parse(el.textContent || '[]');
-}
-
-const languages = readLanguagesFromPage();
+const languages = getLanguages();
 
 let nameValidator: NameValidator;
 let addNameManager: AddNameManager;
