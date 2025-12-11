@@ -123,44 +123,51 @@
                               </div>
                             </td>
                           {% endif %}
-                          <td>
-                            <div class="d-flex flex-column gap-2">
+                          <td class="text-start">
+                            {% if user.is_authenticated %}
                               {% for alias in names.aliases %}
-                                <div class="p-2 rounded bg-light border d-flex justify-content-between align-items-center">
+                                <div class="p-1 rounded bg-light border d-flex justify-content-between align-items-center my-1">
                                   <div class="d-flex flex-column flex-grow-1">
                                     <span class="notranslate">{{ alias.name }}</span>
-                                    {% if user.is_authenticated %}
-                                      <div>
-                                        {% if alias.verification_status == 'verified' %}
-                                          <span class="badge rounded-pill bg-success">Verified</span>
-                                        {% elif alias.verification_status == 'unverified' %}
-                                          <span class="badge rounded-pill bg-secondary">Unverified</span>
-                                        {% elif alias.verification_status == 'rejected' %}
-                                          <span class="badge rounded-pill bg-danger">Rejected</span>
-                                        {% else %}
-                                          <span class="badge rounded-pill bg-warning text-dark">Under Review</span>
-                                        {% endif %}
-                                      </div>
-                                    {% endif %}
-                                  </div>
-                                  {% if user.is_authenticated %}
-                                    <!-- TODO: Add a "More" button that links to the instrument name/alias in a popup -->
-                                    <div class="action-buttons ms-2">
-                                      <button class="btn btn-primary btn-sm"
-                                              data-bs-toggle="modal"
-                                              data-bs-target="#deleteNameModal"
-                                              data-instrument-language="{{ alias.label.language.en_label }}"
-                                              data-instrument-name="{{ alias.label.name }}"
-                                              data-instrument-source="{{ alias.label.source_name }}"
-                                              data-instrument-id="{{ alias.label.id }}"
-                                              data-instrument-pk="{{ instrument.pk }}">
-                                        Delete
-                                      </button>
+                                    <div>
+                                      {% if alias.verification_status == 'verified' %}
+                                        <span class="badge rounded-pill bg-success">Verified</span>
+                                      {% elif alias.verification_status == 'unverified' %}
+                                        <span class="badge rounded-pill bg-secondary">Unverified</span>
+                                      {% elif alias.verification_status == 'rejected' %}
+                                        <span class="badge rounded-pill bg-danger">Rejected</span>
+                                      {% else %}
+                                        <span class="badge rounded-pill bg-warning text-dark">Under Review</span>
+                                      {% endif %}
                                     </div>
-                                  {% endif %}
+                                  </div>
+                                  <div class="action-buttons ms-2">
+                                    <button class="btn btn-primary btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteNameModal"
+                                            data-instrument-language="{{ alias.label.language.en_label }}"
+                                            data-instrument-name="{{ alias.label.name }}"
+                                            data-instrument-source="{{ alias.label.source_name }}"
+                                            data-instrument-id="{{ alias.label.id }}"
+                                            data-instrument-pk="{{ instrument.pk }}">
+                                      Delete
+                                    </button>
+                                  </div>
                                 </div>
                               {% endfor %}
-                            </div>
+                            {% else %}
+                              <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
+                                   dir="{{ lang.html_direction }}">
+                                <div class="alias-list d-flex flex-wrap gap-1">
+                                  {% for alias in names.aliases %}
+                                    <span class="alias-item notranslate">
+                                      {{ alias.name }}
+                                      {% if not forloop.last %}|{% endif %}
+                                    </span>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            {% endif %}
                           </td>
                           {% if user.is_authenticated %}
                             <td>
@@ -233,44 +240,44 @@
                       <div class="mb-1">
                         {% if names.aliases %}
                           <div class="fw-bold text-muted small">Alias</div>
-                          <div class="alias-list">
-                            <div class="d-flex flex-column gap-2">
-                              {% for alias in names.aliases %}
-                                <div class="p-2 rounded bg-light border d-flex justify-content-between align-items-center">
+                          <div class="alias-list" dir="{{ lang.html_direction }}">
+                            {% for alias in names.aliases %}
+                              {% if user.is_authenticated %}
+                                <div class="p-2 rounded bg-light border d-flex justify-content-between align-items-center my-1">
                                   <div class="d-flex flex-column flex-grow-1">
                                     <span class="notranslate">{{ alias.name }}</span>
-                                    {% if user.is_authenticated %}
-                                      <div>
-                                        {% if alias.verification_status == 'verified' %}
-                                          <span class="badge rounded-pill bg-success">Verified</span>
-                                        {% elif alias.verification_status == 'unverified' %}
-                                          <span class="badge rounded-pill bg-secondary">Unverified</span>
-                                        {% elif alias.verification_status == 'rejected' %}
-                                          <span class="badge rounded-pill bg-danger">Rejected</span>
-                                        {% else %}
-                                          <span class="badge rounded-pill bg-warning text-dark">Under Review</span>
-                                        {% endif %}
-                                      </div>
-                                    {% endif %}
-                                  </div>
-                                  {% if user.is_authenticated %}
-                                    <!-- TODO: Add a "More" button that links to the instrument name/alias in a popup -->
-                                    <div class="action-buttons ms-2">
-                                      <button class="btn btn-primary btn-sm"
-                                              data-bs-toggle="modal"
-                                              data-bs-target="#deleteNameModal"
-                                              data-instrument-language="{{ alias.label.language.en_label }}"
-                                              data-instrument-name="{{ alias.label.name }}"
-                                              data-instrument-source="{{ alias.label.source_name }}"
-                                              data-instrument-id="{{ alias.label.id }}"
-                                              data-instrument-pk="{{ instrument.pk }}">
-                                        Delete
-                                      </button>
+                                    <div>
+                                      {% if alias.verification_status == 'verified' %}
+                                        <span class="badge rounded-pill bg-success">Verified</span>
+                                      {% elif alias.verification_status == 'unverified' %}
+                                        <span class="badge rounded-pill bg-secondary">Unverified</span>
+                                      {% elif alias.verification_status == 'rejected' %}
+                                        <span class="badge rounded-pill bg-danger">Rejected</span>
+                                      {% else %}
+                                        <span class="badge rounded-pill bg-warning text-dark">Under Review</span>
+                                      {% endif %}
                                     </div>
-                                  {% endif %}
+                                  </div>
+                                  <!-- TODO: Add a "More" button that links to the instrument name/alias in a popup -->
+                                  <div class="action-buttons ms-2">
+                                    <button class="btn btn-primary btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteNameModal"
+                                            data-instrument-language="{{ alias.label.language.en_label }}"
+                                            data-instrument-name="{{ alias.label.name }}"
+                                            data-instrument-source="{{ alias.label.source_name }}"
+                                            data-instrument-id="{{ alias.label.id }}"
+                                            data-instrument-pk="{{ instrument.pk }}">
+                                      Delete
+                                    </button>
+                                  </div>
                                 </div>
-                              {% endfor %}
-                            </div>
+                              {% else %}
+                                <span class="alias-item">{{ alias.name }}
+                                  {% if not forloop.last %}|{% endif %}
+                                </span>
+                              {% endif %}
+                            {% endfor %}
                           </div>
                         {% endif %}
                       </div>
