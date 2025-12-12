@@ -29,7 +29,7 @@ export default defineConfig({
         deleteName: resolve(__dirname, 'src/instruments/DeleteName.ts'),
         resendEmailCountdown: resolve(
           __dirname,
-          'src/registration/ResendEmailCountdown.ts',
+          'src/auth/ResendEmailCountdown.ts',
         ),
       },
       output: {
