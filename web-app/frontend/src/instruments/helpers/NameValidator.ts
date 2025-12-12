@@ -55,12 +55,34 @@ export class NameValidator {
   /**
    * Validates that the name field is not empty
    */
-  validateNameField(nameInput: string): ValidationResult {
-    if (nameInput.trim() === '') {
+  validateNameField(
+    nameInput: string,
+    minLength = 2,
+    maxLength = 50,
+  ): ValidationResult {
+    const trimmed = nameInput.trim();
+
+    if (trimmed === '') {
       return {
         isValid: false,
         message:
           'Please enter a name for this instrument in the selected language.',
+        type: 'error',
+      };
+    }
+
+    if (trimmed.length < minLength) {
+      return {
+        isValid: false,
+        message: `Name must be at least ${minLength} characters long.`,
+        type: 'error',
+      };
+    }
+
+    if (trimmed.length > maxLength) {
+      return {
+        isValid: false,
+        message: `Name cannot exceed ${maxLength} characters.`,
         type: 'error',
       };
     }
@@ -75,11 +97,33 @@ export class NameValidator {
   /**
    * Validates that the source field is not empty
    */
-  validateSource(sourceInput: string): ValidationResult {
-    if (sourceInput.trim() === '') {
+  validateSource(
+    sourceInput: string,
+    minLength = 2,
+    maxLength = 255,
+  ): ValidationResult {
+    const trimmed = sourceInput.trim();
+
+    if (trimmed === '') {
       return {
         isValid: false,
         message: 'Please enter the source of this name.',
+        type: 'error',
+      };
+    }
+
+    if (trimmed.length < minLength) {
+      return {
+        isValid: false,
+        message: `Name must be at least ${minLength} characters long.`,
+        type: 'error',
+      };
+    }
+
+    if (trimmed.length > maxLength) {
+      return {
+        isValid: false,
+        message: `Name cannot exceed ${maxLength} characters.`,
         type: 'error',
       };
     }
