@@ -109,7 +109,7 @@ def send_verification_email(user, request):
         "verification_url": verification_url,
         "site_name": settings.SITE_NAME,
     }
-    body_html = render_to_string("main/registration/verification_email.html", context)
+    body_html = render_to_string("main/auth/verification_email.html", context)
 
     # Send email asynchronously
     subject = f"Verify your {settings.SITE_NAME} account"

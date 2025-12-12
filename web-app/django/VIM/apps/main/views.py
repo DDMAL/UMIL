@@ -129,7 +129,7 @@ def custom_login(request):
     else:
         form = EmailAuthenticationForm()
 
-    return render(request, "main/registration/login.html", {"form": form})
+    return render(request, "main/auth/login.html", {"form": form})
 
 
 def register(request):
@@ -169,7 +169,7 @@ def register(request):
     else:
         form = EmailUserCreationForm()
 
-    return render(request, "main/registration/register.html", {"form": form})
+    return render(request, "main/auth/register.html", {"form": form})
 
 
 def verify_email_pending(request):
@@ -189,7 +189,7 @@ def verify_email_pending(request):
 
     return render(
         request,
-        "main/registration/verify_email_pending.html",
+        "main/auth/verify_email_pending.html",
         {
             "email": email,
             "cooldown_remaining": cooldown_remaining,
