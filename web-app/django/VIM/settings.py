@@ -192,6 +192,16 @@ DEFAULT_FROM_EMAIL = os.getenv(
 
 SITE_NAME = "UMIL"
 
+# TOKEN EXPIRY SETTINGS
+# Timeout for password reset and email verification tokens (24 hours)
+# Used by default_token_generator for both password reset and email verification links
+PASSWORD_RESET_TIMEOUT = 86400  # seconds
+
+# RATE LIMITING SETTINGS
+RESEND_EMAIL_COOLDOWN = 60  # seconds
+# Session expiry for pending verification email (15 minutes)
+PENDING_EMAIL_SESSION_EXPIRY = 900
+
 # MESSAGE TAGS - Map Django message levels to Bootstrap alert classes
 MESSAGE_TAGS = {
     messages.DEBUG: "secondary",
