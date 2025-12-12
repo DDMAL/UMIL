@@ -16,11 +16,9 @@ test.describe('Desktop Authentication', () => {
     // Register new user
     await registerPage.register(email, password, password);
 
-    // Should redirect to login page with success message
-    await expect(page).toHaveURL('/accounts/login/');
-    await expect(
-      page.locator('text=/Please check your email to verify/i'),
-    ).toBeVisible();
+    // Should redirect to email verification pending page
+    await expect(page).toHaveURL('/verify-email-pending/');
+    await expect(page.locator('text=/Account created!/i')).toBeVisible();
 
     // Extract verification URL from Docker logs
     const verificationUrl = await extractVerificationUrl();
@@ -28,7 +26,8 @@ test.describe('Desktop Authentication', () => {
     // Navigate to verification URL
     await page.goto(verificationUrl);
 
-    // Should see verification success message
+    // Should redirect to login page with success message
+    await expect(page).toHaveURL('/accounts/login/');
     await expect(
       page.locator('text=/Email verified successfully/i'),
     ).toBeVisible();
