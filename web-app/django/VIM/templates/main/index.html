@@ -138,13 +138,13 @@
     <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1 opacity-50 img-fluid w-100 position-absolute bottom-0" />
   </div>
   <!-- Bar Charts Section -->
-  <div class="container-fluid chart-section py-5 bg-light force-ltr">
+  <div class="container-fluid chart-section py-5 bg-light">
     <div class="container">
       <!-- First Chart: Top Instruments by Languages -->
       <div class="row mb-5 align-items-center">
         <div class="col-lg-8 order-2 order-lg-1">
           <div class="chart-container p-4 ">
-            <div id="instruments-chart"></div>
+            <div id="instruments-chart" class="force-ltr"></div>
           </div>
         </div>
         <div class="col-lg-4 order-1 order-lg-2 text-center text-lg-start mb-4 mb-lg-0">
@@ -166,7 +166,7 @@
         </div>
         <div class="col-lg-8">
           <div class="chart-container p-4">
-            <div id="languages-chart"></div>
+            <div id="languages-chart" class="force-ltr"></div>
           </div>
         </div>
       </div>
