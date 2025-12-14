@@ -16,7 +16,10 @@ class InstrumentDetail(DetailView):
 
         # Query the instrument names in all languages
         instrument_names = (
-            context["instrument"].instrumentname_set.all().select_related("language")
+            context["instrument"]
+            .instrumentname_set.all()
+            .select_related("language")
+            .prefetch_related("sources")
         )
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
