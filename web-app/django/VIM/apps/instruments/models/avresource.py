@@ -39,3 +39,11 @@ class AVResource(models.Model):
     source_name = models.CharField(
         blank=False, help_text="What is the name of the source of this AVResource?"
     )  # Stand-in for source data; format TBD
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["instrument", "url"],
+                name="unique_avresource_url_per_instrument",
+            )
+        ]
