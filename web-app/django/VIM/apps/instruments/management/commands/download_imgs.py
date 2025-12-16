@@ -4,6 +4,7 @@ import csv
 import os
 from io import BytesIO
 import requests
+import cairosvg
 from PIL import Image
 from collections import defaultdict
 from django.conf import settings
@@ -41,7 +42,16 @@ class Command(BaseCommand):
     def _save_image_as_png(self, img_content, url, save_path):
         """Save image content as a PNG file."""
         try:
-            img = Image.open(BytesIO(img_content))
+            if url.lower().endswith(".svg") or b"<svg" in img_content[:100]:
+                # Convert SVG to PNG
+                png_bytes = cairosvg.svg2png(bytestring=img_content)
+                img = Image.open(BytesIO(png_bytes))
+            else:
+                img = Image.open(BytesIO(img_content))
+                # Convert CMYK to RGB
+                if img.mode == "CMYK":
+                    img = img.convert("RGB")
+
             img.save(save_path, "PNG")
             self.stdout.write(f"Saved image at {save_path}")
         except IOError as e:
