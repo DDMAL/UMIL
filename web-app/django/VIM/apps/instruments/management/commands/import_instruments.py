@@ -10,6 +10,10 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
 
+HEADERS = {
+    "User-Agent": "UMIL/0.1.0 (https://vim.simssa.ca/; https://ddmal.music.mcgill.ca/)"
+}
+
 
 class Command(BaseCommand):
     """
@@ -22,6 +26,8 @@ class Command(BaseCommand):
 
     help = "Imports instrument objects"
 
+    WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+
     def __init__(self):
         super().__init__()
         self.language_map: dict[str, Language] = {}
@@ -31,6 +37,58 @@ class Command(BaseCommand):
             raise ValueError(
                 f"Default contributor {settings.DDMAL_USERNAME} not found in the database."
             )
+
+    def get_all_wikidata_images(
+        self, instrument_qids: list[str], exclude_image_urls: list[str]
+    ) -> dict[str, list[str]]:
+        """
+        For the given list of instrument Wikidata QIDs, fetch all image URLs (P18) except
+        those specified in exclude_image_urls, which could be empty.
+        Returns a dict: {qid: [image_url, ...], ...}
+        """
+        if not instrument_qids:
+            return {}
+
+        # SPARQL VALUES blocks for QIDs and image URLs
+        value_qids = " ".join(f"wd:{qid}" for qid in instrument_qids)
+        if exclude_image_urls:
+            value_excludes = ", ".join(f"<{url}>" for url in exclude_image_urls)
+            filter_block = f"FILTER ( ?ps_ NOT IN ( {value_excludes} ) )"
+        else:
+            filter_block = ""
+
+        filter_block = ""
+        query = (
+            "SELECT ?instrument ?ps_Label WHERE {\n"
+            f"    VALUES ?instrument {{ {value_qids} }}\n"
+            "    ?instrument p:P18 ?statement .\n"
+            "    ?statement ?ps ?ps_ .\n"
+            "    ?wd wikibase:claim ?p;\n"
+            "        wikibase:statementProperty ?ps.\n"
+            '    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }\n'
+            f"    {filter_block}\n"
+            "}\n"
+        )
+
+        response = requests.get(
+            "https://query.wikidata.org/sparql",
+            params={"query": query, "format": "json"},
+            headers=HEADERS,
+            timeout=20,
+        )
+
+        if not response.ok:
+            return {}
+
+        data = response.json()
+
+        result: dict[str, list[str]] = {qid: [] for qid in instrument_qids}
+        for item in data.get("results", {}).get("bindings", []):
+            qid = item.get("instrument", {}).get("value")
+            img = item.get("ps_Label", {}).get("value")
+            result[qid.split("/")[-1]].append(img)
+
+        return result
 
     def parse_instrument_data(
         self, instrument_id: str, instrument_data: dict
@@ -96,8 +154,7 @@ class Command(BaseCommand):
             "https://www.wikidata.org/w/api.php?action=wbgetentities&"
             f"ids={ins_ids_str}&format=json&props=labels|descriptions|claims|aliases"
         )
-        headers = {"User-Agent": "UMIL/0.1.0 (https://umil.linkedmusic.ca/)"}
-        response = requests.get(url, timeout=10, headers=headers)
+        response = requests.get(url, timeout=10, headers=HEADERS)
         response_entities = response.json()["entities"]
         instrument_data = [
             self.parse_instrument_data(key, value)
@@ -106,7 +163,7 @@ class Command(BaseCommand):
         return instrument_data
 
     def create_database_objects(
-        self, instrument_attrs: dict, original_img_path: str, thumbnail_img_path: str
+        self, instrument_attrs: dict, original_img_paths: list, thumbnail_img_path: str
     ) -> None:
         """
         Given a dictionary of instrument attributes and a url to an instrument image,
@@ -114,7 +171,7 @@ class Command(BaseCommand):
 
         instrument_attrs [dict]: Dictionary of instrument attributes. See
             parse_instrument_data for details.
-        original_img_path [str]: Path to the original instrument image
+        original_img_paths [list]: List of paths to the original instrument images
         thumbnail_img_path [str]: Path to the thumbnail of the instrument image
         """
         ins_names = instrument_attrs.pop("ins_names")
@@ -179,13 +236,16 @@ class Command(BaseCommand):
                     },
                 )
 
-        img_obj = AVResource.objects.create(
-            instrument=instrument,
-            type="image",
-            format=original_img_path.split(".")[-1],
-            url=original_img_path,
-        )
-        instrument.default_image = img_obj
+        img_obj = None
+        for img_path in reversed(original_img_paths):
+            img_obj = AVResource.objects.create(
+                instrument=instrument,
+                type="image",
+                format=img_path[0].split(".")[-1],
+                url=img_path,
+            )
+        instrument.default_image = img_obj  # Default image is the Wikidata primarily image (first statement of p:P18)
+
         thumbnail_obj = AVResource.objects.create(
             instrument=instrument,
             type="image",
@@ -207,6 +267,33 @@ class Command(BaseCommand):
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
         self.language_map = Language.objects.in_bulk(field_name="wikidata_code")
+
+        # Fetch extera images from wikidata
+        all_qids = [ins["instrument"].split("/")[-1] for ins in instrument_list]
+        fetched_images = {}
+        for i in range(0, len(all_qids), 100):
+            batch_qids = all_qids[i : i + 100]
+            batch_images = self.get_all_wikidata_images(
+                batch_qids, exclude_image_urls=[]
+            )
+            fetched_images.update(batch_images)
+
+        with open(
+            "startup_data/wikidata_images.csv", "w", newline="", encoding="utf-8"
+        ) as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["instrument", "image"])
+            for qid, imgs in fetched_images.items():
+                full_qid = "http://www.wikidata.org/entity/" + qid
+                for img in imgs:
+                    writer.writerow([full_qid, img])
+
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"Total images fetched from Wikidata: {sum(len(qid) for qid in fetched_images.values())}"
+                )
+            )
+
         img_dir = "instruments/images/instrument_imgs"
         with transaction.atomic():
             for ins_i in range(0, len(instrument_list), 50):
@@ -216,12 +303,15 @@ class Command(BaseCommand):
                 ]
                 ins_data: list[dict] = self.get_instrument_data(ins_ids_subset)
                 for instrument_attrs, ins_id in zip(ins_data, ins_ids_subset):
-                    original_img_path = os.path.join(
-                        img_dir, "original", f"{ins_id}.png"
-                    )
+                    original_img_paths = [
+                        os.path.join(img_dir, "original", f"{ins_id}.png")
+                    ] + [
+                        os.path.join(img_dir, "original", f"{ins_id}_{i}.png")
+                        for i in range(1, len(fetched_images.get(ins_id, [])))
+                    ]
                     thumbnail_img_path = os.path.join(
                         img_dir, "thumbnail", f"{ins_id}.png"
                     )
                     self.create_database_objects(
-                        instrument_attrs, original_img_path, thumbnail_img_path
+                        instrument_attrs, original_img_paths, thumbnail_img_path
                     )
