@@ -5,6 +5,7 @@ import os
 from io import BytesIO
 import requests
 from PIL import Image
+from collections import defaultdict
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
@@ -16,7 +17,7 @@ class Command(BaseCommand):
     OUTPUT_DIR = os.path.join(
         settings.STATIC_ROOT, "instruments", "images", "instrument_imgs"
     )
-    CSV_PATH = "startup_data/umil_instruments_15July_2025.csv"
+    IMAGES_PATH = "startup_data/wikidata_images.csv"
 
     help = "Download images and create thumbnails for instruments"
 
@@ -94,27 +95,46 @@ class Command(BaseCommand):
         except IOError as e:
             self.stderr.write(f"Failed to create thumbnail for {image_path}: {e}")
 
-    def process_images(self, csv_file_path):
+    def process_images(self, images_path):
         """Process images from a CSV file."""
-        with open(csv_file_path, encoding="utf-8-sig") as csvfile:
+
+        # Aggregate all images for each instrument_wikidata_id
+        instrument_images = defaultdict(list)
+        with open(images_path, encoding="utf-8-sig") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                image_url = row["image"]
                 instrument_wikidata_id = row["instrument"].split("/")[-1]
-                save_path_png = os.path.join(
-                    self.original_img_dir, f"{instrument_wikidata_id}.png"
-                )
-                thumbnail_path = os.path.join(
-                    self.thumbnail_dir, f"{instrument_wikidata_id}.png"
-                )
+                image_url = row["image"]
+                instrument_images[instrument_wikidata_id].append(image_url)
 
+        for instrument_wikidata_id, image_urls in instrument_images.items():
+            # Save first image as ...png, others as ..._1.png, ..._2.png, ...
+            for i, image_url in enumerate(image_urls):
+                if i == 0:
+                    save_path_png = os.path.join(
+                        self.original_img_dir, f"{instrument_wikidata_id}.png"
+                    )
+                else:
+                    save_path_png = os.path.join(
+                        self.original_img_dir, f"{instrument_wikidata_id}_{i}.png"
+                    )
                 if not os.path.exists(save_path_png):
                     self.download_image_as_png(image_url, save_path_png)
-
-                if not os.path.exists(thumbnail_path) and os.path.exists(save_path_png):
-                    self.create_thumbnail(save_path_png, thumbnail_path)
+            # Create thumbnail from the first image Wikidata primarily image (first statement of p:P18)
+            thumbnail_path = os.path.join(
+                self.thumbnail_dir, f"{instrument_wikidata_id}.png"
+            )
+            first_img_path = os.path.join(
+                self.original_img_dir, f"{instrument_wikidata_id}.png"
+            )
+            if (
+                len(image_urls) > 0
+                and not os.path.exists(thumbnail_path)
+                and os.path.exists(first_img_path)
+            ):
+                self.create_thumbnail(first_img_path, thumbnail_path)
 
     def handle(self, *args, **options):
         """Handle the command."""
-        self.process_images(self.CSV_PATH)
+        self.process_images(self.IMAGES_PATH)
         self.stdout.write("Images downloaded and thumbnails created")
