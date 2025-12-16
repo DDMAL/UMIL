@@ -238,7 +238,7 @@ class Command(BaseCommand):
 
         img_obj = None
         for img_path in reversed(original_img_paths):
-            img_obj = AVResource.objects.create(
+            img_obj, _ = AVResource.objects.get_or_create(
                 instrument=instrument,
                 type="image",
                 format=img_path[0].split(".")[-1],
@@ -246,7 +246,7 @@ class Command(BaseCommand):
             )
         instrument.default_image = img_obj  # Default image is the Wikidata primarily image (first statement of p:P18)
 
-        thumbnail_obj = AVResource.objects.create(
+        thumbnail_obj, _ = AVResource.objects.get_or_create(
             instrument=instrument,
             type="image",
             format=thumbnail_img_path.split(".")[-1],
