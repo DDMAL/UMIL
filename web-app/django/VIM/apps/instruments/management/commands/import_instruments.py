@@ -39,11 +39,10 @@ class Command(BaseCommand):
             )
 
     def get_all_wikidata_images(
-        self, instrument_qids: list[str], exclude_image_urls: list[str]
+        self, instrument_qids: list[str]
     ) -> dict[str, list[str]]:
         """
-        For the given list of instrument Wikidata QIDs, fetch all image URLs (P18) except
-        those specified in exclude_image_urls, which could be empty.
+        For the given list of instrument Wikidata QIDs, fetch all image URLs (P18).
         Returns a dict: {qid: [image_url, ...], ...}
         """
         if not instrument_qids:
@@ -51,13 +50,7 @@ class Command(BaseCommand):
 
         # SPARQL VALUES blocks for QIDs and image URLs
         value_qids = " ".join(f"wd:{qid}" for qid in instrument_qids)
-        if exclude_image_urls:
-            value_excludes = ", ".join(f"<{url}>" for url in exclude_image_urls)
-            filter_block = f"FILTER ( ?ps_ NOT IN ( {value_excludes} ) )"
-        else:
-            filter_block = ""
 
-        filter_block = ""
         query = (
             "SELECT ?instrument ?ps_Label WHERE {\n"
             f"    VALUES ?instrument {{ {value_qids} }}\n"
@@ -66,7 +59,6 @@ class Command(BaseCommand):
             "    ?wd wikibase:claim ?p;\n"
             "        wikibase:statementProperty ?ps.\n"
             '    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }\n'
-            f"    {filter_block}\n"
             "}\n"
         )
 
@@ -273,9 +265,7 @@ class Command(BaseCommand):
         fetched_images = {}
         for i in range(0, len(all_qids), 100):
             batch_qids = all_qids[i : i + 100]
-            batch_images = self.get_all_wikidata_images(
-                batch_qids, exclude_image_urls=[]
-            )
+            batch_images = self.get_all_wikidata_images(batch_qids)
             fetched_images.update(batch_images)
 
         with open(
