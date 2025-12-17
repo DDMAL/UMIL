@@ -1,5 +1,5 @@
 from django.views.generic import DetailView
-from VIM.apps.instruments.models import Instrument, Language
+from VIM.apps.instruments.models import Instrument, Language, AVResource
 
 
 class InstrumentDetail(DetailView):
@@ -14,9 +14,11 @@ class InstrumentDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        instrument = context["instrument"]
+
         # Query the instrument names in all languages
-        instrument_names = (
-            context["instrument"].instrumentname_set.all().select_related("language")
+        instrument_names = instrument.instrumentname_set.all().select_related(
+            "language"
         )
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
@@ -60,5 +62,16 @@ class InstrumentDetail(DetailView):
         context["languages"] = Language.objects.all()
 
         context["active_tab"] = "instruments"
+
+        # Fetch all image resources except the default image
+        default_image = instrument.default_image
+
+        context["additional_images"] = (
+            AVResource.objects.filter(
+                instrument=instrument, type="image", url__contains="original"
+            )
+            .exclude(pk=default_image.pk)
+            .order_by("url")
+        )
 
         return context
