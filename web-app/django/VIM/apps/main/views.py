@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 from VIM.apps.main.forms import (
@@ -125,7 +126,13 @@ def custom_login(request):
         form = EmailAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect(request.GET.get("next", "main:home"))
+            # Validate next parameter to prevent open redirect attacks
+            next_url = request.GET.get("next", None)
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url, allowed_hosts={request.get_host()}
+            ):
+                return redirect(next_url)
+            return redirect("main:home")
     else:
         form = EmailAuthenticationForm()
 
