@@ -248,13 +248,6 @@ def resend_verification_email(request):
         clear_pending_verification_email(request)
         return redirect("main:login")
 
-    # Check rate limit (cache-based, 60 seconds per email)
-    allowed, remaining = check_email_resend_cooldown(email)
-    if not allowed:
-        messages.warning(request, f"Please wait {remaining} seconds before resending.")
-        set_pending_verification_email(request, email)
-        return redirect("main:verify_email_pending")
-
     # Find user by email (username field stores email)
     try:
         user = User.objects.get(username=email)
@@ -266,6 +259,14 @@ def resend_verification_email(request):
     if user.is_active:
         messages.info(request, "Your account is already verified.")
         return redirect("main:login")
+
+    # Check rate limit (cache-based, 60 seconds per email)
+    # Check after confirming user exists and needs verification to prevent setting cooldown when no email will be sent
+    allowed, remaining = check_email_resend_cooldown(email)
+    if not allowed:
+        messages.warning(request, f"Please wait {remaining} seconds before resending.")
+        set_pending_verification_email(request, email)
+        return redirect("main:verify_email_pending")
 
     # Send verification email
     send_verification_email(user, request)
