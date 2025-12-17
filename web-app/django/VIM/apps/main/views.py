@@ -141,11 +141,14 @@ def custom_login(request):
 
 def register(request):
     if request.method == "POST":
-        form = EmailUserCreationForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data["username"]
+        # Extract email before form validation to check for existing unverified users
+        email = request.POST.get("username", "").strip()
 
-            # Check if user already exists
+        # Check if unverified user already exists before form validation
+        # This must happen before form.is_valid() because UserCreationForm
+        # validates username uniqueness during is_valid(), making this check
+        # unreachable if placed after form validation
+        if email:
             try:
                 existing_user = User.objects.get(username=email)
                 if not existing_user.is_active:
@@ -156,10 +159,14 @@ def register(request):
                         "This account already exists but is not verified. Please check your inbox for a verification link.",
                     )
                     return redirect("main:verify_email_pending")
-                # Active user exists - let form validation handle it
+                # Active user exists - let form validation handle it with proper error message
             except User.DoesNotExist:
+                # User doesn't exist, proceed with normal registration
                 pass
 
+        # Proceed with normal form validation
+        form = EmailUserCreationForm(request.POST)
+        if form.is_valid():
             # Create user but not activate it yet
             user = form.save(commit=False)
             user.is_active = False
