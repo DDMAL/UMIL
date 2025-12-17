@@ -55,11 +55,15 @@ class Command(BaseCommand):
             "SELECT ?instrument ?ps_Label WHERE {\n"
             f"    VALUES ?instrument {{ {value_qids} }}\n"
             "    ?instrument p:P18 ?statement .\n"
-            "    ?statement ?ps ?ps_ .\n"
+            "    ?statement ?ps ?ps_ ;\n"
+            "               wikibase:rank ?rank .\n"
             "    ?wd wikibase:claim ?p;\n"
             "        wikibase:statementProperty ?ps.\n"
             '    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }\n'
-            "}\n"
+            "    BIND(\n"
+            "        IF(?rank = wikibase:PreferredRank, 1, 2) AS ?rankOrder\n"
+            "    )\n"
+            "} ORDER BY ?instrument ?rankOrder"
         )
 
         response = requests.get(
