@@ -29,7 +29,7 @@ export class AddNameManager {
       .join('');
 
     row.innerHTML = `
-      <div class="col-md-3 language-input">
+      <div class="col-md-2 language-input">
         <label for="language${index}" class="form-label-sm">Language</label>
         <input list="languages${index}" class="form-control" id="language${index}" name="language[]" placeholder="Type to search" required />
         <datalist id="languages${index}">
