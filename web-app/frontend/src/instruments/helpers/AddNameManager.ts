@@ -23,7 +23,7 @@ export class AddNameManager {
     let datalistOptions: string = this.languages
       .map(
         (language: WikidataLanguage) => `
-        <option value="${language.wikidata_code}">${language.autonym} - ${language.en_label}</option>
+        <option value="${language.wikidata_code}" class="notranslate force-ltr">${language.autonym} - ${language.en_label}</option>
     `,
       )
       .join('');
@@ -207,7 +207,7 @@ export class AddNameManager {
           <div class="mb-3 p-2 border rounded bg-light">
             <div class="row">
               <div class="col-3"><strong>Language:</strong></div>
-              <div class="col-9">${languageCode} (${validationResult.languageDescription})</div>
+              <div class="col-9 notranslate">${languageCode} (${validationResult.languageDescription})</div>
             </div>
             <div class="row">
               <div class="col-3"><strong>Name:</strong></div>

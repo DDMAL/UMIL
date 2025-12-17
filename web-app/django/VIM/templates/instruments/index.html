@@ -127,7 +127,7 @@
                 <ul class="dropdown-menu umil-dropdown-menu" id="language-dropdown-list">
                   {% for language in languages %}
                     <li>
-                      <a class="dropdown-item umil-dropdown-item"
+                      <a class="dropdown-item umil-dropdown-item notranslate force-ltr"
                          href="?language={{ language.en_label }}"
                          data-language="{{ language.en_label }}">
                       {{ language.en_label|title }} ({{ language.autonym|title }})</a>
