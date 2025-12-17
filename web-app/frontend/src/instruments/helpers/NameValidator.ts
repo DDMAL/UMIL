@@ -115,7 +115,7 @@ export class NameValidator {
     if (trimmed.length < minLength) {
       return {
         isValid: false,
-        message: `Name must be at least ${minLength} characters long.`,
+        message: `Source must be at least ${minLength} characters long.`,
         type: 'error',
       };
     }
@@ -123,7 +123,7 @@ export class NameValidator {
     if (trimmed.length > maxLength) {
       return {
         isValid: false,
-        message: `Name cannot exceed ${maxLength} characters.`,
+        message: `Source cannot exceed ${maxLength} characters.`,
         type: 'error',
       };
     }
