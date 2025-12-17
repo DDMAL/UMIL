@@ -115,7 +115,7 @@
                           </td>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                              <span class="view-field flex-grow-1">{{ names.label.source_name }}</span>
+                              <span class="view-field flex-grow-1">{{ names.label.source_name|truncatechars:40 }}</span>
                             </div>
                           </td>
                           {% if user.is_authenticated %}
@@ -182,7 +182,7 @@
                       <!-- Source -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Source</div>
-                        <span class="view-field">{{ names.label.source_name }}</span>
+                        <span class="view-field">{{ names.label.source_name|truncatechars:50 }}</span>
                       </div>
                       {% if user.is_authenticated %}
                         <!-- Status column -->
