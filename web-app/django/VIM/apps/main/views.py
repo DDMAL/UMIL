@@ -262,11 +262,15 @@ def resend_verification_email(request):
         user = User.objects.get(username=email)
     except User.DoesNotExist:
         messages.error(request, "No account found with this email address.")
+        # Account no longer exists; clear stale pending verification session.
+        clear_pending_verification_email(request)
         return redirect("main:login")
 
     # Check if user is already verified
     if user.is_active:
         messages.info(request, "Your account is already verified.")
+        # Account is verified; clear stale pending verification session.
+        clear_pending_verification_email(request)
         return redirect("main:login")
 
     # Check rate limit (cache-based, 60 seconds per email)
