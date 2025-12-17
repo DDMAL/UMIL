@@ -44,7 +44,7 @@ export class AddNameManager {
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md-3 source-input">
+      <div class="col-md-5 source-input">
         <label for="source${index}" class="form-label-sm">Source</label>
         <input type="text" class="form-control" id="source${index}" name="source[]" placeholder="Enter source" required />
         <div class="valid-feedback"></div>
