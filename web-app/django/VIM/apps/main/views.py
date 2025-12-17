@@ -101,6 +101,15 @@ def custom_login(request):
     """
     Custom login view that handles unverified accounts.
     """
+    # Redirect authenticated users to home (or next URL if valid)
+    if request.user.is_authenticated:
+        next_url = request.GET.get("next", None)
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={request.get_host()}
+        ):
+            return redirect(next_url)
+        return redirect("main:home")
+
     if request.method == "POST":
         email = request.POST.get("username", "").strip()
         password = request.POST.get("password", "")
