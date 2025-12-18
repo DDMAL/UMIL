@@ -57,8 +57,12 @@ def check_email_resend_cooldown(email):
         remaining = int(existing_expiration - current_time)
         if remaining > 0:
             return False, remaining
-        # Cooldown expired but key still present (backend quirk); allow.
+        # Cooldown expired but key still present (backend quirk).
+        # Set new cooldown to prevent race condition with concurrent requests.
+        cache.set(cache_key, expiration_time, timeout=settings.RESEND_EMAIL_COOLDOWN)
         return True, 0
 
-    # Key disappeared between add() and get(); allow.
+    # Key disappeared between add() and get().
+    # Set new cooldown to prevent race condition with concurrent requests.
+    cache.set(cache_key, expiration_time, timeout=settings.RESEND_EMAIL_COOLDOWN)
     return True, 0
