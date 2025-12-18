@@ -15,7 +15,32 @@ type PageFixtures = {
   instrumentDetailPage: InstrumentDetailPage;
 };
 
-export const test = base.extend<PageFixtures>({
+type TestOptions = {
+  /**
+   * When enabled, aborts the external Google Translate script request to avoid
+   * rate limiting (HTTP 429) during E2E runs.
+   */
+  blockGoogleTranslate: boolean;
+};
+
+export const test = base.extend<PageFixtures & TestOptions>({
+  blockGoogleTranslate: [true, { option: true }],
+
+  page: async ({ page, blockGoogleTranslate }, use) => {
+    if (blockGoogleTranslate) {
+      // Keep the <script> tag happy without hitting Google's servers.
+      await page.route('**/translate_a/element.js*', async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/javascript; charset=utf-8',
+          body: '',
+        });
+      });
+    }
+
+    await use(page);
+  },
+
   homePage: async ({ page }, use) => await use(new HomePage(page)),
   loginPage: async ({ page }, use) => await use(new LoginPage(page)),
   registerPage: async ({ page }, use) => await use(new RegisterPage(page)),
