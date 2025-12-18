@@ -20,7 +20,9 @@ def home(request):
     total_instruments = Instrument.objects.count()
     total_languages = Language.objects.count()
     total_names = InstrumentName.objects.count()
-    total_editors = User.objects.count()
+    total_users = User.objects.filter(
+        is_active=True
+    ).count()  # Users who have completed email registration
 
     # Chart data: Top 5 instruments with most languages
     top_instruments_by_languages = (
@@ -72,7 +74,7 @@ def home(request):
         "total_instruments": total_instruments,
         "total_languages": total_languages,
         "total_names": total_names,
-        "total_editors": total_editors,
+        "total_users": total_users,
         "instruments_chart_data": json.dumps(instruments_chart_data),
         "languages_chart_data": json.dumps(languages_chart_data),
     }
