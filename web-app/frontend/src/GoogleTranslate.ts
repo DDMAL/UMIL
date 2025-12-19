@@ -173,6 +173,9 @@ function getGTLanguage(googleSelect: HTMLSelectElement) {
 }
 
 function updateLanguageButtons(langCode: string) {
+  // Skip French languages
+  if (langCode.toLowerCase().includes('fr')) return;
+
   let displayName = langCode;
 
   // Convert code → English display name
