@@ -58,6 +58,7 @@ function googleTranslateElementInit() {
       'google_translate_element',
     );
     customizeGoogleTranslate();
+    attachGTLanguageListener();
   } catch (error) {
     console.error('Google Translate initialization failed:', error);
     setTimeout(googleTranslateElementInit, 200);
@@ -92,6 +93,29 @@ function customizeGoogleTranslate() {
 
   // Set up observer to watch for Google Translate widget changes
   watchGTDefaultText(googleSelect);
+}
+
+function attachGTLanguageListener() {
+  const googleSelect =
+    document.querySelector<HTMLSelectElement>('.goog-te-combo');
+
+  if (!googleSelect) {
+    setTimeout(attachGTLanguageListener, 100);
+    return;
+  }
+
+  // Wait to GT set its current value (from another tab)
+  setTimeout(() => {
+    if (googleSelect.value) {
+      updateLanguageButtons(googleSelect.value);
+    }
+  }, 500);
+
+  // Update when user changes language
+  googleSelect.addEventListener('change', () => {
+    if (!googleSelect.value) return;
+    updateLanguageButtons(googleSelect.value);
+  });
 }
 
 // Watch for the default text of the Google Translate widget to be "Select Language"
@@ -146,6 +170,39 @@ function clearGTLanguage() {
 
 function getGTLanguage(googleSelect: HTMLSelectElement) {
   return readCookie('googtrans');
+}
+
+function updateLanguageButtons(langCode: string) {
+  let displayName = langCode;
+
+  // Convert code → English display name
+  if (typeof Intl?.DisplayNames === 'function') {
+    const dn = new Intl.DisplayNames(['en'], { type: 'language' });
+    displayName = dn.of(langCode) ?? langCode;
+  }
+
+  document
+    .querySelectorAll<HTMLAnchorElement>('a.dynamic-language-link')
+    .forEach((link) => {
+      try {
+        const url = new URL(link.href, window.location.origin);
+        // Put DISPLAY NAME in URL
+        url.searchParams.set('language', displayName);
+        link.href = url.pathname + url.search + url.hash;
+      } catch {}
+
+      let btn = link.querySelector<HTMLButtonElement>('.en-site-btn');
+
+      if (btn) {
+        // Remove cookie Listeners
+        const newBtn = btn.cloneNode(true) as HTMLButtonElement;
+        btn.replaceWith(newBtn);
+        btn = newBtn;
+      }
+      if (!btn) return;
+
+      btn.textContent = `Visit ${displayName} Site`;
+    });
 }
 
 // Export the initialization function so it's globally accessible for backwards compatibility
