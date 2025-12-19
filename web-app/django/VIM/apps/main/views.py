@@ -150,31 +150,43 @@ def custom_login(request):
 
 def register(request):
     if request.method == "POST":
-        # Extract email before form validation to check for existing unverified users
+        # Extract email and password before form validation to check for existing unverified users
         email = request.POST.get("username", "").strip()
+        password = request.POST.get("password1", "")
 
-        # Check if unverified user already exists before form validation
-        # This must happen before form.is_valid() because UserCreationForm
-        # validates username uniqueness during is_valid(), making this check
-        # unreachable if placed after form validation
-        if email:
+        # Instantiate form early so we can add custom errors if needed
+        form = EmailUserCreationForm(request.POST)
+
+        # Check for existing unverified users before calling form.is_valid()
+        # This must happen before form.is_valid() because UserCreationForm validates
+        # username uniqueness during is_valid(). If we let form validation run first,
+        # it will fail with a generic "username already exists" error, and we won't
+        # be able to distinguish between active and unverified accounts or verify passwords.
+        if email and password:
             try:
                 existing_user = User.objects.get(username=email)
                 if not existing_user.is_active:
-                    # Unverified account exists - store email and redirect to pending page
-                    set_pending_verification_email(request, email)
-                    messages.warning(
-                        request,
-                        "This account already exists but is not verified. Please check your inbox for a verification link.",
+                    # Unverified account exists - verify password before allowing access
+                    if existing_user.check_password(password):
+                        # Credentials are correct but account not verified
+                        set_pending_verification_email(request, email)
+                        messages.warning(
+                            request,
+                            "This account already exists but is not verified. Please check your inbox for a verification link.",
+                        )
+                        return redirect("main:verify_email_pending")
+                    # Password doesn't match - add custom error message
+                    # Form validation will also show "A user with that username already exists"
+                    form.add_error(
+                        None,
+                        "The password doesn't match this account.",
                     )
-                    return redirect("main:verify_email_pending")
-                # Active user exists - let form validation handle it with proper error message
+                # Active user exists - form validation will handle it with the default error message
             except User.DoesNotExist:
                 # User doesn't exist, proceed with normal registration
                 pass
 
         # Proceed with normal form validation
-        form = EmailUserCreationForm(request.POST)
         if form.is_valid():
             # Create user but not activate it yet
             user = form.save(commit=False)
