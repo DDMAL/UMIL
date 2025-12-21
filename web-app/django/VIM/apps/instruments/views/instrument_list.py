@@ -237,6 +237,7 @@ class InstrumentList(TemplateView):
 
         params = {
             "q": main_query,
+            "defType": "edismax",
             "wt": "json",
             "facet": "true" if include_facets else "false",
             "fl": f"sid, {name_field}, {umil_label_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
