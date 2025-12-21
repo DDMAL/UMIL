@@ -1,5 +1,6 @@
 from typing import Union
 import logging
+import re
 
 import pysolr
 import requests
@@ -28,7 +29,7 @@ class SolrPaginator(Paginator):
 
 # Helper classes to normalize Solr results
 class SolrInstrument:
-    def __init__(self, data: dict, lang_code: str = "en"):
+    def __init__(self, data: dict, lang_code: str = "en", highlight_dict: dict = None):
         sid = data.get("sid")
         self.pk = sid.replace("instrument-", "") if sid else ""
         self.umil_id = data.get("umil_id_s", "")
@@ -38,6 +39,10 @@ class SolrInstrument:
         self.instrumentname_set = InstrumentNameSet(
             data.get(name_field, []), data.get(umil_label_name_field, None)
         )
+        self.highlight_info: list[str] = []
+
+        if highlight_dict:
+            self.instrumentname_set.apply_highlights(highlight_dict)
 
 
 class ThumbnailStub:
@@ -62,6 +67,23 @@ class InstrumentNameSet:
 
     def all(self) -> list[InstrumentNameStub]:
         return [InstrumentNameStub(name, self._umil_label_name) for name in self._names]
+
+    def apply_highlights(self, highlight_dict: dict):
+        """
+        Apply Solr highlights to each name in the set.
+        highlight_dict: dict[str, str] mapping original text -> highlighted text
+        """
+        lookup = {k.lower(): v for k, v in highlight_dict.items() if k}
+
+        # Sort longer terms first to prevents partial overlaps
+        terms = sorted(highlight_dict.keys(), key=len, reverse=True)
+
+        # Regex for all terms
+        pattern = re.compile(r"\b(" + "|".join(map(re.escape, terms)) + r")\b")
+
+        self._names = [
+            pattern.sub(lambda m: f"<b>{m.group(1)}</b>", name) for name in self._names
+        ]
 
     def get_display_names_str(self) -> str:
         sorted_names = sorted(self.all(), key=lambda x: not x.umil_label)
@@ -268,14 +290,38 @@ class InstrumentList(TemplateView):
             **query_params,
             "rows": page_size,
             "start": start,
+            "hl": "true",
+            "hl.fl": "text",
+            "hl.simple.pre": "<b>",
+            "hl.simple.post": "</b>",
+            "hl.snippets": 1000,
+            "hl.fragsize": 1,
         }
         # Remove our custom params
         lang_code = solr_params.pop("lang_code")
 
         solr_response = solr.search(**solr_params)
-        instruments = [
-            SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
-        ]
+
+        # Extract highlight info
+        highlight_info = getattr(solr_response, "highlighting", {})
+
+        instruments = []
+        for doc in solr_response.docs:
+            pk = doc.get("sid", "").replace("instrument-", "")
+            hl_snippets = highlight_info.get(f"instrument-{pk}", {}).get("text", [])
+            # Map original -> highlighted
+            highlight_map = {}
+
+            for snippet in hl_snippets:
+                for term in re.findall(r"<b>(.*?)</b>", snippet):
+                    highlight_map[term] = f"<b>{term}</b>"
+
+            inst = SolrInstrument(
+                doc, lang_code=lang_code, highlight_dict=highlight_map
+            )
+            inst.highlight_info = hl_snippets
+            instruments.append(inst)
+
         total_count = solr_response.hits  # pysolr's hits corresponds to Solr's numFound
 
         # Return facet data if available
