@@ -53,19 +53,6 @@ class DisplayManager {
         this.currentMasonry.layout();
       }
     });
-
-    // Force Masonry view on small screens
-    window.addEventListener('resize', () => {
-      if (window.matchMedia('(max-width: 767.98px)').matches) {
-        this.setDisplayMode('masonry');
-      }
-      this.updateDisplayMode();
-
-      // Re-layout masonry if active
-      if (this.getDisplayMode() === 'masonry' && this.currentMasonry) {
-        this.currentMasonry.layout();
-      }
-    });
   }
 
   private setDisplayMode(displayMode: DisplayMode): void {
