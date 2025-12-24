@@ -68,6 +68,11 @@
   </ul>
   <div class="ms-3 mb-1 d-flex align-items-center justify-content-end">
     <label for="go-to">Go to Page</label>
-    <input type="number" name="page" id="page-num" min="1" max="{{ page_obj.paginator.num_pages }}" step="1" />
+    <input type="number"
+           name="page"
+           class="page-num"
+           min="1"
+           max="{{ page_obj.paginator.num_pages }}"
+           step="1" />
   </div>
 </div>
