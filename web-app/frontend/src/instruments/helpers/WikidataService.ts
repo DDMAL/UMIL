@@ -14,7 +14,7 @@ export class WikidataService {
     const sparqlQuery = `
       SELECT ?nameLabel WHERE {
         wd:${wikidataId} (rdfs:label|skos:altLabel) ?nameLabel .
-        FILTER(LANG(?nameLabel) = "${languageCode}" && CONTAINS(LCASE(?nameLabel),"${nameInput.toLowerCase()}"))
+        FILTER(LANG(?nameLabel) = "${languageCode}" && LCASE(?nameLabel) = "${nameInput.toLowerCase()}")
       } LIMIT 1
     `;
 
