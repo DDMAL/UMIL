@@ -1,7 +1,7 @@
 import { PaginateBy } from './Types';
 
 class PaginationManager {
-  private pageNumInput: HTMLInputElement;
+  private pageNumInputs: NodeListOf<HTMLInputElement>;
   private pageBtns: NodeListOf<Element>;
   private optionRadios: NodeListOf<Element>;
   private instrumentNum: number;
@@ -11,7 +11,9 @@ class PaginationManager {
     this.instrumentNum = parseInt(
       instrumentNumElement.getAttribute('data-instrument-num'),
     );
-    this.pageNumInput = document.getElementById('page-num') as HTMLInputElement;
+    this.pageNumInputs = document.querySelectorAll(
+      '.page-num',
+    ) as NodeListOf<HTMLInputElement>;
     this.pageBtns = document.querySelectorAll('.page-link');
     this.optionRadios = document.querySelectorAll('.option-radio');
 
@@ -48,19 +50,25 @@ class PaginationManager {
     });
 
     // Enter key event for page number input
-    this.pageNumInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        const maxPageNum = Math.ceil(this.instrumentNum / this.getPaginateBy());
-        const validPageNum = Math.min(
-          Math.max(parseInt(this.pageNumInput.value), 1),
-          maxPageNum,
-        );
+    this.pageNumInputs.forEach((input) => {
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const maxPageNum = Math.ceil(
+            this.instrumentNum / this.getPaginateBy(),
+          );
 
-        this.pageNumInput.value = validPageNum.toString();
-        this.pageNumInput.max = maxPageNum.toString();
-        this.setPage(validPageNum);
-        this.refreshPage();
-      }
+          const validPageNum = Math.min(
+            Math.max(parseInt(input.value), 1),
+            maxPageNum,
+          );
+
+          input.value = validPageNum.toString();
+          input.max = maxPageNum.toString();
+
+          this.setPage(validPageNum);
+          this.refreshPage();
+        }
+      });
     });
 
     // Click event for pagination buttons
@@ -80,9 +88,11 @@ class PaginationManager {
 
     this.setPage(page);
     this.setPaginateBy(this.parsePaginateBy(paginateByStr));
-    this.pageNumInput.max = Math.ceil(
-      this.instrumentNum / parseInt(paginateByStr),
-    ).toString();
+    this.pageNumInputs.forEach((input) => {
+      input.max = Math.ceil(
+        this.instrumentNum / parseInt(paginateByStr),
+      ).toString();
+    });
   }
 
   private parsePaginateBy(value: string | number): PaginateBy {
