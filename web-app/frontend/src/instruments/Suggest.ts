@@ -6,7 +6,7 @@ async function fetchSuggestions(query: string): Promise<string[]> {
     );
     if (!response.ok) return [];
     const data = await response.json();
-    return Array.isArray(data.suggestions) ? data.suggestions.slice(0, 5) : [];
+    return Array.isArray(data.suggestions) ? data.suggestions : [];
   } catch {
     return [];
   }
