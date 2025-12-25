@@ -79,7 +79,18 @@
             <filter class="solr.LowerCaseFilterFactory" />
         </analyzer>
     </fieldType>
-  
+    <!--Text type for AnalyzerFieldType in the suggester -->
+    <fieldType name="suggest_text_type" class="solr.TextField">
+    <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    </fieldType>
+
    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
 
     <!-- Define the new text field for queries -->
