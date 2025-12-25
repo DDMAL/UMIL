@@ -29,11 +29,12 @@ function renderSuggestionList(
   suggestions.forEach((suggestion) => {
     const item = document.createElement('div');
     item.className = 'list-group-item list-group-item-action';
-    item.textContent = suggestion;
-
-    // On click, set input value and submit the form
+    item.innerHTML = suggestion;
+    // On click, set input value without <b> tags
     item.addEventListener('click', () => {
-      input.value = suggestion;
+      const temp = document.createElement('div');
+      temp.innerHTML = suggestion;
+      input.value = temp.textContent || temp.innerText || '';
       form.submit();
     });
     listElement.appendChild(item);

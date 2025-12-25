@@ -33,15 +33,26 @@ class SolrSuggest(View):
         # Extract terms from Solr response and limit to top 5 case-insensitive
         try:
             suggest_data = data.get("suggest", {}).get("default", {})
+            suggestions = []
+            seen = set()
+            
             if suggest_data:
                 first_key = list(suggest_data.keys())[0]
                 entries = suggest_data[first_key].get("suggestions", [])
-                seen = set()
-                suggestions = [
-                    e["term"]
-                    for e in entries
-                    if e["term"].lower() not in seen and not seen.add(e["term"].lower())
-                ][:5]
+
+                for e in entries:
+                    term = e["term"]
+                    term_lower = term.lower()
+                    if term_lower not in seen:
+                        seen.add(term_lower)
+                        # Replace matched part with query string to preserve casing
+                        if term_lower.startswith(query.lower()):
+                            rest_part = term[len(query):]
+                            term = f"<b>{query}</b>{rest_part}"
+
+                        suggestions.append(term)
+                    if len(suggestions) >= 5:
+                        break
         except Exception:
             suggestions = []
 
