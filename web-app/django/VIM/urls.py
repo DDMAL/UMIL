@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
+from VIM.apps.instruments.views.solr_suggest import SolrSuggest
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
 from VIM.apps.instruments.views.update_umil_db import update_umil_db
 from VIM.apps.instruments.views.create_instrument import (
@@ -42,12 +43,13 @@ urlpatterns = i18n_patterns(
         check_duplicate_names,
         name="api-check-duplicate-names",
     ),
+    path("instruments/suggest/", SolrSuggest.as_view(), name="solr-suggest"),
     path(
-        "instrument/<slug:umil_id>/",
+        "instrument/<int:pk>/",
         InstrumentDetail.as_view(),
         name="instrument-detail",
     ),
-    path("instrument/<slug:umil_id>/names/", update_umil_db, name="update-umil-db"),
+    path("instrument/<int:pk>/names/", update_umil_db, name="update-umil-db"),
     path(
         "api/instrument/<slug:umil_id>/delete/",
         delete_instrument,

@@ -1,7 +1,16 @@
-// Static list of suggestions in the autocomplete-list div,
-
-
-const staticSuggestions = ['Piano', 'Violin', 'Flute', 'Trumpet', 'Drums'];
+async function fetchSuggestions(query: string): Promise<string[]> {
+  if (!query.trim()) return [];
+  try {
+    const response = await fetch(
+      `/instruments/suggest/?q=${encodeURIComponent(query)}`
+    );
+    if (!response.ok) return [];
+    const data = await response.json();
+    return Array.isArray(data.suggestions) ? data.suggestions.slice(0, 5) : [];
+  } catch {
+    return [];
+  }
+}
 
 function renderSuggestionList(
   listElement: HTMLElement,
@@ -10,11 +19,17 @@ function renderSuggestionList(
   form: HTMLFormElement,
 ) {
   listElement.innerHTML = '';
+  if (suggestions.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'list-group-item text-muted';
+    empty.textContent = 'No suggestions';
+    listElement.appendChild(empty);
+    return;
+  }
   suggestions.forEach((suggestion) => {
     const item = document.createElement('div');
     item.className = 'list-group-item list-group-item-action';
     item.textContent = suggestion;
-    item.style.cursor = 'pointer';
 
     // On click, set input value and submit the form
     item.addEventListener('click', () => {
@@ -37,8 +52,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (!input || !list || !form) return;
 
-  renderSuggestionList(list, staticSuggestions, input, form);
-
   function showList() {
     list.classList.remove('d-none');
   }
@@ -47,16 +60,25 @@ window.addEventListener('DOMContentLoaded', () => {
     list.classList.add('d-none');
   }
 
-  // Show suggestions when user types more than 2 chars
+  let debounceTimer: number | null = null;
+
   input.addEventListener('input', () => {
-    if (input.value.trim().length > 1) {
-      showList();
+    const val = input.value.trim();
+    if (debounceTimer) {
+      window.clearTimeout(debounceTimer);
+    }
+    if (val.length > 1) {
+      debounceTimer = window.setTimeout(async () => {
+        const suggestions = await fetchSuggestions(val);
+        renderSuggestionList(list, suggestions, input, form);
+        showList();
+      }, 150);
     } else {
       hideList();
+      list.innerHTML = '';
     }
   });
 
-  // Hide when clicking outside
   document.addEventListener('click', (event) => {
     if (event.target !== input && !list.contains(event.target as Node)) {
       hideList();
