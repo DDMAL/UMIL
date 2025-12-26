@@ -28,7 +28,7 @@ function renderSuggestionList(
   }
   suggestions.forEach((suggestion) => {
     const item = document.createElement('div');
-    item.className = 'list-group-item list-group-item-action';
+    item.className = 'list-group-item list-group-item-action notranslate force-ltr';
     item.innerHTML = suggestion;
     // On click, set input value without <b> tags
     item.addEventListener('click', () => {
