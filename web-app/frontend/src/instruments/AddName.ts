@@ -7,6 +7,7 @@ declare const languages: WikidataLanguage[];
 
 let nameValidator: NameValidator;
 let addNameManager: AddNameManager;
+let isPublishing = false;
 
 // Handle modal show event - populate instrument data
 const addNameModal = document.getElementById('addNameModal');
@@ -69,6 +70,17 @@ document
 document
   .getElementById('confirmPublishBtn')
   .addEventListener('click', function () {
+    if (isPublishing) return;
+    isPublishing = true;
+
+    const confirmBtn = document.getElementById(
+      'confirmPublishBtn',
+    ) as HTMLButtonElement;
+
+    // Disable button and rename it
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Saving…';
+
     const wikidataId = document
       .getElementById('instrumentWikidataIdInModal')
       .textContent.trim();
@@ -133,9 +145,19 @@ document
           window.location.reload();
         } else {
           alert('Error: ' + data.message);
+
+          // Restore state on failure
+          isPublishing = false;
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Confirm';
         }
       })
       .catch((error) => {
         alert('An error occurred while publishing: ' + error.message);
+
+        // Restore state on failure
+        isPublishing = false;
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Confirm';
       });
   });
