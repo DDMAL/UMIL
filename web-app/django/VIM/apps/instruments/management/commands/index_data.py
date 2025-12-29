@@ -66,6 +66,7 @@ class Command(BaseCommand):
             hbs_code = instrument["hbs_prim_cat_s"]
             instrument["hbs_prim_cat_label_s"] = self.HBS_LABEL_MAP.get(hbs_code, "")
 
+            languages_with_name = set()
             for name_entry in instrument.pop("instrument_names_by_language", []):
                 instrument_name_field = f"instrument_name_{name_entry['lang']}_ss"
                 instrument_umil_label_field = (
@@ -77,6 +78,11 @@ class Command(BaseCommand):
                     instrument[instrument_name_field].append(name_entry["name"])
                 if name_entry.get("umil_label"):
                     instrument[instrument_umil_label_field] = name_entry["name"]
+                if name_entry.get("name"):
+                    languages_with_name.add(name_entry["lang"])
+
+            instrument["instrument_label_count_i"] = len(languages_with_name)
+
 
         # Initialize Solr client
         solr = pysolr.Solr(settings.SOLR_URL, timeout=10, always_commit=True)
