@@ -2,7 +2,7 @@ async function fetchSuggestions(query: string): Promise<string[]> {
   if (!query.trim()) return [];
   try {
     const response = await fetch(
-      `/instruments/suggest/?q=${encodeURIComponent(query)}`
+      `/instruments/suggest/?q=${encodeURIComponent(query)}`,
     );
     if (!response.ok) return [];
     const data = await response.json();
@@ -28,7 +28,8 @@ function renderSuggestionList(
   }
   suggestions.forEach((suggestion) => {
     const item = document.createElement('div');
-    item.className = 'list-group-item list-group-item-action notranslate force-ltr';
+    item.className =
+      'list-group-item list-group-item-action notranslate force-ltr';
     item.innerHTML = suggestion;
     // On click, set input value without <b> tags
     item.addEventListener('click', () => {
@@ -48,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const list = document.getElementById(
     'autocomplete-list',
   ) as HTMLElement | null;
-  
+
   const form = input?.closest('form') as HTMLFormElement | null;
 
   if (!input || !list || !form) return;

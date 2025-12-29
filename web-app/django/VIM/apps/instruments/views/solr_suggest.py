@@ -35,7 +35,7 @@ class SolrSuggest(View):
             suggest_data = data.get("suggest", {}).get("default", {})
             suggestions = []
             seen = set()
-            
+
             if suggest_data:
                 first_key = list(suggest_data.keys())[0]
                 entries = suggest_data[first_key].get("suggestions", [])
@@ -47,7 +47,7 @@ class SolrSuggest(View):
                         seen.add(term_lower)
                         # Replace matched part with query string to preserve casing
                         if term_lower.startswith(query.lower()):
-                            rest_part = term[len(query):]
+                            rest_part = term[len(query) :]
                             term = f"<b>{query}</b>{rest_part}"
 
                         suggestions.append(term)

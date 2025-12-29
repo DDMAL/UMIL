@@ -83,7 +83,6 @@ class Command(BaseCommand):
 
             instrument["instrument_label_count_i"] = len(languages_with_name)
 
-
         # Initialize Solr client
         solr = pysolr.Solr(settings.SOLR_URL, timeout=10, always_commit=True)
 
