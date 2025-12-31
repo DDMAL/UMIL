@@ -161,7 +161,7 @@
                                   <span class="badge rounded-pill text-bg-gray">Unverified</span>
                                 {% elif names.label.verification_status == 'rejected' %}
                                   <span class="badge rounded-pill text-bg-danger">Rejected</span>
-                                {% else %}
+                                {% elif names.label.verification_status == 'under_review' %}
                                   <span class="badge rounded-pill text-bg-warning">Under Review</span>
                                 {% endif %}
                               </div>
@@ -242,7 +242,7 @@
                               <span class="badge rounded-pill text-bg-gray">Unverified</span>
                             {% elif names.label.verification_status == 'rejected' %}
                               <span class="badge rounded-pill text-bg-danger">Rejected</span>
-                            {% else %}
+                            {% elif names.label.verification_status == 'under_review' %}
                               <span class="badge rounded-pill text-bg-warning">Under Review</span>
                             {% endif %}
                           </div>
