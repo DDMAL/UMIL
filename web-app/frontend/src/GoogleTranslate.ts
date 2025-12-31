@@ -1,4 +1,5 @@
 import { setCookie, readCookie, deleteCookie } from './utils/cookies';
+import { barChartsInstance, ChartData } from './stats/BarCharts';
 
 declare namespace google {
   namespace translate {
@@ -92,6 +93,25 @@ function customizeGoogleTranslate() {
 
   // Set up observer to watch for Google Translate widget changes
   watchGTDefaultText(googleSelect);
+
+  googleSelect.addEventListener('change', () =>
+    setTimeout(async () => {
+      const doc = new DOMParser().parseFromString(
+        await (
+          await fetch(location.pathname, { credentials: 'same-origin' })
+        ).text(),
+        'text/html',
+      );
+      (window as any).barChartsInstance.update(
+        JSON.parse(
+          doc.getElementById('instruments-chart-data')?.textContent || '[]',
+        ),
+        JSON.parse(
+          doc.getElementById('languages-chart-data')?.textContent || '[]',
+        ),
+      );
+    }, 500),
+  );
 }
 
 // Watch for the default text of the Google Translate widget to be "Select Language"
