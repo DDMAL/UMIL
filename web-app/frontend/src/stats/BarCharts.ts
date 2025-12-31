@@ -347,7 +347,12 @@ class BarCharts {
       .delay((d: ChartData, i: number) => labelStartDelay + i * 50)
       .style('opacity', 1);
   }
+  public update(instruments: ChartData[], languages: ChartData[]): void {
+    this.createInstrumentsChart(instruments);
+    this.createLanguagesChart(languages);
+    this.setupIntersectionObserver();
+  }
 }
 
-// Initialize the charts when this module is loaded
-new BarCharts();
+export const barChartsInstance = new BarCharts();
+(window as any).barChartsInstance = barChartsInstance;
