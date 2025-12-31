@@ -31,21 +31,41 @@ def home(request):
         .order_by("-language_count")[:5]
     )
 
+    # Get language from cookie (default 'en')
+    try:
+        user_language = request.COOKIES.get("googtrans", "/en/en")
+        user_language_code = user_language.split("/")[-1]
+        target_language_obj = Language.objects.filter(
+            wikidata_code=user_language_code
+        ).first()
+        target_language_label = (
+            target_language_obj.en_label if target_language_obj else "English"
+        )
+    except:
+        target_language_label = "English"
+
     instruments_chart_data = []
     for instrument in top_instruments_by_languages:
-        # Get the English name if available, otherwise use the first available name
-        try:
-            english_name = instrument.instrumentname_set.filter(
+        # Try user-selected language
+        instrument_name_obj = instrument.instrumentname_set.filter(
+            language__en_label=target_language_label
+        ).first()
+
+        # Fallback to English
+        if not instrument_name_obj:
+            instrument_name_obj = instrument.instrumentname_set.filter(
                 language__en_label="English"
             ).first()
-            name = (
-                english_name.name
-                if english_name
-                else instrument.instrumentname_set.first().name
-            )
-        except:
-            name = f"Instrument {instrument.wikidata_id}"
 
+        # Fallback to first available
+        if not instrument_name_obj:
+            instrument_name_obj = instrument.instrumentname_set.first()
+
+        name = (
+            instrument_name_obj.name
+            if instrument_name_obj
+            else f"Instrument {instrument.wikidata_id}"
+        )
         instruments_chart_data.append(
             {"name": name, "count": instrument.language_count}
         )
