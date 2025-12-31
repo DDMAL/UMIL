@@ -18,9 +18,13 @@ class BarCharts {
   private init(): void {
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.createCharts());
+      document.addEventListener('DOMContentLoaded', () => {
+        this.createCharts();
+        this.setupResizeObserver();
+      });
     } else {
       this.createCharts();
+      this.setupResizeObserver();
     }
   }
 
@@ -347,10 +351,23 @@ class BarCharts {
       .delay((d: ChartData, i: number) => labelStartDelay + i * 50)
       .style('opacity', 1);
   }
+
   public update(instruments: ChartData[], languages: ChartData[]): void {
     this.createInstrumentsChart(instruments);
     this.createLanguagesChart(languages);
     this.setupIntersectionObserver();
+    this.setupResizeObserver();
+  }
+
+  private setupResizeObserver(): void {
+    let resizeTimeout: number;
+
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(() => {
+        this.createCharts();
+      }, 250);
+    });
   }
 }
 
