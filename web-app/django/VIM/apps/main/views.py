@@ -3,7 +3,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -19,15 +19,19 @@ def home(request):
     # Fetch statistics from database
     total_instruments = Instrument.objects.count()
     total_languages = Language.objects.count()
-    total_names = InstrumentName.objects.count()
+    total_names = InstrumentName.objects.filter(verification_status="verified").count()
     total_editors = User.objects.count()
 
-    # Chart data: Top 5 instruments with most languages
+    # Chart data: Top 5 instruments with most languages (only verified names)
     top_instruments_by_languages = (
         Instrument.objects.annotate(
-            language_count=Count("instrumentname__language", distinct=True)
+            language_count=Count(
+                "instrumentname__language",
+                filter=Q(instrumentname__verification_status="verified"),
+                distinct=True,
+            )
         )
-        .filter(language_count__gt=0)  # Only instruments with at least one language
+        .filter(language_count__gt=0)
         .order_by("-language_count")[:5]
     )
 
@@ -48,18 +52,20 @@ def home(request):
     for instrument in top_instruments_by_languages:
         # Try user-selected language
         instrument_name_obj = instrument.instrumentname_set.filter(
-            language__en_label=target_language_label
+            language__en_label=target_language_label, verification_status="verified"
         ).first()
 
         # Fallback to English
         if not instrument_name_obj:
             instrument_name_obj = instrument.instrumentname_set.filter(
-                language__en_label="English"
+                language__en_label="English", verification_status="verified"
             ).first()
 
-        # Fallback to first available
+        # Fallback to first available (must be verified)
         if not instrument_name_obj:
-            instrument_name_obj = instrument.instrumentname_set.first()
+            instrument_name_obj = instrument.instrumentname_set.filter(
+                verification_status="verified"
+            ).first()
 
         name = (
             instrument_name_obj.name
@@ -70,14 +76,16 @@ def home(request):
             {"name": name, "count": instrument.language_count}
         )
 
-    # Chart data: Top 5 languages with most instrument names
+    # Chart data: Top 5 languages with most instrument names (only verified instrument names)
     top_languages_by_names = (
         Language.objects.annotate(
-            instrument_count=Count("instrumentname", distinct=True)
+            instrument_count=Count(
+                "instrumentname",
+                filter=Q(instrumentname__verification_status="verified"),
+                distinct=True,
+            )
         )
-        .filter(
-            instrument_count__gt=0
-        )  # Only languages with at least one instrument name
+        .filter(instrument_count__gt=0)
         .order_by("-instrument_count")[:5]
     )
 
