@@ -174,21 +174,21 @@
                   No results found
                   {% if hbs_facet_name %}for <strong>{{ hbs_facet_name }}</strong>{% endif %}
                   {% if search_query %}
-                    for search query "<strong>{{ search_query }}</strong>"
+                    for search query <strong class="notranslate">"{{ search_query }}"</strong>.
                   {% endif %}
                   <!-- Case: results with a spellcheck suggestion -->
                 {% elif effective_query != search_query %}
                   Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
                   {% if hbs_facet_name %}for <strong>{{ hbs_facet_name }}</strong>{% endif %}
                   {% if search_query %}
-                    for search query "<strong>{{ effective_query }}</strong>", as no results were found for "{{ search_query }}".
+                    for search query <strong class="notranslate">"{{ effective_query }}"</strong>, as no results were found for <span class="notranslate">"{{ search_query }}"</span>.
                   {% endif %}
                   <!-- Case: results for the original search query -->
                 {% else %}
                   Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
                   {% if hbs_facet_name %}for <strong>{{ hbs_facet_name }}</strong>{% endif %}
                   {% if search_query %}
-                    for search query "<strong class='notranslate'>{{ search_query }}</strong>"
+                    for search query <strong class="notranslate">"{{ search_query }}"</strong>.
                   {% endif %}
                 {% endif %}
                 {% endif %}
