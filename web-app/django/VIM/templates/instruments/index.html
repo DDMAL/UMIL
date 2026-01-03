@@ -169,11 +169,28 @@
               <span id="instrumentNum"
                     data-instrument-num="{{ page_obj.paginator.count }}"
                     class="text-start">
-                Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} entries
-                {% if hbs_facet_name %}for{% endif %}
-                <strong>{{ hbs_facet_name }}</strong>
-                {% if search_query %}
-                  for search query "<strong class="notranslate">{{ search_query }}</strong>"
+                <!-- Case: no results -->
+                {% if page_obj.paginator.count == 0 %}
+                  No results found
+                <!-- Case: results with a spellcheck suggestion -->
+                {% elif spellcheck_suggestion %}
+                  Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+                  {% if hbs_facet_name %}
+                    for <strong>{{ hbs_facet_name }}</strong>
+                  {% endif %}
+                  {% if search_query %}
+                    for search query "<strong>{{ spellcheck_suggestion }}</strong>", as no results were found for "{{ search_query }}".
+                  {% endif %}
+                <!-- Case: results for the original search query -->
+                {% else %}
+                  Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+                  {% if hbs_facet_name %}
+                    for <strong>{{ hbs_facet_name }}</strong>
+                  {% endif %}
+                  {% if search_query %}
+                    for search query "<strong class='notranslate'>{{ search_query }}</strong>"
+                  {% endif %}
+                {% endif %}
                 {% endif %}
               </span>
             </div>
