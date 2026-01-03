@@ -141,7 +141,7 @@ class InstrumentList(TemplateView):
             instruments,
             has_other_pages,
             facet_data,
-            spellcheck_suggestion,
+            effective_query,
         ) = self._paginate_solr_results(page_size)
 
         # Add pagination data to context
@@ -165,7 +165,7 @@ class InstrumentList(TemplateView):
         context["search_query"] = search_query if search_query else None
 
         # Add spellcheck suggestion to context
-        context["spellcheck_suggestion"] = spellcheck_suggestion
+        context["effective_query"] = effective_query
 
         # Get contextual HBS facets (respects current search)
         hbs_facet_list = self._get_contextual_hbs_facets(facet_data)
@@ -267,7 +267,7 @@ class InstrumentList(TemplateView):
     def _get_solr_page_results(
         self, solr, query_params: dict, page_size: int, start: int
     ):
-        """Get a specific page of Solr search results with filter queries and total count."""
+        """Get a specific page of Solr search results with consistent facets and spellcheck support."""
         solr_params = {
             **query_params,
             "rows": page_size,
@@ -276,44 +276,43 @@ class InstrumentList(TemplateView):
         # Remove our custom params
         lang_code = solr_params.pop("lang_code")
 
-        solr_response = solr.search(**solr_params)
-        instruments = [
-            SolrInstrument(doc, lang_code=lang_code) for doc in solr_response.docs
-        ]
-        total_count = solr_response.hits  # pysolr's hits corresponds to Solr's numFound
+        effective_query = solr_params.get("q")
 
-        spellcheck_suggestion = None
-        if total_count == 0:  # only attempt correction if no results
-            raw = solr_response.raw_response
+        # Execute initial query
+        response = solr.search(**solr_params)
+
+        # Attempt spellcheck if no results
+        if response.hits == 0:
+            raw = response.raw_response
             spellcheck = raw.get("spellcheck", {})
             collations = spellcheck.get("collations", [])
             if len(collations) >= 2:
                 spellcheck_suggestion = collations[1]
-        
-        if spellcheck_suggestion:
-            corrected_params = solr_params.copy()
-            corrected_params["q"] = spellcheck_suggestion
 
-            corrected_response = solr.search(**corrected_params)
+                corrected_params = solr_params.copy()
+                corrected_params["q"] = spellcheck_suggestion
 
-            if corrected_response.hits > 0:
-                instruments = [
-                    SolrInstrument(doc, lang_code=lang_code)
-                    for doc in corrected_response.docs
-                ]
-                total_count = corrected_response.hits
-            else:
-                # If suggestion also fails, keep as zero results
-                spellcheck_suggestion = None
+                corrected_response = solr.search(**corrected_params)
 
-        # Return facet data if available
-        facet_data = None
-        if hasattr(solr_response, "facets") and solr_response.facets:
-            facet_data = solr_response.facets.get("facet_pivot", {}).get(
-                "hbs_prim_cat_s,hbs_prim_cat_label_s", []
-            )
+                if corrected_response.hits > 0:
+                    response = corrected_response
+                    effective_query = spellcheck_suggestion
 
-        return instruments, total_count, facet_data, spellcheck_suggestion
+        instruments = [
+            SolrInstrument(doc, lang_code=lang_code) for doc in response.docs
+        ]
+        total_count = response.hits
+
+        facet_data = response.facets.get("facet_pivot", {}).get(
+            "hbs_prim_cat_s,hbs_prim_cat_label_s", []
+        )
+
+        return (
+            instruments,
+            total_count,
+            facet_data,
+            effective_query,
+        )
 
     def _get_contextual_hbs_facets(self, contextual_facet_data):
         """Get HBS facets showing all categories with contextual counts (including zero)."""
@@ -390,7 +389,7 @@ class InstrumentList(TemplateView):
             page_results,
             total_count,
             facet_data,
-            spellcheck_suggestion,
+            effective_query,
         ) = self._get_solr_page_results(solr, query_params, page_size, start)
 
         # Create paginator and page objects
@@ -403,7 +402,7 @@ class InstrumentList(TemplateView):
             page_results,
             page.has_other_pages(),
             facet_data,
-            spellcheck_suggestion,
+            effective_query,
         )
 
     def get(self, request, *args, **kwargs):
