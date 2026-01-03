@@ -277,6 +277,7 @@ class InstrumentList(TemplateView):
         lang_code = solr_params.pop("lang_code")
 
         effective_query = solr_params.get("q")
+        solr_params["spellcheck.q"] = effective_query
 
         # Execute initial query
         response = solr.search(**solr_params)
