@@ -1,17 +1,31 @@
 import json
 
+from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
-from VIM.apps.main.forms import EmailUserCreationForm
+from VIM.apps.main.forms import (
+    EmailUserCreationForm,
+    EmailAuthenticationForm,
+)
 from VIM.apps.main.utils.email import (
     send_verification_email,
     validate_verification_token,
+)
+from VIM.apps.main.utils.rate_limiting import (
+    check_email_resend_cooldown,
+    get_email_cooldown_remaining,
+)
+from VIM.apps.main.utils.session import (
+    set_pending_verification_email,
+    clear_pending_verification_email,
+    get_pending_verification_email,
 )
 
 
@@ -83,28 +97,140 @@ def about(request):
     return render(request, "main/about.html", {"active_tab": "about"})
 
 
+def custom_login(request):
+    """
+    Custom login view that handles unverified accounts.
+    """
+    # Redirect authenticated users to home (or next URL if valid)
+    if request.user.is_authenticated:
+        next_url = request.GET.get("next", None)
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={request.get_host()}
+        ):
+            return redirect(next_url)
+        return redirect("main:home")
+
+    if request.method == "POST":
+        email = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+
+        # Check if user exists and verify their account status before form validation
+        if email and password:
+            try:
+                user = User.objects.get(username=email)
+                # Check if credentials are correct but account is not active
+                if not user.is_active and user.check_password(password):
+                    # Credentials are correct but account not verified
+                    set_pending_verification_email(request, email)
+                    messages.warning(
+                        request,
+                        "Your email isn't verified yet. Please check your inbox for a verification link.",
+                    )
+                    return redirect("main:verify_email_pending")
+            except User.DoesNotExist:
+                # User doesn't exist, let form validation handle it
+                pass
+
+        # Proceed with normal form validation
+        form = EmailAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            # Validate next parameter to prevent open redirect attacks
+            next_url = request.GET.get("next", None)
+            if next_url and url_has_allowed_host_and_scheme(
+                next_url, allowed_hosts={request.get_host()}
+            ):
+                return redirect(next_url)
+            return redirect("main:home")
+    else:
+        form = EmailAuthenticationForm()
+
+    return render(request, "main/auth/login.html", {"form": form})
+
+
 def register(request):
     if request.method == "POST":
+        # Extract email and password before form validation to check for existing unverified users
+        email = request.POST.get("username", "").strip()
+        password = request.POST.get("password1", "")
+
+        # Instantiate form early so we can add custom errors if needed
         form = EmailUserCreationForm(request.POST)
+
+        # Check for existing unverified users before calling form.is_valid()
+        # This must happen before form.is_valid() because UserCreationForm validates
+        # username uniqueness during is_valid(). If we let form validation run first,
+        # it will fail with a generic "username already exists" error, and we won't
+        # be able to distinguish between active and unverified accounts or verify passwords.
+        if email and password:
+            try:
+                existing_user = User.objects.get(username=email)
+                if not existing_user.is_active:
+                    # Unverified account exists - verify password before allowing access
+                    if existing_user.check_password(password):
+                        # Credentials are correct but account not verified
+                        set_pending_verification_email(request, email)
+                        messages.warning(
+                            request,
+                            "This account already exists but is not verified. Please check your inbox for a verification link.",
+                        )
+                        return redirect("main:verify_email_pending")
+                    # Password doesn't match - add custom error message
+                    # Form validation will also show "A user with that username already exists"
+                    form.add_error(
+                        None,
+                        "The password doesn't match this account.",
+                    )
+                # Active user exists - form validation will handle it with the default error message
+            except User.DoesNotExist:
+                # User doesn't exist, proceed with normal registration
+                pass
+
+        # Proceed with normal form validation
         if form.is_valid():
             # Create user but not activate it yet
             user = form.save(commit=False)
             user.is_active = False
             user.save()
 
-            # Send verification email
-            send_verification_email(user, request)
+            # Check rate limit and send verification email
+            allowed, remaining = check_email_resend_cooldown(user.username)
+            if allowed:
+                send_verification_email(user, request)
 
-            # Redirect to login with success message
-            messages.success(
-                request,
-                "Registration successful! Please check your email to verify your account before logging in.",
-            )
-            return redirect("main:login")
+            # Store email in session and redirect to pending page
+            set_pending_verification_email(request, user.username)
+            return redirect("main:verify_email_pending")
     else:
         form = EmailUserCreationForm()
 
-    return render(request, "main/registration/register.html", {"form": form})
+    return render(request, "main/auth/register.html", {"form": form})
+
+
+def verify_email_pending(request):
+    """
+    Show email verification pending page with session expiry check.
+    """
+    email = get_pending_verification_email(request)
+    if not email:
+        clear_pending_verification_email(request)
+        messages.error(
+            request, "Session expired. Please login again to request another email."
+        )
+        return redirect("main:login")
+
+    # Get remaining cooldown for countdown sync
+    cooldown_remaining = get_email_cooldown_remaining(email)
+
+    return render(
+        request,
+        "main/auth/verify_email_pending.html",
+        {
+            "email": email,
+            "cooldown_remaining": cooldown_remaining,
+            "cooldown_duration": settings.RESEND_EMAIL_COOLDOWN,
+        },
+    )
 
 
 def verify_email(request, uidb64, token):
@@ -121,6 +247,55 @@ def verify_email(request, uidb64, token):
     else:
         user.is_active = True
         user.save()
+        clear_pending_verification_email(request)
         messages.success(request, "Email verified successfully! You can log in now.")
 
     return redirect("main:login")
+
+
+def resend_verification_email(request):
+    """
+    Resend verification email with rate limiting (60s).
+    """
+    if request.method != "POST":
+        return redirect("main:login")
+
+    email = request.POST.get("email", "").strip()
+
+    # Validate email matches session
+    session_email = get_pending_verification_email(request)
+    if not session_email or email != session_email:
+        messages.error(request, "Invalid session. Please try again.")
+        clear_pending_verification_email(request)
+        return redirect("main:login")
+
+    # Find user by email (username field stores email)
+    try:
+        user = User.objects.get(username=email)
+    except User.DoesNotExist:
+        messages.error(request, "No account found with this email address.")
+        # Account no longer exists; clear stale pending verification session.
+        clear_pending_verification_email(request)
+        return redirect("main:login")
+
+    # Check if user is already verified
+    if user.is_active:
+        messages.info(request, "Your account is already verified.")
+        # Account is verified; clear stale pending verification session.
+        clear_pending_verification_email(request)
+        return redirect("main:login")
+
+    # Check rate limit (cache-based, 60 seconds per email)
+    # Check after confirming user exists and needs verification to prevent setting cooldown when no email will be sent
+    allowed, remaining = check_email_resend_cooldown(email)
+    if not allowed:
+        messages.warning(request, f"Please wait {remaining} seconds before resending.")
+        set_pending_verification_email(request, email)
+        return redirect("main:verify_email_pending")
+
+    # Send verification email
+    send_verification_email(user, request)
+    set_pending_verification_email(request, email)
+    messages.success(request, "Verification email sent! Please check your inbox.")
+
+    return redirect("main:verify_email_pending")
