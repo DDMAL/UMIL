@@ -1,0 +1,56 @@
+{% extends "main/auth/registration_base.html" %}
+
+{% load django_vite %}
+
+{% block registration_title %}
+  Verify Your Email
+{% endblock registration_title %}
+
+{% block ts_files %}
+  {% vite_asset 'src/auth/ResendEmailCountdown.ts' %}
+{% endblock ts_files %}
+
+{% block left_column %}
+  <div class="col-12 mx-md-4 px-2">
+    <h5 class="mb-5 mt-5">
+      <strong>Account created!</strong>
+    </h5>
+    <p class="mb-1">
+      We sent a verification link to: <strong>{{ email }}</strong>
+    </p>
+    <p class="mb-5">Please verify before logging in.</p>
+    <div class="mb-2">
+      <p class="mb-2">Didn't receive it?</p>
+      <form method="post"
+            action="{% url 'main:resend_verification' %}"
+            id="resendForm">
+        {% csrf_token %}
+        <input type="hidden" name="email" value="{{ email }}" />
+        <button type="submit"
+                class="btn btn-dark"
+                id="resendBtn"
+                data-cooldown-remaining="{{ cooldown_remaining|default:0 }}"
+                data-cooldown-duration="{{ cooldown_duration }}"
+                {% if cooldown_remaining > 0 %}disabled{% endif %}>
+          {% if cooldown_remaining > 0 %}
+            Resend email ({{ cooldown_remaining }}s)
+          {% else %}
+            Resend email
+          {% endif %}
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock left_column %}
+
+{% block right_column %}
+  <p class="mb-1">
+    Check your inbox and click the verification link to activate your account.
+  </p>
+  <a href="{% url 'main:login' %}" class="">Back to login</a>
+{% endblock right_column %}
+
+{% block mobile_link %}
+  <p class="mb-1 mt-3">Check your inbox for the verification link.</p>
+  <a href="{% url 'main:login' %}" class="">Back to login</a>
+{% endblock mobile_link %}
