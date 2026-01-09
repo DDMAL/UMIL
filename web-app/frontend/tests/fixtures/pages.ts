@@ -1,4 +1,6 @@
 import { test as base } from '@playwright/test';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import {
   HomePage,
   LoginPage,
@@ -17,26 +19,37 @@ type PageFixtures = {
 
 type TestOptions = {
   /**
-   * When enabled, aborts the external Google Translate script request to avoid
-   * rate limiting (HTTP 429) during E2E runs.
+   * Controls how Google Translate is handled during E2E tests:
+   * - 'block': Completely blocks Google Translate requests (default)
+   * - 'stub': Provides a deterministic Google Translate stub for testing
+   * - 'allow': Allows real Google Translate to load
    */
-  blockGoogleTranslate: boolean;
+  googleTranslateMode: 'block' | 'stub' | 'allow';
 };
 
 export const test = base.extend<PageFixtures & TestOptions>({
-  blockGoogleTranslate: [true, { option: true }],
+  googleTranslateMode: ['block', { option: true }],
 
-  page: async ({ page, blockGoogleTranslate }, use) => {
-    if (blockGoogleTranslate) {
-      // Keep the <script> tag happy without hitting Google's servers.
+  page: async ({ page, googleTranslateMode }, use) => {
+    if (googleTranslateMode === 'block') {
+      // Completely block Google Translate requests
+      await page.route('**/translate_a/element.js*', async (route) => {
+        await route.abort('blockedbyclient');
+      });
+    } else if (googleTranslateMode === 'stub') {
+      // Load the deterministic stub from external file
+      const stubPath = join(__dirname, 'google-translate-stub.js');
+      const stubCode = readFileSync(stubPath, 'utf-8');
+
       await page.route('**/translate_a/element.js*', async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/javascript; charset=utf-8',
-          body: '',
+          body: stubCode,
         });
       });
     }
+    // If googleTranslateMode === 'allow', do nothing and let real Google Translate load
 
     await use(page);
   },
