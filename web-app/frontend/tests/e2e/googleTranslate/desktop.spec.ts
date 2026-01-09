@@ -1,8 +1,8 @@
 import { test, expect } from '../../fixtures/pages';
 
-test.describe('Desktop Google Translate', () => {
-  test.use({ blockGoogleTranslate: false });
+test.use({ googleTranslateMode: 'stub' });
 
+test.describe('Desktop Google Translate', () => {
   test.beforeEach(async ({ homePage }) => {
     await homePage.goto();
   });
