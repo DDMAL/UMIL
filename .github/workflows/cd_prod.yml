@@ -1,5 +1,14 @@
 name: Deploy to Production Server
-on: workflow_dispatch
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to deploy (e.g., v1.0.0). Leave empty for latest main."
+        required: false
+        type: string
 
 concurrency:
   group: production
@@ -27,12 +36,16 @@ jobs:
             "cd /virtual-instrument-museum &&
              sudo git fetch origin -v &&
              sudo git branch -v"
-      - name: Checkout to `main` branch and pull new changes 
+      - name: Checkout to specified version or latest main
+        env:
+          VERSION: ${{ github.event.inputs.version || github.event.release.tag_name || 'main' }}
         run: |
+          # Shell-escape the version to prevent command injection
+          VERSION=$(printf %q "$VERSION")
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual-instrument-museum &&
-             sudo git checkout main &&
-             sudo git pull origin main"
+             sudo git checkout $VERSION &&
+             if [ $VERSION = 'main' ]; then sudo git pull origin main; fi"
       - name: Build docker images
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
