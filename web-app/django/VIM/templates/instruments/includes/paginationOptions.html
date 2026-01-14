@@ -24,7 +24,7 @@
     {% if page_obj.has_previous %}
       <li class="page-item">
         <a class="page-link"
-           href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+           href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
            aria-label="First"
            title="First">
           <i class="bi bi-chevron-double-left"></i>
@@ -32,7 +32,7 @@
       </li>
       <li class="page-item">
         <a class="page-link"
-           href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+           href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
            aria-label="Previous"
            title="Previous">
           <i class="bi bi-chevron-left"></i>
@@ -50,7 +50,7 @@
     {% if page_obj.has_next %}
       <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
         <a class="page-link"
-           href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+           href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
            aria-label="Next"
            title="Next">
           <i class="bi bi-chevron-right"></i>
@@ -58,7 +58,7 @@
       </li>
       <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
         <a class="page-link"
-           href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+           href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
            aria-label="Last"
            title="Last">
           <i class="bi bi-chevron-double-right"></i>
