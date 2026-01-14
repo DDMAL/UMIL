@@ -178,6 +178,13 @@ class InstrumentList(TemplateView):
             ),
         }
 
+        # Add sort data to context
+        sort_order = self.request.GET.get("sort", "").lower()
+        if sort_order not in ("asc", "desc"):
+            sort_order = None
+
+        context["sort"] = sort_order
+
         # Add URL building helpers for preserving search query in HBS facet links
         context["current_search_query"] = search_query
 
@@ -185,24 +192,80 @@ class InstrumentList(TemplateView):
         enhanced_hbs_facets = []
         for facet in hbs_facet_list:
             facet_copy = facet.copy()
-            # Build URL that preserves search query (with proper encoding)
+
+            # Build base params list
+            params = []
+            clear_params = []
+
             if search_query:
-                encoded_query = requests.utils.quote(search_query)
-                facet_copy["url"] = f"?query={encoded_query}&hbs_facet={facet['value']}"
-                facet_copy["clear_url"] = f"?query={encoded_query}"
-            else:
-                facet_copy["url"] = f"?hbs_facet={facet['value']}"
-                facet_copy["clear_url"] = "?"
+                params.append(f"query={requests.utils.quote(search_query)}")
+                clear_params.append(f"query={requests.utils.quote(search_query)}")
+
+            if sort_order:
+                params.append(f"sort={sort_order}")
+
+            # Current facet is added to main URL
+            params.append(f"hbs_facet={facet['value']}")
+
+            facet_copy["url"] = "?" + "&".join(params)
+            facet_copy["clear_url"] = (
+                "?" + "&".join(clear_params) if clear_params else "?"
+            )
+
             # Add active state for current HBS filter
             facet_copy["is_active"] = facet["value"] == hbs_facet
             enhanced_hbs_facets.append(facet_copy)
         context["hbs_facets"] = enhanced_hbs_facets
 
         # Add clear filter URLs for UI
-        context["clear_search_url"] = f"?hbs_facet={hbs_facet}" if hbs_facet else "?"
-        context["clear_hbs_url"] = (
-            f"?query={requests.utils.quote(search_query)}" if search_query else "?"
+        params = {}
+        if search_query:
+            params["query"] = search_query
+        if hbs_facet:
+            params["hbs_facet"] = hbs_facet
+        if sort_order:
+            params["sort"] = sort_order
+
+        # clear_search_url: remove 'query'
+        clear_search_params = {k: v for k, v in params.items() if k != "query"}
+        context["clear_search_url"] = (
+            "?"
+            + "&".join(
+                [
+                    f"{k}={requests.utils.quote(str(v))}"
+                    for k, v in clear_search_params.items()
+                ]
+            )
+            if clear_search_params
+            else "?"
         )
+        # clear_hbs_url: remove 'hbs_facet'
+        clear_hbs_params = {k: v for k, v in params.items() if k != "hbs_facet"}
+        context["clear_hbs_url"] = (
+            "?"
+            + "&".join(
+                [
+                    f"{k}={requests.utils.quote(str(v))}"
+                    for k, v in clear_hbs_params.items()
+                ]
+            )
+            if clear_hbs_params
+            else "?"
+        )
+        # clear_sort_url: remove 'sort'
+        clear_sort_params = {k: v for k, v in params.items() if k != "sort"}
+        context["clear_sort_url"] = (
+            "?"
+            + "&".join(
+                [
+                    f"{k}={requests.utils.quote(str(v))}"
+                    for k, v in clear_sort_params.items()
+                ]
+            )
+            if clear_sort_params
+            else "?"
+        )
+        # clear_all_filters_url: remove everything
         context["clear_all_filters_url"] = "?"
 
         return context
