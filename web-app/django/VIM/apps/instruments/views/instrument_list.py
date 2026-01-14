@@ -211,6 +211,28 @@ class InstrumentList(TemplateView):
         """Get a Solr connection."""
         return pysolr.Solr(settings.SOLR_URL, timeout=settings.SOLR_TIMEOUT)
 
+    def _build_sort_param(self, lang_code: str) -> str | None:
+        """
+        Builds a Solr sort expression that:
+        - puts missing labels FIRST
+        - sorts alphabetically by language-specific UMIL label
+        """
+        sort_order = self.request.GET.get("sort", "").lower()
+        if sort_order not in ("asc", "desc"):
+            return None
+
+        umil_label_field = f"instrument_umil_label_{lang_code}_s"
+
+        if sort_order == "desc":
+            return (
+                f"if(exists({umil_label_field}),1,0) asc, "
+                f"{umil_label_field} {sort_order}"
+            )
+        elif sort_order == "asc":
+            return f"{umil_label_field} {sort_order}"
+        else:
+            pass
+
     def _build_solr_query(self, language: Language, include_facets: bool = False):
         """Build Solr query parameters supporting combined search + HBS filtering."""
         lang_code = language.wikidata_code
@@ -233,6 +255,9 @@ class InstrumentList(TemplateView):
         if hbs_facet:
             filter_queries.append(f"hbs_prim_cat_s:{hbs_facet}")
 
+        # Build sorting filter
+        sort_param = self._build_sort_param(lang_code)
+
         umil_label_field = f"instrument_umil_label_{lang_code}_s"
 
         params = {
@@ -250,6 +275,10 @@ class InstrumentList(TemplateView):
         # Add filter queries if any
         if filter_queries:
             params["fq"] = filter_queries
+
+        # Add sort if any
+        if sort_param:
+            params["sort"] = sort_param
 
         return params
 
