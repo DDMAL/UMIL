@@ -175,7 +175,7 @@ class InstrumentList(TemplateView):
         context["sort"] = sort_order
 
         # Add combined filter state for UI
-        context["has_filters"] = bool(search_query or hbs_facet)
+        context["has_filters"] = bool(search_query or hbs_facet or sort_order)
         context["active_filters"] = {
             "search": search_query if search_query else None,
             "hbs_classification": (
