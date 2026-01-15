@@ -167,6 +167,13 @@ class InstrumentList(TemplateView):
                 (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
             )
 
+        # Add sort data to context
+        sort_order = self.request.GET.get("sort", "").lower()
+        if sort_order not in ("asc", "desc"):
+            sort_order = None
+
+        context["sort"] = sort_order
+
         # Add combined filter state for UI
         context["has_filters"] = bool(search_query or hbs_facet)
         context["active_filters"] = {
@@ -176,14 +183,8 @@ class InstrumentList(TemplateView):
                 if hbs_facet
                 else None
             ),
+            "sort": sort_order if sort_order else None,
         }
-
-        # Add sort data to context
-        sort_order = self.request.GET.get("sort", "").lower()
-        if sort_order not in ("asc", "desc"):
-            sort_order = None
-
-        context["sort"] = sort_order
 
         # Add URL building helpers for preserving search query in HBS facet links
         context["current_search_query"] = search_query

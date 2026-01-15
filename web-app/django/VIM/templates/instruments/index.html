@@ -46,6 +46,14 @@
                        title="Remove HBS filter">×</a>
                   </span>
                 {% endif %}
+                {% if active_filters.sort %}
+                  <span class="badge bg-primary text-white">
+                    Sort: {{ active_filters.sort }}
+                    <a href="{{ clear_sort_url }}"
+                       class="ms-1 text-white"
+                       title="Remove Sort filter">×</a>
+                  </span>
+                {% endif %}
                 <a href="{{ clear_all_filters_url }}"
                    class="badge bg-danger text-white text-decoration-none"
                    title="Clear all filters">Clear All</a>
