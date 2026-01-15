@@ -183,7 +183,13 @@ class InstrumentList(TemplateView):
                 if hbs_facet
                 else None
             ),
-            "sort": sort_order if sort_order else None,
+            "sort": (
+                "Ascending"
+                if sort_order == "asc"
+                else "Descending"
+                if sort_order == "desc"
+                else None
+            ),
         }
 
         # Add URL building helpers for preserving search query in HBS facet links
