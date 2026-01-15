@@ -38,20 +38,20 @@
                        title="Remove search filter">×</a>
                   </span>
                 {% endif %}
-                {% if active_filters.hbs_classification %}
-                  <span class="badge bg-primary text-white">
-                    HBS: {{ active_filters.hbs_classification.name }}
-                    <a href="{{ clear_hbs_url }}"
-                       class="ms-1 text-white"
-                       title="Remove HBS filter">×</a>
-                  </span>
-                {% endif %}
                 {% if active_filters.sort %}
                   <span class="badge bg-primary text-white">
                     Sort: {{ active_filters.sort }}
                     <a href="{{ clear_sort_url }}"
                        class="ms-1 text-white"
                        title="Remove Sort filter">×</a>
+                  </span>
+                {% endif %}
+                {% if active_filters.hbs_classification %}
+                  <span class="badge bg-primary text-white">
+                    HBS: {{ active_filters.hbs_classification.name }}
+                    <a href="{{ clear_hbs_url }}"
+                       class="ms-1 text-white"
+                       title="Remove HBS filter">×</a>
                   </span>
                 {% endif %}
                 <a href="{{ clear_all_filters_url }}"
