@@ -189,9 +189,7 @@ class InstrumentList(TemplateView):
             "sort": (
                 "Ascending"
                 if sort_order == "asc"
-                else "Descending"
-                if sort_order == "desc"
-                else None
+                else "Descending" if sort_order == "desc" else None
             ),
         }
 
