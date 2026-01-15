@@ -173,6 +173,9 @@ class InstrumentList(TemplateView):
             sort_order = None
 
         context["sort"] = sort_order
+        context["sort_list"] = [
+            {"value": value, "url": None} for value in ("asc", "desc", "default")
+        ]
 
         # Add combined filter state for UI
         context["has_filters"] = bool(search_query or hbs_facet or sort_order)
@@ -272,6 +275,28 @@ class InstrumentList(TemplateView):
             if clear_sort_params
             else "?"
         )
+
+        # Enhanced sort options for UI with proper URLs that preserve search query
+        sort_values = tuple(value["value"] for value in context["sort_list"])
+        sort_list = []
+        for value in sort_values:
+            temp_params = {k: v for k, v in params.items() if k != "sort"}
+            if value != "default":
+                temp_params["sort"] = value
+            url = (
+                "?"
+                + "&".join(
+                    [
+                        f"{k}={requests.utils.quote(str(v))}"
+                        for k, v in temp_params.items()
+                    ]
+                )
+                if temp_params
+                else "?"
+            )
+            sort_list.append({"value": value, "url": url})
+        context["sort_list"] = sort_list
+
         # clear_all_filters_url: remove everything
         context["clear_all_filters_url"] = "?"
 
