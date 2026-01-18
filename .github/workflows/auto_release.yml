@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+      - test/**
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run semantic-release"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   release:
@@ -22,3 +30,4 @@ jobs:
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
+          dry_run: ${{ github.event.inputs.dry_run || startsWith(github.ref, 'refs/heads/test/') }}
