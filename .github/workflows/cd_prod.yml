@@ -28,19 +28,19 @@ jobs:
       - name: Checkout the current repo
         uses: actions/checkout@v5
       - name: Install SSH Key
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Record current deployed version for rollback
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "cd /virtual_instrument_museum &&
              sudo bash -c 'CURRENT_VERSION=\$(git describe --tags --exact-match 2>/dev/null || git rev-parse HEAD); echo \"\$CURRENT_VERSION\" > /virtual_instrument_museum/.last_deployed'"
       - name: Fetch updates and validate target version
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           # Shell-escape the version to prevent command injection
           VERSION=$(printf %q "$DEPLOY_VERSION")
@@ -55,7 +55,7 @@ jobs:
                fi;
              fi"
       - name: Stop the current Docker containers running
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "cd /virtual_instrument_museum &&
@@ -63,7 +63,7 @@ jobs:
       - name: Deploy target version
         id: deploy_target
         continue-on-error: true
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           # Shell-escape the version to prevent command injection
           VERSION=$(printf %q "$DEPLOY_VERSION")
@@ -75,7 +75,7 @@ jobs:
              sudo docker compose -f docker-compose-deployment.yml build --no-cache;
              sudo docker compose -f docker-compose-deployment.yml up -d --wait --wait-timeout 180"
       - name: Roll back to last deployed version
-        if: ${{ !github.event.inputs.dry_run && steps.deploy_target.outcome != 'success' }}
+        if: ${{ github.event.inputs.dry_run != 'true' && steps.deploy_target.outcome != 'success' }}
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "set -euo pipefail;
@@ -91,7 +91,7 @@ jobs:
              echo '::error::Rollback executed; marking workflow as failed.';
              exit 1"
       - name: Record successful deploy version
-        if: ${{ !github.event.inputs.dry_run && steps.deploy_target.outcome == 'success' }}
+        if: ${{ github.event.inputs.dry_run != 'true' && steps.deploy_target.outcome == 'success' }}
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "cd /virtual_instrument_museum &&
