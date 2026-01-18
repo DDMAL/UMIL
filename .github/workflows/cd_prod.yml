@@ -14,6 +14,11 @@ on:
         required: false
         type: boolean
         default: true
+      force_fail:
+        description: "Force deploy step to fail (triggers rollback)"
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: production
@@ -67,6 +72,10 @@ jobs:
         run: |
           # Shell-escape the version to prevent command injection
           VERSION=$(printf %q "$DEPLOY_VERSION")
+          if [ "${{ github.event.inputs.force_fail }}" = "true" ]; then
+            echo "Forced failure for rollback test"
+            exit 1
+          fi
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST2 }} ${{ secrets.USERNAME }}@${{ secrets.HOST }} \
             "set -euo pipefail;
              cd /virtual_instrument_museum;
