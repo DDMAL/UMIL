@@ -12,7 +12,7 @@ on:
 
 concurrency:
   group: production
-  cancel-in-progress: true
+  cancel-in-progress: false # In prod, queue the deployment if multiple are requested
 
 jobs:
   deploy-production:
