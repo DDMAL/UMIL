@@ -51,9 +51,9 @@ jobs:
              sudo bash -c 'CURRENT_VERSION=\$(git describe --tags --exact-match 2>/dev/null || git rev-parse HEAD); echo \"\$CURRENT_VERSION\" > /virtual-instrument-museum/.last_deployed'"
       - name: Fetch updates and validate target version
         run: |
-          VERSION="$SAFE_DEPLOY_VERSION"
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "set -euo pipefail;
+             VERSION=\"${SAFE_DEPLOY_VERSION}\";
              cd /virtual-instrument-museum;
              sudo git fetch origin -v --tags;
              if [ \"\$VERSION\" != 'main' ]; then
@@ -71,9 +71,9 @@ jobs:
         id: deploy_target
         continue-on-error: true
         run: |
-          VERSION="$SAFE_DEPLOY_VERSION"
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "set -euo pipefail;
+             VERSION=\"${SAFE_DEPLOY_VERSION}\";
              cd /virtual-instrument-museum;
              sudo git checkout \"\$VERSION\";
              if [ \"\$VERSION\" = 'main' ]; then sudo git pull origin main; fi;
