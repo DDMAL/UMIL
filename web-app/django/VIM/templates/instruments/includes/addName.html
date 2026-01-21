@@ -76,14 +76,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  var languages = [
-      {% for language in languages %}
-      {
-          "wikidata_code": "{{ language.wikidata_code }}",
-          "autonym": "{{ language.autonym }}",
-          "en_label": "{{ language.en_label }}"
-      }{% if not forloop.last %},{% endif %}
-      {% endfor %}
-  ];
-</script>
+<script type="application/json" id="languages-json">{{ languages|safe }}</script>

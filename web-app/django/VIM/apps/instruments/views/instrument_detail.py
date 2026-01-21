@@ -1,3 +1,6 @@
+import json
+
+
 from django.views.generic import DetailView
 from VIM.apps.instruments.models import Instrument, Language
 
@@ -57,7 +60,16 @@ class InstrumentDetail(DetailView):
             context["active_instrument_label"] = active_labels.first()
 
         # Get all languages for the dropdown
-        context["languages"] = Language.objects.all()
+        context["languages"] = json.dumps(
+            list(
+                Language.objects.values(
+                    "wikidata_code",
+                    "autonym",
+                    "en_label",
+                    "html_direction",
+                )
+            )
+        )
 
         context["active_tab"] = "instruments"
 

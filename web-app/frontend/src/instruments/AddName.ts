@@ -2,8 +2,9 @@ import { Modal } from 'bootstrap';
 import { WikidataLanguage, NameEntry } from './Types';
 import { NameValidator } from './helpers/NameValidator';
 import { AddNameManager } from './helpers/AddNameManager';
+import { getLanguages } from './utils';
 
-declare const languages: WikidataLanguage[];
+const languages = getLanguages();
 
 let nameValidator: NameValidator;
 let addNameManager: AddNameManager;

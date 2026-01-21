@@ -32,7 +32,7 @@
               <div class="d-flex flex-wrap gap-1">
                 {% if active_filters.search %}
                   <span class="badge bg-primary text-white">
-                    Search: "{{ active_filters.search }}"
+                    Search: <span class="notranslate">"{{ active_filters.search }}"</span>
                     <a href="{{ clear_search_url }}"
                        class="ms-1 text-white"
                        title="Remove search filter">×</a>
@@ -127,7 +127,7 @@
                 <ul class="dropdown-menu umil-dropdown-menu" id="language-dropdown-list">
                   {% for language in languages %}
                     <li>
-                      <a class="dropdown-item umil-dropdown-item"
+                      <a class="dropdown-item umil-dropdown-item notranslate force-ltr"
                          href="?language={{ language.en_label }}"
                          data-language="{{ language.en_label }}">
                       {{ language.en_label|title }} ({{ language.autonym|title }})</a>
@@ -166,7 +166,7 @@
                 {% if hbs_facet_name %}for{% endif %}
                 <strong>{{ hbs_facet_name }}</strong>
                 {% if search_query %}
-                  for search query "<strong>{{ search_query }}</strong>"
+                  for search query "<strong class="notranslate">{{ search_query }}</strong>"
                 {% endif %}
               </span>
             </div>
