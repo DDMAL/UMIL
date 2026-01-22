@@ -1,5 +1,11 @@
 import { WikidataLanguage, NameEntry } from '../Types';
 
+function normalize(str: string): string {
+  return str
+    .normalize('NFD') // split accents
+    .replace(/[\u0300-\u036f]/g, ''); // remove accents
+}
+
 export interface NameRowConfig {
   isRequired: boolean;
 }
@@ -24,13 +30,21 @@ export class NameRowManager {
     row.dataset.rowIndex = String(index);
 
     const datalistOptions: string = this.languages
-      .map(
-        (language: WikidataLanguage) => `
-        <option value="${language.wikidata_code}" class="notranslate force-ltr">
-          ${language.autonym} - ${language.en_label}
+      .map((language) => {
+        const normalizedAutonym = normalize(language.autonym);
+        // Only include normalized version if it's different
+        const displayNormalized =
+          normalizedAutonym !== language.autonym
+            ? ` (${normalizedAutonym})`
+            : '';
+
+        return `
+        <option
+          value="${language.wikidata_code}"
+          label="${language.autonym}${displayNormalized} – ${language.en_label}">
         </option>
-      `,
-      )
+      `;
+      })
       .join('');
 
     const requiredMark = config.isRequired
