@@ -141,20 +141,25 @@ def get_language_directions_from_sparql(url: str):
         } GROUP BY ?code
     """
 
-    response = requests.get(
-        url, params={"query": query, "format": "json"}, headers=HEADERS, timeout=200
-    )
-    data = response.json()
+    try:
+        response = requests.get(
+            url, params={"query": query, "format": "json"}, headers=HEADERS, timeout=200
+        )
+        response.raise_for_status()
+        data = response.json()
 
-    directions = {}
-    for item in data.get("results", {}).get("bindings", []):
-        code = item["code"]["value"].lower()
-        direction_label = item["direction"]["value"]
-        if "right-to-left" in direction_label:
-            directions[code] = "rtl"
-        else:
-            directions[code] = "ltr"
-    return directions
+        directions = {}
+        for item in data.get("results", {}).get("bindings", []):
+            code = item["code"]["value"].lower()
+            direction_label = item["direction"]["value"]
+            if "right-to-left" in direction_label:
+                directions[code] = "rtl"
+            else:
+                directions[code] = "ltr"
+        return directions
+    except requests.RequestException as e:
+        print(f"Error: Failed to fetch language direction data. {e}")
+        return {}
 
 
 class Command(BaseCommand):
