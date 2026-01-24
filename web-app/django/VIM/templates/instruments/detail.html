@@ -64,12 +64,6 @@
                         <th scope="col" class="w-20">
                           <span>Name</span>
                         </th>
-                        <th scope="col" class="w-20">
-                          <span>Alias</span>
-                        </th>
-                        <th scope="col" class="w-20">
-                          <span>Source</span>
-                        </th>
                         {% if user.is_authenticated %}
                           <th scope="col" class="w-25">
                             <span>Verification Status</span>
@@ -79,6 +73,15 @@
                                role="button"
                                aria-label="More information about statuses">
                             </i>
+                          </th>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                          <th scope="col" class="w-30">
+                            <span>Alias</span>
+                          </th>
+                        {% else %}
+                          <th scope="col" class="w-20">
+                            <span>Alias</span>
                           </th>
                         {% endif %}
                         {% if user.is_authenticated %}
@@ -104,21 +107,6 @@
                               </div>
                             </div>
                           </td>
-                          <td class="text-start">
-                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
-                                 dir="{{ lang.html_direction }}">
-                              <div class="alias-list d-flex flex-wrap gap-1">
-                                {% for alias in names.aliases %}
-                                  <span class="alias-item notranslate">{{ alias.name }}</span>
-                                {% endfor %}
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                              <span class="view-field flex-grow-1">{{ names.label.source_name }}</span>
-                            </div>
-                          </td>
                           {% if user.is_authenticated %}
                             <td>
                               <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
@@ -134,8 +122,55 @@
                               </div>
                             </td>
                           {% endif %}
+                          <td class="text-start">
+                            {% if user.is_authenticated %}
+                              {% for alias in names.aliases %}
+                                <div class="p-1 rounded bg-light border d-flex justify-content-between align-items-center my-1">
+                                  <div class="d-flex flex-column flex-grow-1">
+                                    <span class="notranslate">{{ alias.name }}</span>
+                                    <div>
+                                      {% if alias.verification_status == 'verified' %}
+                                        <span class="badge rounded-pill bg-success">Verified</span>
+                                      {% elif alias.verification_status == 'unverified' %}
+                                        <span class="badge rounded-pill bg-secondary">Unverified</span>
+                                      {% elif alias.verification_status == 'rejected' %}
+                                        <span class="badge rounded-pill bg-danger">Rejected</span>
+                                      {% else %}
+                                        <span class="badge rounded-pill bg-warning text-dark">Under Review</span>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+                                  <div class="action-buttons ms-2">
+                                    <button class="btn btn-primary btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteNameModal"
+                                            data-instrument-language="{{ alias.label.language.en_label }}"
+                                            data-instrument-name="{{ alias.label.name }}"
+                                            data-instrument-source="{{ alias.label.source_name }}"
+                                            data-instrument-id="{{ alias.label.id }}"
+                                            data-instrument-pk="{{ instrument.pk }}">
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                              {% endfor %}
+                            {% else %}
+                              <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container"
+                                   dir="{{ lang.html_direction }}">
+                                <div class="alias-list d-flex flex-wrap gap-1">
+                                  {% for alias in names.aliases %}
+                                    <span class="alias-item notranslate">
+                                      {{ alias.name }}
+                                      {% if not forloop.last %}|{% endif %}
+                                    </span>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            {% endif %}
+                          </td>
                           {% if user.is_authenticated %}
                             <td>
+                              <!-- TODO: Add a "More" button that links to the instrument name/alias in a popup -->
                               <div class="action-buttons">
                                 <button class="btn btn-primary"
                                         data-bs-toggle="modal"
@@ -175,24 +210,9 @@
                           </div>
                         </div>
                       </div>
-                      <!-- Aliases -->
-                      <div class="mb-1">
-                        <div class="fw-bold text-muted small">Alias</div>
-                        <div class="alias-list d-flex flex-wrap gap-1 text-start notranslate"
-                             dir="{{ lang.html_direction }}">
-                          {% for alias in names.aliases %}
-                            <span class="alias-item">{{ alias.name }}</span>
-                          {% endfor %}
-                        </div>
-                      </div>
-                      <!-- Source -->
-                      <div class="mb-1">
-                        <div class="fw-bold text-muted small">Source</div>
-                        <span class="view-field">{{ names.label.source_name }}</span>
-                      </div>
                       {% if user.is_authenticated %}
                         <!-- Status column -->
-                        <div class="col-12">
+                        <div class="col-12 mb-1">
                           <div class="fw-bold text-muted small mb-1">
                             Verification Status
                             <i class="bi bi-info-circle"
@@ -215,8 +235,55 @@
                           </div>
                         </div>
                       {% endif %}
+                      <!-- Aliases -->
+                      <div class="mb-1">
+                        {% if names.aliases %}
+                          <div class="fw-bold text-muted small">Alias</div>
+                          <div class="alias-list" dir="{{ lang.html_direction }}">
+                            {% for alias in names.aliases %}
+                              {% if user.is_authenticated %}
+                                <div class="p-2 rounded bg-light border d-flex justify-content-between align-items-center my-1">
+                                  <div class="d-flex flex-column flex-grow-1">
+                                    <span class="notranslate">{{ alias.name }}</span>
+                                    <div>
+                                      {% if alias.verification_status == 'verified' %}
+                                        <span class="badge rounded-pill bg-success">Verified</span>
+                                      {% elif alias.verification_status == 'unverified' %}
+                                        <span class="badge rounded-pill bg-secondary">Unverified</span>
+                                      {% elif alias.verification_status == 'rejected' %}
+                                        <span class="badge rounded-pill bg-danger">Rejected</span>
+                                      {% else %}
+                                        <span class="badge rounded-pill bg-warning text-dark">Under Review</span>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+                                  <!-- TODO: Add a "More" button that links to the instrument name/alias in a popup -->
+                                  <div class="action-buttons ms-2">
+                                    <button class="btn btn-primary btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteNameModal"
+                                            data-instrument-language="{{ alias.label.language.en_label }}"
+                                            data-instrument-name="{{ alias.label.name }}"
+                                            data-instrument-source="{{ alias.label.source_name }}"
+                                            data-instrument-id="{{ alias.label.id }}"
+                                            data-instrument-pk="{{ instrument.pk }}">
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                              {% else %}
+                                <span class="alias-item">{{ alias.name }}
+                                  {% if not forloop.last %}|{% endif %}
+                                </span>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+                      <!-- Action -->
                       {% if user.is_authenticated %}
-                        <div class="action-buttons mt-1">
+                        <!-- TODO: Add a "More" button that links to the instrument name/alias in a popup -->
+                        <div class="action-buttons my-2">
                           <button class="btn btn-primary"
                                   data-bs-toggle="modal"
                                   data-bs-target="#deleteNameModal"
@@ -248,7 +315,8 @@
                     {% else %}
                       <a href="{% url 'main:login' %}?next={{ request.path }}"
                          class="btn btn-primary"
-                         role="button">Add Instrument Name</a>
+                         role="button">Add
+                      Instrument Name</a>
                     {% endif %}
                   </div>
                 </div>
@@ -267,7 +335,8 @@
                        class="rounded mw-50" />
                   <a class="ms-2"
                      href="{% static instrument.default_image.url %}"
-                     target="_blank">View image in full size</a>
+                     target="_blank">View image in full
+                  size</a>
                 </div>
               </td>
             </tr>
