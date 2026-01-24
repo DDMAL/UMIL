@@ -29,7 +29,7 @@ export class AddNameManager {
       .join('');
 
     row.innerHTML = `
-      <div class="col-md-3 language-input">
+      <div class="col-lg-3 language-input">
         <label for="language${index}" class="form-label-sm">Language</label>
         <input list="languages${index}" class="form-control" id="language${index}" name="language[]" placeholder="Type to search" required />
         <datalist id="languages${index}">
@@ -38,19 +38,19 @@ export class AddNameManager {
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md-3 name-input">
+      <div class="col-lg-3 name-input">
         <label for="name${index}" class="form-label-sm">Name</label>
         <input type="text" class="form-control" id="name${index}" name="name[]" placeholder="Enter name" required />
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md-3 source-input">
+      <div class="col-lg-3 source-input">
         <label for="source${index}" class="form-label-sm">Source</label>
         <input type="text" class="form-control" id="source${index}" name="source[]" placeholder="Enter source" required />
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md-2">
+      <div class="col-lg-2">
         <label class="form-label-sm">&nbsp;</label>
         <button type="button" class="btn btn-secondary remove-row-btn w-100">Remove</button>
       </div>
