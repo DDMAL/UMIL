@@ -28,8 +28,13 @@ class Instrument(models.Model):
         null=True,
         related_name="thumbnail_of",
     )
-    hornbostel_sachs_class = models.CharField(
-        max_length=50, blank=True, help_text="Hornbostel-Sachs classification"
+    hornbostel_sachs_class = models.ForeignKey(
+        "HornbostelSachs",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="main_for",
+        help_text="Currently selected Hornbostel–Sachs classification",
     )
     mimo_class = models.CharField(
         max_length=50,
