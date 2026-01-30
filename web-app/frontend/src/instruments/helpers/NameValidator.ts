@@ -1,6 +1,21 @@
 import { WikidataLanguage, ValidationResult } from '../Types';
 import { WikidataService } from './WikidataService';
 
+// Helper function to validate HBS class input
+export function isValidHBSClass(input: string): boolean {
+  // Only allow digits, dot, dash, and plus
+  if (!/^[1-9.\-+]+$/.test(input)) return false;
+  // The first and second characters must be a digit between 1 and 5
+  if (input.length < 1) return false;
+  const firstChar = input.charAt(0);
+  if (!/[1-5]/.test(firstChar)) return false;
+  if (input.length > 1) {
+    const secondChar = input.charAt(1);
+    if (!/[1-5]/.test(secondChar)) return false;
+  }
+  return true;
+}
+
 export class NameValidator {
   private languages: WikidataLanguage[];
 
@@ -87,6 +102,40 @@ export class NameValidator {
     return {
       isValid: true,
       message: '',
+      type: 'success',
+    };
+  }
+
+  /**
+   * Validates Hornbostel-Sachs class input (for Add Class form)
+   */
+  validateHBSClassInput(hbsClassInput: string): ValidationResult {
+    const input = hbsClassInput?.trim();
+    if (!input) {
+      return {
+        isValid: false,
+        message: 'Please input an HBS number.',
+        type: 'error',
+      };
+    }
+    if (input.length > 50) {
+      return {
+        isValid: false,
+        message: 'HBS number must be at most 50 characters.',
+        type: 'error',
+      };
+    }
+    if (!isValidHBSClass(input)) {
+      return {
+        isValid: false,
+        message:
+          'Only use digits (first two characters 1–5), and the symbols ".", "-", "+".',
+        type: 'error',
+      };
+    }
+    return {
+      isValid: true,
+      message: `Proposed Classification: ${input}`,
       type: 'success',
     };
   }
