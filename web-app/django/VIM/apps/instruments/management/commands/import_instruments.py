@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
+from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource, HornbostelSachs
 from VIM.apps.instruments.utils.validators import validate_image_extension
 
 
@@ -131,7 +131,6 @@ class Command(BaseCommand):
         instrument, created = Instrument.objects.update_or_create(
             wikidata_id=instrument_attrs["wikidata_id"],
             defaults={
-                "hornbostel_sachs_class": instrument_attrs["hornbostel_sachs_class"],
                 "mimo_class": instrument_attrs["mimo_class"],
             },
         )
@@ -196,6 +195,7 @@ class Command(BaseCommand):
                     },
                 )
 
+<<<<<<< HEAD
         # Create AVResource objects only when both image paths are available
         if original_img_path and thumbnail_img_path:
             # Validate extensions before creating AVResource objects
@@ -250,6 +250,34 @@ class Command(BaseCommand):
             matches[0]
         )  # each instrunment is guaranteed to have at most one image
         return os.path.join(directory, filename)
+=======
+        hbs_value = instrument_attrs["hornbostel_sachs_class"] or settings.EMPTY_HBS_CATEGORY
+        hbs_obj = None
+        if hbs_value and hbs_value != settings.EMPTY_HBS_CATEGORY:
+            hbs_obj = HornbostelSachs.objects.create(
+                instrument=instrument,
+                hbs_class=hbs_value,
+                is_main=True,
+                review_status="verified",
+                contributor=self.default_contributor,
+            )
+        instrument.hornbostel_sachs_class = hbs_obj
+        img_obj = AVResource.objects.create(
+            instrument=instrument,
+            type="image",
+            format=original_img_path.split(".")[-1],
+            url=original_img_path,
+        )
+        instrument.default_image = img_obj
+        thumbnail_obj = AVResource.objects.create(
+            instrument=instrument,
+            type="image",
+            format=thumbnail_img_path.split(".")[-1],
+            url=thumbnail_img_path,
+        )
+        instrument.thumbnail = thumbnail_obj
+        instrument.save()
+>>>>>>> 63fc480 (feat: add HBS support to importing instruments and indexing)
 
     def handle(self, *args, **options) -> None:
         # Use smaller test dataset when in test mode
