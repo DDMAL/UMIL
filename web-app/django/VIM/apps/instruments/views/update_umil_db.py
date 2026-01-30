@@ -7,7 +7,13 @@ from django.db import transaction
 from django.views.decorators.http import require_http_methods
 from django.http import HttpRequest, JsonResponse
 from django.core.exceptions import ValidationError
-from VIM.apps.instruments.models import Instrument, Language, InstrumentName
+from django.shortcuts import get_object_or_404
+from VIM.apps.instruments.models import (
+    Instrument,
+    Language,
+    InstrumentName,
+    HornbostelSachs,
+)
 from VIM.apps.instruments.utils.validators import (
     validate_instrument_names,
     validate_umil_label_constraint,
@@ -312,11 +318,102 @@ def delete_name(request: HttpRequest) -> JsonResponse:
         )
 
 
+def add_hbs(request, pk: int) -> JsonResponse:
+    """
+    Add a Hornbostel-Sachs classification for an instrument.
+
+    Expects JSON:
+    {
+        "wikidata_id": "Q12345",
+        "hornbostel_sachs_class": "111.242.12"
+    }
+    """
+
+    try:
+        data: Dict[str, Any] = json.loads(request.body)
+    except Exception as e:
+        return JsonResponse(
+            {"status": "error", "message": f"Invalid or missing JSON: {e}"},
+            status=400,
+        )
+
+    wikidata_id = data.get("wikidata_id")
+    hbs_class = data.get("hornbostel_sachs_class")
+
+    if not wikidata_id or not hbs_class:
+        return JsonResponse(
+            {"status": "error", "message": f"Missing required data"},
+            status=400,
+        )
+
+    # Get instrument from pk (since path sends pk)
+    instrument = get_object_or_404(Instrument, wikidata_id=wikidata_id)
+
+    # Check if the user has already provided an HBS classification for this instrument
+    existing_hbs = HornbostelSachs.objects.filter(
+        instrument=instrument, contributor=request.user
+    )
+
+    if existing_hbs.exists():
+        # There is at least one existing HBS entry by this user for this instrument
+        for hbs in existing_hbs:
+            if hbs.hbs_class == hbs_class:
+                # If the submitted class is the same as an existing one, reject as duplicate
+                return JsonResponse(
+                    {
+                        "status": "error",
+                        "message": f"You have already submitted this Hornbostel-Sachs class for this instrument.",
+                    },
+                    status=400,
+                )
+        # If the user already submitted an HBS for this instrument, update their previous entry with the new hbs_class
+        prev_hbs = existing_hbs.first()
+        prev_hbs.hbs_class = hbs_class
+        prev_hbs.review_status = "under_review"
+        prev_hbs.save()
+        return JsonResponse(
+            {
+                "status": "success",
+                "message": "Your Hornbostel-Sachs classification was updated to the new value.",
+                "hbs_id": prev_hbs.id,
+            },
+            status=200,
+        )
+    else:
+        # No previous HBS for this user/instrument
+        new_hbs = HornbostelSachs.objects.create(
+            instrument=instrument,
+            hbs_class=hbs_class,
+            contributor=request.user,
+            is_main=False,
+            review_status="under_review",
+        )
+        return JsonResponse(
+            {
+                "status": "success",
+                "message": "Hornbostel-Sachs classification added successfully.",
+                "hbs_id": new_hbs.id,
+            },
+            status=200,
+        )
+
+
 @login_required
 @require_http_methods(["POST", "DELETE"])
 def update_umil_db(request: HttpRequest, umil_id: str) -> JsonResponse:
     if request.method == "POST":
-        return add_name(request, umil_id)
+        try:
+            data = json.loads(request.body)
+        except Exception:
+            return JsonResponse(
+                {"status": "error", "message": "Malformed JSON."},
+                status=400,
+            )
+        # If the payload contains 'hornbostel_sachs_class', it is an add_class operation
+        if data.get("hornbostel_sachs_class") is not None:
+            return add_hbs(request, umil_id)
+        else:
+            return add_name(request, umil_id)
 
     elif request.method == "DELETE":
         return delete_name(request)
