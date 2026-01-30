@@ -33,8 +33,8 @@ class Command(BaseCommand):
                 sid=Concat(V("instrument-"), "id", output_field=CharField()),
                 umil_id_s=F("umil_id"),
                 wikidata_id_s=F("wikidata_id"),
-                hornbostel_sachs_class_s=F("hornbostel_sachs_class"),
-                hbs_prim_cat_s=Left(F("hornbostel_sachs_class"), 1),
+                hornbostel_sachs_class_s=F("hornbostel_sachs_class__hbs_class"),
+                hbs_prim_cat_s=Left(F("hornbostel_sachs_class__hbs_class"), 1),
                 mimo_class_s=F("mimo_class"),
                 type=V("instrument"),
                 thumbnail_url=Case(
@@ -61,6 +61,7 @@ class Command(BaseCommand):
                 "instrument_names_by_language",
             )
         )
+
 
         for instrument in instruments:
             hbs_code = instrument["hbs_prim_cat_s"]
