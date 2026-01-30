@@ -3,7 +3,7 @@ import re
 
 from django.http import Http404
 from django.views.generic import DetailView
-from VIM.apps.instruments.models import Instrument, Language
+from VIM.apps.instruments.models import Instrument, Language, HornbostelSachs
 
 
 class InstrumentDetail(DetailView):
@@ -33,10 +33,11 @@ class InstrumentDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        instrument = context["instrument"]
 
         # Query the instrument names in all languages
-        instrument_names = (
-            context["instrument"].instrumentname_set.all().select_related("language")
+        instrument_names = instrument.instrumentname_set.all().select_related(
+            "language"
         )
         if self.request.user.is_authenticated:
             # Show all names for authenticated users
@@ -90,6 +91,7 @@ class InstrumentDetail(DetailView):
 
         context["active_tab"] = "instruments"
 
+        # Determine if the current user can delete the instrument
         context["can_delete_instrument"] = (
             self.request.user.is_authenticated
             and context["instrument"].is_user_created
@@ -98,5 +100,17 @@ class InstrumentDetail(DetailView):
                 or context["instrument"].created_by == self.request.user
             )
         )
+        # Add user HBS to the context, if present
+        user_hbs = None
+        user = self.request.user
+        if user.is_authenticated:
+            user_hbs_qs = HornbostelSachs.objects.filter(
+                instrument=instrument, contributor=user
+            ).order_by(
+                "-is_main", "-id"
+            )  # prioritize main if more than one, fallback to latest
+            if user_hbs_qs.exists():
+                user_hbs = user_hbs_qs.first()
+        context["user_hbs"] = user_hbs
 
         return context
