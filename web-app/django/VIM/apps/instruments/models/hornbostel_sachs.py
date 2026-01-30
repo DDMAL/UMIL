@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class HornbostelSachs(models.Model):
     instrument = models.ForeignKey(
         "Instrument",
@@ -7,7 +8,9 @@ class HornbostelSachs(models.Model):
         related_name="hbs_entries",
     )
 
-    hbs_class = models.CharField(max_length=50, null=True, help_text="Hornbostel-Sachs classification")
+    hbs_class = models.CharField(
+        max_length=50, null=True, help_text="Hornbostel-Sachs classification"
+    )
 
     is_main = models.BooleanField(
         default=False,
@@ -35,21 +38,20 @@ class HornbostelSachs(models.Model):
 
     # TODO: add verified_by field to track who verified the name
 
-
-
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.is_main:
-            Instrument = self._meta.get_field('instrument').related_model
+            Instrument = self._meta.get_field("instrument").related_model
             instrument = self.instrument
             if instrument.hornbostel_sachs_class_id != self.id:
                 instrument.hornbostel_sachs_class = self
-                instrument.save(update_fields=['hornbostel_sachs_class'])
+                instrument.save(update_fields=["hornbostel_sachs_class"])
 
             # If there is another HBS object set as main for this instrument, unset others
-            other_mains = type(self).objects.filter(
-                instrument=self.instrument,
-                is_main=True
-            ).exclude(pk=self.pk)
+            other_mains = (
+                type(self)
+                .objects.filter(instrument=self.instrument, is_main=True)
+                .exclude(pk=self.pk)
+            )
             if other_mains.exists():
                 other_mains.update(is_main=False)

@@ -62,7 +62,6 @@ class Command(BaseCommand):
             )
         )
 
-
         for instrument in instruments:
             hbs_code = instrument["hbs_prim_cat_s"]
             instrument["hbs_prim_cat_label_s"] = self.HBS_LABEL_MAP.get(hbs_code, "")
