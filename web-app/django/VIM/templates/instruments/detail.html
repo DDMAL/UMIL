@@ -11,6 +11,7 @@
   {% vite_asset 'src/instruments/JumpToTop.ts' %}
   {% vite_asset 'src/instruments/AddName.ts' %}
   {% vite_asset 'src/instruments/DeleteName.ts' %}
+  {% vite_asset 'src/instruments/AddClass.ts' %}
   {% if can_delete_instrument %}
     {% vite_asset 'src/instruments/DeleteInstrument.ts' %}
   {% endif %}
@@ -68,7 +69,37 @@
             <tr>
               <th scope="row" class="w-20">Hornbostel-Sachs Classification</th>
               <td>
-                <span class="view-field notranslate">{{ instrument.hornbostel_sachs_class }}</span>
+                {% if instrument.hornbostel_sachs_class %}
+                  <span class="view-field notranslate">{{ instrument.hornbostel_sachs_class.hbs_class }}</span>
+                {% else %}
+                  {% if user.is_authenticated %}
+                    {% if user_hbs %}
+                      <span class="view-field notranslate fst-italic me-2">{{ user_hbs.hbs_class }}</span>
+                      <!-- Propose button shown only if HBS is empty and the user is authenticated -->
+                      <button type="button"
+                              class="btn btn-sm btn-outline-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addClassModal"
+                              data-instrument-name="{{ active_instrument_label.name }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                              data-instrument-pk="{{ instrument.pk }}"
+                              data-class-name="Hornbostel-Sachs Class">
+                        Edit HBS
+                      </button>
+                    {% else %}
+                      <button type="button"
+                              class="btn btn-sm btn-outline-primary"
+                              data-bs-toggle="modal"
+                              data-bs-target="#addClassModal"
+                              data-instrument-name="{{ active_instrument_label.name }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
+                              data-instrument-pk="{{ instrument.pk }}"
+                              data-class-name="Hornbostel-Sachs Class">
+                        Propose an HBS
+                      </button>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
               </td>
             </tr>
             <tr>
@@ -287,6 +318,7 @@
                 </div>
                 {% include "instruments/includes/deleteName.html" %}
                 {% include "instruments/includes/addName.html" %}
+                {% include "instruments/includes/addClass.html" %}
                 {% include "instruments/includes/statusInfo.html" %}
 
               </td>
