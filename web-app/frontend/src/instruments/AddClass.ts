@@ -6,6 +6,7 @@ const nameValidator = new NameValidator();
 
 // Handle modal show event - populate instrument data
 const addClassModal = document.getElementById('addClassModal');
+const proposalsContainer = document.getElementById('ProposalsContainer');
 addClassModal?.addEventListener('show.bs.modal', (event) => {
   const triggerButton = (event as any).relatedTarget;
   if (!triggerButton) return;
@@ -26,6 +27,12 @@ addClassModal?.addEventListener('show.bs.modal', (event) => {
   ) as HTMLInputElement)!.value = instrumentPk;
   addClassModal.querySelector('#instrumentClassNameInModal')!.textContent =
     className;
+
+  if (className === 'Hornbostel-Sachs Class') {
+    proposalsContainer.style.display = 'block';
+  } else {
+    proposalsContainer.style.display = 'none';
+  }
 });
 
 // Reset modal on hide

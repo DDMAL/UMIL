@@ -7,7 +7,6 @@ from VIM.apps.instruments.models import (
     HornbostelSachs,
 )
 
-
 admin.site.register(Instrument)
 admin.site.register(Language)
 admin.site.register(AVResource)
