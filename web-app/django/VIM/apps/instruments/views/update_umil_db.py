@@ -5,7 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404
-from VIM.apps.instruments.models import Instrument, Language, InstrumentName
+from VIM.apps.instruments.models import (
+    Instrument,
+    InstrumentName,
+    InstrumentNameSource,
+    Source,
+    Language,
+)
 from typing import Any, Dict, List
 
 
@@ -55,16 +61,27 @@ def add_name(request: HttpRequest) -> JsonResponse:
     # been assigned to a previous entry
     entry_labels = {entry["language"]: False for entry in entries}
 
-    instrument_names_to_create = []
+    # Deduplicate the entries with respect to language, name, and source: A user cannot suggest the same source for a label multiple times
+    unique_entries = {
+        (e["language"], e["name"].strip(), e["source"].strip()) for e in entries
+    }
 
-    # Keep track of the (name, language_code) enteties for fast detection of duplication in the request
-    unique_instruments = set()
+    # Find which sources already exist in the database
+    all_source_names = {source for (_, _, source) in unique_entries}
+    existing_sources_qs = Source.objects.filter(name__in=all_source_names)
+    existing_sources = {s.name: s for s in existing_sources_qs}
 
-    for entry in entries:
-        language_code: str = entry["language"]
-        name: str = entry["name"]
-        source: str = entry["source"]
+    # Bulk create missing sources
+    missing_source_names = all_source_names - set(existing_sources.keys())
+    sources_to_create = [
+        Source(name=src, is_visible=True) for src in missing_source_names
+    ]
+    if sources_to_create:
+        Source.objects.bulk_create(sources_to_create)
 
+    instrument_name_sources_to_create = []
+
+    for language_code, name, source in unique_entries:
         # Validate that entry info is provided
         if not name or not source or not language_code:
             return JsonResponse(
@@ -78,23 +95,33 @@ def add_name(request: HttpRequest) -> JsonResponse:
         # Find language object from language code dictionary
         language_obj: Language = language.get(language_code)
 
-        # Skip the entry if duplicate in batch
-        entry_key = (name.lower(), language_code)
-        if entry_key in unique_instruments:
-            continue
-        unique_instruments.add(entry_key)
-
-        # Check if the entry exists in UMIL_db
-        if InstrumentName.objects.filter(
+        # Check if the name exists in UMIL_db
+        existing_name = InstrumentName.objects.filter(
             instrument=instrument,
             language__wikidata_code=language_code,
             name__iexact=name,
-        ).exists():
+        ).first()
+        source_obj, _ = Source.objects.get_or_create(name=source)
+
+        if existing_name:
+            # Check if the InstrumentNameSource exists with this contributor
+            insource_exists = InstrumentNameSource.objects.filter(
+                instrument_name=existing_name,
+                source=source_obj,
+                contributor=request.user,
+            ).exists()
+            if not insource_exists:
+                instrument_name_sources_to_create.append(
+                    InstrumentNameSource(
+                        instrument_name=existing_name,
+                        source=source_obj,
+                        contributor=request.user,
+                    )
+                )
+            # Skip further creation if InstrumentName already exists
             continue
 
-        # Within the entries, check if the language already has a name
-        # if it does, set umil_label to False
-        # otherwise, check against the UMILdb
+        # If name does not exist, create it, track umil_label
         if entry_labels[language_code]:
             umil_label = False
         else:
@@ -105,20 +132,24 @@ def add_name(request: HttpRequest) -> JsonResponse:
             )
             entry_labels[language_code] = True  # Mark that this language now has a name
 
-        # Prepare the InstrumentName object
-        instrument_names_to_create.append(
-            InstrumentName(
-                instrument=instrument,
-                language=language_obj,
-                name=name,
-                source_name=source,
-                umil_label=umil_label,
+        instrument_name_obj = InstrumentName.objects.create(
+            instrument=instrument,
+            language=language_obj,
+            name=name,
+            umil_label=umil_label,
+            on_wikidata=False,
+            verification_status="unverified",
+        )
+        instrument_name_sources_to_create.append(
+            InstrumentNameSource(
+                instrument_name=instrument_name_obj,
+                source=source_obj,
                 contributor=request.user,
             )
         )
 
-    # Bulk create all InstrumentName objects
-    InstrumentName.objects.bulk_create(instrument_names_to_create)
+    # Bulk create all InstrumentNameSource objects
+    InstrumentNameSource.objects.bulk_create(instrument_name_sources_to_create)
 
     return JsonResponse(
         {
@@ -135,6 +166,7 @@ def delete_name(request: HttpRequest) -> JsonResponse:
     # Parse the JSON request body
     data: Dict[str, Any] = json.loads(request.body)
     name_id: str = data.get("instrument_name_id")
+    source_name: str = data.get("source_name")
 
     # Check if name_id is provided, if not return 400 error
     if not name_id:
@@ -147,10 +179,32 @@ def delete_name(request: HttpRequest) -> JsonResponse:
         )
 
     instrument_name = get_object_or_404(InstrumentName, id=name_id)
+    source_obj = get_object_or_404(Source, name=source_name)
 
-    # If user is a superuser or created the name, allow deletion
-    if request.user.is_superuser or instrument_name.contributor == request.user:
-        instrument_name.delete()
+    # Todo: add logic for superuser deletion
+
+    # If user is a contributor to any linked InstrumentNameSource, allow link deletion
+    if InstrumentNameSource.objects.filter(
+        instrument_name=instrument_name, contributor=request.user, source=source_obj
+    ).exists():
+        InstrumentNameSource.objects.filter(
+            instrument_name=instrument_name, contributor=request.user, source=source_obj
+        ).delete()
+        # If no sources are left, delete the instrument name
+        if instrument_name.source_links.count() == 0:
+            umil_status = instrument_name.umil_label
+            instrument_name.delete()
+            # If the name being deleted is the UMIL label,
+            # restore UMIL label to another InstrumentName if one exists
+            if umil_status:
+                other_names = InstrumentName.objects.filter(
+                    instrument=instrument_name.instrument,
+                    language=instrument_name.language,
+                )
+                next_label = other_names.first()
+                if next_label:
+                    next_label.umil_label = True
+                    next_label.save()
         return JsonResponse(
             {
                 "status": "success",
