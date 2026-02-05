@@ -121,13 +121,24 @@ class Command(BaseCommand):
         ins_aliases = instrument_attrs.pop("ins_aliases")
 
         # Create instrument using only the remaining valid fields
-        instrument, _ = Instrument.objects.update_or_create(
+        # Generate UMIL ID for new instruments
+        instrument, created = Instrument.objects.update_or_create(
             wikidata_id=instrument_attrs["wikidata_id"],
             defaults={
                 "hornbostel_sachs_class": instrument_attrs["hornbostel_sachs_class"],
                 "mimo_class": instrument_attrs["mimo_class"],
             },
         )
+
+        # If newly created and no umil_id, generate one.
+        # Wrap in its own atomic block so the select_for_update() lock inside
+        # generate_umil_id() is scoped to this savepoint and released as soon
+        # as the save completes, rather than being held for the entire outer
+        # transaction (the full import loop).
+        if created and not instrument.umil_id:
+            with transaction.atomic():
+                instrument.umil_id = Instrument.generate_umil_id()
+                instrument.save(update_fields=["umil_id"])
 
         # Create or update instrument labels in the database (umil_label=True)
         for lang, name in ins_names.items():
@@ -184,6 +195,7 @@ class Command(BaseCommand):
             type="image",
             format=original_img_path.split(".")[-1],
             url=original_img_path,
+            source_name="Wikidata",
         )
         instrument.default_image = img_obj
         thumbnail_obj = AVResource.objects.create(
@@ -191,6 +203,7 @@ class Command(BaseCommand):
             type="image",
             format=thumbnail_img_path.split(".")[-1],
             url=thumbnail_img_path,
+            source_name="Wikidata",
         )
         instrument.thumbnail = thumbnail_obj
         instrument.save()

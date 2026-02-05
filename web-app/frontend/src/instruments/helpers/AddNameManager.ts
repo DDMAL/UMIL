@@ -176,7 +176,7 @@ export class AddNameManager {
       }
 
       try {
-        // Comprehensive name validation
+        // Comprehensive name validation (uses Wikidata ID for validation if available)
         const validationResult = await this.nameValidator.validateName(
           languageCode,
           nameInput.value,
@@ -277,13 +277,16 @@ export class AddNameManager {
       }
     }
 
-    // Restore wikidata_id, publish_to_wikidata
+    // Restore display_name, umil_id, and wikidata_id
     (
       document.getElementById('instrumentNameInModal') as HTMLElement
     ).textContent = parsedData['display_name'];
     (
+      document.getElementById('instrumentUmilIdInModal') as HTMLElement
+    ).textContent = parsedData['umil_id'];
+    (
       document.getElementById('instrumentWikidataIdInModal') as HTMLElement
-    ).textContent = parsedData['wikidata_id'];
+    ).textContent = parsedData['wikidata_id'] || '';
 
     // Restore dynamically added rows
     const nameRowsContainer = document.getElementById(

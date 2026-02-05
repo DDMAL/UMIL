@@ -21,14 +21,32 @@ from django.conf import settings
 from VIM.apps.instruments.views.instrument_list import InstrumentList
 from VIM.apps.instruments.views.instrument_detail import InstrumentDetail
 from VIM.apps.instruments.views.update_umil_db import update_umil_db
+from VIM.apps.instruments.views.create_instrument import (
+    CreateInstrumentView,
+    create_instrument,
+    check_duplicate_names,
+)
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("VIM.apps.main.urls", namespace="main")),
     path("instruments/", InstrumentList.as_view(), name="instrument-list"),
-    path("instrument/<int:pk>/", InstrumentDetail.as_view(), name="instrument-detail"),
-    path("instrument/<int:pk>/names/", update_umil_db, name="update-umil-db"),
+    path(
+        "instrument/create/", CreateInstrumentView.as_view(), name="instrument-create"
+    ),
+    path("api/instrument/", create_instrument, name="api-create-instrument"),
+    path(
+        "api/check-instrument-names/",
+        check_duplicate_names,
+        name="api-check-duplicate-names",
+    ),
+    path(
+        "instrument/<slug:umil_id>/",
+        InstrumentDetail.as_view(),
+        name="instrument-detail",
+    ),
+    path("instrument/<slug:umil_id>/names/", update_umil_db, name="update-umil-db"),
     prefix_default_language=False,
 )
 

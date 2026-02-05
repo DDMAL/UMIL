@@ -1,8 +1,9 @@
 import { Modal } from 'bootstrap';
-import { WikidataLanguage, NameEntry } from './Types';
+import { NameEntry } from './Types';
 import { NameValidator } from './helpers/NameValidator';
 import { AddNameManager } from './helpers/AddNameManager';
 import { getLanguages } from './utils';
+import { getCsrfToken } from '../utils/cookies';
 
 const languages = getLanguages();
 
@@ -15,18 +16,19 @@ addNameModal.addEventListener('show.bs.modal', function (event) {
   const triggerButton = (event as any).relatedTarget;
   if (triggerButton) {
     const instrumentName = triggerButton.getAttribute('data-instrument-name');
+    const instrumentUmilId = triggerButton.getAttribute(
+      'data-instrument-umil-id',
+    );
     const instrumentWikidataId = triggerButton.getAttribute(
       'data-instrument-wikidata-id',
     );
-    const instrumentPk = triggerButton.getAttribute('data-instrument-pk');
 
     addNameModal.querySelector('#instrumentNameInModal').textContent =
       instrumentName;
+    addNameModal.querySelector('#instrumentUmilIdInModal').textContent =
+      instrumentUmilId;
     addNameModal.querySelector('#instrumentWikidataIdInModal').textContent =
-      instrumentWikidataId;
-    (
-      addNameModal.querySelector('#instrumentPkInModal') as HTMLInputElement
-    ).value = instrumentPk;
+      instrumentWikidataId || '';
   }
 });
 
@@ -70,13 +72,9 @@ document
 document
   .getElementById('confirmPublishBtn')
   .addEventListener('click', function () {
-    const wikidataId = document
-      .getElementById('instrumentWikidataIdInModal')
+    const umilId = document
+      .getElementById('instrumentUmilIdInModal')
       .textContent.trim();
-
-    const instrumentPk = (
-      document.getElementById('instrumentPkInModal') as HTMLInputElement
-    ).value;
 
     const entries: NameEntry[] = [];
 
@@ -100,19 +98,14 @@ document
       });
     });
 
-    // Get CSRF token and publish to backend
-    const csrfToken = (
-      document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
-    ).value;
-
-    fetch(`/instrument/${instrumentPk}/names/`, {
+    // Publish to backend
+    fetch(`/instrument/${umilId}/names/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
+        'X-CSRFToken': getCsrfToken(),
       },
       body: JSON.stringify({
-        wikidata_id: wikidataId,
         entries: entries,
       }),
     })

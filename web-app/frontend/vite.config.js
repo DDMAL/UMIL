@@ -27,6 +27,10 @@ export default defineConfig({
         statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
         barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
         deleteName: resolve(__dirname, 'src/instruments/DeleteName.ts'),
+        createInstrument: resolve(
+          __dirname,
+          'src/instruments/CreateInstrument.ts',
+        ),
         resendEmailCountdown: resolve(
           __dirname,
           'src/auth/ResendEmailCountdown.ts',

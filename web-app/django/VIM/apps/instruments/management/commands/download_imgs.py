@@ -7,6 +7,7 @@ import requests
 from PIL import Image
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from VIM.apps.instruments.utils.image_processor import create_thumbnail_image
 
 
 class Command(BaseCommand):
@@ -46,50 +47,12 @@ class Command(BaseCommand):
         except IOError as e:
             self.stderr.write(f"Failed to save image from {url}: {e}")
 
-    def calculate_compression_ratio(self, original_width, original_height):
-        """
-        Calculate a flexible compression ratio based on the original dimensions of an image.
-
-        Parameters:
-        original_width (int): The width of the original image.
-        original_height (int): The height of the original image.
-
-        Returns:
-        float: The compression ratio.
-        """
-        # Determine the larger dimension to base compression on (could be width or height)
-        max_dimension = max(original_width, original_height)
-
-        # Set a target size for compression based on original dimensions
-        if max_dimension > 4000:
-            # Large images (e.g., 4K or higher): compress significantly
-            compression_ratio = 0.2  # 20% of the original size
-        elif max_dimension > 2000:
-            # Medium-large images: moderate compression
-            compression_ratio = 0.5  # 50% of the original size
-        elif max_dimension > 1000:
-            # Medium images: light compression
-            compression_ratio = 0.75  # 75% of the original size
-        else:
-            # Small images: minimal compression
-            compression_ratio = 0.9  # 90% of the original size
-
-        return compression_ratio
-
     def create_thumbnail(self, image_path, thumbnail_path):
-        """Create a thumbnail of an image."""
+        """Create a thumbnail of an image using shared utility."""
         try:
             with Image.open(image_path) as original_img:
-                original_width, original_height = original_img.size
-                compression_ratio = self.calculate_compression_ratio(
-                    original_width, original_height
-                )
-                new_size = (
-                    int(original_width * compression_ratio),
-                    int(original_height * compression_ratio),
-                )
-                original_img.thumbnail(new_size)
-                original_img.save(thumbnail_path, "PNG")
+                thumbnail = create_thumbnail_image(original_img)
+                thumbnail.save(thumbnail_path, "PNG")
             self.stdout.write(f"Created thumbnail at {thumbnail_path}")
         except IOError as e:
             self.stderr.write(f"Failed to create thumbnail for {image_path}: {e}")

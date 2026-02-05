@@ -194,8 +194,13 @@ export class NameValidator {
 
     let isAlias = false;
 
-    // If basic validation passes, check Wikidata
-    if (nameResult.isValid && sourceResult.isValid && selectedLanguage) {
+    // If basic validation passes, check Wikidata (only for Wikidata-sourced instruments)
+    if (
+      nameResult.isValid &&
+      sourceResult.isValid &&
+      selectedLanguage &&
+      wikidataId
+    ) {
       try {
         // Check if name already exists on Wikidata
         const nameExistsResult = await WikidataService.checkIfNameExists(

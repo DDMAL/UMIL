@@ -18,6 +18,7 @@ services:
       - ./web-app/frontend/:/virtual-instrument-museum/frontend
       - /virtual-instrument-museum/frontend/node_modules
       - vim-static:/virtual-instrument-museum/static
+      - vim-media:/virtual-instrument-museum/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -58,6 +59,7 @@ services:
     volumes:
       - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
       - vim-static:/virtual-instrument-museum/static
+      - vim-media:/virtual-instrument-museum/media
     depends_on:
       - app
 
@@ -76,4 +78,5 @@ networks:
 
 volumes:
   vim-static:
+  vim-media:
   umil-solr:

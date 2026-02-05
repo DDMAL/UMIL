@@ -13,6 +13,7 @@ services:
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
       - vim-static:/virtual-instrument-museum/static
+      - vim-media:/virtual-instrument-museum/media
     depends_on:
       postgres-test:
         condition: service_healthy
@@ -64,6 +65,7 @@ services:
     volumes:
       - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
       - vim-static:/virtual-instrument-museum/static
+      - vim-media:/virtual-instrument-museum/media
     depends_on:
       app:
         condition: service_healthy
@@ -89,4 +91,5 @@ networks:
 
 volumes:
   vim-static:
+  vim-media:
   umil-solr:
