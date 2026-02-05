@@ -37,6 +37,23 @@
             <div class="valid-feedback"></div>
             <div class="invalid-feedback"></div>
           </div>
+          <div id="ProposalsContainer" style="display: none;">
+            {% if hbs_proposals %}
+              <h6>Proposals:</h6>
+              <div id="hbsProposalsList">
+                {% for proposal in hbs_proposals %}
+                  <button type="button"
+                          class="btn btn-link btn-sm proposal-btn"
+                          style="text-decoration: underline"
+                          data-proposal="{{ proposal }}"
+                          onclick="document.getElementById('classInput').value='{{ proposal }}'; document.getElementById('classInput').focus();">
+                    {{ proposal }}
+                  </button>
+                  {% if not forloop.last %},{% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
           <div class="row mt-3">
             <div class="col text-end">
               <button type="submit" class="btn btn-primary modal-btn">Publish</button>

@@ -83,7 +83,8 @@
                               data-instrument-name="{{ active_instrument_label.name }}"
                               data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
                               data-instrument-pk="{{ instrument.pk }}"
-                              data-class-name="Hornbostel-Sachs Class">
+                              data-class-name="Hornbostel-Sachs Class"
+                              data-proposals='[{% for proposal in hbs_proposals %}"{{ proposal }}"{% if not forloop.last %}, {% endif %}{% endfor %}]'>
                         Edit HBS
                       </button>
                     {% else %}
@@ -94,7 +95,8 @@
                               data-instrument-name="{{ active_instrument_label.name }}"
                               data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
                               data-instrument-pk="{{ instrument.pk }}"
-                              data-class-name="Hornbostel-Sachs Class">
+                              data-class-name="Hornbostel-Sachs Class"
+                              data-proposals='[{% for proposal in hbs_proposals %}"{{ proposal }}"{% if not forloop.last %}, {% endif %}{% endfor %}]'>
                         Propose an HBS
                       </button>
                     {% endif %}

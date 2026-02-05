@@ -113,4 +113,17 @@ class InstrumentDetail(DetailView):
                 user_hbs = user_hbs_qs.first()
         context["user_hbs"] = user_hbs
 
+        # Add HBS proposals for this instrument to the context, if instrument has no HBS
+        if not instrument.hornbostel_sachs_class:
+            hbs_proposals_qs = (
+                HornbostelSachs.objects.filter(instrument=instrument, is_main=False)
+                .order_by("-id")
+                .values_list("hbs_class", flat=True)
+            )
+            # Deduplicate and sort
+            hbs_proposals = sorted(set(hbs_proposals_qs))
+            context["hbs_proposals"] = hbs_proposals
+        else:
+            context["hbs_proposals"] = None
+
         return context
