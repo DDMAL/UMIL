@@ -14,7 +14,8 @@ export type NameEntry = {
 
 export type AddNameForm = {
   display_name: string;
-  wikidata_id: string;
+  umil_id: string;
+  wikidata_id?: string; // Optional - only present for Wikidata-sourced instruments
   names: NameEntry[];
 };
 
@@ -47,4 +48,14 @@ export type ValidationResult = {
   isValid: boolean;
   message: string;
   type: 'success' | 'error' | 'warning';
+};
+
+/**
+ * Create Instrument API Response
+ */
+export type CreateInstrumentResponse = {
+  status: 'success' | 'error';
+  message: string;
+  instrument_id?: number;
+  umil_id?: string;
 };

@@ -1,6 +1,7 @@
 import json
+import re
 
-
+from django.http import Http404
 from django.views.generic import DetailView
 from VIM.apps.instruments.models import Instrument, Language
 
@@ -13,6 +14,22 @@ class InstrumentDetail(DetailView):
     model = Instrument
     template_name = "instruments/detail.html"
     context_object_name = "instrument"
+    slug_field = "umil_id"
+    slug_url_kwarg = "umil_id"
+
+    def get_object(self, queryset=None):
+        """
+        Override to validate UMIL ID format before database lookup.
+
+        Valid format: UMIL-##### (e.g., UMIL-00001, UMIL-12345)
+        """
+        umil_id = self.kwargs.get("umil_id")
+
+        # Validate UMIL ID format: UMIL- followed by exactly 5 digits
+        if not re.match(r"^UMIL-\d{5}$", umil_id):
+            raise Http404(f"Invalid UMIL ID format: {umil_id}")
+
+        return super().get_object(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -125,3 +125,21 @@ export function deleteCookie(
   // Setting Secure or SameSite not needed when deleting cookies
   document.cookie = cookieString;
 }
+
+/**
+ * Retrieves CSRF token from Django's csrftoken cookie.
+ * Django automatically sets this cookie for CSRF protection.
+ * @throws {Error} If CSRF token cookie not found or empty
+ * @returns CSRF token string
+ */
+export function getCsrfToken(): string {
+  const token = readCookie('csrftoken');
+
+  if (!token) {
+    throw new Error(
+      'Security token not found. Please refresh the page and try again.',
+    );
+  }
+
+  return token;
+}

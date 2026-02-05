@@ -21,19 +21,36 @@
 {% block content %}
   <div class="container d-flex align-items-center justify-content-center min-vh-80 py-4">
     <div class="container-border bg-white p-4 d-flex flex-column align-items-center flex-nowrap">
-      <div class="w-100">
-        <h2 class="notranslate">{{ active_instrument_label.name }}</h2>
-        <hr class="w-100 mt-0" />
+      <div class="w-100 d-flex">
+        <h2 class="notranslate mb-0">{{ active_instrument_label.name }}</h2>
+        <div class="align-self-center">
+          {% if user.is_authenticated and instrument.is_user_created %}
+            {% if instrument.verification_status == 'verified' %}
+              <span class="badge rounded-pill text-bg-success ms-2">Verified</span>
+            {% elif instrument.verification_status == 'unverified' %}
+              <span class="badge rounded-pill text-bg-gray ms-2">Unverified</span>
+            {% elif instrument.verification_status == 'rejected' %}
+              <span class="badge rounded-pill text-bg-danger ms-2">Rejected</span>
+            {% else %}
+              <span class="badge rounded-pill text-bg-warning ms-2">Under Review</span>
+            {% endif %}
+          {% endif %}
+        </div>
       </div>
+      <hr class="w-100 mt-0" />
       <div class="w-100">
         <table class="table table-sm table-striped table-bordered">
           <tbody>
             <tr>
               <th scope="row" class="w-20">Wikidata ID</th>
               <td>
-                <a class="view-field notranslate"
-                   href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
-                   target="_blank">{{ instrument.wikidata_id }}</a>
+                {% if instrument.is_user_created %}
+                  <span class="view-field notranslate text-muted">N/A</span>
+                {% else %}
+                  <a class="view-field notranslate"
+                     href="https://www.wikidata.org/wiki/{{ instrument.wikidata_id }}"
+                     target="_blank">{{ instrument.wikidata_id }}</a>
+                {% endif %}
               </td>
             </tr>
             <tr>
@@ -45,9 +62,13 @@
             <tr>
               <th scope="row" class="w-20">MIMO Classification</th>
               <td>
-                <a class="view-field notranslate"
-                   href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
-                   target="_blank">{{ instrument.mimo_class }}</a>
+                {% if instrument.mimo_class %}
+                  <a class="view-field notranslate"
+                     href="https://vocabulary.mimo-international.com/InstrumentsKeywords/en/page/{{ instrument.mimo_class }}"
+                     target="_blank">{{ instrument.mimo_class }}</a>
+                {% else %}
+                  <span class="view-field notranslate text-muted">N/A</span>
+                {% endif %}
               </td>
             </tr>
             <tr>
@@ -142,9 +163,9 @@
                                         data-bs-target="#deleteNameModal"
                                         data-instrument-language="{{ names.label.language.en_label }}"
                                         data-instrument-name="{{ names.label.name }}"
-                                        data-instrument-source="{{ names.label.source_name }}"
+                                        data-instrument-source="{{ names.label.source_name|escapejs }}"
                                         data-instrument-id="{{ names.label.id }}"
-                                        data-instrument-pk="{{ instrument.pk }}">
+                                        data-instrument-umil-id="{{ instrument.umil_id }}">
                                   Delete
                                 </button>
                               </div>
@@ -222,9 +243,9 @@
                                   data-bs-target="#deleteNameModal"
                                   data-instrument-language="{{ names.label.language.en_label }}"
                                   data-instrument-name="{{ names.label.name }}"
-                                  data-instrument-source="{{ names.label.source_name }}"
+                                  data-instrument-source="{{ names.label.source_name|escapejs }}"
                                   data-instrument-id="{{ names.label.id }}"
-                                  data-instrument-pk="{{ instrument.pk }}">
+                                  data-instrument-umil-id="{{ instrument.umil_id }}">
                             Delete
                           </button>
                         </div>
@@ -241,8 +262,8 @@
                               data-bs-toggle="modal"
                               data-bs-target="#addNameModal"
                               data-instrument-name="{{ active_instrument_label.name }}"
-                              data-instrument-wikidata-id="{{ instrument.wikidata_id }}"
-                              data-instrument-pk="{{ instrument.pk }}">
+                              data-instrument-umil-id="{{ instrument.umil_id }}"
+                              data-instrument-wikidata-id="{{ instrument.wikidata_id|default:'' }}">
                         Add Instrument Name
                       </button>
                     {% else %}
@@ -261,14 +282,23 @@
             <tr>
               <th scope="row" style="width: 20%">Image</th>
               <td>
-                <div class="d-flex flex-row flex-wrap">
-                  <img src="{% static instrument.default_image.url %}"
-                       alt="{{ instrument.default_image.url }}"
-                       class="rounded mw-50" />
-                  <a class="ms-2"
-                     href="{% static instrument.default_image.url %}"
-                     target="_blank">View image in full size</a>
-                </div>
+                {% if instrument.default_image %}
+                  <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-row flex-wrap">
+                      <img src="{{ instrument.default_image.get_image_url }}" alt="Instrument image" class="rounded mw-50" onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
+                      <div class="ms-2 align-self-start">
+                        {% if instrument.is_user_created and instrument.default_image.source_name %}
+                          <div class="text-muted">
+                            <strong>Source:</strong> {{ instrument.default_image.source_name }}
+                          </div>
+                        {% endif %}
+                        <a href="{{ instrument.default_image.get_image_url }}" target="_blank">View image in full size</a>
+                      </div>
+                    </div>
+                  </div>
+                {% else %}
+                  <span class="text-muted">N/A</span>
+                {% endif %}
               </td>
             </tr>
           </tbody>

@@ -23,6 +23,10 @@ server {
     root /virtual-instrument-museum/;
   }
 
+  location /media/ {
+    alias /virtual-instrument-museum/media/;
+  }
+
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # pass client address to upstream server
     proxy_set_header X-Forwarded-Proto $scheme; # pass scheme to upstream server

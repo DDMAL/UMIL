@@ -5,12 +5,12 @@
      style="display:none">
   {% for instrument in instruments %}
     <div class="col">
-      <a href="{% url 'instrument-detail' instrument.pk %}"
+      <a href="{% url 'instrument-detail' instrument.umil_id %}"
          class="text-decoration-none"
          target="_blank">
         <div class="card mb-3">
           <div class="square-box">
-            <img src="{% static instrument.thumbnail.url %}" class="card-img-top rounded p-2 img-fluid" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
+            <img src="{{ instrument.thumbnail.get_image_url }}" class="card-img-top rounded p-2 img-fluid" alt="instrument thumbnail" onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
           </div>
           <div class="card-body pb-0 pt-0">
             <p class="card-title text-center notranslate">
