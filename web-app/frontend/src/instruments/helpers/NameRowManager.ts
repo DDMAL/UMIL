@@ -92,7 +92,7 @@ export class NameRowManager {
       const lang = this.languages.find(
         (l) => l.wikidata_code === langInput.value,
       );
-      if (lang) {
+      if (lang && lang.html_direction) {
         nameInput.setAttribute('dir', lang.html_direction || 'ltr');
         nameInput.style.textAlign =
           lang.html_direction === 'rtl' ? 'right' : 'left';
