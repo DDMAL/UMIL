@@ -1,5 +1,6 @@
 import { Modal } from 'bootstrap';
 import { NameValidator } from './NameValidator';
+import { getCsrfToken } from '../../utils/cookies';
 
 export class DeleteNameManager {
   private nameId: string | null = null;
@@ -110,7 +111,7 @@ export class DeleteNameManager {
     }
 
     try {
-      const csrfToken = this.getCsrfToken();
+      const csrfToken = getCsrfToken();
 
       const response = await fetch(
         `/instrument/${this.instrumentUmilId}/names/`,
@@ -150,19 +151,6 @@ export class DeleteNameManager {
 
     // Reload the page to reflect changes
     window.location.reload();
-  }
-
-  /**
-   * Gets CSRF token from the page
-   */
-  private getCsrfToken(): string {
-    const csrfTokenElement = document.querySelector(
-      '[name=csrfmiddlewaretoken]',
-    ) as HTMLInputElement;
-    if (!csrfTokenElement) {
-      throw new Error('CSRF token not found');
-    }
-    return csrfTokenElement.value;
   }
 
   /**

@@ -1,12 +1,12 @@
 import { Modal } from 'bootstrap';
-import { NameEntry } from './Types';
 import { NameValidator } from './helpers/NameValidator';
 import { AddNameManager } from './helpers/AddNameManager';
+import { NameRowManager } from './helpers/NameRowManager';
 import { getLanguages } from './utils';
-import { getCsrfToken } from '../utils/cookies';
 
 const languages = getLanguages();
 
+let nameRowManager: NameRowManager;
 let nameValidator: NameValidator;
 let addNameManager: AddNameManager;
 
@@ -42,12 +42,14 @@ document
 // Initialize application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
   // Initialize services
+  nameRowManager = new NameRowManager(languages);
   nameValidator = new NameValidator(languages);
-  addNameManager = new AddNameManager(languages, nameValidator);
+  addNameManager = new AddNameManager(nameRowManager, nameValidator);
 
-  // Setup form event listeners
+  // Setup event listeners
   addNameManager.setupAddRowButton();
   addNameManager.setupFormSubmission();
+  addNameManager.setupPublishConfirmation();
 
   // Handle stored form data
   const storedFormData = localStorage.getItem('addNameFormData');
@@ -66,70 +68,3 @@ document.addEventListener('DOMContentLoaded', function () {
 document
   .getElementById('addNameModal')
   .addEventListener('hide.bs.modal', () => addNameManager.resetModal());
-
-// Publishing functionality
-// Handle confirm publish action
-document
-  .getElementById('confirmPublishBtn')
-  .addEventListener('click', function () {
-    const umilId = document
-      .getElementById('instrumentUmilIdInModal')
-      .textContent.trim();
-
-    const entries: NameEntry[] = [];
-
-    // Collect form data from all rows
-    const nameRows = document.querySelectorAll('.name-row');
-    nameRows.forEach((currentRow) => {
-      const languageInput = currentRow.querySelector(
-        'input[list]',
-      ) as HTMLInputElement;
-      const nameInput = currentRow.querySelector(
-        '.name-input input[type="text"]',
-      ) as HTMLInputElement;
-      const sourceInput = currentRow.querySelector(
-        '.source-input input[type="text"]',
-      ) as HTMLInputElement;
-
-      entries.push({
-        language: languageInput.value,
-        name: nameInput.value,
-        source: sourceInput.value,
-      });
-    });
-
-    // Publish to backend
-    fetch(`/instrument/${umilId}/names/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCsrfToken(),
-      },
-      body: JSON.stringify({
-        entries: entries,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 'success') {
-          // Close modals
-          const addNameModal = Modal.getInstance(
-            document.getElementById('addNameModal'),
-          );
-          const confirmationModal = Modal.getInstance(
-            document.getElementById('confirmationModal'),
-          );
-
-          addNameModal?.hide();
-          confirmationModal?.hide();
-
-          // Reload to reflect changes
-          window.location.reload();
-        } else {
-          alert('Error: ' + data.message);
-        }
-      })
-      .catch((error) => {
-        alert('An error occurred while publishing: ' + error.message);
-      });
-  });
