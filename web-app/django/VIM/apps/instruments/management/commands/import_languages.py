@@ -193,7 +193,9 @@ class Command(BaseCommand):
             language_details = get_language_details(language_batch)
             if language_details:
                 for lang in language_details:
-                    wikidata_code = language_details[lang]["code"]
+                    wikidata_code = language_details[lang][
+                        "code"
+                    ]  # language_details[lang]["code"] is already lowercase
                     en_label = language_details[lang]["name"]
                     autonym = language_details[lang]["autonym"]
                     if wikidata_code in directions:
