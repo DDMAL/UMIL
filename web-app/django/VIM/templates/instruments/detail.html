@@ -297,7 +297,10 @@
                 {% if instrument.default_image %}
                   <div class="d-flex flex-column gap-2">
                     <div class="d-flex flex-row flex-wrap">
-                      <img src="{{ instrument.default_image.get_image_url }}" alt="Instrument image" class="rounded mw-50" onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
+                      <img src="{{ instrument.default_image.get_image_url }}"
+                           alt="Instrument image"
+                           class="rounded mw-50"
+                           onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
                       <div class="ms-2 align-self-start">
                         {% if instrument.is_user_created and instrument.default_image.source_name %}
                           <div class="text-muted">

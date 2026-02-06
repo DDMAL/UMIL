@@ -30,7 +30,11 @@
             {% endif %}
             <!-- Mobile background image (visible only on small screens) -->
             <div class="d-md-none position-absolute top-50 start-50 translate-middle z-0 w-100 h-100 d-flex justify-content-center align-items-center">
-              <img src="{% static "assets/images/sign-up.svg" %}" alt="" class="opacity-50 w-100 h-100" style="max-width: 80%; max-height: 80%;" />
+              <img src="{% static "assets/images/sign-up.svg" %}"
+                   alt=""
+                   class="opacity-50 w-100 h-100"
+                   style="max-width: 80%;
+                          max-height: 80%" />
             </div>
             <div class="container z-1 position-relative">
               <div class="row flex-column flex-md-row">
@@ -44,7 +48,9 @@
                 <div class="col-12 col-md-6 my-4 create-account-link d-flex align-items-center">
                   <div id="signup-option-separator" class="flex-fill d-none d-md-block">
                     <div class="text-center" id="error">
-                      <img src="{% static "assets/images/sign-up.svg" %}" alt="sign up image" class="my-4 vh-20" />
+                      <img src="{% static "assets/images/sign-up.svg" %}"
+                           alt="sign up image"
+                           class="my-4 vh-20" />
                       {% block right_column %}
                       {% endblock right_column %}
 
