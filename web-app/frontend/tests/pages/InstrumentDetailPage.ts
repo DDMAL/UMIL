@@ -2,8 +2,8 @@ import { Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class InstrumentDetailPage extends BasePage {
-  async goto(wikidataId: string) {
-    await super.goto(`/instrument/${wikidataId}/`);
+  async goto(umilId: string) {
+    await super.goto(`/instrument/${umilId}/`);
   }
 
   getInstrumentName(): Locator {
