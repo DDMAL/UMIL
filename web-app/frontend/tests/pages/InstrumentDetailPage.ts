@@ -89,4 +89,96 @@ export class InstrumentDetailPage extends BasePage {
       : '#languageTableBody';
     return this.page.locator(`${container} .action-buttons`).first();
   }
+
+  // Delete Instrument Methods
+  /**
+   * Gets the delete instrument button locator.
+   * This button only appears for user-created instruments when authenticated.
+   */
+  getDeleteInstrumentButton(): Locator {
+    return this.page.locator('button[data-bs-target="#deleteInstrumentModal"]');
+  }
+
+  /**
+   * Gets the delete instrument confirmation modal locator.
+   */
+  getDeleteInstrumentModal(): Locator {
+    return this.page.locator('#deleteInstrumentModal');
+  }
+
+  /**
+   * Gets the confirm delete button inside the modal.
+   */
+  getConfirmDeleteButton(): Locator {
+    return this.page.locator('#confirmDeleteInstrumentBtn');
+  }
+
+  /**
+   * Gets the error container in the delete modal.
+   */
+  getDeleteModalError(): Locator {
+    return this.page.locator('#deleteModalError');
+  }
+
+  /**
+   * Gets the error message element in the delete modal.
+   */
+  getDeleteModalErrorMessage(): Locator {
+    return this.page.locator('#deleteModalErrorMessage');
+  }
+
+  /**
+   * Clicks the delete instrument button and waits for the modal to appear.
+   */
+  async clickDeleteInstrument(): Promise<void> {
+    await this.getDeleteInstrumentButton().click();
+    await this.getDeleteInstrumentModal().waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Confirms the deletion by clicking the confirm button in the modal.
+   */
+  async confirmDeleteInstrument(): Promise<void> {
+    await this.getConfirmDeleteButton().click();
+  }
+
+  // Name Verification Methods
+  /**
+   * Checks if a name exists for a given language.
+   * @param language - The language display name (e.g., "English", "French")
+   * @param name - The instrument name to look for
+   * @returns true if the name is visible in the table
+   */
+  async hasName(language: string, name: string): Promise<boolean> {
+    const row = this.page.locator(
+      `tr:has-text("${language}"):has-text("${name}")`,
+    );
+    return await row.isVisible();
+  }
+
+  /**
+   * Gets the total count of instrument names displayed.
+   * Handles both desktop and mobile views.
+   * @returns The number of name entries displayed
+   */
+  async getNameCount(): Promise<number> {
+    const isMobile = this.isMobile();
+    if (isMobile) {
+      // Mobile view: count name cards/rows
+      return await this.page
+        .locator('#languageTableBodyMobile .name-card')
+        .count();
+    }
+    // Desktop view: count table rows
+    return await this.page.locator('#languageTableBody tr').count();
+  }
+
+  /**
+   * Checks if the delete instrument button is visible.
+   * Delete button only appears for user-created instruments when authenticated.
+   * @returns true if delete button is visible
+   */
+  async isDeleteButtonVisible(): Promise<boolean> {
+    return await this.getDeleteInstrumentButton().isVisible();
+  }
 }
