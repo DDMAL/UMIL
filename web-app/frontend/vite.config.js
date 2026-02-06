@@ -12,11 +12,16 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/main.ts'),
-        instrumentDetail: resolve(__dirname, 'src/instruments/AddName.ts'),
-        paginationTools: resolve(
+        addName: resolve(__dirname, 'src/instruments/AddName.ts'),
+        barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
+        createInstrument: resolve(
           __dirname,
-          'src/instruments/PaginationTools.ts',
+          'src/instruments/CreateInstrument.ts',
+        ),
+        deleteName: resolve(__dirname, 'src/instruments/DeleteName.ts'),
+        deleteInstrument: resolve(
+          __dirname,
+          'src/instruments/DeleteInstrument.ts',
         ),
         displaySettings: resolve(
           __dirname,
@@ -24,17 +29,16 @@ export default defineConfig({
         ),
         jumpToTop: resolve(__dirname, 'src/instruments/JumpToTop.ts'),
         languageList: resolve(__dirname, 'src/LanguageList.ts'),
-        statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
-        barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
-        deleteName: resolve(__dirname, 'src/instruments/DeleteName.ts'),
-        createInstrument: resolve(
+        main: resolve(__dirname, 'src/main.ts'),
+        paginationTools: resolve(
           __dirname,
-          'src/instruments/CreateInstrument.ts',
+          'src/instruments/PaginationTools.ts',
         ),
         resendEmailCountdown: resolve(
           __dirname,
           'src/auth/ResendEmailCountdown.ts',
         ),
+        statsAnimation: resolve(__dirname, 'src/stats/StatsAnimation.ts'),
       },
       output: {
         entryFileNames: '[name].js',
