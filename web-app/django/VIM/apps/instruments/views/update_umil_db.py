@@ -1,7 +1,9 @@
 """Django view to handle user input to UMIl database"""
 
 import json
+import logging
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.views.decorators.http import require_http_methods
 from django.http import HttpRequest, JsonResponse
 from django.core.exceptions import ValidationError
@@ -20,7 +22,10 @@ from VIM.apps.instruments.utils.response_helpers import (
     success_response,
     handle_exception,
 )
+from VIM.apps.instruments.utils.solr_indexer import index_single_instrument
 from typing import Any, Dict, List
+
+logger = logging.getLogger(__name__)
 
 
 def add_name(request: HttpRequest, umil_id: str) -> JsonResponse:
@@ -179,6 +184,31 @@ def add_name(request: HttpRequest, umil_id: str) -> JsonResponse:
         # Bulk create all InstrumentName objects
         InstrumentName.objects.bulk_create(instrument_names_to_create)
 
+        # Schedule Solr reindex after commit so new names are searchable
+        if instrument_names_to_create:
+
+            def schedule_indexing():
+                try:
+                    index_success = index_single_instrument(instrument.pk)
+                    if not index_success:
+                        instrument.needs_reindexing = True
+                        instrument.save(update_fields=["needs_reindexing"])
+                        logger.warning(
+                            f"Instrument {instrument.pk} (UMIL ID: {instrument.umil_id}) "
+                            "names added but failed to reindex in Solr. "
+                            "Marked for reindexing. Run 'python manage.py reindex_failed' to retry."
+                        )
+                except Exception as e:
+                    instrument.needs_reindexing = True
+                    instrument.save(update_fields=["needs_reindexing"])
+                    logger.error(
+                        f"Error reindexing instrument {instrument.pk} (UMIL ID: {instrument.umil_id}) "
+                        "after adding names. Marked for reindexing.",
+                        exc_info=True,
+                    )
+
+            transaction.on_commit(schedule_indexing)
+
         return success_response("All entries saved successfully")
 
     except Exception as e:
@@ -241,8 +271,35 @@ def delete_name(request: HttpRequest) -> JsonResponse:
                 },
             )
 
+        instrument_id = instrument_name.instrument_id
+
         # Delete the name
         instrument_name.delete()
+
+        # Schedule Solr reindex after commit so the deleted name is removed from search
+        def schedule_indexing():
+            try:
+                index_success = index_single_instrument(instrument_id)
+                if not index_success:
+                    Instrument.objects.filter(pk=instrument_id).update(
+                        needs_reindexing=True
+                    )
+                    logger.warning(
+                        f"Instrument {instrument_id} name deleted but failed to reindex in Solr. "
+                        "Marked for reindexing. Run 'python manage.py reindex_failed' to retry."
+                    )
+            except Exception as e:
+                Instrument.objects.filter(pk=instrument_id).update(
+                    needs_reindexing=True
+                )
+                logger.error(
+                    f"Error reindexing instrument {instrument_id} after deleting name. "
+                    "Marked for reindexing.",
+                    exc_info=True,
+                )
+
+        transaction.on_commit(schedule_indexing)
+
         return success_response("Instrument name deleted successfully")
 
     except Exception as e:
