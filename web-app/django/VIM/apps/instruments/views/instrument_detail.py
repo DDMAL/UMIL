@@ -90,4 +90,13 @@ class InstrumentDetail(DetailView):
 
         context["active_tab"] = "instruments"
 
+        context["can_delete_instrument"] = (
+            self.request.user.is_authenticated
+            and context["instrument"].is_user_created
+            and (
+                self.request.user.is_superuser
+                or context["instrument"].created_by == self.request.user
+            )
+        )
+
         return context
