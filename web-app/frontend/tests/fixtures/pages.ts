@@ -7,6 +7,7 @@ import {
   RegisterPage,
   InstrumentListPage,
   InstrumentDetailPage,
+  CreateInstrumentPage,
 } from '../pages';
 
 type PageFixtures = {
@@ -15,6 +16,7 @@ type PageFixtures = {
   registerPage: RegisterPage;
   instrumentListPage: InstrumentListPage;
   instrumentDetailPage: InstrumentDetailPage;
+  createInstrumentPage: CreateInstrumentPage;
 };
 
 type TestOptions = {
@@ -61,6 +63,8 @@ export const test = base.extend<PageFixtures & TestOptions>({
     await use(new InstrumentListPage(page)),
   instrumentDetailPage: async ({ page }, use) =>
     await use(new InstrumentDetailPage(page)),
+  createInstrumentPage: async ({ page }, use) =>
+    await use(new CreateInstrumentPage(page)),
 });
 
 export { expect } from '@playwright/test';

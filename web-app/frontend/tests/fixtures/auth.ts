@@ -4,6 +4,7 @@ import {
   LoginPage,
   InstrumentListPage,
   InstrumentDetailPage,
+  CreateInstrumentPage,
 } from '../pages';
 
 const authFile = 'tests/.auth/user.json';
@@ -13,6 +14,7 @@ type PageFixtures = {
   loginPage: LoginPage;
   instrumentListPage: InstrumentListPage;
   instrumentDetailPage: InstrumentDetailPage;
+  createInstrumentPage: CreateInstrumentPage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -23,6 +25,8 @@ export const test = base.extend<PageFixtures>({
     await use(new InstrumentListPage(page)),
   instrumentDetailPage: async ({ page }, use) =>
     await use(new InstrumentDetailPage(page)),
+  createInstrumentPage: async ({ page }, use) =>
+    await use(new CreateInstrumentPage(page)),
 });
 
 export { expect } from '@playwright/test';

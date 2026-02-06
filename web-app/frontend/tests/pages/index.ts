@@ -4,3 +4,4 @@ export { LoginPage } from './LoginPage';
 export { RegisterPage } from './RegisterPage';
 export { InstrumentListPage } from './InstrumentListPage';
 export { InstrumentDetailPage } from './InstrumentDetailPage';
+export { CreateInstrumentPage } from './CreateInstrumentPage';
