@@ -1,155 +1,65 @@
-import { WikidataLanguage, AddNameForm, NameEntry } from '../Types';
+import { AddNameForm, NameEntry } from '../Types';
 import { NameValidator } from './NameValidator';
+import { NameRowManager } from './NameRowManager';
+import { getCsrfToken } from '../../utils/cookies';
 import { Modal } from 'bootstrap';
 
 export class AddNameManager {
-  private rowIndex: number = 1;
-  private languages: WikidataLanguage[];
+  private nameRowManager: NameRowManager;
   private nameValidator: NameValidator;
 
-  constructor(languages: WikidataLanguage[], nameValidator: NameValidator) {
-    this.languages = languages;
+  constructor(nameRowManager: NameRowManager, nameValidator: NameValidator) {
+    this.nameRowManager = nameRowManager;
     this.nameValidator = nameValidator;
   }
 
   /**
-   * Creates a new name row with language, name, and source inputs
-   */
-  createNameRow(index: number): HTMLDivElement {
-    const row: HTMLDivElement = document.createElement('div');
-    row.classList.add('row', 'mb-1', 'name-row');
-
-    // Create datalist options dynamically using the languages
-    let datalistOptions: string = this.languages
-      .map(
-        (language: WikidataLanguage) => `
-        <option value="${language.wikidata_code}" class="notranslate force-ltr">${language.autonym} - ${language.en_label}</option>
-    `,
-      )
-      .join('');
-
-    row.innerHTML = `
-      <div class="col-md-3 language-input">
-        <label for="language${index}" class="form-label-sm">Language</label>
-        <input list="languages${index}" class="form-control" id="language${index}" name="language[]" placeholder="Type to search" required />
-        <datalist id="languages${index}">
-          ${datalistOptions}
-        </datalist>
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback"></div>
-      </div>
-      <div class="col-md-3 name-input">
-        <label for="name${index}" class="form-label-sm">Name</label>
-        <input type="text" class="form-control" id="name${index}" name="name[]" placeholder="Enter name" required />
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback"></div>
-      </div>
-      <div class="col-md-3 source-input">
-        <label for="source${index}" class="form-label-sm">Source</label>
-        <input type="text" class="form-control" id="source${index}" name="source[]" placeholder="Enter source" required />
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback"></div>
-      </div>
-      <div class="col-md-2">
-        <label class="form-label-sm">&nbsp;</label>
-        <button type="button" class="btn btn-secondary remove-row-btn w-100">Remove</button>
-      </div>
-    `;
-
-    // Add event listener for remove button
-    const removeButton = row.querySelector(
-      '.remove-row-btn',
-    ) as HTMLButtonElement;
-    removeButton.addEventListener('click', () => {
-      row.remove();
-      this.updateRemoveButtons(); // Ensure correct behavior when rows are removed
-    });
-
-    // Add event listener for left/right direction and alignment of the name input based on language selection
-    const langInput = row.querySelector(
-      `#language${index}`,
-    ) as HTMLInputElement;
-    const nameInput = row.querySelector(`#name${index}`) as HTMLInputElement;
-
-    langInput.addEventListener('change', () => {
-      const lang = this.languages.find(
-        (l) => l.wikidata_code === langInput.value,
-      );
-
-      if (lang) {
-        nameInput.setAttribute('dir', lang.html_direction);
-        nameInput.style.textAlign =
-          lang.html_direction === 'rtl' ? 'right' : 'left';
-      }
-    });
-    return row;
-  }
-
-  /**
-   * Updates remove button visibility based on the number of rows
-   */
-  updateRemoveButtons(): void {
-    const rows = document.querySelectorAll('.name-row');
-    rows.forEach((currentRow, rowIndex) => {
-      const removeButton = currentRow.querySelector('.remove-row-btn');
-      // Show the remove button only if there are more than one row
-      if (rows.length > 1) {
-        (removeButton as HTMLElement).style.display = 'inline-block';
-      } else {
-        (removeButton as HTMLElement).style.display = 'none'; // Hide the button if only one row remains
-      }
-    });
-  }
-
-  /**
-   * Resets the modal and ensures only one row is present
-   */
-  resetModal(): void {
-    const nameRows = document.getElementById('nameRows');
-    nameRows.innerHTML = ''; // Clear all rows
-    nameRows.appendChild(this.createNameRow(1)); // Add initial row
-    this.updateRemoveButtons(); // Ensure remove buttons are updated on reset
-    this.rowIndex = 1; // Reset row index
-  }
-
-  /**
-   * Adds a new name row to the form
-   */
-  addNameRow(): void {
-    this.rowIndex++;
-    const nameRows = document.getElementById('nameRows');
-    nameRows.appendChild(this.createNameRow(this.rowIndex));
-    this.updateRemoveButtons(); // Update remove buttons after adding a new row
-  }
-
-  /**
-   * Gets the current row index
-   */
-  getCurrentRowIndex(): number {
-    return this.rowIndex;
-  }
-
-  /**
-   * Sets up event listeners for the add row button
+   * Sets up the add row button
    */
   setupAddRowButton(): void {
-    document.getElementById('addRowBtn').addEventListener('click', () => {
-      this.addNameRow();
-    });
+    this.nameRowManager.setupAddRowButton();
+  }
+
+  /**
+   * Sets up form submission handling
+   */
+  setupFormSubmission(): void {
+    document
+      .getElementById('addNameForm')
+      ?.addEventListener('submit', (event) => {
+        this.validateAndSubmitForm(event);
+      });
+  }
+
+  /**
+   * Sets up the confirm publish button handler
+   */
+  setupPublishConfirmation(): void {
+    document
+      .getElementById('confirmPublishBtn')
+      ?.addEventListener('click', () => {
+        this.submitNames();
+      });
+  }
+
+  /**
+   * Resets the modal to its initial state
+   */
+  resetModal(): void {
+    this.nameRowManager.resetRows();
   }
 
   /**
    * Validates all form rows and shows confirmation modal if valid
    */
   async validateAndSubmitForm(event: Event): Promise<void> {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
 
     const nameRows = document.querySelectorAll('.name-row');
     let allValid = true;
-    let publishResults = ''; // Collect the results for confirmation
+    let publishResults = '';
 
-    // Validate each row
-    for (let row of nameRows) {
+    for (const row of nameRows) {
       const languageInput = row.querySelector(
         'input[list]',
       ) as HTMLInputElement;
@@ -161,9 +71,10 @@ export class AddNameManager {
       ) as HTMLInputElement;
 
       const languageCode = languageInput.value;
-      const wikidataId = document
-        .getElementById('instrumentWikidataIdInModal')
-        .textContent.trim();
+      const wikidataId =
+        document
+          .getElementById('instrumentWikidataIdInModal')
+          ?.textContent?.trim() || '';
 
       // Validate language selection
       const languageResult = this.nameValidator.validateLanguage(languageInput);
@@ -176,7 +87,6 @@ export class AddNameManager {
       }
 
       try {
-        // Comprehensive name validation (uses Wikidata ID for validation if available)
         const validationResult = await this.nameValidator.validateName(
           languageCode,
           nameInput.value,
@@ -184,7 +94,6 @@ export class AddNameManager {
           wikidataId,
         );
 
-        // Display feedback for all fields
         const nameContainer = row.querySelector('.name-input');
         const sourceContainer = row.querySelector('.source-input');
 
@@ -202,7 +111,6 @@ export class AddNameManager {
           continue;
         }
 
-        // Add to confirmation message with better formatting
         publishResults += `
           <div class="mb-3 p-2 border rounded bg-light">
             <div class="row">
@@ -220,7 +128,6 @@ export class AddNameManager {
           </div>
         `;
       } catch (error) {
-        // Handle validation errors
         allValid = false;
         const nameContainer = row.querySelector('.name-input');
         const sourceContainer = row.querySelector('.source-input');
@@ -238,7 +145,6 @@ export class AddNameManager {
       }
     }
 
-    // If all validation passes, show confirmation modal
     if (allValid) {
       const confirmationModal = new Modal(
         document.getElementById('confirmationModal'),
@@ -249,14 +155,45 @@ export class AddNameManager {
   }
 
   /**
-   * Sets up form submission handling
+   * Submits name entries to the backend API
    */
-  setupFormSubmission(): void {
-    document
-      .getElementById('addNameForm')
-      .addEventListener('submit', (event) => {
-        this.validateAndSubmitForm(event);
+  private async submitNames(): Promise<void> {
+    const umilId = document
+      .getElementById('instrumentUmilIdInModal')
+      ?.textContent?.trim();
+
+    const entries = this.nameRowManager.collectNameEntries();
+
+    try {
+      const response = await fetch(`/instrument/${umilId}/names/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken(),
+        },
+        body: JSON.stringify({ entries }),
       });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        const addNameModal = Modal.getInstance(
+          document.getElementById('addNameModal'),
+        );
+        const confirmationModal = Modal.getInstance(
+          document.getElementById('confirmationModal'),
+        );
+
+        addNameModal?.hide();
+        confirmationModal?.hide();
+
+        window.location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      alert('An error occurred while publishing: ' + (error as Error).message);
+    }
   }
 
   /**
@@ -292,11 +229,11 @@ export class AddNameManager {
     const nameRowsContainer = document.getElementById(
       'nameRows',
     ) as HTMLElement;
-    nameRowsContainer.innerHTML = ''; // Clear existing rows
+    nameRowsContainer.innerHTML = '';
 
     if (parsedData['names'] && parsedData['names'].length > 0) {
       parsedData['names'].forEach((rowData: NameEntry, rowIndex: number) => {
-        const newRow = this.createNameRow(rowIndex + 1);
+        const newRow = this.nameRowManager.createNameRow(rowIndex + 1);
         nameRowsContainer.appendChild(newRow);
         (
           newRow.querySelector('.language-input input') as HTMLInputElement
@@ -310,7 +247,9 @@ export class AddNameManager {
     }
 
     // Update row management state
-    this.rowIndex = parsedData['names'] ? parsedData['names'].length : 1;
-    this.updateRemoveButtons();
+    this.nameRowManager.setRowIndex(
+      parsedData['names'] ? parsedData['names'].length : 1,
+    );
+    this.nameRowManager.updateRemoveButtons();
   }
 }

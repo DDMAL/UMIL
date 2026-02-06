@@ -1,5 +1,4 @@
 import {
-  WikidataLanguage,
   NameEntry,
   CreateInstrumentResponse,
   ValidationResult,
@@ -8,137 +7,34 @@ import {
   CreateInstrumentValidator,
   CreateInstrumentData,
 } from './CreateInstrumentValidator';
+import { NameRowManager } from './NameRowManager';
 import { getCsrfToken } from '../../utils/cookies';
 import { Modal } from 'bootstrap';
 
 export class CreateInstrumentManager {
-  private rowIndex: number = 1;
-  private languages: WikidataLanguage[];
+  private nameRowManager: NameRowManager;
   private validator: CreateInstrumentValidator;
 
   constructor(
-    languages: WikidataLanguage[],
+    nameRowManager: NameRowManager,
     validator: CreateInstrumentValidator,
   ) {
-    this.languages = languages;
+    this.nameRowManager = nameRowManager;
     this.validator = validator;
-  }
-
-  /**
-   * Creates a new name row with language, name, and source inputs
-   */
-  createNameRow(index: number, isFirst: boolean = false): HTMLDivElement {
-    const row: HTMLDivElement = document.createElement('div');
-    row.classList.add('row', 'mb-2', 'name-row', 'align-items-start');
-    row.dataset.rowIndex = String(index);
-
-    const datalistOptions: string = this.languages
-      .map(
-        (language: WikidataLanguage) => `
-        <option value="${language.wikidata_code}" class="notranslate force-ltr">
-          ${language.autonym} - ${language.en_label}
-        </option>
-      `,
-      )
-      .join('');
-
-    const requiredMark = isFirst ? '<span class="text-danger">*</span>' : '';
-    const requiredAttr = isFirst ? 'required' : '';
-    const deleteButtonStyle = isFirst ? 'visibility: hidden;' : '';
-
-    row.innerHTML = `
-      <div class="col-md-3 col-12 language-input mb-2 mb-md-0">
-        <label for="language${index}" class="form-label">Language ${requiredMark}</label>
-        <input list="languages${index}" class="form-control" id="language${index}"
-               name="language[]" placeholder="Type to search" ${requiredAttr} />
-        <datalist id="languages${index}">
-          ${datalistOptions}
-        </datalist>
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback"></div>
-      </div>
-      <div class="col-md-3 col-12 name-input mb-2 mb-md-0">
-        <label for="name${index}" class="form-label">Name ${requiredMark}</label>
-        <input type="text" class="form-control" id="name${index}"
-               name="name[]" placeholder="Enter name" ${requiredAttr} />
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback"></div>
-      </div>
-      <div class="col-md-3 col-12 source-input mb-2 mb-md-0">
-        <label for="source${index}" class="form-label">Source ${requiredMark}</label>
-        <input type="text" class="form-control" id="source${index}"
-               name="source[]" placeholder="Enter source" ${requiredAttr} />
-        <div class="valid-feedback"></div>
-        <div class="invalid-feedback"></div>
-      </div>
-      <div class="col-md-2 col-12 mb-2 mb-md-0 align-self-end d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-danger remove-row-btn w-50" title="Remove this row" style="${deleteButtonStyle}">
-          <i class="bi bi-trash"></i>
-        </button>
-      </div>
-    `;
-
-    // Add event listener for remove button
-    const removeButton = row.querySelector(
-      '.remove-row-btn',
-    ) as HTMLButtonElement;
-    if (removeButton) {
-      removeButton.addEventListener('click', () => {
-        row.remove();
-      });
-    }
-
-    // Add RTL support for name input based on language
-    const langInput = row.querySelector(
-      `#language${index}`,
-    ) as HTMLInputElement;
-    const nameInput = row.querySelector(`#name${index}`) as HTMLInputElement;
-
-    langInput.addEventListener('change', () => {
-      const lang = this.languages.find(
-        (l) => l.wikidata_code === langInput.value,
-      );
-      if (lang) {
-        nameInput.setAttribute('dir', lang.html_direction || 'ltr');
-        nameInput.style.textAlign =
-          lang.html_direction === 'rtl' ? 'right' : 'left';
-      }
-    });
-
-    return row;
   }
 
   /**
    * Initializes the form with one required row
    */
   initializeForm(): void {
-    const nameRows = document.getElementById('nameRows');
-    if (nameRows) {
-      nameRows.innerHTML = '';
-      nameRows.appendChild(this.createNameRow(1, true));
-      this.rowIndex = 1;
-    }
-  }
-
-  /**
-   * Adds a new optional name row
-   */
-  addNameRow(): void {
-    this.rowIndex++;
-    const nameRows = document.getElementById('nameRows');
-    if (nameRows) {
-      nameRows.appendChild(this.createNameRow(this.rowIndex, false));
-    }
+    this.nameRowManager.resetRows(true);
   }
 
   /**
    * Sets up the add row button
    */
   setupAddRowButton(): void {
-    const addRowBtn = document.getElementById('addRowBtn');
-    if (addRowBtn) {
-      addRowBtn.addEventListener('click', () => this.addNameRow());
-    }
+    this.nameRowManager.setupAddRowButton();
   }
 
   /**
@@ -216,29 +112,7 @@ export class CreateInstrumentManager {
    * Collects form data
    */
   collectFormData(): CreateInstrumentData {
-    const entries: NameEntry[] = [];
-    const nameRows = document.querySelectorAll('.name-row');
-
-    nameRows.forEach((row) => {
-      const languageInput = row.querySelector(
-        'input[list]',
-      ) as HTMLInputElement;
-      const nameInput = row.querySelector(
-        '.name-input input[type="text"]',
-      ) as HTMLInputElement;
-      const sourceInput = row.querySelector(
-        '.source-input input[type="text"]',
-      ) as HTMLInputElement;
-
-      // Include entry if any field has data
-      const language = languageInput?.value?.trim() || '';
-      const name = nameInput?.value?.trim() || '';
-      const source = sourceInput?.value?.trim() || '';
-
-      if (language || name || source) {
-        entries.push({ language, name, source });
-      }
-    });
+    const entries: NameEntry[] = this.nameRowManager.collectNameEntries();
 
     const instrumentSource =
       (
@@ -291,7 +165,6 @@ export class CreateInstrumentManager {
     const validationResult = await this.validator.validateAll(formData);
 
     if (!validationResult.isValid) {
-      // Display validation errors
       this.displayValidationErrors(validationResult.errors);
       return;
     }
@@ -314,7 +187,7 @@ export class CreateInstrumentManager {
           errorDiv.textContent = result.message;
           errorDiv.style.display = 'block';
         }
-        return; // Skip standard processing
+        return;
       }
 
       // Handle different field types
@@ -362,10 +235,12 @@ export class CreateInstrumentManager {
     if (firstError) {
       firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      // If no field-level error, check for nameRows error
-      const nameRowsError = document.getElementById('nameRowsError');
-      if (nameRowsError && nameRowsError.style.display !== 'none') {
-        nameRowsError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const nameRowsErrorEl = document.getElementById('nameRowsError');
+      if (nameRowsErrorEl && nameRowsErrorEl.style.display !== 'none') {
+        nameRowsErrorEl.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
       }
     }
   }
@@ -543,9 +418,6 @@ export class CreateInstrumentManager {
     }
   }
 
-  /**
-   * Displays error message in the confirmation modal
-   */
   private showModalError(message: string): void {
     const modalError = document.getElementById('modalError');
     const modalErrorMessage = document.getElementById('modalErrorMessage');
@@ -557,9 +429,6 @@ export class CreateInstrumentManager {
     }
   }
 
-  /**
-   * Hides error message in the confirmation modal
-   */
   private hideModalError(): void {
     const modalError = document.getElementById('modalError');
     if (modalError) {
