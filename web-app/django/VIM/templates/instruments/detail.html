@@ -11,6 +11,9 @@
   {% vite_asset 'src/instruments/JumpToTop.ts' %}
   {% vite_asset 'src/instruments/AddName.ts' %}
   {% vite_asset 'src/instruments/DeleteName.ts' %}
+  {% if can_delete_instrument %}
+    {% vite_asset 'src/instruments/DeleteInstrument.ts' %}
+  {% endif %}
 {% endblock ts_files %}
 
 {% block css_files %}
@@ -36,6 +39,15 @@
             {% endif %}
           {% endif %}
         </div>
+        {% if can_delete_instrument %}
+          <button class="btn btn-danger btn-sm align-self-center ms-auto"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteInstrumentModal"
+                  data-instrument-umil-id="{{ instrument.umil_id }}"
+                  data-instrument-name="{{ active_instrument_label.name }}">
+            Delete
+          </button>
+        {% endif %}
       </div>
       <hr class="w-100 mt-0" />
       <div class="w-100">
@@ -306,6 +318,10 @@
       </div>
     </div>
   </div>
+  {% if can_delete_instrument %}
+    {% include "instruments/includes/deleteInstrumentModal.html" %}
+
+  {% endif %}
   {% include "instruments/includes/jumpToTop.html" %}
 
 {% endblock content %}

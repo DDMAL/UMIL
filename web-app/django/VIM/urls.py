@@ -26,6 +26,7 @@ from VIM.apps.instruments.views.create_instrument import (
     create_instrument,
     check_duplicate_names,
 )
+from VIM.apps.instruments.views.delete_instrument import delete_instrument
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
@@ -47,6 +48,11 @@ urlpatterns = i18n_patterns(
         name="instrument-detail",
     ),
     path("instrument/<slug:umil_id>/names/", update_umil_db, name="update-umil-db"),
+    path(
+        "api/instrument/<slug:umil_id>/delete/",
+        delete_instrument,
+        name="api-delete-instrument",
+    ),
     prefix_default_language=False,
 )
 
