@@ -10,9 +10,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addNameModalLabel">
-          Add New Name for <span id="instrumentNameInModal"></span> (wikidata
-          ID:<span id="instrumentWikidataIdInModal"></span>)
+          <span>Add New Name: <span id="instrumentNameInModal" class="notranslate m-1"></span></span>
+          <br />
+          <small>UMIL ID: <span id="instrumentUmilIdInModal" class="notranslate m-1"></span></small>
+          <br />
+          <small>Wikidata ID: <span id="instrumentWikidataIdInModal" class="notranslate m-1 text-muted"></span></small>
         </h5>
+        <div class="flex-grow-1"></div>
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="modal"
@@ -21,7 +25,6 @@
       <div class="modal-body">
         <form id="addNameForm" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
-          <input type="hidden" id="instrumentPkInModal" />
           <div class="mb-3" id="nameRows">
             <!-- Placeholder for dynamically generated rows -->
           </div>
@@ -74,14 +77,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  var languages = [
-      {% for language in languages %}
-      {
-          "wikidata_code": "{{ language.wikidata_code }}",
-          "autonym": "{{ language.autonym }}",
-          "en_label": "{{ language.en_label }}"
-      }{% if not forloop.last %},{% endif %}
-      {% endfor %}
-  ];
-</script>
+<script type="application/json" id="languages-json">{{ languages|safe }}</script>

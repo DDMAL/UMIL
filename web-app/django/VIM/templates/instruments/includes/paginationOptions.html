@@ -20,7 +20,7 @@
     <label class="btn" title="View 100 entries per page" for="100">100</label>
     <span class="text-end mx-2">per page</span>
   </div>
-  <ul class="pagination mb-1 align-items-center justify-content-center">
+  <ul class="pagination mb-1 align-items-center justify-content-center force-ltr">
     {% if page_obj.has_previous %}
       <li class="page-item">
         <a class="page-link"
@@ -39,12 +39,12 @@
         </a>
       </li>
     {% endif %}
-    <li class="page-item align-self-center">
+    <li class="page-item align-self-center force-rtl">
       <span class="current p-2">
         Page
         <span class="page-number">{{ page_obj.number }}</span>
         of
-        {{ page_obj.paginator.num_pages }}
+        <span>{{ page_obj.paginator.num_pages }}</span>
       </span>
     </li>
     {% if page_obj.has_next %}
@@ -68,6 +68,11 @@
   </ul>
   <div class="ms-3 mb-1 d-flex align-items-center justify-content-end">
     <label for="go-to">Go to Page</label>
-    <input type="number" name="page" id="page-num" min="1" step="1" />
+    <input type="number"
+           name="page"
+           class="page-num"
+           min="1"
+           max="{{ page_obj.paginator.num_pages }}"
+           step="1" />
   </div>
 </div>

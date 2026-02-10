@@ -14,8 +14,9 @@
     "strictBindCallApply": true,
     "strictPropertyInitialization": false,
     "noImplicitThis": true,
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "types": ["vitest/globals"]
   },
-  "include": ["src"],
+  "include": ["src", "tests", "*.config.ts"],
   "exclude": ["node_modules"]
 }

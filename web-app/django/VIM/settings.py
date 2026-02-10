@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # web-app/django:/virtual-instrument-museum/vim-app
@@ -24,6 +25,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 IS_DEVELOPMENT = bool(os.environ.get("MODE") == "dev")
 IS_PRODUCTION = bool(os.environ.get("MODE") == "prod")
+IS_TEST = bool(os.environ.get("MODE") == "test")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     "VIM.apps.main",
     "VIM.apps.instruments",
     "django_vite",
+    "django_cleanup.apps.CleanupConfig",  # Must be last - handles orphaned file cleanup
 ]
 
 if IS_DEVELOPMENT:
@@ -57,6 +60,7 @@ if IS_DEVELOPMENT:
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_ratelimit.middleware.RatelimitMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -89,17 +93,41 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "VIM.wsgi.application"
 
-DATABASES = {
+# Database configuration
+# Check if running in test mode
+if IS_TEST:
+    # Use test database (isolated from development)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("TEST_POSTGRES_DB", "vim_test_db"),
+            "USER": os.environ.get("TEST_POSTGRES_USER", "test_user"),
+            "PASSWORD": os.environ.get("TEST_POSTGRES_PASSWORD", "test_password"),
+            "HOST": "postgres-test",
+            "PORT": "5432",
+        }
+    }
+else:
+    # Use development or production database
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": "vim-db",
+            "PORT": "5432",
+        }
+    }
+
+# Cache configuration
+# django-ratelimit uses Django's cache framework to track request rates
+CACHES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": "vim-db",
-        "PORT": "5432",
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "ratelimit-cache",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -151,20 +179,64 @@ DJANGO_VITE = {
     }
 }
 
+# Media files (user uploads)
+MEDIA_ROOT = ROOT_DIR / "media"
+MEDIA_URL = "/media/"
+ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "email-smtp.us-west-2.amazonaws.com"
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv("AWS_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("AWS_EMAIL_HOST_PASSWORD")
+# Email configuration with environment variables and development fallback
+# If EMAIL_HOST is not set, emails will be printed to console (useful for development)
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_BACKEND = (
+    "django.core.mail.backends.smtp.EmailBackend"
+    if EMAIL_HOST
+    else "django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL", "UMIL <noreply@umil.linkedmusic.com>"
+)
 
-# Copied from CantusDB, will need to change
-DEFAULT_FROM_EMAIL = "noreply@cantusdatabase.simssa.ca"
+SITE_NAME = "UMIL"
+
+# TOKEN EXPIRY SETTINGS
+# Timeout for password reset and email verification tokens (24 hours)
+# Used by default_token_generator for both password reset and email verification links
+PASSWORD_RESET_TIMEOUT = 86400  # seconds
+
+# RATE LIMITING SETTINGS
+RESEND_EMAIL_COOLDOWN = 60  # seconds
+# Session expiry for pending verification email (15 minutes)
+PENDING_EMAIL_SESSION_EXPIRY = 900
+
+# django-ratelimit settings
+# Rate limit for instrument creation: 10 instruments per hour per user
+RATELIMIT_ENABLE = True  # Can disable rate limiting in tests
+RATELIMIT_USE_CACHE = "default"  # Use default cache backend
+RATELIMIT_VIEW = (
+    "VIM.apps.instruments.utils.response_helpers.handle_rate_limit_exceeded"
+)
+
+# Instrument creation rate limits
+CREATE_INSTRUMENT_RATE = "10/h"  # 10 instruments per hour per authenticated user (TBD)
+
+# MESSAGE TAGS - Map Django message levels to Bootstrap alert classes
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}
 
 # DEPLOYMENT SETTINGS
 

@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, Page
 from django.views.generic import TemplateView
 
 from VIM.apps.instruments.models import Language
+from VIM.apps.instruments.utils.image_urls import resolve_image_url
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ class SolrInstrument:
     def __init__(self, data: dict, lang_code: str = "en"):
         sid = data.get("sid")
         self.pk = sid.replace("instrument-", "") if sid else ""
+        self.umil_id = data.get("umil_id_s", "")
         self.thumbnail = ThumbnailStub(data.get("thumbnail_url"))
         name_field = f"instrument_name_{lang_code}_ss"
         umil_label_name_field = f"instrument_umil_label_{lang_code}_s"
@@ -41,6 +43,10 @@ class SolrInstrument:
 class ThumbnailStub:
     def __init__(self, url: Union[str, None]):
         self.url = url  # e.g., "instruments/images/instrument_imgs/thumbnail/Q6607.png"
+
+    def get_image_url(self):
+        """Return the thumbnail URL to match AVResource.get_image_url() interface."""
+        return resolve_image_url(self.url or "")
 
 
 class InstrumentNameStub:
@@ -59,7 +65,7 @@ class InstrumentNameSet:
 
     def get_display_names_str(self) -> str:
         sorted_names = sorted(self.all(), key=lambda x: not x.umil_label)
-        name_list = [n.name.title() for n in sorted_names]
+        name_list = [n.name for n in sorted_names]
         return " | ".join(name_list)
 
 
@@ -237,9 +243,10 @@ class InstrumentList(TemplateView):
 
         params = {
             "q": main_query,
+            "defType": "edismax",
             "wt": "json",
             "facet": "true" if include_facets else "false",
-            "fl": f"sid, {name_field}, {umil_label_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
+            "fl": f"sid, umil_id_s, {name_field}, {umil_label_field}, hornbostel_sachs_class_s, mimo_class_s, thumbnail_url",
             "lang_code": lang_code,
         }
 

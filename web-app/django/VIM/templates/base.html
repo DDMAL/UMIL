@@ -2,7 +2,7 @@
 {% load django_vite %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="auto">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,7 +40,7 @@
         style="display:none;
                visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <header class="p-3 sticky-top align-content-center bg-primary min-vh-10 vw-100">
+    <header class="p-3 sticky-top align-content-center bg-primary min-vh-10 vw-100 force-ltr">
       <div class="container">
         <nav class="navbar navbar-expand-lg">
           <!-- Brand/Logo - always visible -->
@@ -60,7 +60,7 @@
             <ul class="navbar-nav me-lg-auto mx-auto mx-lg-0 text-center text-lg-start pb-1">
               <li class="nav-item">
                 <a href="{% url "main:home" %}"
-                   class="nav-link {% if active_tab == 'home' %}active{% endif %}">UMIL</a>
+                   class="nav-link notranslate {% if active_tab == 'home' %}active{% endif %}">UMIL</a>
               </li>
               <li class="nav-item">
                 <a href="{% url "instrument-list" %}"
@@ -71,7 +71,7 @@
                    class="nav-link {% if active_tab == 'about' %}active{% endif %}">About</a>
               </li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 force-rtl"
                   role="search"
                   action="{% url 'instrument-list' %}"
                   method="get">
@@ -101,7 +101,7 @@
                   <ul class="dropdown-menu umil-dropdown-menu"
                       aria-labelledby="userDropdown">
                     <li>
-                      <p class="dropdown-item mb-0 umil-dropdown-item disabled">
+                      <p class="dropdown-item mb-0 umil-dropdown-item disabled notranslate">
                         {{ user.username }}
                       </p>
                     </li>
@@ -144,11 +144,15 @@
       </a>
       <a href="https://linkedmusic.ca/"
          class="my-1 mx-3 pb-3 link-body-emphasis text-decoration-none">
-        <img src="{% static "assets/images/LM_LogoTransparentBlack1.png" %}" alt="linkedmusic logo" style="height: 30px;" />
+        <img src="{% static "assets/images/LM_LogoTransparentBlack1.png" %}"
+             alt="linkedmusic logo"
+             style="height: 30px" />
       </a>
       <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page"
          class="my-1 mx-3 link-body-emphasis text-decoration-none">
-        <img src="{% static "assets/images/Wikidata_logo.png" %}" alt="wikidata logo" style="height: 30px;" />
+        <img src="{% static "assets/images/Wikidata_logo.png" %}"
+             alt="wikidata logo"
+             style="height: 30px" />
       </a>
     </footer>
   </body>

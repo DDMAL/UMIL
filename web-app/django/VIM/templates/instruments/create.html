@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load django_vite %}
+
+{% block title %}
+  Create New Instrument
+{% endblock title %}
+
+{% block ts_files %}
+  {% vite_asset 'src/instruments/CreateInstrument.ts' %}
+{% endblock ts_files %}
+
+{% block css_files %}
+  <link rel="stylesheet"
+        href="{% static 'assets/css/instruments/index.css' %}" />
+{% endblock css_files %}
+
+{% block content %}
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="bg-white p-4 container-border">
+          <h2 class="mb-4">Create New Instrument</h2>
+          <hr />
+          <form id="createInstrumentForm" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <!-- Instrument Metadata Section -->
+            <div class="mb-4">
+              <h5>Instrument Information</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="instrumentSource" class="form-label">
+                    Instrument Source <span class="text-danger">*</span>
+                  </label>
+                  <input type="text"
+                         class="form-control"
+                         id="instrumentSource"
+                         name="instrument_source"
+                         placeholder="Enter instrument source"
+                         required />
+                  <div class="form-text">
+                    The primary source or reference for this instrument's existence.
+                  </div>
+                  <div class="valid-feedback"></div>
+                  <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-md-6">
+                  <label for="hornbostelSachsClass" class="form-label">
+                    Hornbostel-Sachs Classification <span class="text-danger">*</span>
+                  </label>
+                  <input type="text"
+                         class="form-control"
+                         id="hornbostelSachsClass"
+                         name="hornbostel_sachs_class"
+                         placeholder="e.g., 11, 21.2, 311.121"
+                         required />
+                  <div class="form-text">
+                    At least the first two digits are required.
+                    <a href="https://en.wikipedia.org/wiki/Hornbostel%E2%80%93Sachs"
+                       target="_blank"
+                       rel="noopener">
+                      Learn more <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                  </div>
+                  <div class="valid-feedback mt-0"></div>
+                  <div class="invalid-feedback"></div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <!-- Instrument Names Section -->
+            <div class="mb-4">
+              <h5>Instrument Names</h5>
+              <p class="text-muted small">
+                Add at least one name for this instrument. The first name entry is required.
+              </p>
+              <div id="nameRows">
+                <!-- Dynamically generated name rows will appear here -->
+              </div>
+              <div class="invalid-feedback d-block"
+                   id="nameRowsError"
+                   style="display: none !important"></div>
+              <button type="button" class="btn btn-secondary mt-2" id="addRowBtn">
+                <i class="bi bi-plus-circle"></i> Add Another Name
+              </button>
+            </div>
+            <hr />
+            <!-- Optional Image Section -->
+            <div class="mb-4">
+              <h5>Image (Optional)</h5>
+              <p class="text-muted small">Upload an image of this instrument.</p>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="image" class="form-label">Image File</label>
+                  <input type="file"
+                         class="form-control"
+                         id="image"
+                         name="image"
+                         accept="image/jpeg,image/png,image/gif,image/webp" />
+                  <div class="form-text">
+                    Accepted formats: JPEG, PNG, GIF, WebP.
+                    <br />
+                    Max size: 5MB.
+                  </div>
+                  <div class="valid-feedback"></div>
+                  <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-md-6 mb-3 d-none" id="imageSourceContainer">
+                  <label for="imageSource" class="form-label">
+                    Image Source <span class="text-danger">*</span>
+                  </label>
+                  <input type="text"
+                         class="form-control"
+                         id="imageSource"
+                         name="image_source"
+                         placeholder="e.g., Wikimedia Commons, museum website" />
+                  <div class="form-text">Where does this image come from?</div>
+                  <div class="valid-feedback"></div>
+                  <div class="invalid-feedback"></div>
+                </div>
+              </div>
+              <!-- Image Preview -->
+              <div class="row d-none" id="imagePreviewContainer">
+                <div class="col-md-6">
+                  <label class="form-label">Preview</label>
+                  <div class="p-2">
+                    <img id="imagePreview"
+                         src=""
+                         alt="Image preview"
+                         class="img-fluid rounded"
+                         style="max-height: 200px" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <!-- Submit Section -->
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="{% url 'instrument-list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle"></i> Create Instrument
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Confirmation Modal -->
+  <div class="modal fade"
+       id="confirmationModal"
+       tabindex="-1"
+       aria-labelledby="confirmationModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Confirm New Instrument</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Error display for submission errors (rate limit, server errors, etc.) -->
+          <div id="modalError"
+               class="alert alert-danger"
+               role="alert"
+               style="display: none">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span id="modalErrorMessage"></span>
+          </div>
+          <div class="alert alert-warning mb-3">
+            <i class="bi bi-info-circle"></i>
+            This instrument will be assigned a UMIL identifier and will start as unverified.
+          </div>
+          <p>Please review the information below:</p>
+          <div id="publishResults"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" id="confirmCreateBtn">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ languages|json_script:"languages-json" }}
+{% endblock content %}

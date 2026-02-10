@@ -9,6 +9,7 @@ services:
     volumes:
       - ./web-app/django:/virtual-instrument-museum/vim-app
       - vim-static:/virtual-instrument-museum/static
+      - vim-media:/virtual-instrument-museum/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -19,6 +20,11 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - HOST_NAME=${HOST_NAME}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
 
   postgres:
     image: postgres:15.4
@@ -48,6 +54,7 @@ services:
     volumes:
       - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
       - vim-static:/virtual-instrument-museum/static
+      - vim-media:/virtual-instrument-museum/media
     depends_on:
       - app
 
@@ -64,4 +71,5 @@ networks:
 
 volumes:
   vim-static:
+  vim-media:
   umil-solr:

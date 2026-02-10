@@ -32,7 +32,7 @@
               <div class="d-flex flex-wrap gap-1">
                 {% if active_filters.search %}
                   <span class="badge bg-primary text-white">
-                    Search: "{{ active_filters.search }}"
+                    Search: <span class="notranslate">"{{ active_filters.search }}"</span>
                     <a href="{{ clear_search_url }}"
                        class="ms-1 text-white"
                        title="Remove search filter">×</a>
@@ -58,12 +58,11 @@
             <ul class="list-group">
               {% for hbs_facet_item in hbs_facets %}
                 <a href="{{ hbs_facet_item.url }}" class="text-decoration-none">
-                  <li class="list-group-item d-flex justify-content-between p-0 {% if hbs_facet_item.is_active %}active{% endif %}"
-                      current-value="{{ hbs_facet_item.value }}">
+                  <li class="list-group-item d-flex justify-content-between p-0 {% if hbs_facet_item.is_active %}active{% endif %}">
                     {% if hbs_facet_item.name == 'Unclassified' %}
-                      <span class="text-start">{{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
+                      <span class="text-start">{{ hbs_facet_item.name }}</span> ({{ hbs_facet_item.count }})
                     {% else %}
-                      <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} ({{ hbs_facet_item.count }})</span>
+                      <span class="text-start">{{ hbs_facet_item.value }} - {{ hbs_facet_item.name }} </span> ({{ hbs_facet_item.count }})
                     {% endif %}
                   </li>
                 </a>
@@ -128,7 +127,7 @@
                 <ul class="dropdown-menu umil-dropdown-menu" id="language-dropdown-list">
                   {% for language in languages %}
                     <li>
-                      <a class="dropdown-item umil-dropdown-item"
+                      <a class="dropdown-item umil-dropdown-item notranslate force-ltr"
                          href="?language={{ language.en_label }}"
                          data-language="{{ language.en_label }}">
                       {{ language.en_label|title }} ({{ language.autonym|title }})</a>
@@ -137,7 +136,14 @@
                 </ul>
               </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex align-items-center">
+              {% if user.is_authenticated %}
+                <a href="{% url 'instrument-create' %}"
+                   class="btn btn-primary btn-sm me-2"
+                   title="Create a new instrument">
+                  <i class="bi bi-plus-circle"></i> Create Instrument
+                </a>
+              {% endif %}
               <button type="button"
                       class="btn me-1 px-1 py-0 justify-content-center display-btn masonry-btn"
                       id="masonry-btn"
@@ -167,7 +173,7 @@
                 {% if hbs_facet_name %}for{% endif %}
                 <strong>{{ hbs_facet_name }}</strong>
                 {% if search_query %}
-                  for search query "<strong>{{ search_query }}</strong>"
+                  for search query "<strong class="notranslate">{{ search_query }}</strong>"
                 {% endif %}
               </span>
             </div>

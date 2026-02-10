@@ -1,13 +1,24 @@
 name: Deploy to Production Server
-on: workflow_dispatch
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to deploy (e.g., v1.0.0). Leave empty for latest main."
+        required: false
+        type: string
 
 concurrency:
   group: production
-  cancel-in-progress: true
+  cancel-in-progress: false # In prod, queue the deployment if multiple are requested
 
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_VERSION: ${{ github.event.inputs.version || github.event.release.tag_name || 'main' }}
     steps:
       - name: Checkout the current repo
         uses: actions/checkout@v5
@@ -16,30 +27,77 @@ jobs:
         with:
           key: ${{ secrets.KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Validate deploy version input
+        run: |
+          set -euo pipefail
+          if [[ "$DEPLOY_VERSION" == "main" ]]; then
+            echo "SAFE_DEPLOY_VERSION=$DEPLOY_VERSION" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          if [[ "$DEPLOY_VERSION" =~ ^v[0-9]+(\.[0-9]+){2}(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "SAFE_DEPLOY_VERSION=$DEPLOY_VERSION" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          if [[ "$DEPLOY_VERSION" =~ ^[0-9a-f]{7,40}$ ]]; then
+            echo "SAFE_DEPLOY_VERSION=$DEPLOY_VERSION" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          echo "::error::Invalid deploy version format: $DEPLOY_VERSION"
+          exit 1
+      - name: Record current deployed version for rollback
+        run: |
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
+            "cd /virtual-instrument-museum &&
+             sudo bash -c 'CURRENT_VERSION=\$(git describe --tags --exact-match 2>/dev/null || git rev-parse HEAD); echo \"\$CURRENT_VERSION\" > /virtual-instrument-museum/.last_deployed'"
+      - name: Fetch updates and validate target version
+        run: |
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
+            "set -euo pipefail;
+             VERSION=\"${SAFE_DEPLOY_VERSION}\";
+             cd /virtual-instrument-museum;
+             sudo git fetch origin -v --tags;
+             if [ \"\$VERSION\" != 'main' ]; then
+               if ! sudo git rev-parse --verify --quiet \"\$VERSION^{commit}\" >/dev/null; then
+                 echo \"::error::Invalid deploy version: \$VERSION\";
+                 exit 1;
+               fi;
+             fi"
       - name: Stop the current Docker containers running
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual-instrument-museum &&
              sudo docker compose stop"
-      - name: Fetch new updates from remote `origin` and log current branches
+      - name: Deploy target version
+        id: deploy_target
+        continue-on-error: true
+        run: |
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
+            "set -euo pipefail;
+             VERSION=\"${SAFE_DEPLOY_VERSION}\";
+             cd /virtual-instrument-museum;
+             sudo git checkout \"\$VERSION\";
+             if [ \"\$VERSION\" = 'main' ]; then sudo git pull origin main; fi;
+             sudo docker compose -f docker-compose-deployment.yml build --no-cache;
+             sudo docker compose -f docker-compose-deployment.yml up -d --wait --wait-timeout 180"
+      - name: Roll back to last deployed version
+        if: ${{ steps.deploy_target.outcome != 'success' }}
+        run: |
+          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
+            "set -euo pipefail;
+             cd /virtual-instrument-museum;
+             if [ ! -f /virtual-instrument-museum/.last_deployed ]; then
+               echo 'No rollback version found';
+               exit 1;
+             fi;
+             ROLLBACK_VERSION=\$(cat /virtual-instrument-museum/.last_deployed);
+             sudo git checkout \$ROLLBACK_VERSION;
+             sudo docker compose -f docker-compose-deployment.yml build --no-cache;
+             sudo docker compose -f docker-compose-deployment.yml up -d --wait --wait-timeout 180;
+             echo '::error::Rollback executed; marking workflow as failed.';
+             exit 1"
+      - name: Record successful deploy version
+        if: ${{ steps.deploy_target.outcome == 'success' }}
         run: |
           ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
             "cd /virtual-instrument-museum &&
-             sudo git fetch origin -v &&
-             sudo git branch -v"
-      - name: Checkout to `main` branch and pull new changes 
-        run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
-            "cd /virtual-instrument-museum &&
-             sudo git checkout main &&
-             sudo git pull origin main"
-      - name: Build docker images
-        run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
-            "cd /virtual-instrument-museum &&
-             sudo docker compose -f docker-compose-deployment.yml build --no-cache"
-      - name: Start the services
-        run: |
-          ssh -J ${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST1 }},${{ secrets.PROXY_USERNAME }}@${{ secrets.PROXY_HOST_PROD }} ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD }} \
-            "cd /virtual-instrument-museum &&
-             sudo docker compose -f docker-compose-deployment.yml up -d"
+             sudo bash -c 'CURRENT_VERSION=\$(git describe --tags --exact-match 2>/dev/null || git rev-parse HEAD); echo \"\$CURRENT_VERSION\" > /virtual-instrument-museum/.last_deployed; echo \"Deployed: \$CURRENT_VERSION\"'"

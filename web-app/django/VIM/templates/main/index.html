@@ -28,7 +28,7 @@
                 <span class="text-info">Universal</span> Musical Instrument Lexicon
               </h1>
             </div>
-            <div class="col-6 notranslate">
+            <div class="col-6 notranslate force-ltr">
               <h1>
                 Lexique <span class="text-info">Universel</span> des Instruments de Musique
               </h1>
@@ -42,7 +42,7 @@
                 Explore, share, connect musical instruments in every language.
               </p>
             </div>
-            <div class="col-6 notranslate">
+            <div class="col-6 notranslate force-ltr">
               <p>
                 Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
               </p>
@@ -51,14 +51,14 @@
           <div class="row">
             <div class="col-6">
               <a href="{% url "instrument-list" %}?language=English">
-                <button class="btn btn-warning rounded-pill start-btn" id="en-site-btn">
+                <button class="btn btn-warning rounded-pill start-btn en-site-btn desktop">
                   Visit English Site
                 </button>
               </a>
             </div>
-            <div class="col-6 notranslate">
+            <div class="col-6 notranslate force-ltr">
               <a href="{% url "instrument-list" %}?language=French">
-                <button class="btn btn-warning rounded-pill start-btn" id="fr-site-btn">
+                <button class="btn btn-warning rounded-pill start-btn fr-site-btn desktop">
                   Visitez le site en français
                 </button>
               </a>
@@ -67,7 +67,7 @@
         </div>
         <!-- Mobile Layout -->
         <div class="d-md-none my-5 px-2">
-          <p class="notranslate">
+          <p class="notranslate force-ltr">
             <em>La version française suit.</em>
           </p>
           <!-- English Content -->
@@ -81,14 +81,14 @@
               Explore, share, connect musical instruments in every language.
             </p>
             <a href="{% url "instrument-list" %}?language=English">
-              <button class="btn btn-warning rounded-pill start-btn">
+              <button class="btn btn-warning rounded-pill start-btn en-site-btn mobile">
                 Visit English Site
               </button>
             </a>
           </div>
           <hr class="my-4" style="border-color: #876445; border-width: 2px;" />
           <!-- French Content -->
-          <div class="mt-5 notranslate">
+          <div class="mt-5 notranslate force-ltr">
             <h1>
               Lexique <span class="text-info">Universel</span> des Instruments de Musique
             </h1>
@@ -96,7 +96,7 @@
               Où le passé et le présent de la musique se rencontrent. Explorez, partagez, connectez des instruments de musique dans toutes les langues.
             </p>
             <a href="{% url "instrument-list" %}?language=French">
-              <button class="btn btn-warning rounded-pill start-btn">
+              <button class="btn btn-warning rounded-pill start-btn fr-site-btn mobile">
                 Visitez le site en francais
               </button>
             </a>
@@ -109,33 +109,34 @@
       <div class="row text-center justify-content-center justify-content-md-between align-items-center">
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-info mb-1">
-              {{ total_instruments|default:"859" }}
-            </h3>
+            <h3 class="stat-number text-info mb-1">{{ total_instruments|default:"0" }}</h3>
             <p class="fs-6 mb-0">Instruments</p>
           </div>
         </div>
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-info mb-1">{{ total_languages|default:"623" }}</h3>
+            <h3 class="stat-number text-info mb-1">{{ total_languages|default:"0" }}</h3>
             <p class="fs-6 mb-0">Languages</p>
           </div>
         </div>
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-info mb-1">{{ total_names|default:"1550" }}</h3>
+            <h3 class="stat-number text-info mb-1">{{ total_names|default:"0" }}</h3>
             <p class="fs-6 mb-0">Names</p>
           </div>
         </div>
         <div class="col-8 col-md-3 mb-3 mb-md-0">
           <div class="stat-item">
-            <h3 class="stat-number text-info mb-1">{{ total_editors|default:"2" }}</h3>
-            <p class="fs-6 mb-0">Editors</p>
+            <h3 class="stat-number text-info mb-1">{{ total_users|default:"0" }}</h3>
+            <p class="fs-6 mb-0">Users</p>
           </div>
         </div>
       </div>
     </div>
-    <img id="bg-decor" src="{% static "assets/images/main/bg-decor.svg" %}" alt="background decoration" class="z-1 opacity-50 img-fluid w-100 position-absolute bottom-0" />
+    <img id="bg-decor"
+         src="{% static "assets/images/main/bg-decor.svg" %}"
+         alt="background decoration"
+         class="z-1 opacity-50 img-fluid w-100 position-absolute bottom-0" />
   </div>
   <!-- Bar Charts Section -->
   <div class="container-fluid chart-section py-5 bg-light">
@@ -143,8 +144,8 @@
       <!-- First Chart: Top Instruments by Languages -->
       <div class="row mb-5 align-items-center">
         <div class="col-lg-8 order-2 order-lg-1">
-          <div class="chart-container p-4">
-            <div id="instruments-chart"></div>
+          <div class="chart-container p-4 ">
+            <div id="instruments-chart" class="force-ltr"></div>
           </div>
         </div>
         <div class="col-lg-4 order-1 order-lg-2 text-center text-lg-start mb-4 mb-lg-0">
@@ -166,7 +167,7 @@
         </div>
         <div class="col-lg-8">
           <div class="chart-container p-4">
-            <div id="languages-chart"></div>
+            <div id="languages-chart" class="force-ltr"></div>
           </div>
         </div>
       </div>
