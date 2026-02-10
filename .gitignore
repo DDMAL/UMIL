@@ -113,12 +113,11 @@ web-app/frontend/node_modules/
 web-app/frontend/assets/css/
 
 # Playwright test artifacts
-web-app/frontend/tests/test-results/
-web-app/frontend/tests/playwright-report/
-web-app/frontend/tests/.auth/*
 web-app/frontend/tests/.auth/
 web-app/frontend/tests/test-results/
 web-app/frontend/tests/playwright-report/
 
-# Cursor
+# LLM
 .cursor/
+.claude/
+CLAUDE.md

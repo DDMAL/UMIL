@@ -58,7 +58,7 @@ jobs:
              sudo git fetch origin -v --tags;
              if [ \"\$VERSION\" != 'main' ]; then
                if ! sudo git rev-parse --verify --quiet \"\$VERSION^{commit}\" >/dev/null; then
-                 echo "::error::Invalid deploy version: \$VERSION";
+                 echo \"::error::Invalid deploy version: \$VERSION\";
                  exit 1;
                fi;
              fi"

@@ -12,7 +12,9 @@
         <h5 class="modal-title" id="addNameModalLabel">
           <span>Add New Name: <span id="instrumentNameInModal" class="notranslate m-1"></span></span>
           <br />
-          <small>Wikidata ID: <span id="instrumentWikidataIdInModal" class="notranslate m-1"></span></small>
+          <small>UMIL ID: <span id="instrumentUmilIdInModal" class="notranslate m-1"></span></small>
+          <br />
+          <small>Wikidata ID: <span id="instrumentWikidataIdInModal" class="notranslate m-1 text-muted"></span></small>
         </h5>
         <div class="flex-grow-1"></div>
         <button type="button"
@@ -23,7 +25,6 @@
       <div class="modal-body">
         <form id="addNameForm" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
-          <input type="hidden" id="instrumentPkInModal" />
           <div class="mb-3" id="nameRows">
             <!-- Placeholder for dynamically generated rows -->
           </div>

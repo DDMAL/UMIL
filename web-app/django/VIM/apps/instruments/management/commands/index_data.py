@@ -4,7 +4,7 @@ import pysolr
 from django.conf import settings
 from django.contrib.postgres.aggregates import JSONBAgg
 from django.core.management.base import BaseCommand
-from django.db.models import CharField, F
+from django.db.models import Case, CharField, F, When
 from django.db.models import Value as V
 from django.db.models.functions import Concat, Left, JSONObject
 
@@ -31,12 +31,17 @@ class Command(BaseCommand):
         instruments = list(
             Instrument.objects.annotate(
                 sid=Concat(V("instrument-"), "id", output_field=CharField()),
+                umil_id_s=F("umil_id"),
                 wikidata_id_s=F("wikidata_id"),
                 hornbostel_sachs_class_s=F("hornbostel_sachs_class"),
                 hbs_prim_cat_s=Left(F("hornbostel_sachs_class"), 1),
                 mimo_class_s=F("mimo_class"),
                 type=V("instrument"),
-                thumbnail_url=F("thumbnail__url"),
+                thumbnail_url=Case(
+                    When(thumbnail__file__gt="", then=F("thumbnail__file")),
+                    default=F("thumbnail__url"),
+                    output_field=CharField(),
+                ),
                 instrument_names_by_language=JSONBAgg(
                     JSONObject(
                         lang=F("instrumentname__language__wikidata_code"),
@@ -46,6 +51,7 @@ class Command(BaseCommand):
                 ),
             ).values(
                 "sid",
+                "umil_id_s",
                 "wikidata_id_s",
                 "hornbostel_sachs_class_s",
                 "hbs_prim_cat_s",
@@ -77,6 +83,10 @@ class Command(BaseCommand):
 
         # Add data to Solr using the pysolr client
         solr.add(instruments)
+
+        # Clear needs_reindexing flag for all instruments after full reindex
+        Instrument.objects.all().update(needs_reindexing=False)
+        self.stdout.write(self.style.SUCCESS("Cleared reindexing flags"))
 
         # top_concepts = requests.get(
         #     "https://vocabulary.mimo-international.com/rest/v1/HornbostelAndSachs/topConcepts"
