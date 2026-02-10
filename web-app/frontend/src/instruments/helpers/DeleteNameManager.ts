@@ -1,9 +1,10 @@
 import { Modal } from 'bootstrap';
 import { NameValidator } from './NameValidator';
+import { getCsrfToken } from '../../utils/cookies';
 
 export class DeleteNameManager {
   private nameId: string | null = null;
-  private instrumentPk: string | null = null;
+  private instrumentUmilId: string | null = null;
   private nameValidator: NameValidator;
   private deleteNameModal: HTMLElement;
 
@@ -48,7 +49,7 @@ export class DeleteNameManager {
       const language = button.getAttribute('data-instrument-language');
       const name = button.getAttribute('data-instrument-name');
       const source = button.getAttribute('data-instrument-source');
-      this.instrumentPk = button.getAttribute('data-instrument-pk');
+      this.instrumentUmilId = button.getAttribute('data-instrument-umil-id');
       this.nameId = button.getAttribute('data-instrument-id');
 
       // Validate the data before populating
@@ -110,18 +111,21 @@ export class DeleteNameManager {
     }
 
     try {
-      const csrfToken = this.getCsrfToken();
+      const csrfToken = getCsrfToken();
 
-      const response = await fetch(`/instrument/${this.instrumentPk}/names/`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
+      const response = await fetch(
+        `/instrument/${this.instrumentUmilId}/names/`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+          },
+          body: JSON.stringify({
+            instrument_name_id: this.nameId,
+          }),
         },
-        body: JSON.stringify({
-          instrument_name_id: this.nameId,
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -147,19 +151,6 @@ export class DeleteNameManager {
 
     // Reload the page to reflect changes
     window.location.reload();
-  }
-
-  /**
-   * Gets CSRF token from the page
-   */
-  private getCsrfToken(): string {
-    const csrfTokenElement = document.querySelector(
-      '[name=csrfmiddlewaretoken]',
-    ) as HTMLInputElement;
-    if (!csrfTokenElement) {
-      throw new Error('CSRF token not found');
-    }
-    return csrfTokenElement.value;
   }
 
   /**

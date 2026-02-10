@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "VIM.apps.main",
     "VIM.apps.instruments",
     "django_vite",
+    "django_cleanup.apps.CleanupConfig",  # Must be last - handles orphaned file cleanup
 ]
 
 if IS_DEVELOPMENT:
@@ -59,6 +60,7 @@ if IS_DEVELOPMENT:
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_ratelimit.middleware.RatelimitMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -118,6 +120,14 @@ else:
         }
     }
 
+# Cache configuration
+# django-ratelimit uses Django's cache framework to track request rates
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "ratelimit-cache",
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -169,6 +179,12 @@ DJANGO_VITE = {
     }
 }
 
+# Media files (user uploads)
+MEDIA_ROOT = ROOT_DIR / "media"
+MEDIA_URL = "/media/"
+ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -201,6 +217,17 @@ PASSWORD_RESET_TIMEOUT = 86400  # seconds
 RESEND_EMAIL_COOLDOWN = 60  # seconds
 # Session expiry for pending verification email (15 minutes)
 PENDING_EMAIL_SESSION_EXPIRY = 900
+
+# django-ratelimit settings
+# Rate limit for instrument creation: 10 instruments per hour per user
+RATELIMIT_ENABLE = True  # Can disable rate limiting in tests
+RATELIMIT_USE_CACHE = "default"  # Use default cache backend
+RATELIMIT_VIEW = (
+    "VIM.apps.instruments.utils.response_helpers.handle_rate_limit_exceeded"
+)
+
+# Instrument creation rate limits
+CREATE_INSTRUMENT_RATE = "10/h"  # 10 instruments per hour per authenticated user (TBD)
 
 # MESSAGE TAGS - Map Django message levels to Bootstrap alert classes
 MESSAGE_TAGS = {

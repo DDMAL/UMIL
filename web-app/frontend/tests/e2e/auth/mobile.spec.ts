@@ -51,7 +51,7 @@ test.describe('Mobile Authentication', () => {
   test('should not show verification status and actions before login', async ({
     instrumentDetailPage,
   }) => {
-    await instrumentDetailPage.goto('1');
+    await instrumentDetailPage.goto('UMIL-00001');
     await expect(
       instrumentDetailPage.get1stVerificationStatus(),
     ).not.toBeVisible();
@@ -61,7 +61,7 @@ test.describe('Mobile Authentication', () => {
   authTest(
     'should show verification status and actions after login',
     async ({ instrumentDetailPage }) => {
-      await instrumentDetailPage.goto('1');
+      await instrumentDetailPage.goto('UMIL-00001');
       await expect(
         instrumentDetailPage.get1stVerificationStatus(),
       ).toBeVisible();

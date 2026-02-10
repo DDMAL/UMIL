@@ -48,7 +48,7 @@ test.describe('Desktop Authentication', () => {
   test('should not show verification and action columns before login', async ({
     instrumentDetailPage,
   }) => {
-    await instrumentDetailPage.goto('1');
+    await instrumentDetailPage.goto('UMIL-00001');
     await expect(
       instrumentDetailPage.get1stVerificationStatus(),
     ).not.toBeVisible();
@@ -58,7 +58,7 @@ test.describe('Desktop Authentication', () => {
   authTest(
     'should show verification and action columns after login',
     async ({ instrumentDetailPage }) => {
-      await instrumentDetailPage.goto('1');
+      await instrumentDetailPage.goto('UMIL-00001');
       await expect(
         instrumentDetailPage.get1stVerificationStatus(),
       ).toBeVisible();
