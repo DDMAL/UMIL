@@ -1,78 +1,78 @@
 <div class="pagination-container col-12 d-flex flex-column flex-md-row align-items-center justify-content-center">
-  <div class="me-2 mb-1 d-flex align-items-center justify-content-start">
-    <span class="text-start mx-2">View</span>
-    <input type="radio"
-           class="btn-check option-radio"
-           id="20"
-           autocomplete="off" />
-    <label class="btn" title="View 20 entries per page" for="20">20</label>
-    <label class="mb-1">|</label>
-    <input type="radio"
-           class="btn-check option-radio"
-           id="50"
-           autocomplete="off" />
-    <label class="btn" title="View 50 entries per page" for="50">50</label>
-    <label class="mb-1">|</label>
-    <input type="radio"
-           class="btn-check option-radio"
-           id="100"
-           autocomplete="off" />
-    <label class="btn" title="View 100 entries per page" for="100">100</label>
-    <span class="text-end mx-2">per page</span>
-  </div>
-  <ul class="pagination mb-1 align-items-center justify-content-center force-ltr">
-    {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link"
-           href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
-           aria-label="First"
-           title="First">
-          <i class="bi bi-chevron-double-left"></i>
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link"
-           href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
-           aria-label="Previous"
-           title="Previous">
-          <i class="bi bi-chevron-left"></i>
-        </a>
-      </li>
-    {% endif %}
-    <li class="page-item align-self-center force-rtl">
-      <span class="current p-2">
-        Page
-        <span class="page-number">{{ page_obj.number }}</span>
-        of
-        <span>{{ page_obj.paginator.num_pages }}</span>
-      </span>
-    </li>
-    {% if page_obj.has_next %}
-      <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-        <a class="page-link"
-           href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
-           aria-label="Next"
-           title="Next">
-          <i class="bi bi-chevron-right"></i>
-        </a>
-      </li>
-      <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-        <a class="page-link"
-           href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
-           aria-label="Last"
-           title="Last">
-          <i class="bi bi-chevron-double-right"></i>
-        </a>
-      </li>
-    {% endif %}
-  </ul>
-  <div class="ms-3 mb-1 d-flex align-items-center justify-content-end">
-    <label for="go-to">Go to Page</label>
-    <input type="number"
-           name="page"
-           class="page-num"
-           min="1"
-           max="{{ page_obj.paginator.num_pages }}"
-           step="1" />
-  </div>
+    <div class="me-2 mb-1 d-flex align-items-center justify-content-start">
+        <span class="text-start mx-2">View</span>
+        <input type="radio"
+               class="btn-check option-radio"
+               id="20"
+               autocomplete="off" />
+        <label class="btn" title="View 20 entries per page" for="20">20</label>
+        <label class="mb-1">|</label>
+        <input type="radio"
+               class="btn-check option-radio"
+               id="50"
+               autocomplete="off" />
+        <label class="btn" title="View 50 entries per page" for="50">50</label>
+        <label class="mb-1">|</label>
+        <input type="radio"
+               class="btn-check option-radio"
+               id="100"
+               autocomplete="off" />
+        <label class="btn" title="View 100 entries per page" for="100">100</label>
+        <span class="text-end mx-2">per page</span>
+    </div>
+    <ul class="pagination mb-1 align-items-center justify-content-center force-ltr">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page=1{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+                   aria-label="First"
+                   title="First">
+                    <i class="bi bi-chevron-double-left"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ page_obj.previous_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+                   aria-label="Previous"
+                   title="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item align-self-center force-rtl">
+            <span class="current p-2">
+                Page
+                <span class="page-number">{{ page_obj.number }}</span>
+                of
+                <span>{{ page_obj.paginator.num_pages }}</span>
+            </span>
+        </li>
+        {% if page_obj.has_next %}
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link"
+                   href="?page={{ page_obj.next_page_number }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+                   aria-label="Next"
+                   title="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link"
+                   href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.hbs_facet %}&hbs_facet={{ request.GET.hbs_facet }}{% endif %}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+                   aria-label="Last"
+                   title="Last">
+                    <i class="bi bi-chevron-double-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+    <div class="ms-3 mb-1 d-flex align-items-center justify-content-end">
+        <label for="go-to">Go to Page</label>
+        <input type="number"
+               name="page"
+               class="page-num"
+               min="1"
+               max="{{ page_obj.paginator.num_pages }}"
+               step="1" />
+    </div>
 </div>

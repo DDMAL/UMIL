@@ -1,24 +1,21 @@
 {% load static %}
-
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4"
      id="masonry-view">
-  {% for instrument in instruments %}
-    <div class="col">
-      <a href="{% url 'instrument-detail' instrument.umil_id %}"
-         class="text-decoration-none"
-         target="_blank">
-        <div class="card mb-3">
-          <img src="{{ instrument.thumbnail.get_image_url }}"
-               class="card-img-top rounded p-2"
-               alt="instrument thumbnail"
-               onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
-          <div class="card-body pb-0 pt-0">
-            <p class="card-title text-center notranslate ">
-              {{ instrument.instrumentname_set.get_display_names_str }}
-            </p>
-          </div>
+    {% for instrument in instruments %}
+        <div class="col">
+            <a href="{% url 'instrument-detail' instrument.umil_id %}"
+               class="text-decoration-none"
+               target="_blank">
+                <div class="card mb-3">
+                    <img src="{{ instrument.thumbnail.get_image_url }}"
+                         class="card-img-top rounded p-2"
+                         alt="instrument thumbnail"
+                         onerror="this.onerror=null;this.src='{% static "assets/images/instruments/no-image.svg" %}';" />
+                    <div class="card-body pb-0 pt-0">
+                        <p class="card-title text-center notranslate ">{{ instrument.instrumentname_set.get_display_names_str }}</p>
+                    </div>
+                </div>
+            </a>
         </div>
-      </a>
-    </div>
-  {% endfor %}
+    {% endfor %}
 </div>

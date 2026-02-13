@@ -1,37 +1,33 @@
 {% extends "main/auth/registration_base.html" %}
-
 {% block registration_title %}
-  Register
+    Register
 {% endblock registration_title %}
-
 {% block left_column %}
-  <h5 class="mb-4">
-    <strong>Create a New Account</strong>
-  </h5>
-  <form method="post">
-    {% csrf_token %}
-    <div class="mt-4 mb-4">
-      <label for="exampleInputEmail" class="form-label">Email Address</label>
-      <div class="col-12">{{ form.username }}</div>
-    </div>
-    <div class="mb-4">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <div class="col-12">{{ form.password1 }}</div>
-    </div>
-    <div class="mb-4">
-      <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
-      <div class="col-12">{{ form.password2 }}</div>
-    </div>
-    <button type="submit" class="btn btn-dark ">Register</button>
-  </form>
+    <h5 class="mb-4">
+        <strong>Create a New Account</strong>
+    </h5>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mt-4 mb-4">
+            <label for="exampleInputEmail" class="form-label">Email Address</label>
+            <div class="col-12">{{ form.username }}</div>
+        </div>
+        <div class="mb-4">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <div class="col-12">{{ form.password1 }}</div>
+        </div>
+        <div class="mb-4">
+            <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
+            <div class="col-12">{{ form.password2 }}</div>
+        </div>
+        <button type="submit" class="btn btn-dark ">Register</button>
+    </form>
 {% endblock left_column %}
-
 {% block right_column %}
-  <p class="mb-1">Already have an account?</p>
-  <a href="{% url 'main:login' %}">Login</a>
+    <p class="mb-1">Already have an account?</p>
+    <a href="{% url 'main:login' %}">Login</a>
 {% endblock right_column %}
-
 {% block mobile_link %}
-  <p class="mb-1">Already have an account?</p>
-  <a href="{% url 'main:login' %}">Login</a>
+    <p class="mb-1">Already have an account?</p>
+    <a href="{% url 'main:login' %}">Login</a>
 {% endblock mobile_link %}

@@ -1,73 +1,66 @@
 {% extends "base.html" %}
-
 {% load static %}
-
 {% block title %}
-  {% block registration_title %}
-  {% endblock registration_title %}
+    {% block registration_title %}
+    {% endblock registration_title %}
 {% endblock title %}
-
 {% block css_files %}
-  <link rel="stylesheet" href="{% static 'assets/css/main/login.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/main/login.css' %}" />
 {% endblock css_files %}
-
 {% block content %}
-  <div class="container py-0">
-    <div class="row">
-      <div class="col-12">
-        <div class="container content-container px-0 px-md-4 py-4 d-flex justify-content-center align-items-center min-vh-80">
-          <div class="col-12 p-4 align-content-center position-relative min-vh-60 account-container">
-            {% if form.errors %}
-              <div class="alert alert-danger p-2 z-2 position-absolute top-5">
-                {% for field, error in form.errors.items %}{{ error }}{% endfor %}
-              </div>
-            {% endif %}
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} p-2 z-2 position-absolute top-5 alert-dismissible fade show"
-                     role="alert">{{ message }}</div>
-              {% endfor %}
-            {% endif %}
-            <!-- Mobile background image (visible only on small screens) -->
-            <div class="d-md-none position-absolute top-50 start-50 translate-middle z-0 w-100 h-100 d-flex justify-content-center align-items-center">
-              <img src="{% static "assets/images/sign-up.svg" %}"
-                   alt=""
-                   class="opacity-50 w-100 h-100"
-                   style="max-width: 80%;
-                          max-height: 80%" />
-            </div>
-            <div class="container z-1 position-relative">
-              <div class="row flex-column flex-md-row">
-                <!-- Left Column -->
-                <div class="col-12 col-md-6 my-4 px-0 px-md-4">
-                  {% block left_column %}
-                  {% endblock left_column %}
-
-                </div>
-                <!-- Right Column (hidden on mobile) -->
-                <div class="col-12 col-md-6 my-4 create-account-link d-flex align-items-center">
-                  <div id="signup-option-separator" class="flex-fill d-none d-md-block">
-                    <div class="text-center" id="error">
-                      <img src="{% static "assets/images/sign-up.svg" %}"
-                           alt="sign up image"
-                           class="my-4 vh-20" />
-                      {% block right_column %}
-                      {% endblock right_column %}
-
+    <div class="container py-0">
+        <div class="row">
+            <div class="col-12">
+                <div class="container content-container px-0 px-md-4 py-4 d-flex justify-content-center align-items-center min-vh-80">
+                    <div class="col-12 p-4 align-content-center position-relative min-vh-60 account-container">
+                        {% if form.errors %}
+                            <div class="alert alert-danger p-2 z-2 position-absolute top-5">
+                                {% for field, error in form.errors.items %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} p-2 z-2 position-absolute top-5 alert-dismissible fade show"
+                                     role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        <!-- Mobile background image (visible only on small screens) -->
+                        <div class="d-md-none position-absolute top-50 start-50 translate-middle z-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                            <img src="{% static "assets/images/sign-up.svg" %}"
+                                 alt=""
+                                 class="opacity-50 w-100 h-100"
+                                 style="max-width: 80%;
+                                        max-height: 80%" />
+                        </div>
+                        <div class="container z-1 position-relative">
+                            <div class="row flex-column flex-md-row">
+                                <!-- Left Column -->
+                                <div class="col-12 col-md-6 my-4 px-0 px-md-4">
+                                    {% block left_column %}
+                                    {% endblock left_column %}
+                                </div>
+                                <!-- Right Column (hidden on mobile) -->
+                                <div class="col-12 col-md-6 my-4 create-account-link d-flex align-items-center">
+                                    <div id="signup-option-separator" class="flex-fill d-none d-md-block">
+                                        <div class="text-center" id="error">
+                                            <img src="{% static "assets/images/sign-up.svg" %}"
+                                                 alt="sign up image"
+                                                 class="my-4 vh-20" />
+                                            {% block right_column %}
+                                            {% endblock right_column %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Mobile Sign Up Link (visible only on small screens) -->
+                                <div class="col-12 d-md-none text-center">
+                                    {% block mobile_link %}
+                                    {% endblock mobile_link %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <!-- Mobile Sign Up Link (visible only on small screens) -->
-                <div class="col-12 d-md-none text-center">
-                  {% block mobile_link %}
-                  {% endblock mobile_link %}
-
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 {% endblock content %}

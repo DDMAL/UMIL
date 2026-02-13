@@ -1,35 +1,31 @@
 {% extends "main/auth/registration_base.html" %}
-
 {% block registration_title %}
-  Login
+    Login
 {% endblock registration_title %}
-
 {% block left_column %}
-  <div class="col-12 mx-md-4 px-2">
-    <h5>
-      <strong>Login</strong>
-    </h5>
-    <form method="post">
-      {% csrf_token %}
-      <div class="my-4">
-        <label for="exampleInputEmail" class="form-label">Email Address</label>
-        <div>{{ form.username }}</div>
-      </div>
-      <div class="mb-4">
-        <label for="exampleInputPassword" class="form-label">Password</label>
-        <div>{{ form.password }}</div>
-      </div>
-      <button type="submit" class="btn btn-dark">Sign in</button>
-    </form>
-  </div>
+    <div class="col-12 mx-md-4 px-2">
+        <h5>
+            <strong>Login</strong>
+        </h5>
+        <form method="post">
+            {% csrf_token %}
+            <div class="my-4">
+                <label for="exampleInputEmail" class="form-label">Email Address</label>
+                <div>{{ form.username }}</div>
+            </div>
+            <div class="mb-4">
+                <label for="exampleInputPassword" class="form-label">Password</label>
+                <div>{{ form.password }}</div>
+            </div>
+            <button type="submit" class="btn btn-dark">Sign in</button>
+        </form>
+    </div>
 {% endblock left_column %}
-
 {% block right_column %}
-  <p class="mb-1">Don't have an account?</p>
-  <a href="{% url 'main:register' %}">Create a new account</a>
+    <p class="mb-1">Don't have an account?</p>
+    <a href="{% url 'main:register' %}">Create a new account</a>
 {% endblock right_column %}
-
 {% block mobile_link %}
-  <p class="mb-1">Don't have an account?</p>
-  <a href="{% url 'main:register' %}">Create a new account</a>
+    <p class="mb-1">Don't have an account?</p>
+    <a href="{% url 'main:register' %}">Create a new account</a>
 {% endblock mobile_link %}
