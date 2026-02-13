@@ -116,7 +116,9 @@ class Command(BaseCommand):
 
         if rows_written == 0:
             self.stdout.write(
-                self.style.WARNING("No instrument names found. The CSV only has headers.")
+                self.style.WARNING(
+                    "No instrument names found. The CSV only has headers."
+                )
             )
         else:
             self.stdout.write(
