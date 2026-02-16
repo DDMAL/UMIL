@@ -4,11 +4,14 @@ import csv
 import glob
 import os
 import shutil
+import time
 from io import BytesIO
 from urllib.parse import urlparse
 
 import requests
 from PIL import Image
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand
@@ -36,7 +39,17 @@ class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
-        self.headers = {"User-Agent": self.USER_AGENT}
+        self.session = requests.Session()
+        retry_strategy = Retry(
+            total=3,
+            status_forcelist=[429, 500, 502, 503, 504],
+            backoff_factor=2,
+            respect_retry_after_header=True,
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
+        self.session.headers.update({"User-Agent": self.USER_AGENT})
         self.original_img_dir = os.path.join(self.OUTPUT_DIR, "original")
         self.thumbnail_dir = os.path.join(self.OUTPUT_DIR, "thumbnail")
         os.makedirs(self.original_img_dir, exist_ok=True)
@@ -63,7 +76,7 @@ class Command(BaseCommand):
         Returns the file extension used, or None if the download was skipped/failed.
         """
         try:
-            response = requests.get(url, stream=True, headers=self.headers, timeout=10)
+            response = self.session.get(url, stream=True, timeout=10)
             response.raise_for_status()
         except requests.RequestException as e:
             self.stderr.write(f"Failed to download image from {url}: {e}")
@@ -172,6 +185,7 @@ class Command(BaseCommand):
                         continue
                 else:
                     ext = self.download_image(image_url, ins_id)
+                    time.sleep(1)
 
                 if ext is None:
                     continue
