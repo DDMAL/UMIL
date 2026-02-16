@@ -21,7 +21,7 @@ django-ratelimit = "^4.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.9.1"
+black = "26.1.0"
 mypy = "^1.5.1"
 pylint = "^2.17.6"
 types-requests = "^2.32.0.20240712"
