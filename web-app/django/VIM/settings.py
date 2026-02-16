@@ -179,10 +179,9 @@ DJANGO_VITE = {
     }
 }
 
-# Media files (user uploads)
+# Media files (user uploads & wikidata images)
 MEDIA_ROOT = ROOT_DIR / "media"
 MEDIA_URL = "/media/"
-ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"]
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
 
 # Default primary key field type
