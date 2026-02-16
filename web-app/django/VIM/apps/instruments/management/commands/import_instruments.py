@@ -1,14 +1,17 @@
 """This module imports instrument objects from Wikidata for the VIM project."""
 
 import csv
+import glob
 import os
 from typing import Optional
 import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from VIM.apps.instruments.models import Instrument, InstrumentName, Language, AVResource
+from VIM.apps.instruments.utils.validators import validate_image_extension
 
 
 class Command(BaseCommand):
@@ -106,7 +109,10 @@ class Command(BaseCommand):
         return instrument_data
 
     def create_database_objects(
-        self, instrument_attrs: dict, original_img_path: str, thumbnail_img_path: str
+        self,
+        instrument_attrs: dict,
+        original_img_path: Optional[str],
+        thumbnail_img_path: Optional[str],
     ) -> None:
         """
         Given a dictionary of instrument attributes and a url to an instrument image,
@@ -190,23 +196,60 @@ class Command(BaseCommand):
                     },
                 )
 
-        img_obj = AVResource.objects.create(
-            instrument=instrument,
-            type="image",
-            format=original_img_path.split(".")[-1],
-            url=original_img_path,
-            source_name="Wikidata",
-        )
-        instrument.default_image = img_obj
-        thumbnail_obj = AVResource.objects.create(
-            instrument=instrument,
-            type="image",
-            format=thumbnail_img_path.split(".")[-1],
-            url=thumbnail_img_path,
-            source_name="Wikidata",
-        )
-        instrument.thumbnail = thumbnail_obj
-        instrument.save()
+        # Create AVResource objects only when both image paths are available
+        if original_img_path and thumbnail_img_path:
+            # Validate extensions before creating AVResource objects
+            try:
+                original_format = validate_image_extension(original_img_path)
+                thumbnail_format = validate_image_extension(thumbnail_img_path)
+            except ValidationError as e:
+                self.stderr.write(
+                    self.style.ERROR(
+                        f"Skipping images for {instrument.umil_id} (invalid format): {e}"
+                    )
+                )
+                return
+
+            img_obj, _ = AVResource.objects.update_or_create(
+                instrument=instrument,
+                url=original_img_path,
+                defaults={
+                    "type": "image",
+                    "format": original_format,
+                    "source_name": "Wikidata",
+                },
+            )
+            instrument.default_image = img_obj
+            thumbnail_obj, _ = AVResource.objects.update_or_create(
+                instrument=instrument,
+                url=thumbnail_img_path,
+                defaults={
+                    "type": "image",
+                    "format": thumbnail_format,
+                    "source_name": "Wikidata",
+                },
+            )
+            instrument.thumbnail = thumbnail_obj
+            instrument.save()
+
+    @staticmethod
+    def find_image_file(directory, ins_id):
+        """Find an image file for the given instrument ID, regardless of extension.
+
+        Returns the relative path (matching the directory format used for AVResource.url)
+        or None if no file is found.
+        """
+        # directory is a relative path like "instruments/images/instrument_imgs/original"
+        # The actual files are under STATIC_ROOT
+        abs_dir = os.path.join(settings.STATIC_ROOT, directory)
+        matches = glob.glob(os.path.join(abs_dir, f"{ins_id}.*"))
+        if not matches:
+            return None
+        # Return relative path (for AVResource.url storage)
+        filename = os.path.basename(
+            matches[0]
+        )  # each instrunment is guaranteed to have at most one image
+        return os.path.join(directory, filename)
 
     def handle(self, *args, **options) -> None:
         # Use smaller test dataset when in test mode
@@ -229,12 +272,18 @@ class Command(BaseCommand):
                 ]
                 ins_data: list[dict] = self.get_instrument_data(ins_ids_subset)
                 for instrument_attrs, ins_id in zip(ins_data, ins_ids_subset):
-                    original_img_path = os.path.join(
-                        img_dir, "original", f"{ins_id}.png"
+                    original_img_path = self.find_image_file(
+                        os.path.join(img_dir, "original"), ins_id
                     )
-                    thumbnail_img_path = os.path.join(
-                        img_dir, "thumbnail", f"{ins_id}.png"
+                    thumbnail_img_path = self.find_image_file(
+                        os.path.join(img_dir, "thumbnail"), ins_id
                     )
+                    if not original_img_path or not thumbnail_img_path:
+                        self.stderr.write(
+                            self.style.WARNING(
+                                f"Missing image files for {ins_id}, creating instrument without images"
+                            )
+                        )
                     self.create_database_objects(
                         instrument_attrs, original_img_path, thumbnail_img_path
                     )
