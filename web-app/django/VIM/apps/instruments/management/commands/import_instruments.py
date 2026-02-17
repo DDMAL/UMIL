@@ -239,9 +239,9 @@ class Command(BaseCommand):
         Returns the relative path (matching the directory format used for AVResource.url)
         or None if no file is found.
         """
-        # directory is a relative path like "instruments/images/instrument_imgs/original"
-        # The actual files are under STATIC_ROOT
-        abs_dir = os.path.join(settings.STATIC_ROOT, directory)
+        # directory is a relative path like "downloads/original"
+        # The actual files are under MEDIA_ROOT
+        abs_dir = os.path.join(settings.MEDIA_ROOT, directory)
         matches = glob.glob(os.path.join(abs_dir, f"{ins_id}.*"))
         if not matches:
             return None
@@ -263,7 +263,7 @@ class Command(BaseCommand):
             reader = csv.DictReader(csvfile)
             instrument_list: list[dict] = list(reader)
         self.language_map = Language.objects.in_bulk(field_name="wikidata_code")
-        img_dir = "instruments/images/instrument_imgs"
+        img_dir = "downloads"
         with transaction.atomic():
             for ins_i in range(0, len(instrument_list), 50):
                 ins_ids_subset: list[str] = [
