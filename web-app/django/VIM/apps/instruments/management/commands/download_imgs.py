@@ -30,9 +30,7 @@ class Command(BaseCommand):
     """Django management command to download images and create thumbnails for instruments."""
 
     USER_AGENT = "UMIL/0.1.0 (https://vim.simssa.ca/; https://ddmal.music.mcgill.ca/)"
-    OUTPUT_DIR = os.path.join(
-        settings.STATIC_ROOT, "instruments", "images", "instrument_imgs"
-    )
+    OUTPUT_DIR = os.path.join(settings.MEDIA_ROOT, "downloads")
     CSV_PATH = "startup_data/umil_instruments_15July_2025.csv"
 
     help = "Download images and create thumbnails for instruments"
