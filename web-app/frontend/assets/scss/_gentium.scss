@@ -1,0 +1,30 @@
+// Gentium font family - Self-hosted for POJ/Taiwanese extended Latin support
+// Gentium provides comprehensive Unicode coverage including:
+// - U+0358 (COMBINING DOT ABOVE RIGHT) - O͘
+// - U+030D (COMBINING VERTICAL LINE ABOVE) - a̍
+// Source: SIL International - https://software.sil.org/gentium/
+// License: SIL Open Font License (OFL)
+
+@font-face {
+  font-family: "Gentium";
+  src: url("../fonts/Gentium-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gentium";
+  src: url("../fonts/Gentium-Regular.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gentium";
+  src: url("../fonts/Gentium-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
