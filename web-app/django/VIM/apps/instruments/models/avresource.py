@@ -1,6 +1,7 @@
 import os
 from django.core.exceptions import ValidationError
 from django.db import models
+from VIM.apps.instruments.constants import IMAGE_FORMAT_CHOICES
 
 
 def avresource_upload_path(instance, filename):
@@ -9,11 +10,10 @@ def avresource_upload_path(instance, filename):
     Format: uploads/instrument_imgs/{original|thumbnail}/{umil_id}.{ext}
 
     Uses instance.is_thumbnail flag to determine subdirectory.
-    Thumbnails always use .png extension.
 
     Examples:
         - Original: uploads/instrument_imgs/original/UMIL-00001.jpg
-        - Thumbnail: uploads/instrument_imgs/thumbnail/UMIL-00001.png
+        - Thumbnail: uploads/instrument_imgs/thumbnail/UMIL-00001.jpg
     """
     # Get file extension from original filename
     ext = os.path.splitext(filename)[1].lower()
@@ -28,10 +28,6 @@ def avresource_upload_path(instance, filename):
 
     # Determine subdirectory based on is_thumbnail flag
     subdir = "thumbnail" if getattr(instance, "is_thumbnail", False) else "original"
-
-    # For thumbnails, always use .png extension
-    if subdir == "thumbnail":
-        ext = ".png"
 
     filename = f"{umil_id}{ext}"
     return os.path.join("uploads", "instrument_imgs", subdir, filename)
@@ -62,8 +58,11 @@ class AVResource(models.Model):
         help_text="What type of audiovisual resource is this?",
     )
     format = models.CharField(
-        blank=False
-    )  # This should eventually be a choice field with supported formats
+        max_length=10,
+        choices=IMAGE_FORMAT_CHOICES,
+        blank=False,
+        help_text="Image file format extension",
+    )
     url = models.CharField(blank=True, max_length=1000)
     file = models.ImageField(
         upload_to=avresource_upload_path,
@@ -101,6 +100,15 @@ class AVResource(models.Model):
         related_name="created_avresources",
         help_text="User who uploaded this resource (null for imports)",
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["instrument", "url"],
+                condition=models.Q(url__gt=""),
+                name="unique_instrument_url",
+            )
+        ]
 
     def clean(self):
         super().clean()
