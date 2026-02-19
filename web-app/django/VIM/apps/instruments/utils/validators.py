@@ -20,10 +20,12 @@ This module provides explicit pre-validation to:
 4. Enable reuse across views and management commands
 """
 
+import os
 import re
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from typing import List, Tuple
+from VIM.apps.instruments.constants import ALLOWED_IMAGE_EXTENSIONS, ALLOWED_IMAGE_TYPES
 
 
 def validate_instrument_names(instrument_names: List["InstrumentName"]) -> None:
@@ -188,10 +190,59 @@ def validate_image_file(image_file) -> Tuple[bool, str]:
 
     # Check content type
     content_type = image_file.content_type
-    if content_type not in settings.ALLOWED_IMAGE_TYPES:
+    if content_type not in ALLOWED_IMAGE_TYPES:
         return (
             False,
             f"Invalid image type. Allowed types: JPEG, PNG, GIF, WebP",
         )
 
     return True, ""
+
+
+def validate_image_extension(file_path: str) -> str:
+    """
+    Validate image file extension for import/download operations.
+
+    This validator is used by management commands (import_instruments, download_imgs)
+    that process files from external sources where MIME type validation is not available.
+
+    NOTE: User uploads do NOT use this function - they are validated via validate_image_file()
+    which checks MIME types. This is specifically for import/download paths.
+
+    Args:
+        file_path: Path to image file (URL or local path)
+
+    Returns:
+        str: Clean extension without leading dot (e.g., "jpg", "png", "svg")
+
+    Raises:
+        ValidationError: If extension is missing or not in ALLOWED_IMAGE_EXTENSIONS
+
+    Example:
+        >>> validate_image_extension("https://example.com/image.jpg")
+        'jpg'
+        >>> validate_image_extension("/path/to/file.png")
+        'png'
+        >>> validate_image_extension("malicious.exe")
+        ValidationError: Invalid file extension '.exe'...
+    """
+    # Extract extension from path/URL
+    ext = os.path.splitext(file_path)[1].lower()
+
+    if not ext:
+        raise ValidationError(
+            f"File has no extension: {file_path}. "
+            f"Valid image files must have an extension."
+        )
+
+    # Remove leading dot for comparison
+    ext_clean = ext.lstrip(".")
+
+    # Validate against allowed extensions
+    if ext_clean not in ALLOWED_IMAGE_EXTENSIONS:
+        raise ValidationError(
+            f"Invalid file extension '.{ext_clean}' in {file_path}. "
+            f"Allowed formats: {', '.join(ALLOWED_IMAGE_EXTENSIONS)}"
+        )
+
+    return ext_clean

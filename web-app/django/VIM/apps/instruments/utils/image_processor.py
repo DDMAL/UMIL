@@ -1,6 +1,7 @@
 """Utility functions for processing instrument images."""
 
 from PIL import Image
+from VIM.apps.instruments.constants import PIL_FORMAT_TO_EXTENSION
 
 
 def calculate_compression_ratio(width: int, height: int) -> float:
@@ -63,10 +64,10 @@ def process_uploaded_image(uploaded_file, umil_id: str) -> tuple:
         umil_id: UMIL identifier (e.g., "UMIL-00001")
 
     Returns:
-        tuple: (original_content, thumbnail_content, file_extension)
+        tuple: (original_content, thumbnail_content, file_extension, thumb_extension)
         - original_content: ContentFile ready for av_resource.file.save()
         - thumbnail_content: ContentFile ready for thumbnail_av.file.save()
-        - file_extension: Original file extension (e.g., 'jpg', 'png')
+        - file_extension: Original and thumbnail file extension (e.g., 'jpg', 'png')
 
     Raises:
         IOError: If image processing fails
@@ -77,8 +78,7 @@ def process_uploaded_image(uploaded_file, umil_id: str) -> tuple:
 
     # Determine format from actual image format (not just content type)
     with Image.open(uploaded_file) as img:
-        format_map = {"JPEG": "jpg", "PNG": "png", "GIF": "gif", "WEBP": "webp"}
-        ext = format_map.get(img.format, "jpg")
+        pil_format, ext = PIL_FORMAT_TO_EXTENSION.get(img.format, ("JPEG", "jpg"))
 
     # Reset file pointer after reading
     uploaded_file.seek(0)
@@ -86,15 +86,17 @@ def process_uploaded_image(uploaded_file, umil_id: str) -> tuple:
     # Read original content into memory
     original_content = ContentFile(uploaded_file.read(), name=f"{umil_id}.{ext}")
 
-    # Generate thumbnail
+    # Generate thumbnail in the same format as original
     uploaded_file.seek(0)
     with Image.open(uploaded_file) as img:
         thumbnail = create_thumbnail_image(img)
 
-        # Convert thumbnail to PNG bytes
         thumb_buffer = BytesIO()
-        thumbnail.save(thumb_buffer, "PNG")
+        save_kwargs = {}
+        if pil_format == "JPEG":
+            save_kwargs["quality"] = 90
+        thumbnail.save(thumb_buffer, pil_format, **save_kwargs)
         thumb_buffer.seek(0)
-        thumbnail_content = ContentFile(thumb_buffer.read(), name=f"{umil_id}.png")
+        thumbnail_content = ContentFile(thumb_buffer.read(), name=f"{umil_id}.{ext}")
 
     return original_content, thumbnail_content, ext
