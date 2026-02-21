@@ -273,7 +273,6 @@ class Command(BaseCommand):
         )  # each instrument is guaranteed to have at most one image
         return os.path.join(directory, filename)
 
-
     def handle(self, *args, **options) -> None:
         # Use smaller test dataset when in test mode
         csv_file = (
