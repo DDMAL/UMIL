@@ -135,9 +135,9 @@ def validate_hbs_classification(hbs_class: str) -> bool:
     Validate Hornbostel-Sachs classification format.
 
     Valid formats:
-    - Two digits minimum (e.g., "11", "21")
-    - With optional sub-classifications (e.g., "21.2", "311.121")
-    - First digit must be 1-5, second digit 0-9
+    - At least 1 character, only digits (1-9), dot, dash, and plus permitted
+    - First character must be 1-5
+    - If there is a second character, it must be 1-5
 
     Args:
         hbs_class: Hornbostel-Sachs classification string to validate
@@ -147,16 +147,25 @@ def validate_hbs_classification(hbs_class: str) -> bool:
 
     Example:
         >>> validate_hbs_classification("11")       # True
-        >>> validate_hbs_classification("21.2")     # True
-        >>> validate_hbs_classification("311.121")  # True
-        >>> validate_hbs_classification("6")        # False (needs 2 digits)
-        >>> validate_hbs_classification("11x")      # False (invalid format)
+        >>> validate_hbs_classification("21.2+2")   # True
+        >>> validate_hbs_classification("6")        # False (first char not 1-5)
+        >>> validate_hbs_classification("11x")      # False (invalid char)
     """
     if not hbs_class:
         return False
-    # Pattern: one digit (1-5), followed by another digit, optionally followed by more .digits
-    pattern = r"^[1-5][0-9](\.[0-9]+)*$"
-    return bool(re.match(pattern, hbs_class)) and len(hbs_class) >= 2
+    # Only digits (1-9), dot, dash, plus permitted
+    if not re.match(r"^[1-9.\-+]+$", hbs_class):
+        return False
+    # First character must be 1-5
+    first_char = hbs_class[0]
+    if not re.match(r"[1-5]", first_char):
+        return False
+    # If there is a second character, it must be 1-5
+    if len(hbs_class) > 1:
+        second_char = hbs_class[1]
+        if not re.match(r"[1-5]", second_char):
+            return False
+    return True
 
 
 def validate_image_file(image_file) -> Tuple[bool, str]:

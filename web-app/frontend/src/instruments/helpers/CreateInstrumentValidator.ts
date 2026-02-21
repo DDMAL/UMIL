@@ -1,5 +1,6 @@
 import { WikidataLanguage, ValidationResult, NameEntry } from '../Types';
 import { DatabaseService } from './DatabaseService';
+import { isValidHBSClass } from './NameValidator';
 
 export interface CreateInstrumentData {
   entries: NameEntry[];
@@ -41,13 +42,11 @@ export class CreateInstrumentValidator {
       };
     }
 
-    // Pattern: starts with 1-5, followed by another digit, optionally more .digits
-    const pattern = /^[1-5][0-9](\.[0-9]+)*$/;
-    if (!pattern.test(value.trim())) {
+    if (!isValidHBSClass(value.trim())) {
       return {
         isValid: false,
         message:
-          'Invalid format. Enter at least 2 digits (e.g., "11", "21.2", "311.121")',
+          'Invalid format. Enter a valid HBS class (e.g., "11", "21.2", "311.121"). Must start with 1-5; only digits, dot, dash, and plus are permitted. The first two digits must be 1-5.',
         type: 'error',
       };
     }
