@@ -69,7 +69,7 @@
             <tr>
               <th scope="row" class="w-20">Hornbostel-Sachs Classification</th>
               <td>
-                {% if instrument.hornbostel_sachs_class %}
+                {% if instrument.hornbostel_sachs_class and instrument.hornbostel_sachs_class.hbs_class != "0" %}
                   <span class="view-field notranslate">{{ instrument.hornbostel_sachs_class.hbs_class }}</span>
                 {% else %}
                   {% if user.is_authenticated %}
