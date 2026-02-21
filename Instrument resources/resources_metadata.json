@@ -1,0 +1,51 @@
+{
+  "books": [
+    {
+      "title": "The Encyclopedia of Musical Instruments of Iran: Percussion, Bowed, and String Instruments",
+      "volume": 1,
+      "author": "Mohammad Reza Darvishi",
+      "publisher": "Mahoor Institute of Culture and Arts",
+      "year": 2001,
+      "language": "Persian",
+      "pages": 598,
+      "isbn": "9789646409453",
+      "link": "https://mahoor.com/en/book/806-the-encyclopaedia-of-musical-instruments-of-iran-1",
+      "scan_location": "https://drive.google.com/file/d/1Qzq-I41Q5zZ-_xclgN34MXaP5xDKDfiU/view?usp=sharing"
+    },
+    {
+      "title": "The Encyclopedia of Musical Instruments of Iran: Membranophones and Idiophones",
+      "volume": 2,
+      "author": "Mohammad Reza Darvishi",
+      "publisher": "Mahoor Institute of Culture and Arts",
+      "year": 2013,
+      "language": "Persian",
+      "pages": 708,
+      "isbn": "9789648772036",
+      "link": "https://www.mahoor.com/en/book/807-the-encyclopaedia-of-musical-instruments-of-iran-2",
+      "scan_location": "https://drive.google.com/file/d/1IHYjrcqi6lC0GmMdX4J0FVc0cZoVkmN9/view?usp=sharing"
+    },
+    {
+      "title": "The Encyclopedia of Musical Instruments of Iran: Woodwinds",
+      "volume": 3,
+      "author": "Mohammad Reza Darvishi",
+      "publisher": "Mahoor Institute of Culture and Arts",
+      "year": 2023,
+      "language": "Persian",
+      "pages": 324,
+      "isbn": "9786229899762",
+      "link": "https://www.mahoor.com/en/book/20823-The%20Encyclopaedia%20of%20Musical%20Instruments%20of%20Iran%203",
+      "scan_location": "https://drive.google.com/file/d/1OQ19DuEoS8KHIcgo26knlqNYL5BEZnev/view?usp=sharing"
+    },
+    {
+      "title": "The World Encyclopedia of Musical Instruments",
+      "author": "Hassan Zandbaf",
+      "publisher": "Rawzanah",
+      "year": 1997,
+      "language": "Persian",
+      "pages": 311,
+      "isbn": "9646176232",
+      "link": "https://web.archive.org/web/20180920195542/http://www.ketab.ir/bookview.aspx?bookid=177683",
+      "scan_location": "https://drive.google.com/file/d/1v0JXAKZLv7EW56T3WYgZSjFbteAoVr1n/view?usp=sharing"
+    }
+  ]
+}
