@@ -44,7 +44,9 @@ services:
     restart: unless-stopped
 
   nginx:
-    build: ./nginx
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile.prod
     container_name: vim-nginx
     restart: unless-stopped
     environment:
@@ -52,7 +54,6 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./web-app/frontend/assets/:/virtual-instrument-museum/frontend/assets/
       - vim-static:/virtual-instrument-museum/static
       - vim-media:/virtual-instrument-museum/media
     depends_on:
