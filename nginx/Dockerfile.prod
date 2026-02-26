@@ -1,0 +1,14 @@
+# Production nginx: includes compiled frontend assets in the image
+# (Dev uses bind mounts instead, see docker-compose.yml)
+
+FROM node:20-slim AS frontend-builder
+COPY ./web-app/frontend/ /frontend/
+WORKDIR /frontend
+RUN npm install && npm run sass:build
+
+FROM nginx:1.25.2
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/vim.conf.template /etc/nginx/templates/vim.conf.template
+# Copy static assets (images, fonts, etc.) and compiled CSS
+COPY ./web-app/frontend/assets/ /virtual-instrument-museum/frontend/assets/
+COPY --from=frontend-builder /frontend/assets/css /virtual-instrument-museum/frontend/assets/css
