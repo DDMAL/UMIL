@@ -12,8 +12,9 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        addName: resolve(__dirname, 'src/instruments/AddName.ts'),
-        barCharts: resolve(__dirname, 'src/stats/BarCharts.ts'),
+        main: resolve(__dirname, 'src/main.ts'),
+        instrumentDetail: resolve(__dirname, 'src/instruments/AddName.ts'),
+        addClass: resolve(__dirname, 'src/instruments/AddClass.ts'),
         createInstrument: resolve(
           __dirname,
           'src/instruments/CreateInstrument.ts',
