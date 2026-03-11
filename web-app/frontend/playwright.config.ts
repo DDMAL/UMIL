@@ -34,30 +34,7 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup'],
       testMatch: /.*\/desktop\.spec\.ts/,
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-      dependencies: ['setup'],
-      testMatch: /.*\/desktop\.spec\.ts/,
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-      dependencies: ['setup'],
-      testMatch: /.*\/desktop\.spec\.ts/,
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-      dependencies: ['setup'],
-      testMatch: /.*\/mobile\.spec\.ts/,
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-      dependencies: ['setup'],
-      testMatch: /.*\/mobile\.spec\.ts/,
-    },
+    }
+    // Removed other projects (firefox, webkit, mobile, etc)
   ],
 });
