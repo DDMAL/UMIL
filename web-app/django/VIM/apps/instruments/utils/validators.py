@@ -20,10 +20,12 @@ This module provides explicit pre-validation to:
 4. Enable reuse across views and management commands
 """
 
+import os
 import re
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from typing import List, Tuple
+from VIM.apps.instruments.constants import ALLOWED_IMAGE_EXTENSIONS, ALLOWED_IMAGE_TYPES
 
 
 def validate_instrument_names(instrument_names: List["InstrumentName"]) -> None:
@@ -133,9 +135,9 @@ def validate_hbs_classification(hbs_class: str) -> bool:
     Validate Hornbostel-Sachs classification format.
 
     Valid formats:
-    - Two digits minimum (e.g., "11", "21")
-    - With optional sub-classifications (e.g., "21.2", "311.121")
-    - First digit must be 1-5, second digit 0-9
+    - At least 1 character, only digits (1-9), dot, dash, and plus permitted
+    - First character must be 1-5
+    - If there is a second character, it must be 1-5
 
     Args:
         hbs_class: Hornbostel-Sachs classification string to validate
@@ -145,16 +147,25 @@ def validate_hbs_classification(hbs_class: str) -> bool:
 
     Example:
         >>> validate_hbs_classification("11")       # True
-        >>> validate_hbs_classification("21.2")     # True
-        >>> validate_hbs_classification("311.121")  # True
-        >>> validate_hbs_classification("6")        # False (needs 2 digits)
-        >>> validate_hbs_classification("11x")      # False (invalid format)
+        >>> validate_hbs_classification("21.2+2")   # True
+        >>> validate_hbs_classification("6")        # False (first char not 1-5)
+        >>> validate_hbs_classification("11x")      # False (invalid char)
     """
     if not hbs_class:
         return False
-    # Pattern: one digit (1-5), followed by another digit, optionally followed by more .digits
-    pattern = r"^[1-5][0-9](\.[0-9]+)*$"
-    return bool(re.match(pattern, hbs_class)) and len(hbs_class) >= 2
+        # Only digits (1-9), dot, dash, plus permitted
+    if not re.match(r"^[1-9.\-+]+$", hbs_class):
+        return False
+    # First character must be 1-5
+    first_char = hbs_class[0]
+    if not re.match(r"[1-5]", first_char):
+        return False
+    # If there is a second character, it must be 1-5
+    if len(hbs_class) > 1:
+        second_char = hbs_class[1]
+        if not re.match(r"[1-5]", second_char):
+            return False
+    return True
 
 
 def validate_image_file(image_file) -> Tuple[bool, str]:
@@ -188,10 +199,59 @@ def validate_image_file(image_file) -> Tuple[bool, str]:
 
     # Check content type
     content_type = image_file.content_type
-    if content_type not in settings.ALLOWED_IMAGE_TYPES:
+    if content_type not in ALLOWED_IMAGE_TYPES:
         return (
             False,
             f"Invalid image type. Allowed types: JPEG, PNG, GIF, WebP",
         )
 
     return True, ""
+
+
+def validate_image_extension(file_path: str) -> str:
+    """
+    Validate image file extension for import/download operations.
+
+    This validator is used by management commands (import_instruments, download_imgs)
+    that process files from external sources where MIME type validation is not available.
+
+    NOTE: User uploads do NOT use this function - they are validated via validate_image_file()
+    which checks MIME types. This is specifically for import/download paths.
+
+    Args:
+        file_path: Path to image file (URL or local path)
+
+    Returns:
+        str: Clean extension without leading dot (e.g., "jpg", "png", "svg")
+
+    Raises:
+        ValidationError: If extension is missing or not in ALLOWED_IMAGE_EXTENSIONS
+
+    Example:
+        >>> validate_image_extension("https://example.com/image.jpg")
+        'jpg'
+        >>> validate_image_extension("/path/to/file.png")
+        'png'
+        >>> validate_image_extension("malicious.exe")
+        ValidationError: Invalid file extension '.exe'...
+    """
+    # Extract extension from path/URL
+    ext = os.path.splitext(file_path)[1].lower()
+
+    if not ext:
+        raise ValidationError(
+            f"File has no extension: {file_path}. "
+            f"Valid image files must have an extension."
+        )
+
+    # Remove leading dot for comparison
+    ext_clean = ext.lstrip(".")
+
+    # Validate against allowed extensions
+    if ext_clean not in ALLOWED_IMAGE_EXTENSIONS:
+        raise ValidationError(
+            f"Invalid file extension '.{ext_clean}' in {file_path}. "
+            f"Allowed formats: {', '.join(ALLOWED_IMAGE_EXTENSIONS)}"
+        )
+
+    return ext_clean

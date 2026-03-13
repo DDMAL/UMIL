@@ -277,9 +277,11 @@ def create_instrument(request: HttpRequest) -> JsonResponse:
             # rollback (e.g. bulk_create failure) cannot leave orphaned files on disk.
             if image_file:
                 # Process image to get ContentFile objects
-                original_content, thumbnail_content, img_format = (
-                    process_uploaded_image(image_file, umil_id)
-                )
+                (
+                    original_content,
+                    thumbnail_content,
+                    img_format,
+                ) = process_uploaded_image(image_file, umil_id)
 
                 # Create AVResource for original image (file saved in on_commit)
                 av_resource = AVResource(
@@ -297,7 +299,7 @@ def create_instrument(request: HttpRequest) -> JsonResponse:
                 thumbnail_av = AVResource(
                     instrument=instrument,
                     type="image",
-                    format="png",
+                    format=img_format,
                     source_name=image_source,
                     created_by=request.user,
                     is_thumbnail=True,
@@ -316,7 +318,7 @@ def create_instrument(request: HttpRequest) -> JsonResponse:
                         f"{umil_id}.{img_format}", original_content, save=True
                     )
                     thumbnail_av.file.save(
-                        f"{umil_id}.png", thumbnail_content, save=True
+                        f"{umil_id}.{img_format}", thumbnail_content, save=True
                     )
 
                 transaction.on_commit(save_image_files)

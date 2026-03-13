@@ -9,7 +9,14 @@ $light: $umil-cream;
 $info: $umil-brown-primary;
 
 // Typography overrides
-$font-family-sans-serif: "Noto Sans", sans-serif;
+// Font fallback stack: Browser automatically selects appropriate font based on character script
+// For example: Chinese chars use Noto Sans SC/TC/JP/KR, Arabic uses Noto Sans Arabic
+// Gentium (self-hosted) provides comprehensive extended Latin support (POJ/Taiwanese, Vietnamese, etc.)
+$font-family-sans-serif:
+  "Noto Sans", "Noto Sans SC", "Noto Sans TC", "Noto Sans JP", "Noto Sans KR",
+  "Noto Sans Arabic", "Noto Sans Devanagari", "Noto Sans Hebrew",
+  "Noto Sans Thai", "Noto Sans Bengali", "Noto Sans Tamil", "Noto Sans Telugu",
+  "Gentium", sans-serif;
 $font-weight-base: 400;
 $font-weight-bold: 700;
 $headings-color: $umil-green-dark; // All heading colors (h1-h6)
