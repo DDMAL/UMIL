@@ -390,7 +390,7 @@ export class CreateInstrumentManager {
         // Server returned non-JSON (e.g. 413 HTML page from an upstream proxy)
         const message =
           response.status === 413
-            ? 'The image is too large to upload. Please use an image under 5MB.'
+            ? 'The image is too large to upload. Please use an image under 2MB.'
             : `Server error (${response.status}). Please try again.`;
         this.showModalError(message);
         confirmBtn.disabled = false;

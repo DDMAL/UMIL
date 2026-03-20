@@ -195,7 +195,7 @@ def validate_image_file(image_file) -> Tuple[bool, str]:
 
     # Check file size
     if image_file.size > settings.MAX_IMAGE_SIZE:
-        return False, "Image file size must be less than 5MB"
+        return False, "Image file size must be less than 2MB"
 
     # Check content type
     content_type = image_file.content_type

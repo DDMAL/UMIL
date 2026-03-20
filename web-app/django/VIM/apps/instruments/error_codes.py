@@ -49,7 +49,7 @@ ERROR_MESSAGES: Dict[str, str] = {
     ErrorCode.INVALID_LANGUAGE_CODE: "One or more language codes are invalid.",
     ErrorCode.INVALID_HBS_CLASSIFICATION: "Valid Hornbostel-Sachs classification (at least 2 digits) is required.",
     ErrorCode.INVALID_IMAGE_TYPE: "Invalid image type. Allowed types: JPEG, PNG, GIF, WebP.",
-    ErrorCode.INVALID_IMAGE_SIZE: "Image file size must be less than 5MB.",
+    ErrorCode.INVALID_IMAGE_SIZE: "Image file size must be less than 2MB.",
     ErrorCode.FIELD_TOO_LONG: "One or more fields exceed the maximum allowed length.",
     ErrorCode.INVALID_JSON_FORMAT: "Invalid data format. Please check your request and try again.",
     ErrorCode.DUPLICATE_NAME_IN_REQUEST: "Duplicate entries detected in your submission.",
