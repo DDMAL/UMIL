@@ -21,7 +21,7 @@ const ALLOWED_IMAGE_TYPES = [
   'image/gif',
   'image/webp',
 ];
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
 
 export class CreateInstrumentValidator {
   private languages: WikidataLanguage[];
@@ -194,7 +194,7 @@ export class CreateInstrumentValidator {
     if (file.size > MAX_IMAGE_SIZE) {
       return {
         isValid: false,
-        message: 'Image file size must be less than 5MB',
+        message: 'Image file size must be less than 2MB',
         type: 'error',
       };
     }

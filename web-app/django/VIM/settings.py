@@ -182,7 +182,7 @@ DJANGO_VITE = {
 # Media files (user uploads & wikidata images)
 MEDIA_ROOT = ROOT_DIR / "media"
 MEDIA_URL = "/media/"
-MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+MAX_IMAGE_SIZE = 2 * 1024 * 1024  # 2MB
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
