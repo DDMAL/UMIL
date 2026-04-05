@@ -273,8 +273,32 @@ def delete_name(request: HttpRequest) -> JsonResponse:
 
         instrument_id = instrument_name.instrument_id
 
+        # Retain language and label info before deletion
+        language_id = instrument_name.language_id
+        was_umil_label = instrument_name.umil_label
+
         # Delete the name
         instrument_name.delete()
+
+        # Assign new label: If the deleted name was the main/UMIL label for its instrument/language
+        # AND there's at least one other name for this instrument in that language,
+        if was_umil_label:
+            next_label_name = (
+                InstrumentName.objects.filter(
+                    instrument_id=instrument_id, language_id=language_id
+                )
+                .order_by("pk")
+                .first()
+            )
+            if next_label_name:
+                next_label_name.umil_label = True
+                try:
+                    next_label_name.save(update_fields=["umil_label"])
+                except Exception as e:
+                    logger.error(
+                        f"Could not assign new main name for instrument_id={instrument_id} "
+                        f"language_id={language_id}: {e}"
+                    )
 
         # Schedule Solr reindex after commit so the deleted name is removed from search
         def schedule_indexing():
