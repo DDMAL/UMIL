@@ -45,7 +45,7 @@ class Instrument(models.Model):
         help_text="User who created this instrument (null for Wikidata imports)",
     )
     source = models.CharField(
-        max_length=200,
+        max_length=255,
         blank=True,
         help_text="Source/reference for this instrument entry",
     )

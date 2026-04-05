@@ -88,13 +88,21 @@ export class NameValidator {
   }
 
   /**
-   * Validates that the source field is not empty
+   * Validates that the source field is not empty and under 255 characters
    */
   validateSource(sourceInput: string): ValidationResult {
-    if (sourceInput.trim() === '') {
+    const trimmed = sourceInput.trim();
+    if (trimmed === '') {
       return {
         isValid: false,
         message: 'Please enter the source of this name.',
+        type: 'error',
+      };
+    }
+    if (trimmed.length > 255) {
+      return {
+        isValid: false,
+        message: 'Source must be 255 characters or less.',
         type: 'error',
       };
     }

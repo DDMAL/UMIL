@@ -38,12 +38,16 @@
                          id="instrumentSource"
                          name="instrument_source"
                          placeholder="Enter instrument source"
+                         maxlength="255"
                          required />
                   <div class="form-text">
                     The primary source or reference for this instrument's existence.
                   </div>
-                  <div class="valid-feedback"></div>
-                  <div class="invalid-feedback"></div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                    <small class="text-muted ms-auto"><span id="instrumentSourceCounter">0</span> / 255</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="hornbostelSachsClass" class="form-label">
