@@ -24,10 +24,11 @@ export class CreateInstrumentManager {
   }
 
   /**
-   * Initializes the form with one required row
+   * Initializes the form with one required row and sets up the source counter
    */
   initializeForm(): void {
     this.nameRowManager.resetRows(true);
+    this.setupInstrumentSourceCounter();
   }
 
   /**
@@ -51,6 +52,28 @@ export class CreateInstrumentManager {
         this.validator.displayFeedback(container, result);
       });
     }
+  }
+
+  /**
+   * Sets up the live character counter for the Instrument Source input field.
+   */
+  setupInstrumentSourceCounter(): void {
+    const sourceInput = document.getElementById(
+      'instrumentSource',
+    ) as HTMLInputElement;
+    const counterSpan = document.getElementById('instrumentSourceCounter');
+    if (!sourceInput || !counterSpan) return;
+
+    const updateCounter = () => {
+      const length = sourceInput.value.length;
+      counterSpan.textContent = length.toString();
+    };
+
+    // Listen to input events and update counter immediately
+    sourceInput.addEventListener('input', updateCounter);
+
+    // Initialize counter on page load in case of prefilled value
+    updateCounter();
   }
 
   /**
@@ -437,7 +460,7 @@ export class CreateInstrumentManager {
   }
 
   /**
-   * Sets up form submission handling
+   * Sets up form submission handling and instrument source counter
    */
   setupFormSubmission(): void {
     const form = document.getElementById('createInstrumentForm');
@@ -454,5 +477,8 @@ export class CreateInstrumentManager {
         this.submitInstrument();
       });
     }
+
+    // Ensure the instrument source counter is set up on form activation as well
+    this.setupInstrumentSourceCounter();
   }
 }

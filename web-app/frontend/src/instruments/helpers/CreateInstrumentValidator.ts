@@ -160,7 +160,7 @@ export class CreateInstrumentValidator {
   }
 
   /**
-   * Validates source field
+   * Validates source field (must be filled and under 255 characters)
    */
   validateSource(source: string): ValidationResult {
     if (!source || source.trim() === '') {
@@ -170,7 +170,13 @@ export class CreateInstrumentValidator {
         type: 'error',
       };
     }
-
+    if (source.trim().length > 255) {
+      return {
+        isValid: false,
+        message: 'Source must be 255 characters or less.',
+        type: 'error',
+      };
+    }
     return {
       isValid: true,
       message: '',
@@ -385,11 +391,19 @@ export class CreateInstrumentValidator {
             });
           }
 
+          // Validate source required and under 255 chars for each entry
           if (!entry.source?.trim()) {
             isValid = false;
             errors.set(`source${rowIndex}`, {
               isValid: false,
               message: 'Source is required for this entry',
+              type: 'error',
+            });
+          } else if (entry.source.trim().length > 255) {
+            isValid = false;
+            errors.set(`source${rowIndex}`, {
+              isValid: false,
+              message: 'Source must be 255 characters or less.',
               type: 'error',
             });
           }
