@@ -383,7 +383,20 @@ export class CreateInstrumentManager {
         body: submitData,
       });
 
-      const data: CreateInstrumentResponse = await response.json();
+      let data: CreateInstrumentResponse;
+      try {
+        data = await response.json();
+      } catch {
+        // Server returned non-JSON (e.g. 413 HTML page from an upstream proxy)
+        const message =
+          response.status === 413
+            ? 'The image is too large to upload. Please use an image under 2MB.'
+            : `Server error (${response.status}). Please try again.`;
+        this.showModalError(message);
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalText;
+        return;
+      }
 
       // Check HTTP status first
       if (!response.ok) {
