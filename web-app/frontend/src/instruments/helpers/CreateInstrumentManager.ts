@@ -57,55 +57,78 @@ export class CreateInstrumentManager {
    * Toggles image source field visibility based on image selection
    */
   setupImageFieldToggle(): void {
-    const imageInput = document.getElementById('image') as HTMLInputElement;
+    const imageInput = document.getElementById(
+      'image',
+    ) as HTMLInputElement | null;
     const imageSourceContainer = document.getElementById(
       'imageSourceContainer',
     );
     const imagePreview = document.getElementById(
       'imagePreview',
-    ) as HTMLImageElement;
+    ) as HTMLImageElement | null;
     const imagePreviewContainer = document.getElementById(
       'imagePreviewContainer',
     );
+    const deleteBtn = document.getElementById(
+      'deleteImageBtn',
+    ) as HTMLButtonElement | null;
+    const selectDifferentText = document.getElementById(
+      'selectDifferentImageText',
+    );
 
-    if (imageInput && imageSourceContainer) {
-      imageInput.addEventListener('change', () => {
-        const files = imageInput.files;
-        if (files && files.length > 0) {
-          imageSourceContainer.classList.remove('d-none');
-          const sourceInput = imageSourceContainer.querySelector(
-            'input',
-          ) as HTMLInputElement;
-          if (sourceInput) {
-            sourceInput.required = true;
-          }
+    // Check for absence once
+    if (
+      !imageInput ||
+      !imageSourceContainer ||
+      !imagePreview ||
+      !imagePreviewContainer ||
+      !deleteBtn ||
+      !selectDifferentText
+    )
+      return;
 
-          // Show image preview
-          if (imagePreview && imagePreviewContainer) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              imagePreview.src = e.target?.result as string;
-              imagePreviewContainer.classList.remove('d-none');
-            };
-            reader.readAsDataURL(files[0]);
-          }
-        } else {
-          imageSourceContainer.classList.add('d-none');
-          const sourceInput = imageSourceContainer.querySelector(
-            'input',
-          ) as HTMLInputElement;
-          if (sourceInput) {
-            sourceInput.required = false;
-            sourceInput.value = '';
-          }
+    const getSourceInput = () =>
+      imageSourceContainer.querySelector('input') as HTMLInputElement | null;
 
-          // Hide image preview
-          if (imagePreviewContainer) {
-            imagePreviewContainer.classList.add('d-none');
-          }
-        }
-      });
+    function resetImageInput() {
+      imageInput.value = '';
+      imagePreview.src = '';
+      imagePreviewContainer.classList.add('d-none');
+      deleteBtn.style.display = 'none';
+      selectDifferentText.classList.add('d-none');
+      imageSourceContainer.classList.add('d-none');
+      const sourceInput = getSourceInput();
+      if (sourceInput) {
+        sourceInput.required = false;
+        sourceInput.value = '';
+      }
     }
+
+    imageInput.addEventListener('change', function () {
+      const file = imageInput.files && imageInput.files[0];
+      if (file) {
+        // Show and require source
+        imageSourceContainer.classList.remove('d-none');
+        const sourceInput = getSourceInput();
+        if (sourceInput) sourceInput.required = true;
+
+        // Preview and UI
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target?.result as string;
+          imagePreviewContainer.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+        deleteBtn.style.display = '';
+        selectDifferentText.classList.remove('d-none');
+      } else {
+        resetImageInput();
+      }
+    });
+
+    deleteBtn.addEventListener('click', function () {
+      resetImageInput();
+    });
   }
 
   /**
