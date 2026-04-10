@@ -111,10 +111,21 @@ class InstrumentList(TemplateView):
         Returns:
             str: The English label of the active language
         """
-        language_en = self.request.GET.get("language")
-        if language_en:
-            return language_en
-        return self.request.session.get("active_language_en", settings.DEFAULT_LANGUAGE)
+        language_param = self.request.GET.get("language") or self.request.session.get(
+            "active_language_en"
+        )
+
+        if language_param:
+            # Check if the language is an English label
+            try:
+                lang_obj = Language.objects.get(en_label__iexact=language_param)
+                return lang_obj.en_label
+
+            except Language.DoesNotExist:
+                pass
+
+        # Return the defult if nothing matches
+        return settings.DEFAULT_LANGUAGE
 
     def get_active_language(self) -> Language:
         """
