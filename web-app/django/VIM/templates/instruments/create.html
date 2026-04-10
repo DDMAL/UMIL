@@ -97,11 +97,23 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="image" class="form-label">Image File</label>
-                  <input type="file"
-                         class="form-control"
-                         id="image"
-                         name="image"
-                         accept="image/jpeg,image/png,image/gif,image/webp" />
+                  <div class="input-group">
+                    <input type="file"
+                           class="form-control"
+                           id="image"
+                           name="image"
+                           accept="image/jpeg,image/png,image/gif,image/webp" />
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            id="deleteImageBtn"
+                            style="display: none"
+                            tabindex="-1">
+                      <i class="bi bi-trash"></i> Delete
+                    </button>
+                  </div>
+                  <div class="form-text d-none" id="selectDifferentImageText">
+                    To select a different image, click on “Choose File” again.
+                  </div>
                   <div class="form-text">
                     Accepted formats: JPEG, PNG, GIF, WebP.
                     <br />
