@@ -84,6 +84,29 @@
             <str name="df">text</str>
         </lst>
     </requestHandler>
+
+    <searchComponent name="suggest" class="solr.SuggestComponent">
+        <lst name="suggester">
+            <str name="name">default</str>
+            <str name="lookupImpl">AnalyzingLookupFactory</str>
+            <str name="dictionaryImpl">DocumentDictionaryFactory</str>
+            <str name="field">text</str>
+            <str name="weightField">instrument_label_count_i</str> 
+            <str name="suggestAnalyzerFieldType">suggest_text_type</str>
+        </lst>
+    </searchComponent>
+
+    <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
+        <lst name="defaults">
+            <str name="suggest">true</str>
+            <str name="suggest.count">15</str>
+            <str name="suggest.dictionary">default</str>
+        </lst>
+        <arr name="components">
+            <str>suggest</str>
+        </arr>
+    </requestHandler>
+    
     <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell">
         <lst name="defaults">
             <str name="df">text</str>

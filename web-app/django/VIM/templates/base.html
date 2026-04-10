@@ -25,6 +25,7 @@
     <!-- End Google Tag Manager -->
     <link rel="stylesheet" href="{% static 'assets/css/global.css' %}" />
     {% vite_asset 'src/main.ts' %}
+    {% vite_asset 'src/instruments/Suggest.ts' %}
     {% block ts_files %}
     {% endblock ts_files %}
 
@@ -71,15 +72,20 @@
                    class="nav-link {% if active_tab == 'about' %}active{% endif %}">About</a>
               </li>
             </ul>
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 force-rtl"
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 force-rtl position-relative"
                   role="search"
                   action="{% url 'instrument-list' %}"
                   method="get">
               <input type="search"
+                     id="instrument-search"
                      name="query"
                      class="form-control search-input"
                      placeholder="Search..."
-                     aria-label="Search" />
+                     aria-label="Search"
+                     autocomplete="off" />
+              <div id="autocomplete-list"
+                   class="list-group position-absolute w-100 d-none bg-white small">
+              </div>
             </form>
             <!-- Right side content (user menu + translate) -->
             <div class="d-flex align-items-center justify-content-center justify-content-lg-end">
