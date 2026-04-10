@@ -110,11 +110,11 @@ def create_instrument(request: HttpRequest) -> JsonResponse:
             )
 
         # Validate instrument source length
-        if len(instrument_source) > 200:
+        if len(instrument_source) > 255:
             raise ValidationException(
                 ErrorCode.FIELD_TOO_LONG,
-                "Instrument source must be 200 characters or less",
-                details={"field": "instrument_source", "max_length": 200},
+                "Instrument source must be 255 characters or less",
+                details={"field": "instrument_source", "max_length": 255},
             )
 
         if not validate_hbs_classification(hbs_class):
