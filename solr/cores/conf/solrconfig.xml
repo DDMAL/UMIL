@@ -72,7 +72,16 @@
             <str name="echoParams">explicit</str>
             <int name="rows">10</int>
             <str name="df">text</str>
+
+            <str name="spellcheck">true</str>
+            <str name="spellcheck.dictionary">default</str>
+            <str name="spellcheck.extendedResults">true</str>
+            <str name="spellcheck.collate">true</str>
         </lst>
+
+        <arr name="last-components">
+            <str>spellcheck</str>
+        </arr>
     </requestHandler>
 
     <!-- A request handler that returns indented JSON by default -->
@@ -84,6 +93,20 @@
             <str name="df">text</str>
         </lst>
     </requestHandler>
+
+    <!-- SpellCheckComponent -->
+    <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+        <lst name="spellchecker">
+            <str name="name">default</str>
+            <str name="field">spellcheck</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <int name="minQueryLength">3</int>
+            <float name="accuracy">0.3</float>
+            <int name="maxEdits">2</int>
+            <str name="distanceMeasure">internal</str>
+        </lst>
+    </searchComponent>
+
     <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell">
         <lst name="defaults">
             <str name="df">text</str>
