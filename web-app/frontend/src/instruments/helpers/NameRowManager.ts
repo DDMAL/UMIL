@@ -57,7 +57,7 @@ export class NameRowManager {
     const maxSourceLen = 255;
 
     row.innerHTML = `
-      <div class="col-md-3 col-12 language-input mb-2 mb-md-0">
+      <div class="col-lg-3 col-12 language-input mb-2 mb-lg-0">
         <label for="language${index}" class="form-label">Language ${requiredMark}</label>
         <input list="languages${index}" class="form-control" id="language${index}"
                name="language[]" placeholder="Type to search" ${requiredAttr} />
@@ -67,14 +67,14 @@ export class NameRowManager {
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md-3 col-12 name-input mb-2 mb-md-0">
+      <div class="col-lg-3 col-12 name-input mb-2 mb-lg-0">
         <label for="name${index}" class="form-label">Name ${requiredMark}</label>
         <input type="text" class="form-control" id="name${index}"
                name="name[]" placeholder="Enter name" ${requiredAttr} />
         <div class="valid-feedback"></div>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md-3 col-12 source-input mb-2 mb-md-0">
+      <div class="col-lg-3 col-12 source-input mb-2 mb-lg-0">
         <label for="source${index}" class="form-label">Source ${requiredMark}</label>
         <input type="text" class="form-control" id="source${index}"
                name="source[]" placeholder="Enter source" maxlength="${maxSourceLen}" ${requiredAttr} />
@@ -84,7 +84,7 @@ export class NameRowManager {
           <small class="text-muted ms-auto"><span id="source${index}Counter">0</span> / ${maxSourceLen}</small>
         </div>
       </div>
-      <div class="col-md-2 col-12 mb-2 mb-md-0 align-self-end d-flex justify-content-center">
+      <div class="col-lg-2 col-12 mb-2 mb-lg-0 align-self-end d-flex justify-content-center">
         <button type="button" class="btn btn-outline-danger remove-row-btn w-50" title="Remove this row" style="${deleteButtonStyle}">
           <i class="bi bi-trash"></i>
         </button>
