@@ -33,7 +33,7 @@ spec:
           image: ghcr.io/ddmal/umil-app:k8s-migration-latest
           imagePullPolicy: Always
           workingDir: /virtual-instrument-museum/vim-app
-          command: ["gunicorn", "-w", "2", "-b", "0:8001", "VIM.wsgi"]
+          command: ["gunicorn", "-w", "2", "-b", "0:8001", "--access-logfile", "-", "VIM.wsgi"]
           ports:
             - containerPort: 8001
           envFrom:
