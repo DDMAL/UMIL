@@ -13,7 +13,7 @@
 server {
   listen 80;
   client_max_body_size 4G;
-  server_name ${HOST_NAME};
+  server_name ${HOST_NAME} localhost;
 
   location /static/assets/ {
     alias /virtual-instrument-museum/frontend/assets/;
