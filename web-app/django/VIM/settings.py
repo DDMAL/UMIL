@@ -51,11 +51,12 @@ INSTALLED_APPS = [
     "VIM.apps.main",
     "VIM.apps.instruments",
     "django_vite",
+    "django_extensions",
     "django_cleanup.apps.CleanupConfig",  # Must be last - handles orphaned file cleanup
 ]
 
 if IS_DEVELOPMENT:
-    INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
+    INSTALLED_APPS += ["debug_toolbar"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
