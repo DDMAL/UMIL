@@ -30,7 +30,7 @@ IS_TEST = bool(os.environ.get("MODE") == "test")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT
 
-ALLOWED_HOSTS = [os.environ.get("HOST_NAME")]
+ALLOWED_HOSTS = [os.environ.get("HOST_NAME"), "localhost", "127.0.0.1"]
 
 if DEBUG:
     import socket

@@ -16,25 +16,8 @@ spec:
       imagePullSecrets:
         - name: ghcr-pull-secret
       initContainers:
-        - name: wait-for-db
-          image: busybox
-          command:
-            - /bin/sh
-            - -c
-            - until nc -z vim-db 5432; do echo "Waiting for postgres..."; sleep 2; done
-
-        - name: migrate
-          image: ghcr.io/ddmal/umil-app:develop-latest
-          workingDir: /virtual-instrument-museum/vim-app
-          command: ["python", "manage.py", "migrate", "--noinput"]
-          envFrom:
-            - configMapRef:
-                name: umil-config
-            - secretRef:
-                name: umil-secret
-
         - name: collectstatic
-          image: ghcr.io/ddmal/umil-app:develop-latest
+          image: ghcr.io/ddmal/umil-app:k8s-migration-latest
           workingDir: /virtual-instrument-museum/vim-app
           command: ["python", "manage.py", "collectstatic", "--noinput"]
           envFrom:
@@ -45,10 +28,9 @@ spec:
           volumeMounts:
             - name: static-files
               mountPath: /virtual-instrument-museum/static
-
       containers:
         - name: app
-          image: ghcr.io/ddmal/umil-app:develop-latest
+          image: ghcr.io/ddmal/umil-app:k8s-migration-latest
           imagePullPolicy: Always
           workingDir: /virtual-instrument-museum/vim-app
           command: ["gunicorn", "-w", "2", "-b", "0:8001", "VIM.wsgi"]
@@ -85,7 +67,7 @@ spec:
               cpu: "1"
 
         - name: nginx
-          image: ghcr.io/ddmal/umil-nginx:develop-latest
+          image: ghcr.io/ddmal/umil-nginx:k8s-migration-latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -101,8 +83,7 @@ spec:
             - name: media-files
               mountPath: /virtual-instrument-museum/media
           readinessProbe:
-            httpGet:
-              path: /static/
+            tcpSocket:
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 5
