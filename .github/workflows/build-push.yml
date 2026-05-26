@@ -36,8 +36,8 @@ jobs:
           target: prod
           push: true
           tags: |
-            ghcr.io/ddmal/umil-app:${{ steps.branch.outputs.name }}-latest
-            ghcr.io/ddmal/umil-app:${{ github.sha }}
+            ghcr.io/ddmal/umil/umil-app:${{ steps.branch.outputs.name }}-latest
+            ghcr.io/ddmal/umil/umil-app:${{ github.sha }}
           cache-from: type=gha,scope=app
           cache-to: type=gha,mode=max,scope=app
 
@@ -48,7 +48,7 @@ jobs:
           file: ./nginx/Dockerfile.prod
           push: true
           tags: |
-            ghcr.io/ddmal/umil-nginx:${{ steps.branch.outputs.name }}-latest
-            ghcr.io/ddmal/umil-nginx:${{ github.sha }}
+            ghcr.io/ddmal/umil/umil-nginx:${{ steps.branch.outputs.name }}-latest
+            ghcr.io/ddmal/umil/umil-nginx:${{ github.sha }}
           cache-from: type=gha,scope=nginx
           cache-to: type=gha,mode=max,scope=nginx
