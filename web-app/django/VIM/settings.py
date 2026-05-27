@@ -30,7 +30,7 @@ IS_TEST = bool(os.environ.get("MODE") == "test")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = IS_DEVELOPMENT
 
-ALLOWED_HOSTS = [os.environ.get("HOST_NAME")]
+ALLOWED_HOSTS = [os.environ.get("HOST_NAME"), "localhost", "127.0.0.1"]
 
 if DEBUG:
     import socket
@@ -51,11 +51,12 @@ INSTALLED_APPS = [
     "VIM.apps.main",
     "VIM.apps.instruments",
     "django_vite",
+    "django_extensions",
     "django_cleanup.apps.CleanupConfig",  # Must be last - handles orphaned file cleanup
 ]
 
 if IS_DEVELOPMENT:
-    INSTALLED_APPS += ["django_extensions", "debug_toolbar"]
+    INSTALLED_APPS += ["debug_toolbar"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -115,7 +116,7 @@ else:
             "NAME": os.environ.get("POSTGRES_DB"),
             "USER": os.environ.get("POSTGRES_USER"),
             "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "HOST": "vim-db",
+            "HOST": os.environ.get("POSTGRES_HOST", "vim-db"),
             "PORT": "5432",
         }
     }
@@ -245,7 +246,7 @@ SESSION_COOKIE_SECURE = IS_PRODUCTION
 
 # SOLR SETTINGS
 
-SOLR_URL = "http://solr:8983/solr/virtual-instrument-museum"
+SOLR_URL = os.environ.get("SOLR_URL", "http://solr:8983/solr/virtual-instrument-museum")
 SOLR_TIMEOUT = 10
 EMPTY_HBS_CATEGORY = "0"
 

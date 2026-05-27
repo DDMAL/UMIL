@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vim-nginx-staging
+  namespace: umil
+spec:
+  selector:
+    app: umil-app-staging
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
