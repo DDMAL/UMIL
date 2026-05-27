@@ -38,12 +38,16 @@
                          id="instrumentSource"
                          name="instrument_source"
                          placeholder="Enter instrument source"
+                         maxlength="255"
                          required />
                   <div class="form-text">
                     The primary source or reference for this instrument's existence.
                   </div>
-                  <div class="valid-feedback"></div>
-                  <div class="invalid-feedback"></div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="valid-feedback"></div>
+                    <div class="invalid-feedback"></div>
+                    <small class="text-muted ms-auto"><span id="instrumentSourceCounter">0</span> / 255</small>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="hornbostelSachsClass" class="form-label">
@@ -57,7 +61,7 @@
                          required />
                   <div class="form-text">
                     At least the first two digits are required.
-                    <a href="https://en.wikipedia.org/wiki/Hornbostel%E2%80%93Sachs"
+                    <a href="https://github.com/DDMAL/UMIL/wiki/HBS-FAQ:-How-can-I-determine-an-instruments-Hornbostel%E2%80%90Sachs-number%3F"
                        target="_blank"
                        rel="noopener">
                       Learn more <i class="bi bi-box-arrow-up-right"></i>
@@ -93,11 +97,23 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="image" class="form-label">Image File</label>
-                  <input type="file"
-                         class="form-control"
-                         id="image"
-                         name="image"
-                         accept="image/jpeg,image/png,image/gif,image/webp" />
+                  <div class="input-group">
+                    <input type="file"
+                           class="form-control"
+                           id="image"
+                           name="image"
+                           accept="image/jpeg,image/png,image/gif,image/webp" />
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            id="deleteImageBtn"
+                            style="display: none"
+                            tabindex="-1">
+                      <i class="bi bi-trash"></i> Delete
+                    </button>
+                  </div>
+                  <div class="form-text d-none" id="selectDifferentImageText">
+                    To select a different image, click on “Choose File” again.
+                  </div>
                   <div class="form-text">
                     Accepted formats: JPEG, PNG, GIF, WebP.
                     <br />

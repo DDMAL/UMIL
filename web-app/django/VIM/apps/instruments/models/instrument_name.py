@@ -6,7 +6,7 @@ class InstrumentName(models.Model):
     language = models.ForeignKey("Language", on_delete=models.PROTECT)
     name = models.CharField(max_length=100, blank=False)
     source_name = models.CharField(
-        max_length=50, blank=False, help_text="Who or what called the instrument this?"
+        max_length=255, blank=False, help_text="Who or what called the instrument this?"
     )  # Stand-in for source data; format TBD
     verification_status = models.CharField(
         max_length=50,

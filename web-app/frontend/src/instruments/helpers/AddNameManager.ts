@@ -7,6 +7,7 @@ import { Modal } from 'bootstrap';
 export class AddNameManager {
   private nameRowManager: NameRowManager;
   private nameValidator: NameValidator;
+  private isPublishing = false;
 
   constructor(nameRowManager: NameRowManager, nameValidator: NameValidator) {
     this.nameRowManager = nameRowManager;
@@ -38,7 +39,7 @@ export class AddNameManager {
     document
       .getElementById('confirmPublishBtn')
       ?.addEventListener('click', () => {
-        this.submitNames();
+        void this.submitNames();
       });
   }
 
@@ -158,6 +159,18 @@ export class AddNameManager {
    * Submits name entries to the backend API
    */
   private async submitNames(): Promise<void> {
+    if (this.isPublishing) return;
+    this.isPublishing = true;
+
+    const confirmBtn = document.getElementById(
+      'confirmPublishBtn',
+    ) as HTMLButtonElement | null;
+    const previousLabel = confirmBtn?.textContent ?? '';
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'Saving…';
+    }
+
     const umilId = document
       .getElementById('instrumentUmilIdInModal')
       ?.textContent?.trim();
@@ -193,6 +206,12 @@ export class AddNameManager {
       }
     } catch (error) {
       alert('An error occurred while publishing: ' + (error as Error).message);
+    } finally {
+      this.isPublishing = false;
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = previousLabel || 'Confirm';
+      }
     }
   }
 

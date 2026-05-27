@@ -149,7 +149,7 @@
                           </td>
                           <td>
                             <div class="d-flex flex-row justify-content-between align-items-center gap-2 edit-container">
-                              <span class="view-field flex-grow-1">{{ names.label.source_name }}</span>
+                              <span class="view-field flex-grow-1">{{ names.label.source_name|truncatechars:40 }}</span>
                             </div>
                           </td>
                           {% if user.is_authenticated %}
@@ -161,7 +161,7 @@
                                   <span class="badge rounded-pill text-bg-gray">Unverified</span>
                                 {% elif names.label.verification_status == 'rejected' %}
                                   <span class="badge rounded-pill text-bg-danger">Rejected</span>
-                                {% else %}
+                                {% elif names.label.verification_status == 'under_review' %}
                                   <span class="badge rounded-pill text-bg-warning">Under Review</span>
                                 {% endif %}
                               </div>
@@ -221,7 +221,7 @@
                       <!-- Source -->
                       <div class="mb-1">
                         <div class="fw-bold text-muted small">Source</div>
-                        <span class="view-field">{{ names.label.source_name }}</span>
+                        <span class="view-field">{{ names.label.source_name|truncatechars:40 }}</span>
                       </div>
                       {% if user.is_authenticated %}
                         <!-- Status column -->
@@ -242,7 +242,7 @@
                               <span class="badge rounded-pill text-bg-gray">Unverified</span>
                             {% elif names.label.verification_status == 'rejected' %}
                               <span class="badge rounded-pill text-bg-danger">Rejected</span>
-                            {% else %}
+                            {% elif names.label.verification_status == 'under_review' %}
                               <span class="badge rounded-pill text-bg-warning">Under Review</span>
                             {% endif %}
                           </div>

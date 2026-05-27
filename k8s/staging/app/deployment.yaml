@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: umil-app-staging
+  namespace: umil
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: umil-app-staging
+  template:
+    metadata:
+      labels:
+        app: umil-app-staging
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      initContainers:
+        - name: collectstatic
+          image: ghcr.io/ddmal/umil-app:develop-latest
+          workingDir: /virtual-instrument-museum/vim-app
+          command: ["python", "manage.py", "collectstatic", "--noinput"]
+          envFrom:
+            - configMapRef:
+                name: umil-config-staging
+            - secretRef:
+                name: umil-secret-staging
+          volumeMounts:
+            - name: static-files
+              mountPath: /virtual-instrument-museum/static
+      containers:
+        - name: app
+          image: ghcr.io/ddmal/umil-app:develop-latest
+          imagePullPolicy: Always
+          workingDir: /virtual-instrument-museum/vim-app
+          command: ["gunicorn", "-w", "2", "-b", "0:8001", "--access-logfile", "-", "VIM.wsgi"]
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: umil-config-staging
+            - secretRef:
+                name: umil-secret-staging
+          volumeMounts:
+            - name: static-files
+              mountPath: /virtual-instrument-museum/static
+            - name: media-files
+              mountPath: /virtual-instrument-museum/media
+          readinessProbe:
+            tcpSocket:
+              port: 8001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            tcpSocket:
+              port: 8001
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+
+        - name: nginx
+          image: ghcr.io/ddmal/umil-nginx:develop-latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: HOST_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: umil-config-staging
+                  key: HOST_NAME
+            - name: APP_HOST
+              value: "localhost"
+          volumeMounts:
+            - name: static-files
+              mountPath: /virtual-instrument-museum/static
+            - name: media-files
+              mountPath: /virtual-instrument-museum/media
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 6
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
+      volumes:
+        - name: static-files
+          emptyDir: {}
+        - name: media-files
+          persistentVolumeClaim:
+            claimName: vim-media-staging

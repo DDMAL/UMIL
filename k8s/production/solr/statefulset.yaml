@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: umil-solr
+  namespace: umil
+spec:
+  serviceName: solr
+  replicas: 1
+  selector:
+    matchLabels:
+      app: umil-solr
+  template:
+    metadata:
+      labels:
+        app: umil-solr
+    spec:
+      securityContext:
+        fsGroup: 8983
+      initContainers:
+        - name: setup-core
+          image: busybox
+          securityContext:
+            runAsUser: 0
+          command:
+            - /bin/sh
+            - -c
+            - |
+              CORE_DIR=/var/solr/data/virtual-instrument-museum
+              if [ ! -d "$CORE_DIR" ]; then
+                echo "Initializing Solr core..."
+                mkdir -p "$CORE_DIR/conf"
+                cp /tmp/core-config/core.properties "$CORE_DIR/"
+                cp /tmp/core-config/schema.xml "$CORE_DIR/conf/"
+                cp /tmp/core-config/solrconfig.xml "$CORE_DIR/conf/"
+                chown -R 8983:8983 /var/solr/data
+                echo "Solr core initialized at $CORE_DIR"
+              else
+                echo "Solr core already exists, skipping setup"
+              fi
+          volumeMounts:
+            - name: solr-data
+              mountPath: /var/solr/data
+            - name: core-config
+              mountPath: /tmp/core-config
+
+      containers:
+        - name: solr
+          image: solr:9.2.1
+          ports:
+            - containerPort: 8983
+          env:
+            - name: SOLR_SECURITY_MANAGER_ENABLED
+              value: "false"
+          volumeMounts:
+            - name: solr-data
+              mountPath: /var/solr/data
+          readinessProbe:
+            httpGet:
+              path: /solr/virtual-instrument-museum/admin/ping
+              port: 8983
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /solr/virtual-instrument-museum/admin/ping
+              port: 8983
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+
+      volumes:
+        - name: solr-data
+          persistentVolumeClaim:
+            claimName: solr-data
+        - name: core-config
+          configMap:
+            name: solr-core-config

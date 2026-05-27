@@ -18,6 +18,8 @@ django-vite = "^3.1.0"
 pysolr = "^3.10.0"
 django-cleanup = "^8.0.0"
 django-ratelimit = "^4.1.0"
+django-extensions = "3.2.3"
+ipython = "^8.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -31,7 +33,6 @@ djlint = "^1.34.1"
 
 [tool.poetry.group.debug.dependencies]
 django-debug-toolbar = "^4.2.0"
-django-extensions = "3.2.3"
 werkzeug = "3.0.0"
 
 [build-system]

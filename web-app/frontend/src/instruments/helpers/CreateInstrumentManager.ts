@@ -24,10 +24,11 @@ export class CreateInstrumentManager {
   }
 
   /**
-   * Initializes the form with one required row
+   * Initializes the form with one required row and sets up the source counter
    */
   initializeForm(): void {
     this.nameRowManager.resetRows(true);
+    this.setupInstrumentSourceCounter();
   }
 
   /**
@@ -54,58 +55,103 @@ export class CreateInstrumentManager {
   }
 
   /**
+   * Sets up the live character counter for the Instrument Source input field.
+   */
+  setupInstrumentSourceCounter(): void {
+    const sourceInput = document.getElementById(
+      'instrumentSource',
+    ) as HTMLInputElement;
+    const counterSpan = document.getElementById('instrumentSourceCounter');
+    if (!sourceInput || !counterSpan) return;
+
+    const updateCounter = () => {
+      const length = sourceInput.value.length;
+      counterSpan.textContent = length.toString();
+    };
+
+    // Listen to input events and update counter immediately
+    sourceInput.addEventListener('input', updateCounter);
+
+    // Initialize counter on page load in case of prefilled value
+    updateCounter();
+  }
+
+  /**
    * Toggles image source field visibility based on image selection
    */
   setupImageFieldToggle(): void {
-    const imageInput = document.getElementById('image') as HTMLInputElement;
+    const imageInput = document.getElementById(
+      'image',
+    ) as HTMLInputElement | null;
     const imageSourceContainer = document.getElementById(
       'imageSourceContainer',
     );
     const imagePreview = document.getElementById(
       'imagePreview',
-    ) as HTMLImageElement;
+    ) as HTMLImageElement | null;
     const imagePreviewContainer = document.getElementById(
       'imagePreviewContainer',
     );
+    const deleteBtn = document.getElementById(
+      'deleteImageBtn',
+    ) as HTMLButtonElement | null;
+    const selectDifferentText = document.getElementById(
+      'selectDifferentImageText',
+    );
 
-    if (imageInput && imageSourceContainer) {
-      imageInput.addEventListener('change', () => {
-        const files = imageInput.files;
-        if (files && files.length > 0) {
-          imageSourceContainer.classList.remove('d-none');
-          const sourceInput = imageSourceContainer.querySelector(
-            'input',
-          ) as HTMLInputElement;
-          if (sourceInput) {
-            sourceInput.required = true;
-          }
+    // Check for absence once
+    if (
+      !imageInput ||
+      !imageSourceContainer ||
+      !imagePreview ||
+      !imagePreviewContainer ||
+      !deleteBtn ||
+      !selectDifferentText
+    )
+      return;
 
-          // Show image preview
-          if (imagePreview && imagePreviewContainer) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              imagePreview.src = e.target?.result as string;
-              imagePreviewContainer.classList.remove('d-none');
-            };
-            reader.readAsDataURL(files[0]);
-          }
-        } else {
-          imageSourceContainer.classList.add('d-none');
-          const sourceInput = imageSourceContainer.querySelector(
-            'input',
-          ) as HTMLInputElement;
-          if (sourceInput) {
-            sourceInput.required = false;
-            sourceInput.value = '';
-          }
+    const getSourceInput = () =>
+      imageSourceContainer.querySelector('input') as HTMLInputElement | null;
 
-          // Hide image preview
-          if (imagePreviewContainer) {
-            imagePreviewContainer.classList.add('d-none');
-          }
-        }
-      });
+    function resetImageInput() {
+      imageInput.value = '';
+      imagePreview.src = '';
+      imagePreviewContainer.classList.add('d-none');
+      deleteBtn.style.display = 'none';
+      selectDifferentText.classList.add('d-none');
+      imageSourceContainer.classList.add('d-none');
+      const sourceInput = getSourceInput();
+      if (sourceInput) {
+        sourceInput.required = false;
+        sourceInput.value = '';
+      }
     }
+
+    imageInput.addEventListener('change', function () {
+      const file = imageInput.files && imageInput.files[0];
+      if (file) {
+        // Show and require source
+        imageSourceContainer.classList.remove('d-none');
+        const sourceInput = getSourceInput();
+        if (sourceInput) sourceInput.required = true;
+
+        // Preview and UI
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target?.result as string;
+          imagePreviewContainer.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+        deleteBtn.style.display = '';
+        selectDifferentText.classList.remove('d-none');
+      } else {
+        resetImageInput();
+      }
+    });
+
+    deleteBtn.addEventListener('click', function () {
+      resetImageInput();
+    });
   }
 
   /**
@@ -450,7 +496,7 @@ export class CreateInstrumentManager {
   }
 
   /**
-   * Sets up form submission handling
+   * Sets up form submission handling and instrument source counter
    */
   setupFormSubmission(): void {
     const form = document.getElementById('createInstrumentForm');
@@ -467,5 +513,8 @@ export class CreateInstrumentManager {
         this.submitInstrument();
       });
     }
+
+    // Ensure the instrument source counter is set up on form activation as well
+    this.setupInstrumentSourceCounter();
   }
 }
