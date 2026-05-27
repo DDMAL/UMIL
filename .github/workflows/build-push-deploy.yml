@@ -63,7 +63,30 @@ jobs:
           cache-from: type=gha,scope=nginx
           cache-to: type=gha,mode=max,scope=nginx
 
-  deploy:
+  deploy-staging:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Deploy to staging
+        run: |
+          kubectl set image deployment/umil-app-staging \
+            collectstatic=ghcr.io/ddmal/umil-app:${{ github.sha }} \
+            app=ghcr.io/ddmal/umil-app:${{ github.sha }} \
+            nginx=ghcr.io/ddmal/umil-nginx:${{ github.sha }} \
+            -n umil
+          kubectl rollout status deployment/umil-app-staging -n umil --timeout=300s
+
+  deploy-production:
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'

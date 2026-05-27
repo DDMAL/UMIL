@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: umil-ingress-staging
+  namespace: umil
+spec:
+  rules:
+    - host: umil.staging.linkedmusic.ca
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vim-nginx-staging
+                port:
+                  number: 80
