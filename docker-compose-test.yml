@@ -60,6 +60,7 @@ services:
     restart: unless-stopped
     environment:
       - HOST_NAME=${HOST_NAME}
+      - APP_HOST=vim-app
     ports:
       - "8000:80"
     volumes:

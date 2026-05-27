@@ -1,6 +1,6 @@
   upstream vim-app {
     # define the vim-app upstream server
-    server localhost:8001 fail_timeout=0;
+    server ${APP_HOST}:8001 fail_timeout=0;
   }
 
   server {

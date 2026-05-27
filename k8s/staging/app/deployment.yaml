@@ -77,6 +77,8 @@ spec:
                 configMapKeyRef:
                   name: umil-config-staging
                   key: HOST_NAME
+            - name: APP_HOST
+              value: "localhost"
           volumeMounts:
             - name: static-files
               mountPath: /virtual-instrument-museum/static
