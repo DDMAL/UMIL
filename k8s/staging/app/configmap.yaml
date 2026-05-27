@@ -11,6 +11,6 @@ data:
   EMAIL_HOST_USER: "REDACTED_AWS_KEY"
   DEFAULT_FROM_EMAIL: "UMIL <noreply@umil.linkedmusic.ca>"
   POSTGRES_USER: "vim_admin"
-  POSTGRES_DB: "virtual_instrument_museum_staging"
+  POSTGRES_DB: "virtual_instrument_museum"
   POSTGRES_HOST: "vim-db-staging"
   SOLR_URL: "http://solr-staging:8983/solr/virtual-instrument-museum"
