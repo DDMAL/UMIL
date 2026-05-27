@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: umil-config
+  namespace: umil
+data:
+  MODE: "prod"
+  HOST_NAME: "umil.linkedmusic.ca"
+  EMAIL_HOST: "email-smtp.us-west-2.amazonaws.com"
+  EMAIL_PORT: "587"
+  EMAIL_HOST_USER: "AKIASGTLL5NYVV7JG65A"
+  DEFAULT_FROM_EMAIL: "UMIL <noreply@umil.linkedmusic.ca>"
+  POSTGRES_USER: "vim_admin"
+  POSTGRES_DB: "virtual_instrument_museum"
+  POSTGRES_HOST: "vim-db"
+  SOLR_URL: "http://solr:8983/solr/virtual-instrument-museum"
+

@@ -116,7 +116,7 @@ else:
             "NAME": os.environ.get("POSTGRES_DB"),
             "USER": os.environ.get("POSTGRES_USER"),
             "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "HOST": "vim-db",
+            "HOST": os.environ.get("POSTGRES_HOST", "vim-db"),
             "PORT": "5432",
         }
     }
@@ -246,7 +246,7 @@ SESSION_COOKIE_SECURE = IS_PRODUCTION
 
 # SOLR SETTINGS
 
-SOLR_URL = "http://solr:8983/solr/virtual-instrument-museum"
+SOLR_URL = os.environ.get("SOLR_URL", "http://solr:8983/solr/virtual-instrument-museum")
 SOLR_TIMEOUT = 10
 EMPTY_HBS_CATEGORY = "0"
 
