@@ -1,7 +1,14 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
 from . import views
 from VIM.apps.main.forms import EmailAuthenticationForm
+
+RateLimitedPasswordResetView = method_decorator(
+    ratelimit(key="ip", rate="2/m", method="POST", block=True),
+    name="dispatch",
+)(auth_views.PasswordResetView)
 
 app_name = "main"
 
@@ -34,7 +41,7 @@ urlpatterns = [
     path("accounts/login/", views.custom_login, name="login"),
     path(
         "password-reset/",
-        auth_views.PasswordResetView.as_view(
+        RateLimitedPasswordResetView.as_view(
             template_name="main/auth/resetPassword.html",
             email_template_name="main/auth/resetPasswordEmail.html",
             success_url="/password-reset/done/",

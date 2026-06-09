@@ -8,6 +8,7 @@ from django.db.models import Count
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
+from django_ratelimit.decorators import ratelimit
 
 from VIM.apps.instruments.models import Instrument, Language, InstrumentName
 from VIM.apps.main.forms import (
@@ -255,6 +256,7 @@ def verify_email(request, uidb64, token):
     return redirect("main:login")
 
 
+@ratelimit(key="ip", rate="2/m", method="POST", block=True)
 def resend_verification_email(request):
     """
     Resend verification email with rate limiting (60s).
