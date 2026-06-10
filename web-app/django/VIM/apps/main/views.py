@@ -151,6 +151,7 @@ def custom_login(request):
     return render(request, "main/auth/login.html", {"form": form})
 
 
+@ratelimit(key="ip", rate="2/m", method="POST", block=True)
 def register(request):
     if request.method == "POST":
         # Extract email and password before form validation to check for existing unverified users
