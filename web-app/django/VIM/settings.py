@@ -194,7 +194,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # If EMAIL_HOST is not set, emails will be printed to console (useful for development)
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_BACKEND = (
-    "django.core.mail.backends.smtp.EmailBackend"
+    "VIM.apps.main.utils.email_backend.LoggingEmailBackend"
     if EMAIL_HOST
     else "django.core.mail.backends.console.EmailBackend"
 )
@@ -207,6 +207,39 @@ DEFAULT_FROM_EMAIL = os.getenv(
 )
 
 SITE_NAME = "UMIL"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "[{levelname}] {asctime} {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "VIM": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
 
 # TOKEN EXPIRY SETTINGS
 # Timeout for password reset and email verification tokens (24 hours)

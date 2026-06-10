@@ -3,8 +3,12 @@ Email utilities for user verification and notifications.
 Provides async email sending and token generation for email verification.
 """
 
+import logging
 import threading
+
 from django.core.mail import EmailMessage
+
+logger = logging.getLogger(__name__)
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -42,7 +46,7 @@ def send_email_async(subject, body_html, to_emails):
         body_html: HTML content of the email
         to_emails: List of recipient email addresses
     """
-    # Use daemon thread to prevent blocking shutdown
+    logger.info("EMAIL_DISPATCHED subject=%r to=%r", subject, to_emails)
     thread = threading.Thread(
         target=send_html_email_task, args=(subject, body_html, to_emails), daemon=True
     )
