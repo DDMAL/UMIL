@@ -8,7 +8,7 @@ data:
   HOST_NAME: "umil.staging.linkedmusic.ca"
   EMAIL_HOST: "email-smtp.us-west-2.amazonaws.com"
   EMAIL_PORT: "587"
-  EMAIL_HOST_USER: "REDACTED_AWS_KEY"
+  EMAIL_HOST_USER: "<value>"
   DEFAULT_FROM_EMAIL: "UMIL <noreply@umil.linkedmusic.ca>"
   POSTGRES_USER: "vim_admin"
   POSTGRES_DB: "virtual_instrument_museum"
