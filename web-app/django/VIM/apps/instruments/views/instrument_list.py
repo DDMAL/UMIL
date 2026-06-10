@@ -350,7 +350,7 @@ class InstrumentList(TemplateView):
     def _paginate_solr_results(self, page_size):
         """Handle Solr pagination for all query types (search, HBS filter, show all)."""
         language = self.get_active_language()
-        page_number = int(self.request.GET.get("page", 1))
+        page_number = max(1, int(self.request.GET.get("page", 1)))
         start = (page_number - 1) * page_size
 
         # Get Solr connection and query parameters with facets enabled
