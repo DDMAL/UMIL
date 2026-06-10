@@ -364,6 +364,16 @@ class InstrumentList(TemplateView):
 
         # Create paginator and page objects
         paginator = SolrPaginator(page_results, page_size, total_count)
+        # Clamp page_number to valid range — prevents EmptyPage in templates when
+        # a stale ?page=N param exceeds the actual number of result pages.
+        num_pages = paginator.num_pages
+        if page_number > max(num_pages, 1):
+            page_number = max(num_pages, 1)
+            start = (page_number - 1) * page_size
+            page_results, _, _ = self._get_solr_page_results(
+                solr, query_params, page_size, start
+            )
+            paginator = SolrPaginator(page_results, page_size, total_count)
         page = Page(page_results, page_number, paginator)
 
         return (paginator, page, page_results, page.has_other_pages(), facet_data)
