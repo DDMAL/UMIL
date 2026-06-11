@@ -17,7 +17,7 @@
           </div>
           <div class="card-body pb-0 pt-0">
             <p class="card-title text-center notranslate">
-              {{ instrument.instrumentname_set.get_display_names_str }}
+              {{ instrument.instrumentname_set.get_display_names_str|safe }}
             </p>
           </div>
         </div>
