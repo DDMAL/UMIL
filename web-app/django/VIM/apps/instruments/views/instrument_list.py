@@ -173,14 +173,29 @@ class InstrumentList(TemplateView):
                 (x["name"] for x in hbs_facet_list if x["value"] == hbs_facet), ""
             )
 
+        # Add sort data to context
+        sort_order = self.request.GET.get("sort", "").lower()
+        if sort_order not in ("asc", "desc"):
+            sort_order = None
+
+        context["sort"] = sort_order
+        context["sort_list"] = [
+            {"value": value, "url": None} for value in ("asc", "desc", "default")
+        ]
+
         # Add combined filter state for UI
-        context["has_filters"] = bool(search_query or hbs_facet)
+        context["has_filters"] = bool(search_query or hbs_facet or sort_order)
         context["active_filters"] = {
             "search": search_query if search_query else None,
             "hbs_classification": (
                 {"value": hbs_facet, "name": context.get("hbs_facet_name", "")}
                 if hbs_facet
                 else None
+            ),
+            "sort": (
+                "Ascending"
+                if sort_order == "asc"
+                else "Descending" if sort_order == "desc" else None
             ),
         }
 
@@ -191,24 +206,102 @@ class InstrumentList(TemplateView):
         enhanced_hbs_facets = []
         for facet in hbs_facet_list:
             facet_copy = facet.copy()
-            # Build URL that preserves search query (with proper encoding)
+
+            # Build base params list
+            params = []
+            clear_params = []
+
             if search_query:
-                encoded_query = requests.utils.quote(search_query)
-                facet_copy["url"] = f"?query={encoded_query}&hbs_facet={facet['value']}"
-                facet_copy["clear_url"] = f"?query={encoded_query}"
-            else:
-                facet_copy["url"] = f"?hbs_facet={facet['value']}"
-                facet_copy["clear_url"] = "?"
+                params.append(f"query={requests.utils.quote(search_query)}")
+                clear_params.append(f"query={requests.utils.quote(search_query)}")
+
+            if sort_order:
+                params.append(f"sort={sort_order}")
+
+            # Current facet is added to main URL
+            params.append(f"hbs_facet={facet['value']}")
+
+            facet_copy["url"] = "?" + "&".join(params)
+            facet_copy["clear_url"] = (
+                "?" + "&".join(clear_params) if clear_params else "?"
+            )
+
             # Add active state for current HBS filter
             facet_copy["is_active"] = facet["value"] == hbs_facet
             enhanced_hbs_facets.append(facet_copy)
         context["hbs_facets"] = enhanced_hbs_facets
 
         # Add clear filter URLs for UI
-        context["clear_search_url"] = f"?hbs_facet={hbs_facet}" if hbs_facet else "?"
-        context["clear_hbs_url"] = (
-            f"?query={requests.utils.quote(search_query)}" if search_query else "?"
+        params = {}
+        if search_query:
+            params["query"] = search_query
+        if hbs_facet:
+            params["hbs_facet"] = hbs_facet
+        if sort_order:
+            params["sort"] = sort_order
+
+        # clear_search_url: remove 'query'
+        clear_search_params = {k: v for k, v in params.items() if k != "query"}
+        context["clear_search_url"] = (
+            "?"
+            + "&".join(
+                [
+                    f"{k}={requests.utils.quote(str(v))}"
+                    for k, v in clear_search_params.items()
+                ]
+            )
+            if clear_search_params
+            else "?"
         )
+        # clear_hbs_url: remove 'hbs_facet'
+        clear_hbs_params = {k: v for k, v in params.items() if k != "hbs_facet"}
+        context["clear_hbs_url"] = (
+            "?"
+            + "&".join(
+                [
+                    f"{k}={requests.utils.quote(str(v))}"
+                    for k, v in clear_hbs_params.items()
+                ]
+            )
+            if clear_hbs_params
+            else "?"
+        )
+        # clear_sort_url: remove 'sort'
+        clear_sort_params = {k: v for k, v in params.items() if k != "sort"}
+        context["clear_sort_url"] = (
+            "?"
+            + "&".join(
+                [
+                    f"{k}={requests.utils.quote(str(v))}"
+                    for k, v in clear_sort_params.items()
+                ]
+            )
+            if clear_sort_params
+            else "?"
+        )
+
+        # Enhanced sort options for UI with proper URLs that preserve search query
+        sort_values = tuple(value["value"] for value in context["sort_list"])
+        sort_list = []
+        for value in sort_values:
+            temp_params = {k: v for k, v in params.items() if k != "sort"}
+            if value != "default":
+                temp_params["sort"] = value
+            url = (
+                "?"
+                + "&".join(
+                    [
+                        f"{k}={requests.utils.quote(str(v))}"
+                        for k, v in temp_params.items()
+                    ]
+                )
+                if temp_params
+                else "?"
+            )
+            sort_list.append({"value": value, "url": url})
+        context["sort_list"] = sort_list
+
+        # clear_all_filters_url: remove everything
         context["clear_all_filters_url"] = "?"
 
         return context
@@ -216,6 +309,28 @@ class InstrumentList(TemplateView):
     def _get_solr_connection(self):
         """Get a Solr connection."""
         return pysolr.Solr(settings.SOLR_URL, timeout=settings.SOLR_TIMEOUT)
+
+    def _build_sort_param(self, lang_code: str) -> str | None:
+        """
+        Builds a Solr sort expression that:
+        - puts missing labels FIRST
+        - sorts alphabetically by language-specific UMIL label
+        """
+        sort_order = self.request.GET.get("sort", "").lower()
+        if sort_order not in ("asc", "desc"):
+            return None
+
+        umil_label_field = f"instrument_umil_label_{lang_code}_s"
+
+        if sort_order == "desc":
+            return (
+                f"if(exists({umil_label_field}),1,0) asc, "
+                f"{umil_label_field} {sort_order}"
+            )
+        elif sort_order == "asc":
+            return f"{umil_label_field} {sort_order}"
+        else:
+            pass
 
     def _build_solr_query(self, language: Language, include_facets: bool = False):
         """Build Solr query parameters supporting combined search + HBS filtering."""
@@ -239,6 +354,9 @@ class InstrumentList(TemplateView):
         if hbs_facet:
             filter_queries.append(f"hbs_prim_cat_s:{hbs_facet}")
 
+        # Build sorting filter
+        sort_param = self._build_sort_param(lang_code)
+
         umil_label_field = f"instrument_umil_label_{lang_code}_s"
 
         params = {
@@ -257,6 +375,10 @@ class InstrumentList(TemplateView):
         # Add filter queries if any
         if filter_queries:
             params["fq"] = filter_queries
+
+        # Add sort if any
+        if sort_param:
+            params["sort"] = sort_param
 
         return params
 

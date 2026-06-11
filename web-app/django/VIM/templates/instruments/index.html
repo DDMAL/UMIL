@@ -38,6 +38,14 @@
                        title="Remove search filter">×</a>
                   </span>
                 {% endif %}
+                {% if active_filters.sort %}
+                  <span class="badge bg-primary text-white">
+                    Sort: {{ active_filters.sort }}
+                    <a href="{{ clear_sort_url }}"
+                       class="ms-1 text-white"
+                       title="Remove Sort filter">×</a>
+                  </span>
+                {% endif %}
                 {% if active_filters.hbs_classification %}
                   <span class="badge bg-primary text-white">
                     HBS: {{ active_filters.hbs_classification.name }}
@@ -52,6 +60,45 @@
               </div>
             </div>
           {% endif %}
+          <!-- Sort Options -->
+          <div class="info-block bg-light h-auto p-2 mb-3">
+            <label for="sort-select" class="form-label">
+              <strong>Sort</strong>
+            </label>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-primary dropdown-toggle w-100 text-start d-flex align-items-center justify-content-between"
+                      type="button"
+                      id="sortDropdownMenuButton"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                <span class="d-flex align-items-center">
+                  {% if sort == 'asc' %}
+                    <i class="bi bi-sort-alpha-down m-2"></i>Ascending
+                  {% elif sort == 'desc' %}
+                    <i class="bi bi-sort-alpha-up m-2"></i>Descending
+                  {% else %}
+                    <i class="bi bi-slash-circle m-2"></i>Default
+                  {% endif %}
+                </span>
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="sortDropdownMenuButton">
+                {% for sort_item in sort_list %}
+                  <li>
+                    <a class="dropdown-item{% if sort_item.value == 'default' and not sort %} active{% elif sort == sort_item.value %} active{% endif %}"
+                       href="{{ sort_item.url }}">
+                      {% if sort_item.value == 'asc' %}
+                        <i class="bi bi-sort-alpha-down m-2"></i>Ascending
+                      {% elif sort_item.value == 'desc' %}
+                        <i class="bi bi-sort-alpha-up m-2"></i>Descending
+                      {% else %}
+                        <i class="bi bi-slash-circle m-2"></i>Default
+                      {% endif %}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
           <div class="info-block bg-light h-auto p-2 mb-3">
             <h4>Hornbostel-Sachs Classification</h4>
             <hr class="mt-0" />
