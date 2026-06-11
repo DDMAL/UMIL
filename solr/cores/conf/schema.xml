@@ -55,6 +55,7 @@
 
     <fieldType name="random" class="solr.RandomSortField" indexed="true" />
 
+    <!-- For general text with ngram for flexible search -->
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
         <analyzer type="index">
             <tokenizer class="solr.StandardTokenizerFactory" />
@@ -66,29 +67,34 @@
             <filter class="solr.LowerCaseFilterFactory" />
         </analyzer>
     </fieldType>
-    <!-- Just like text_general except it reverses the characters of
-	 each token, to enable more efficient leading wildcard queries. -->
-    <fieldType name="text_general_rev" class="solr.TextField" positionIncrementGap="100">
+
+    <!-- Exact match text field -->
+    <fieldType name="text_vector" class="solr.TextField" positionIncrementGap="100">
         <analyzer type="index">
-            <tokenizer class="solr.StandardTokenizerFactory" />
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
             <filter class="solr.LowerCaseFilterFactory" />
-            <filter class="solr.ReversedWildcardFilterFactory" withOriginal="true" maxPosAsterisk="3" maxPosQuestion="2" maxFractionAsterisk="0.33" />
         </analyzer>
         <analyzer type="query">
-            <tokenizer class="solr.StandardTokenizerFactory" />
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
             <filter class="solr.LowerCaseFilterFactory" />
         </analyzer>
     </fieldType>
-  
+
+
    <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
 
-    <!-- Define the new text field for queries -->
-    <field name="text" type="text_general" indexed="true" stored="true" multiValued="true"/>
+    <!-- Define the new text field for ngram queries -->
+    <field name="text_ngram" type="text_general" indexed="true" stored="false" multiValued="true"/>
+
+    <!-- Define the new text field for exact match queries -->
+    <field name="text_exact" type="text_vector" indexed="true" stored="false" multiValued="true"/>
 
     <!-- Define the field for storing the thumbnail URL -->
     <field name="thumbnail_url" type="string" stored="true" indexed="false" />
 
     <!-- Copy field directives for aggregating values into the text field -->
-    <copyField source="wikidata_id_s" dest="text"/>
-    <copyField source="*_ss" dest="text" />
+    <copyField source="*_ss" dest="text_ngram" />
+
+    <copyField source="wikidata_id_s" dest="text_exact"/>
+    <copyField source="*_ss" dest="text_exact" />
 </schema>

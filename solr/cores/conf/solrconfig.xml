@@ -71,9 +71,14 @@
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <int name="rows">10</int>
-            <str name="df">text</str>
+            <str name="defType">edismax</str>
+             <arr name="qf">
+                <str>text_exact^2</str>
+                <str>text_ngram</str>
+            </arr>
         </lst>
     </requestHandler>
+
 
     <!-- A request handler that returns indented JSON by default -->
     <requestHandler name="/query" class="solr.SearchHandler">
